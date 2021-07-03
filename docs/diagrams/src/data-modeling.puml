@@ -1,0 +1,122 @@
+' todo: professor reclamou que parece um diagrama de classes, mudar!
+@startuml my-erd-diagram
+
+hide circle
+skinparam backgroundColor #FFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam linetype ortho
+' skinparam linetype polyline
+skinparam class {
+  backgroundColor white
+  borderColor black
+  arrowColor black
+}
+
+' * mandatory attribute
+' - optional attribute
+
+entity user {
+  * id : <<PK>>
+  --
+  * name
+  * email
+  * creation_timestamp
+  * last_login_timestamp
+  + date_of_birth
+
+  + relevance_score : <<derived>>
+  + reputation_score : <<derived>>
+}
+
+entity incident {
+  * id : <<PK>> <<generated>>
+  --
+  * owner_user_id : <<FK>>
+  * title
+  * location_latitude : <<index>>
+  * location_longitude : <<index>>
+  * creation_timestamp
+  * status : "SUBMITTED" | "OPENED" | "CLOSED"
+  
+  + notified_users_count : <<derived>>
+  + reactions_count : <<derived>>
+}
+
+' image/video metadata 
+entity incident_media_metadata {
+  * id: <<PK>> <<generated>>
+  --
+  * owner_incident_id: <<FK>>
+  * storage_url
+  * content_type 
+  * upload_location_latitude
+  * upload_location_longitude
+  * creation_timestamp
+}
+
+entity incident_timeline_update {
+  * id : <<PK>> <<generated>>
+  --
+  * incident_id : <<FK>>
+  * owner_user_id : <<FK>>
+  * description
+  * creation_timestamp
+}
+
+' todo: pra dizer a relevancia do incidente?
+entity incident_reaction {
+  *id : <<PK>> <<generated>>
+  --
+  * incident_id : <<FK>>
+  * owner_user_id : <<FK>>
+
+  * interaction_type : "PRAY" | "ANGRY" | "UOW"
+  * creation_timestamp
+}
+
+' todo: pra dizer reputacao do usuario criador?
+entity incident_vote {
+  *id : <<PK>> <<generated>>
+  --
+  * incident_id : <<FK>>
+  * voter_user_id : <<FK>>
+
+  * vote_type: "UPVOTE" | "DOWNVOTE"
+}
+
+entity incident_comment {
+  *id : <<PK>> <<generated>>
+  --
+  * incident_id : <<FK>>
+  * commentor_user_id : <<FK>>
+
+  * content
+  * vote_type: "UPVOTE" | "DOWNVOTE"
+}
+
+' no registro, se a e b sao amigos, armazenar duplicado (linha a,b; linha b,a;) pra que só precise que uma coluna seja indice
+entity user_friendship {
+  --
+  * user_id_1 : <<FK>> <<index>>
+  * user_id_2 : <<FK>>
+  + creation_timestamp
+}
+
+' relationships
+' |o-- zero or one	
+' ||-- exactly one	
+' }o-- zero or many	
+' }|-- one or many	
+
+incident ||--|{ incident_media_metadata
+incident ||--o{ incident_timeline_update
+incident ||--o{ incident_reaction
+incident ||--o{ incident_vote
+incident ||--o{ incident_comment
+user ||--o{ incident
+user ||--o{ incident_timeline_update
+user ||--o{ incident_reaction
+user ||--o{ user_friendship
+
+@enduml

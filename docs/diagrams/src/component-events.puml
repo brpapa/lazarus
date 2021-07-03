@@ -1,0 +1,110 @@
+' https://www.enterpriseintegrationpatterns.com/patterns/messaging/PublishSubscribeChannel.html
+@startuml my-component-diagram-events
+
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+' skinparam Linetype ortho
+' skinparam componentStyle rectangle
+' skinparam nodesep 10
+' skinparam ranksep 20
+
+left to right direction
+
+rectangle "Publishers" as publishers {
+  rectangle "API" as gtw_pub
+  ' rectangle "Notifications Service" as notifications_pub
+  ' rectangle "Chat Service" as chat_pub
+  rectangle "Incidents Service" as incidents_pub
+  ' rectangle "Static Content Service" as static_content_pub
+}
+
+queue "Event bus" as event_bus {
+  rectangle INCIDENT_SUBMITTED <<event>>
+'     - review antes de publicar?
+'     - publicar midias no s3
+  rectangle INCIDENT_OPENED <<event>>
+  rectangle INCIDENT_CLOSED <<event>>
+  rectangle INCIDENT_TIMELINE_UPDATED <<event>>
+  rectangle INCIDENT_NEW_REACTION <<event>> {
+    ' card new_comment
+    ' card new_upvote
+    ' card new_downvote
+  }
+
+  rectangle FRIENDSHIP_UPDATE <<event>> {
+'     rectangle USER_FRIENDSHIP_REQUESTED <<event>>
+'     rectangle USER_FRIENDSHIP_ACCEPTED <<event>> {
+' '     - notificar ambos os usuários
+'     }
+'     rectangle USER_FRIENDSHIP_DENIED <<event>>
+  }
+
+  rectangle USER_LOGIN <<event>>
+  rectangle USER_LOGOUT <<event>>
+
+' - `USER_LOGIN`
+'     - se conectar via websocket (para receber atualizações das proximidades
+
+' - `USER_CURRENT_LOCATION_UPDATED`
+'     - atualizar o mapa em tempo real de todos os usuarios logados no app que sao seus amigos
+
+' - `LOCATION_LISTENING_ADD`
+' - `LOCATION_LISTENING_DELETE`
+
+' - `INCIDENT_CHAT_NEW_MESSAGE`
+}
+
+rectangle "Subscribers" as subscribers {
+  rectangle "Notifications Service" as notifications_sub
+  rectangle "Chat Service" as chat_sub
+  rectangle "Incidents Service" as incidents_sub
+  rectangle "Static Content Service" as static_content_sub
+  rectangle "User Service" as user_sub
+}
+
+publishers --[hidden]d-> event_bus
+event_bus --[hidden]u-> publishers
+
+INCIDENT_SUBMITTED --[hidden]d-> subscribers
+FRIENDSHIP_UPDATE --[hidden]d-> subscribers
+event_bus --[hidden]d-> subscribers
+
+' WHAT PUBLISHER PUBLISH
+
+gtw_pub --> INCIDENT_SUBMITTED
+incidents_pub --> INCIDENT_OPENED
+incidents_pub --> INCIDENT_CLOSED
+gtw_pub --> INCIDENT_NEW_REACTION
+gtw_pub --> INCIDENT_TIMELINE_UPDATED
+gtw_pub --> FRIENDSHIP_UPDATE
+
+gtw_pub --> USER_LOGIN
+gtw_pub --> USER_LOGOUT
+
+' WHAT SUBSCRIBER LISTE
+' HOW A SUBSCRIBER HANDLE
+
+USER_LOGIN --> chat_sub
+USER_LOGOUT --> chat_sub
+INCIDENT_OPENED --> incidents_sub
+INCIDENT_OPENED --> static_content_sub
+INCIDENT_OPENED --> notifications_sub
+' INCIDENT_OPENED --> static_content_sub : "s3 upload"
+' INCIDENT_OPENED --> notifications_sub : "notificar usuários"
+'     - notificar usuarios que ouvem locais das proximidades
+'     - notificar usuarios que estao nas proximidades
+
+'     - atualizar quad tree
+'     - atualizar o mapa em tempo real de todos os usuarios logados no app, mas que estao nas proximidades
+'     - abrir chat para o incidente
+
+INCIDENT_SUBMITTED --> incidents_sub
+INCIDENT_CLOSED --> incidents_sub
+INCIDENT_NEW_REACTION --> incidents_sub
+INCIDENT_TIMELINE_UPDATED --> incidents_sub
+INCIDENT_NEW_REACTION --> incidents_sub
+
+FRIENDSHIP_UPDATE --> user_sub
+FRIENDSHIP_UPDATE --> chat_sub
+
+@enduml
