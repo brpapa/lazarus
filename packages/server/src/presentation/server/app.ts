@@ -1,0 +1,23 @@
+import 'isomorphic-fetch'
+import Koa from 'koa'
+import cors from 'kcors'
+import logger from 'koa-logger'
+import { jwtSecretKey, nodeEnv } from '../../config'
+import responseTime from './middlewares/response-time'
+import router from './router'
+
+// learn more about KOA with examples: https://github.com/koajs/examples
+const app = new Koa()
+
+app.env = nodeEnv
+app.keys = [jwtSecretKey] // set sessions keys
+
+app.use(responseTime())
+app.use(logger()) // log http requests
+app.use(cors()) // set `Access-Control-Allow-Origin` header
+
+// mount routes after all
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+export default app

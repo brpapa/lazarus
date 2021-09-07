@@ -1,0 +1,62 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier", // `eslint-plugin-prettier` pkg
+    "jest", // `eslint-plugin-jest` pkg
+    "no-loops"
+  ],
+  // the last overrides 
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier" // turns off all rules that might conflict with prettier (`eslint-config-prettier` pkg)
+  ],
+  // rules docs: https://eslint.org/docs/rules
+  // 0 = off, 1 = warning, 2 = error
+  "rules": {
+    "no-console": "off",
+    "max-len": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "no-continue": "off",
+    "no-underscore-dangle": "off",
+    "generator-star-spacing": "off",
+    "object-curly-newline": "off",
+    "import/prefer-default-export": "off",
+    "function-paren-newline": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": [
+      "error",
+      "never"
+    ],
+    "semi": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-trailing-spaces": "off",
+    "no-loops/no-loops": "error",
+    "prettier/prettier": "error",
+    "no-use-before-define": "off",
+    "lines-between-class-members": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  // pre-defined global variables
+  "env": {
+    "node": true,
+    "jest/globals": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": true,
+      "eslint-import-resolver-typescript": true
+    }
+  }
+}
