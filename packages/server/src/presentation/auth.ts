@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import UserModel from './modules/user/user-model'
+import UserModel from '../modules/user/user-model'
 import { jwtSecretKey } from '../config'
 
 export async function getUser(token?: string) {
@@ -7,12 +7,8 @@ export async function getUser(token?: string) {
 
   try {
     const decodedToken = jwt.verify(token.substring(4), jwtSecretKey)
-
     const user = await UserModel.findOne({ _id: (decodedToken as { id: string }).id })
-
-    return {
-      user,
-    }
+    return { user }
   } catch (err) {
     return { user: null }
   }

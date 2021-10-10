@@ -1,4 +1,4 @@
-import Entity from '../../lib/entity'
+import Entity from '../../shared/entity'
 
 export default class User extends Entity {
   public static collection = 'users'

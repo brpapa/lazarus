@@ -17,7 +17,7 @@ export const graphqlPort = env.GRAPHQL_PORT || 5000
 export const jwtSecretKey = env.JWT_SECRET_KEY || 'awesome_secret_key'
 
 const db: Record<NodeEnv, string> = {
-  development: env.MONGO_URL || 'mongodb://localhost/database',
-  production: env.MONGO_URL || 'mongodb://localhost/database',
+  development: env.MONGO_URL || 'mongodb://localhost:27017/database',
+  production: env.MONGO_URL || 'mongodb://localhost:27017/database',
 }
 export const databaseConfig = db[nodeEnv]

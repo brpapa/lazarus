@@ -32,6 +32,7 @@
     "generator-star-spacing": "off",
     "object-curly-newline": "off",
     "import/prefer-default-export": "off",
+    "import/no-useless-path-segments": "warn",
     "function-paren-newline": "off",
     "import/no-extraneous-dependencies": "off",
     "import/extensions": [
@@ -41,12 +42,14 @@
     "semi": "off",
     "implicit-arrow-linebreak": "off",
     "no-trailing-spaces": "off",
-    "no-loops/no-loops": "error",
+    "no-loops/no-loops": "off",
     "prettier/prettier": "error",
     "no-use-before-define": "off",
+    "no-restricted-syntax": "off",
     "lines-between-class-members": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn"
   },
   // pre-defined global variables
   "env": {

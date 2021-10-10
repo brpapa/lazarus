@@ -2,7 +2,8 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import app from './presentation/server/app'
 import { initialize } from './presentation/server'
-// import { connectDatabase } from './database'
+import { connectDatabase } from './data/connections/database'
+import logger from './shared/logger'
 
 let currentApp = app
 
@@ -14,7 +15,7 @@ if (module.hot) {
   })
 }
 
-async function bootstrap() {
+async function main() {
   // try {
   //   await connectDatabase()
   // } catch (error) {
@@ -25,7 +26,7 @@ async function bootstrap() {
   initialize()
 }
 
-bootstrap()
+main()
   .catch((e) => {
     throw e
   })

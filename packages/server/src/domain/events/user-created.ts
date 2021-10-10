@@ -1,5 +1,5 @@
 import User from 'src/domain/entities/user'
-import Event from 'src/lib/event'
+import Event from 'src/shared/event'
 
 export interface UserCreatedData {
   name: string

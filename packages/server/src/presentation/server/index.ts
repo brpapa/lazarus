@@ -2,7 +2,7 @@ import http from 'http'
 // TODO: replace by https://github.com/enisdenjo/graphql-ws
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import { execute, subscribe } from 'graphql'
-import logger from '../../lib/logger'
+import logger from '../../shared/logger'
 import { graphqlPort } from '../../config'
 import { schema } from '../schema'
 import app from './app'

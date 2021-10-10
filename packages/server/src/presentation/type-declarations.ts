@@ -1,13 +1,13 @@
 import Dataloader from 'dataloader'
-import { IUser } from './modules/user/user-model'
+import { IUser } from 'src/modules/user/user-model'
 
 type Key = string
 
-export type Dataloaders = {
+export type DataLoaders = {
   UserLoader: Dataloader<Key, IUser>
 }
 
 export type GraphQLContext = {
   user?: IUser
-  dataloaders: Dataloaders
+  loaders: DataLoaders
 }

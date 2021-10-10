@@ -34,3 +34,5 @@ coverage
 flow-coverage
 
 .reify-cache/
+
+**/mocks

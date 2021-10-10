@@ -1,5 +1,5 @@
 import Incident from 'src/domain/entities/incident'
-import Event from 'src/lib/event'
+import Event from 'src/shared/event'
 
 export interface IncidentUpdatedData {
   title?: string

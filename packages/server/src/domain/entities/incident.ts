@@ -1,4 +1,4 @@
-import Entity from 'src/lib/entity'
+import Entity from 'src/shared/entity'
 import Location from '../location'
 
 export default class Incident extends Entity {

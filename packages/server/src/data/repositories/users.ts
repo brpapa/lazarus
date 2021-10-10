@@ -1,5 +1,5 @@
 import User from '../../domain/entities/user'
-import FileRepository from '../../lib/file-repository'
+import FileRepository from '../../shared/file-repository'
 
 export default class UsersRepository extends FileRepository<User> {
   private static instance: UsersRepository | null = null

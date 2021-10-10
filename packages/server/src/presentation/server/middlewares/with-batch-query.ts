@@ -6,7 +6,7 @@ import compose from 'koa-compose'
 /**
  * High-order function that wrappers a graphql server middleware to enable batch query, that is, receive many graphql queries at one server hit.
  *
- * Heavy-inspired by: https://github.com/mattecapu/koa-graphql-batch
+ * @see Heavy-inspired by https://github.com/mattecapu/koa-graphql-batch
  */
 export default (graphqlHttpServer: Middleware, customFormatErrorFn = formatError): Middleware =>
   compose([
