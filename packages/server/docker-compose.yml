@@ -1,19 +1,31 @@
-version: '2'
+# This file defines how the docker images are used in containers
+# By default, the docker compose automatically creates a network specifically for this application stack
+
+version: "3.9"
+# define the list of containers (called as services)
 services:
-    graph-api:
-        build: .
-        depends_on:
-            - mongo
-        links:
-            - mongo
-        environment:
-            NODE_ENV: development
-            MONGO_URL: mongodb://mongo/database
-        ports:
-            - "5000:5000"
-        volumes:
-            - "./src:/app/src"
-            - "./dist:/app/dist"
-        entrypoint: "npm run watch"
-    mongo:
-        image: mongo
+  server:
+    container_name: metis-server
+    # specifies the Dockerfile to build the image from
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+        - 5000:5000
+    working_dir: /app
+    volumes:
+        # bind mount the ./src dir of the host OS into the /app dir inside container
+        - ./src:/app/src
+    depends_on:
+        - pg
+
+  pg:
+    container_name: metis-pg
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=myUser
+      - POSTGRES_PASSWORD=myPassword
+      - POSTGRES_DB=myTestDatabase

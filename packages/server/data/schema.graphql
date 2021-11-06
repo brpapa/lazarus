@@ -1,7 +1,10 @@
 """The root of all queries"""
 type Query {
+  """Health check"""
+  health: String!
+
   """
-  Based on Relay specs, this field enable clients to handling caching and data refetching of any gql type that implements the Node gql interface
+  Enable clients to handling caching and data refetching of any gql type that implements the Node gql interface, based on Relay specs
   """
   node(
     """The ID of an object"""

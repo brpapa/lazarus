@@ -43,13 +43,27 @@
     "implicit-arrow-linebreak": "off",
     "no-trailing-spaces": "off",
     "no-loops/no-loops": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "no-use-before-define": "off",
     "no-restricted-syntax": "off",
     "lines-between-class-members": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/ban-ts-comment": "warn"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "no-useless-constructor": "off",
+    "class-methods-use-this": "off",
+    "max-classes-per-file": [
+      "off"
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-shadow": "off",
+    "no-new": "off"
   },
   // pre-defined global variables
   "env": {

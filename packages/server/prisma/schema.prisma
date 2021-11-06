@@ -1,0 +1,110 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("PG_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model UserModel  {
+  id                  String          @id @default(uuid()) @db.VarChar(36)
+  name                String          @db.VarChar(32)
+  password            String          @db.VarChar(256)
+  phoneNumber         String          @unique @map("phone_number") @db.VarChar(32)
+  phoneNumberVerified Boolean         @map("phone_number_verified")
+  createdAt           DateTime        @default(now()) @map("created_at")
+  incidents           IncidentModel[]
+  comments            CommentModel[]
+  reactions           ReactionModel[]
+
+  @@map("users")
+}
+
+model IncidentModel {
+  id                  String             @id @default(uuid()) @db.VarChar(36)
+  title               String             @db.VarChar(256)
+  coordinateLat       Decimal            @map("coordinate_lat")
+  coordinateLng       Decimal            @map("coordinate_lng")
+  status              IncidentStatus
+  medias              MediaModel[]
+  comments            CommentModel[]
+  reactions           ReactionModel[]
+  activityLogs        ActivityLogModel[]
+  statsCommentsCount  Int                @map("stats_comments_count")
+  statsReactionsCount Int                @map("stats_reactions_count")
+  statsViewsCount     Int                @map("stats_views_count")
+  statsUsersNotified  Int                @map("stats_users_notified")
+  creatorUserId       String             @map("creator_user_id") @db.VarChar(36)
+  creatorUser         UserModel          @relation(fields: [creatorUserId], references: [id])
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime?          @map("updated_at")
+
+  @@map("incidents")
+}
+
+model MediaModel {
+  id         String        @id @default(uuid()) @db.VarChar(36)
+  url        String        @unique @db.VarChar(256)
+  type       MediaType
+  recordedAt DateTime
+  incidentId String        @map("incident_id") @db.VarChar(36)
+  incident   IncidentModel @relation(fields: [incidentId], references: [id])
+
+  @@map("medias")
+}
+
+model CommentModel {
+  id              String         @id @default(uuid()) @db.VarChar(36)
+  content         String         @db.Text
+  userId          String         @map("user_id") @db.VarChar(36)
+  user            UserModel      @relation(fields: [userId], references: [id])
+  incidentId      String         @map("incident_id") @db.VarChar(36)
+  incident        IncidentModel  @relation(fields: [incidentId], references: [id])
+  parentCommentId String?        @map("parent_comment_id") @db.VarChar(36)
+  parentComment   CommentModel?  @relation("replies", fields: [parentCommentId], references: [id])
+  createdAt       DateTime       @default(now()) @map("created_at")
+  replies         CommentModel[] @relation("replies")
+
+  @@map("comments")
+}
+
+model ReactionModel {
+  id         String        @id @default(uuid()) @db.VarChar(36)
+  type       ReactionType
+  userId     String        @map("user_id") @db.VarChar(36)
+  user       UserModel     @relation(fields: [userId], references: [id])
+  incidentId String        @map("incident_id") @db.VarChar(36)
+  incident   IncidentModel @relation(fields: [incidentId], references: [id])
+  createdAt  DateTime      @default(now()) @map("created_at")
+
+  @@unique([userId, incidentId])
+  @@map("reactions")
+}
+
+model ActivityLogModel {
+  id         String        @id @default(uuid()) @db.VarChar(36)
+  log        String        @db.Text
+  incidentId String        @map("incident_id") @db.VarChar(36)
+  incident   IncidentModel @relation(fields: [incidentId], references: [id])
+  createdAt  DateTime      @default(now()) @map("created_at")
+
+  @@map("activity_logs")
+}
+
+enum IncidentStatus {
+  PENDING
+  ACTIVE
+  CLOSED
+}
+
+enum ReactionType {
+  PRAY
+  ANGRY
+  UOW
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}

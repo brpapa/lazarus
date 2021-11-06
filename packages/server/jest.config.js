@@ -67,9 +67,7 @@ module.exports = {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: [
-  //   "node_modules"
-  // ],
+  moduleDirectories: ['node_modules', '.'],
 
   // An array of file extensions your modules use
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
@@ -111,7 +109,7 @@ module.exports = {
   // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
-  roots: ['<rootDir>/src'],
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
@@ -120,7 +118,9 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: [
+    '<rootDir>/tests/setup.ts'
+  ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -149,7 +149,7 @@ module.exports = {
   // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
-  testRegex: './src/.*\\.(test|spec)?\\.(js|ts)$',
+  testRegex: './(src|tests)/.*\\.(test|spec)?\\.(js|ts)$',
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
