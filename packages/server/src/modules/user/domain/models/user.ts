@@ -3,26 +3,39 @@ import { Guard } from 'src/shared/logic/guard'
 import { DomainError } from 'src/shared/logic/errors'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { UUID } from 'src/shared/domain/id'
+import { UUID } from 'src/shared/domain/models/uuid'
 import { combine } from 'src/shared/logic/result'
-import { UserCreated } from '../events/user-created'
+import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { UserRegistered } from '../events/user-registered'
 import { UserPassword } from './user-password'
 import { UserPhoneNumber } from './user-phone-number'
+import { JwtAccessToken, JwtRefreshToken } from './jwt'
+import { UserLoggedIn } from '../events/user-logged-in'
 
 interface UserProps {
-  name: string
+  username: string
   password: UserPassword
   phoneNumber: UserPhoneNumber
   isPhoneNumberVerified?: boolean
   createdAt?: Date
+  lastLogin?: Date
+  // props persistidas no redis, e nao preenchidas ao carregar um usuário do postgres
+  accessToken?: JwtAccessToken
+  refreshToken?: JwtAccessToken
+  // TODO
+  currentLocation?: Coordinate
 }
 
 export class User extends AggregateRoot<UserProps> {
-  get name() { return this.props.name } // prettier-ignore
+  get username() { return this.props.username } // prettier-ignore
   get password() { return this.props.password } // prettier-ignore
   get phoneNumber() { return this.props.phoneNumber } // prettier-ignore
-  get isPhoneNumberVerified() { assert(this.props.isPhoneNumberVerified); return this.props.phoneNumber } // prettier-ignore
+  get isPhoneNumberVerified() { assert(this.props.isPhoneNumberVerified !== undefined); return this.props.isPhoneNumberVerified } // prettier-ignore
   get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
+  get lastLogin() { return this.props.lastLogin } // prettier-ignore
+  get accessToken() { return this.props.accessToken } // prettier-ignore
+  get refreshToken() { return this.props.refreshToken } // prettier-ignore
+  get currentLocation() { return this.props.currentLocation } // prettier-ignore
 
   private constructor(props: UserProps, id?: UUID) {
     super(
@@ -35,16 +48,24 @@ export class User extends AggregateRoot<UserProps> {
     )
   }
 
-  public static create(props: UserProps, id?: UUID): Result<User, DomainError> {
-    const guarded = combine([
-      Guard.againstNullOrUndefined(props.firstName, 'firstName'),
-      Guard.againstNullOrUndefined(props.lastName, 'lastName'),
-    ])
+  static create(props: UserProps, id?: UUID): Result<User, DomainError> {
+    const guarded = combine([Guard.againstNullOrUndefined(props.username, 'name')])
     if (guarded.isErr()) return err(new DomainError(guarded.error))
 
     const user = new User(props, id)
     const isNew = !!id
-    if (isNew) user.addDomainEvent(new UserCreated(user))
+    if (isNew) user.addDomainEvent(new UserRegistered(user))
     return ok(user)
+  }
+
+  isAuthenticated() {
+    return !!this.accessToken && !!this.refreshToken
+  }
+
+  setTokens(accessToken: JwtAccessToken, refreshToken?: JwtRefreshToken): void {
+    this.addDomainEvent(new UserLoggedIn(this))
+    this.props.accessToken = accessToken
+    this.props.refreshToken = refreshToken || this.props.refreshToken
+    this.props.lastLogin = new Date()
   }
 }

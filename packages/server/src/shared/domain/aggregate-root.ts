@@ -1,4 +1,4 @@
-import { UUID } from 'src/shared/domain/id'
+import { UUID } from 'src/shared/domain/models/uuid'
 import debug from 'debug'
 import { DomainEvent } from './events/domain-event'
 import { DomainEvents } from './events/domain-events'

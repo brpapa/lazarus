@@ -1,7 +1,7 @@
-import { Coordinate } from 'src/modules/incident/domain/models/coordinate'
-import { CoordinateDTO } from '../dtos/coordinate'
+import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { CoordinateDTO } from '../../../../shared/adapter/dtos/coordinate'
 
-export class LocationMapper {
+export class CoordinateMapper {
   static fromDomainToDTO(domain: Coordinate): CoordinateDTO {
     return {
       latitude: domain.latitude,

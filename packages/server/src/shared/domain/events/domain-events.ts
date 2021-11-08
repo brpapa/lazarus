@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { UUID } from '../id'
+import { UUID } from '../models/uuid'
 import { DomainEvent } from './domain-event'
 
 const log = debug('app:domain')

@@ -1,16 +1,13 @@
-import debug from 'debug'
 import { PrismaClient } from '@prisma/client'
 import { DomainEvents } from 'src/shared/domain/events/domain-events'
-import { UUID } from 'src/shared/domain/id'
+import { UUID } from 'src/shared/domain/models/uuid'
 
-const log = debug('app:db')
-
-const prisma = new PrismaClient({
+const prismaClient = new PrismaClient({
   log: ['error', 'warn'],
 })
 
 // dispatch domain events after a save of an aggregate root entity
-prisma.$use(async (params, next) => {
+prismaClient.$use(async (params, next) => {
   const result = await next(params)
 
   if (mutationActions.includes(params.action) && typeof result?.id === 'string') {
@@ -36,4 +33,4 @@ const mutationActions = [
   'executeRaw',
 ]
 
-export { prisma }
+export { prismaClient, PrismaClient }

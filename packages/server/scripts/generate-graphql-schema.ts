@@ -4,7 +4,7 @@ import { graphql } from 'graphql'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { introspectionQuery, printSchema } from 'graphql/utilities'
-import { schema } from '../src/shared/infra/http/graphql/schema'
+import { schema } from 'src/infra/http/graphql/schema'
 
 // Save JSON of full schema introspection for Babel Relay Plugin to use
 async function saveFullSchema() {

@@ -4,8 +4,8 @@ import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
 import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
 import { GraphQLCustomTypes } from 'src/infra/http/graphql/node'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'
-import { DateType } from 'src/shared/infra/graphql/date-type'
-import { CoordinateType } from './coordinate'
+import { DateType } from 'src/shared/infra/graphql/types/date'
+import { CoordinateType } from '../../../../../../shared/infra/graphql/types/coordinate'
 
 export const IncidentType = GraphQLCustomTypes.register(
   new GraphQLObjectType<IncidentDTO, GraphQLContext>({

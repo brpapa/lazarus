@@ -1,5 +1,5 @@
 import { MediaModel } from '@prisma/client'
-import { UUID } from 'src/shared/domain/id'
+import { UUID } from 'src/shared/domain/models/uuid'
 import { Media } from '../../domain/models/media'
 import { MediaType } from '../../domain/models/media-type'
 

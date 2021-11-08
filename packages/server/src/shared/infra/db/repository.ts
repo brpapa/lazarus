@@ -7,5 +7,5 @@ export interface IRepository<T extends Entity<any>> {
     
     in case of an update, save non-aggregate tables before saving the aggregate so that any domain events on the aggregate get dispatched after this related-entity updates
   */
-  commit(e: T): Promise<void>
+  commit(e: T): void | Promise<void>
 }

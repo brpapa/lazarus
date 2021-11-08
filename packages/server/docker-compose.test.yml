@@ -15,8 +15,8 @@ services:
       - POSTGRES_PASSWORD=myPassword
       - POSTGRES_DB=myTestDatabase
 
-  # redis:
-  #   container_name: metis-redis-test
-  #   image: redis:latest
-  #   ports:
-  #     - 6379:6379
+  redis:
+    container_name: metis-redis-test
+    image: redis:latest
+    ports:
+      - 6379:6379

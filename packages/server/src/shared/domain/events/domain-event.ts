@@ -1,4 +1,4 @@
-import { UUID } from 'src/shared/domain/id'
+import { UUID } from 'src/shared/domain/models/uuid'
 
 export abstract class DomainEvent {
   public readonly id: UUID

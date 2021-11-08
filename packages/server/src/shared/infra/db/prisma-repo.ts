@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { prisma } from 'src/infra/db/prisma/client'
+import { prismaClient } from 'src/infra/db/prisma/client'
 import { Entity } from 'src/shared/domain/entity'
 
 export abstract class PrismaRepo<T extends Entity<any>> {
@@ -7,7 +7,7 @@ export abstract class PrismaRepo<T extends Entity<any>> {
 
   async exists(entity: T): Promise<boolean> {
     // @ts-ignore
-    const model = await prisma[this.modelName].findFirst({
+    const model = await prismaClient[this.modelName].findFirst({
       where: { id: entity.id.toString() },
     })
     return !!model
@@ -15,7 +15,7 @@ export abstract class PrismaRepo<T extends Entity<any>> {
 
   async delete(entity: T): Promise<void> {
     // @ts-ignore
-    await prisma[this.modelName].delete({
+    await prismaClient[this.modelName].delete({
       where: { id: entity.id.toString() },
     })
   }

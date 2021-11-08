@@ -1,26 +1,27 @@
 # This file defines how the docker images are used in containers
 # By default, the docker compose automatically creates a network specifically for this application stack
 
-version: "3.9"
+version: '3.9'
 # define the list of containers (called as services)
 services:
   server:
     container_name: metis-server
     # specifies the Dockerfile to build the image from
     build:
-        context: .
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     ports:
-        - 5000:5000
+      - 5000:5000
     working_dir: /app
     volumes:
-        # bind mount the ./src dir of the host OS into the /app dir inside container
-        - ./src:/app/src
+      # bind mount the ./src dir of the host OS into the /app dir inside container
+      - ./src:/app/src
     depends_on:
-        - pg
+      - pg
+      - redis
 
   pg:
-    container_name: metis-pg
+    container_name: metis-pg-dev
     image: postgres:latest
     restart: always
     ports:
@@ -28,4 +29,10 @@ services:
     environment:
       - POSTGRES_USER=myUser
       - POSTGRES_PASSWORD=myPassword
-      - POSTGRES_DB=myTestDatabase
+      - POSTGRES_DB=myDatabase
+
+  redis:
+    container_name: metis-redis-dev
+    image: redis:latest
+    ports:
+      - 6379:6379

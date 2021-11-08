@@ -3,7 +3,7 @@ import http from 'http'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { execute, subscribe } from 'graphql'
-import { httpPort, graphqlSubscriptionsPath } from 'src/shared/config'
+import { HTTP_PORT, GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/shared/config'
 import { schema } from 'src/infra/http/graphql/schema'
 import { app } from './app'
 
@@ -12,13 +12,13 @@ const log = debug('app:http')
 export function initialize() {
   const httpServer = http.createServer(app.callback())
 
-  httpServer.listen(httpPort, () => {
+  httpServer.listen(HTTP_PORT, () => {
     const httpAddress = httpServer.address() as unknown as Address
     log(`HTTP server started at http://${httpAddress.address}:${httpAddress.port}`)
 
     const wsServer = new WebSocketServer({
       server: httpServer,
-      path: graphqlSubscriptionsPath,
+      path: GRAPHQL_SUBSCRIPTIONS_PATH,
     })
     useServer(
       {

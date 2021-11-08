@@ -1,4 +1,4 @@
-import { CoordinateDTO } from './coordinate'
+import { CoordinateDTO } from '../../../../shared/adapter/dtos/coordinate'
 
 export interface IncidentDTO {
   id: string

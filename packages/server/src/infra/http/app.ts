@@ -2,15 +2,15 @@ import 'isomorphic-fetch'
 import Koa from 'koa'
 import cors from 'kcors'
 import logger from 'koa-logger'
-import { jwtSecretKey, nodeEnv } from 'src/shared/config'
+import { JWT_SECRET_KEY, NODE_ENV } from 'src/shared/config'
 import responseTime from './middlewares/response-time'
 import router from './router'
 
 // learn more about KOA with examples: https://github.com/koajs/examples
 const app = new Koa()
 
-app.env = nodeEnv
-app.keys = [jwtSecretKey] // set sessions keys
+app.env = NODE_ENV
+app.keys = [JWT_SECRET_KEY] // set sessions keys
 
 app.use(responseTime())
 app.use(logger()) // log http requests

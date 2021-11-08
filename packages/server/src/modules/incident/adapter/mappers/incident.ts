@@ -2,10 +2,10 @@ import { CommentModel, IncidentModel, MediaModel, Prisma } from '@prisma/client'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { Comment } from 'src/modules/incident/domain/models/comment'
 import { WatchedList } from 'src/shared/domain/watched-list'
-import { Coordinate } from 'src/modules/incident/domain/models/coordinate'
-import { UUID } from 'src/shared/domain/id'
+import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { UUID } from 'src/shared/domain/models/uuid'
 import { IncidentDTO } from '../dtos/incident'
-import { LocationMapper } from './coordinate'
+import { CoordinateMapper } from './coordinate'
 import { IncidentStatus } from '../../domain/models/incident-status'
 import { MediaMapper } from './media'
 import { CommentMapper } from './comment'
@@ -44,7 +44,7 @@ export class IncidentMapper {
     return {
       id: domain.id.toString(),
       title: domain.title,
-      coordinate: LocationMapper.fromDomainToDTO(domain.coordinate),
+      coordinate: CoordinateMapper.fromDomainToDTO(domain.coordinate),
       createdAt: domain.createdAt,
     }
   }

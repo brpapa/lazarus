@@ -1,9 +1,10 @@
-import { cleanUpDatabase } from '../tests/utils'
+import { cleanUpDatasources } from 'tests/helpers'
 import { IncidentStatus } from '.prisma/client'
-import { prisma } from '../src/infra/db/prisma/client'
+import { prismaClient } from '../src/infra/db/prisma/client'
+import { connectPrisma, disconnectPrisma } from '../src/infra/db/prisma/connection'
 
 const populate = async () => {
-  const alice = await prisma.userModel.create({
+  const alice = await prismaClient.userModel.create({
     data: {
       id: 'alice-01',
       name: 'Alice',
@@ -30,7 +31,8 @@ const populate = async () => {
 }
 
 async function main() {
-  await cleanUpDatabase()
+  await connectPrisma()
+  await cleanUpDatasources()
   await populate()
 }
 
@@ -39,4 +41,6 @@ main()
     console.error(e)
     process.exit(1)
   })
-  .finally(() => prisma.$disconnect)
+  .finally(async () => {
+    await disconnectPrisma()
+  })

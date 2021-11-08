@@ -55,13 +55,7 @@
     "max-classes-per-file": [
       "off"
     ],
-    "no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ],
+    "no-unused-vars": "off",
     "no-shadow": "off",
     "no-new": "off"
   },

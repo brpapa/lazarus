@@ -1,4 +1,4 @@
-import { UUID } from './id'
+import { UUID } from './models/uuid'
 
 interface EntityProps {
   [prop: string]: any

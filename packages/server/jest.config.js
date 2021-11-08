@@ -7,7 +7,7 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 0,
+  bail: 1,
 
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "/private/var/folders/91/c3lww9495mz08hld0fdvm3m80000gn/T/jest_dx",
@@ -118,9 +118,7 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    '<rootDir>/tests/setup.ts'
-  ],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -172,7 +170,7 @@ module.exports = {
   transformIgnorePatterns: ['node_modules'],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
-  // unmockedModulePathPatterns: undefined,
+  unmockedModulePathPatterns: ['node_modules'],
 
   // Indicates whether each individual test should be reported during the run
   // verbose: undefined,

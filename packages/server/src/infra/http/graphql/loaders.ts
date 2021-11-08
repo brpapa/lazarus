@@ -1,5 +1,5 @@
 import { IncidentLoader } from 'src/modules/incident/loaders/incident'
-import { incidentRepo } from 'src/modules/incident/infra/db/incident-repo'
+import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 
 /**
  * DataLoader is a pattern to optimize graphql requests, like these that contains a circular reference and require the same data multiple times, for example (user -> article -> comments -> writtenByUser (can be the same that wrote the article)). The idea is that resolver calls are batched and thus the data source (database or external APIs) only has to be hit once, avoiding round-trips.

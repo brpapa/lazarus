@@ -1,11 +1,13 @@
-import { prisma } from './infra/db/prisma/client'
+import { prismaClient } from './infra/db/prisma/client'
 import { initialize } from './infra/http/index'
-import { connectDatabase } from './infra/db/index'
+import { connectPrisma } from './infra/db/prisma/connection'
+import { connectRedis } from './infra/db/redis/connection'
 
 import './modules/incident/event-handlers'
 
 async function main() {
-  connectDatabase()
+  await connectPrisma()
+  await connectRedis()
   initialize()
 }
 
@@ -14,5 +16,5 @@ main()
     throw e
   })
   .finally(async () => {
-    await prisma.$disconnect()
+    await prismaClient.$disconnect()
   })
