@@ -14,7 +14,7 @@ export type Response = Result<OkResponse, ErrResponse>
 export class RefreshAccessToken implements Command<Request, Response> {
   constructor(private userRepo: IUserRepo, private authService: IAuthService) {}
 
-  async execute(req: Request): Promise<Response> {
+  async exec(req: Request): Promise<Response> {
     try {
       const username = await this.authService.getUserNameFromRefreshToken(req.refreshToken)
       if (!username) return err(new UseCaseError('Refresh token expired'))

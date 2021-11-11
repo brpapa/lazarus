@@ -24,8 +24,6 @@ model UserModel {
 model IncidentModel {
   id                  String             @id @default(uuid()) @db.VarChar(36)
   title               String             @db.VarChar(256)
-  coordinateLat       Decimal            @map("coordinate_lat")
-  coordinateLng       Decimal            @map("coordinate_lng")
   status              IncidentStatus
   medias              MediaModel[]
   comments            CommentModel[]

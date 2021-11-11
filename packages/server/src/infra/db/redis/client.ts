@@ -6,6 +6,7 @@ import { REDIS_CONN_STRING } from 'src/shared/config'
  * https://redis.io/topics/data-types-intro
  */
 const redisClient = redis.createClient({ url: REDIS_CONN_STRING })
+
 type RedisClient = typeof redisClient
 
 export { redisClient }

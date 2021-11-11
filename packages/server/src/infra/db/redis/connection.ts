@@ -6,6 +6,7 @@ const log = debug('app:db:redis')
 export const connectRedis = async () => {
   try {
     await redisClient.connect()
+    // await redisClient.scriptLoad('geo.lua')
     log('database connection has been stablished successfully')
   } catch (error) {
     log('unable to connect to the database', { error })

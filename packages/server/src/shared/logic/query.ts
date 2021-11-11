@@ -1,5 +1,5 @@
 import { Result } from './result'
 
-export interface Command<Req, Res extends Result<void | any, any>> {
+export interface Query<Req, Res extends Result<any, any>> {
   exec(req: Req): Res | Promise<Res>
 }

@@ -36,7 +36,7 @@ export class DomainEvents {
   private static dispatchEvent(event: DomainEvent) {
     const eventName = event.constructor.name
     const handlers = DomainEvents.eventHandlers.get(eventName) || []
-    log(`dispatching ${eventName} event for ${handlers.length} handlers`)
+    log(`${eventName} event dispatched to ${handlers.length} subscribed handlers`)
     handlers?.forEach((handler) => handler(event))
   }
 

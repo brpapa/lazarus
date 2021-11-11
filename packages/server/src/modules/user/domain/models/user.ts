@@ -19,11 +19,11 @@ interface UserProps {
   isPhoneNumberVerified?: boolean
   createdAt?: Date
   lastLogin?: Date
-  // props persistidas no redis, e nao preenchidas ao carregar um usuário do postgres
+  // TODO: props persistida no redis, e preenchida pelo repo ao carregar um usuario existente
+  currentLocation?: Coordinate
+  // props persistidas no redis, mas repo nao as preenche ao carregar um usuario existente
   accessToken?: JwtAccessToken
   refreshToken?: JwtAccessToken
-  // TODO
-  currentLocation?: Coordinate
 }
 
 export class User extends AggregateRoot<UserProps> {

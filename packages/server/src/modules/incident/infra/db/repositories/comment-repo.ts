@@ -14,7 +14,7 @@ export class CommentRepo extends PrismaRepo<Comment> implements ICommentRepo {
     throw new Error('Method not implemented.')
   }
 
-  async commit(comment: Comment): Promise<void> {
+  async commit(comment: Comment): Promise<Comment> {
     const commentModel = CommentMapper.fromDomainToPersistence(comment)
 
     await this.prismaClient.commentModel.upsert({
@@ -22,6 +22,8 @@ export class CommentRepo extends PrismaRepo<Comment> implements ICommentRepo {
       create: commentModel,
       update: commentModel,
     })
+
+    return comment
   }
 
   async commitMany(comments: WatchedList<Comment>): Promise<void> {

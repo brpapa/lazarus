@@ -5,6 +5,7 @@ import { User } from 'src/modules/user/domain/models/user'
 import { PrismaRepo } from 'src/shared/infra/db/prisma-repo'
 import { IUserRepo } from '../../../adapter/repositories/user'
 
+// TODO: gravar no redis a location do usuario, e retornar nos gets
 export class UserRepo extends PrismaRepo<User> implements IUserRepo {
   constructor(private prismaClient: PrismaClient, private redisClient: RedisClient) {
     super('userModel')
@@ -24,7 +25,19 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     throw new Error('Method not implemented.')
   }
 
-  async commit(e: User): Promise<void> {
-    throw new Error('Method not implemented.')
+  async commit(user: User): Promise<User> {
+    const userModel = await UserMapper.fromDomainToPersistence(user)
+
+    const isNew = !(await this.exists(user))
+    if (isNew) {
+      await this.prismaClient.userModel.create({ data: userModel })
+    } else {
+      await this.prismaClient.incidentModel.update({
+        where: { id: user.id.toString() },
+        data: userModel,
+      })
+    }
+
+    return user
   }
 }

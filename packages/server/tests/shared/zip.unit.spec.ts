@@ -1,5 +1,5 @@
 import { expect, describe, it } from '@jest/globals'
-import zip from '../../src/shared/logic/helpers/zip'
+import { zip } from '../../src/shared/logic/helpers/zip'
 
 describe('Helpers', () => {
   it('zip', () => {

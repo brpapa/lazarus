@@ -5,6 +5,7 @@ import { ok, Result } from 'src/shared/logic/result'
 import { DomainError } from 'src/shared/logic/errors'
 import { WatchedList } from 'src/shared/domain/watched-list'
 import { CommentPostedOnIncident } from 'src/modules/incident/domain/events/comment-posted-on-incident'
+import { Range } from 'src/shared/logic/guard'
 import { IncidentStatus } from './incident-status'
 import { Coordinate } from '../../../../shared/domain/models/coordinate'
 import { IncidentCreated } from '../events/incident-created'
@@ -24,12 +25,13 @@ interface IncidentProps {
   reactions?: WatchedList<Reaction>
   activityLogs?: ActivityLog[]
   statistics?: IncidentStatistics
+  relevance?: number // TODO: importante, para que no mapa só mostre os mais relevantes no caso de ter muitos
   createdAt?: Date
   lastUpdateAt?: Date
 }
 
 export class Incident extends AggregateRoot<IncidentProps> {
-  public static ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT: [min: number, max: number] = [1, 5]
+  public static ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT: Range = [1, 10]
 
   public get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
   public get title() { return this.props.title } // prettier-ignore

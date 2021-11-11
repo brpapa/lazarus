@@ -137,6 +137,7 @@ export class Err<T, E> implements IResult<T, E> {
     return v
   }
   asOk(): T {
-    throw new Error('Assertion error, this result it is ok')
+    console.error(this.error)
+    throw new Error(`Assertion error, this result it is an error`)
   }
 }

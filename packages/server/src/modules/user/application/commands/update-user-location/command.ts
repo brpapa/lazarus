@@ -15,7 +15,7 @@ export type Response = Result<OkResponse, ErrResponse>
 export class UpdateUserLocation implements Command<Request, Response> {
   constructor(private userRepo: IUserRepo) {}
 
-  async execute(req: Request): Promise<Response> {
+  async exec(req: Request): Promise<Response> {
     try {
       return okVoid()
     } catch (e) {

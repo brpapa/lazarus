@@ -23,6 +23,7 @@ export abstract class FileRepository<T extends Entity<any>> implements IReposito
   commit(e: T) {
     this.state.set(e.id.toString(), e)
     this.persistState()
+    return e
   }
   delete(e: T) {
     this.state.delete(e.id.toString())

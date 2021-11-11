@@ -4,13 +4,7 @@ import { prismaClient } from 'src/infra/db/prisma/client'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { UUID } from 'src/shared/domain/models/uuid'
-import {
-  cleanUpDatasources,
-  connectDataSources,
-  createIncident,
-  createUser,
-  disconnectDatasources,
-} from 'tests/helpers'
+import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 import { Coordinate } from 'src/shared/domain/models/coordinate'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
@@ -28,7 +22,7 @@ describe('repository: incident', () => {
       const incident = Incident.create({
         ownerUserId: new UUID('my-user-id'),
         title: 'title',
-        coordinate: Coordinate.create({ latitude: 123, longitude: 456 }).asOk(),
+        coordinate: Coordinate.create({ latitude: -20, longitude: 40 }).asOk(),
         status: IncidentStatus.ACTIVE,
       }).asOk()
 
@@ -131,6 +125,33 @@ describe('repository: incident', () => {
     })
     test.todo('it should remove comment of an existing incident')
   })
-
-  test.todo('it should load an existing incident')
 })
+
+const createUser = async (userId: string) => {
+  await prismaClient.userModel.create({
+    data: {
+      id: userId,
+      username: 'my awesome name',
+      password: 'my awesome password',
+      phoneNumber: '14 9999999',
+      phoneNumberVerified: true,
+    },
+  })
+}
+
+const createIncident = async (incidentId: string, userId: string) => {
+  await prismaClient.incidentModel.create({
+    data: {
+      id: incidentId,
+      title: 'my title',
+      status: IncidentStatus.ACTIVE,
+      statsCommentsCount: 0,
+      statsReactionsCount: 0,
+      statsViewsCount: 0,
+      statsUsersNotified: 0,
+      creatorUserId: userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  })
+}

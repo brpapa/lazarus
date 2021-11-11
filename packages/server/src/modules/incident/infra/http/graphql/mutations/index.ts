@@ -4,7 +4,7 @@ import { IncidentType } from '../types/incident'
 
 export const incidentMutationFields: Record<string, GraphQLFieldConfig<any, GraphQLContext>> = {
   CreateIncident: {
-    type: IncidentType,
-    resolve: (_, args, ctx) => {},
+    type: IncidentType, // if needed: CreateIncidentPayload
+    // resolve: (_, args, ctx) => {},
   },
 }

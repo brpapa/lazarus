@@ -66,15 +66,12 @@ Dispatch the following domain events
     - notificar usuarios que ouvem locais das proximidades
     - notificar usuarios que estao nas proximidades
     - atualizar o mapa em tempo real de todos os usuarios logados no app, mas que estao nas proximidades
-    - abrir chat para o incidente
 
 - `incident:closed`
 
 - `incident:timelineUpdated`
 
 - `incident:newReaction`
-
-- `incident:chat:newMessage`
 
 ## `notifications`
 

@@ -18,7 +18,7 @@ const UserAddedPayloadType = new GraphQLObjectType({
 
 const userAddedSubscription = {
   type: UserAddedPayloadType,
-  subscribe: () => pubSub.asyncIterator(events.USER.ADDED),
+  subscribe: () => pubSub.asyncIterator(events.USER.REGISTERED),
 }
 
 export default userAddedSubscription

@@ -8,7 +8,7 @@ export interface IAuthService {
   decodeJwt(token: JwtAccessToken): Promise<JwtClaims | null>
   genRefreshToken(): JwtRefreshToken
   getActiveTokens(username: string): Promise<string[]>
-  /** persist accessToken and refreshToken of user, upserting */
+  /** persist accessToken and refreshToken of user, if refresh token already exists, overwrites the related accesToken */
   commitAuthenticatedUser(user: User): Promise<void>
   /** clear all sessions of user, deleting */
   unauthenticateUser(username: string): Promise<void>

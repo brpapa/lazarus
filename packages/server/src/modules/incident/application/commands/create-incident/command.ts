@@ -32,10 +32,11 @@ export type Response = Result<OkResponse, ErrResponse>
 export class CreateIncidentCommand implements Command<Request, Response> {
   constructor(private incidentRepo: IIncidentRepo) {}
 
-  async execute(req: Request): Promise<Response> {
+  async exec(req: Request): Promise<Response> {
     try {
       const incidentOrErr = Coordinate.create(req.coordinate)
         .andThen<Incident, DomainError>((coordinate) => {
+          // DOING: validar se usuario existe, criar uma entitidade herdada Citizen?
           return Incident.create({
             ownerUserId: new UUID(req.userId),
             title: req.title,

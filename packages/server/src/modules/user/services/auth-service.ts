@@ -11,6 +11,15 @@ import { JwtAccessToken, JwtClaims, JwtRefreshToken } from 'src/modules/user/dom
 import { User } from 'src/modules/user/domain/models/user'
 import { RedisClient } from 'src/infra/db/redis/client'
 
+interface RedisKeyParams {
+  username: string
+  refreshToken: string
+}
+
+// each data entry in redis represents a session of an user
+// key: sessions/username={USERNAME}&refreshToken={REFRESH_TOKEN}
+// value: {ACCESS_TOKEN}
+
 /** persists jwt tokens to redis if is signed, and determine their validity */
 export class AuthService implements IAuthService {
   private REDIS_KEY_PREFFIX = 'sessions/'
@@ -68,11 +77,6 @@ export class AuthService implements IAuthService {
     return this.unhashKey(key).username
   }
 
-  // each data entry in redis represents a session of an user
-  // key: sessions/username={USERNAME}&refreshToken={REFRESH_TOKEN}
-  // value: {ACCESS_TOKEN}
-  // TODO: tornar reusavel todos os metodos privados, recebendo o type KeyParams como parametro
-
   // keys match pattern: https://redis.io/commands/keys
   private genKeyPattern(keyParamsOpt: Partial<RedisKeyParams>) {
     const queryString = new URLSearchParams({
@@ -104,9 +108,4 @@ export class AuthService implements IAuthService {
     assert(refreshToken !== null)
     return { username, refreshToken }
   }
-}
-
-type RedisKeyParams = {
-  username: string
-  refreshToken: string
 }

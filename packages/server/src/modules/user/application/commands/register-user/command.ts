@@ -18,7 +18,7 @@ export type Response = Result<void, ErrResponse>
 export class RegisterUserCommand implements Command<Request, Response> {
   constructor(private userRepo: IUserRepo) {}
 
-  async execute(req: Request): Promise<Response> {
+  async exec(req: Request): Promise<Response> {
     try {
       // todo: validar unicidade do username e do phoeNumber
       // new UseCaseError(`The phone number ${phoneNumber} is already associated to another account`)

@@ -1,4 +1,4 @@
-import { CommentModel, IncidentModel, MediaModel, Prisma } from '@prisma/client'
+import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { Comment } from 'src/modules/incident/domain/models/comment'
 import { WatchedList } from 'src/shared/domain/watched-list'
@@ -12,29 +12,30 @@ import { CommentMapper } from './comment'
 
 export class IncidentMapper {
   static fromPersistenceToDomain(
-    model: IncidentModel & {
+    incidentModel: IncidentModel & {
       medias: MediaModel[]
       comments: CommentModel[]
     },
+    incidentCoordModel: { latitude: string; longitude: string },
   ): Incident {
     const incident = Incident.create(
       {
-        ownerUserId: new UUID(model.creatorUserId),
-        title: model.title,
+        ownerUserId: new UUID(incidentModel.creatorUserId),
+        title: incidentModel.title,
         coordinate: Coordinate.create({
-          latitude: model.coordinateLat.toNumber(),
-          longitude: model.coordinateLng.toNumber(),
+          latitude: Number(incidentCoordModel.latitude),
+          longitude: Number(incidentCoordModel.longitude),
         }).asOk(),
-        status: IncidentStatus[model.status],
-        createdAt: model.createdAt,
+        status: IncidentStatus[incidentModel.status],
+        createdAt: incidentModel.createdAt,
         comments: WatchedList.create<Comment>(
-          model.comments.map(CommentMapper.fromPersistenceToDomain),
+          incidentModel.comments.map(CommentMapper.fromPersistenceToDomain),
         ),
       },
-      new UUID(model.id),
+      new UUID(incidentModel.id),
     ).asOk()
 
-    const medias = model.medias.map((m) => MediaMapper.fromPersistenceToDomain(m))
+    const medias = incidentModel.medias.map((m) => MediaMapper.fromPersistenceToDomain(m))
     incident.addMedias(medias)
 
     return incident
@@ -49,12 +50,11 @@ export class IncidentMapper {
     }
   }
 
+  /** to postgress persistence model only */
   static fromDomainToPersistence(domain: Incident): IncidentModel {
     return {
       id: domain.id.toString(),
       title: domain.title,
-      coordinateLat: new Prisma.Decimal(domain.coordinate.latitude),
-      coordinateLng: new Prisma.Decimal(domain.coordinate.longitude),
       status: domain.status,
       statsCommentsCount: domain.statistics.commentsCount,
       statsReactionsCount: domain.statistics.reactionsCount,

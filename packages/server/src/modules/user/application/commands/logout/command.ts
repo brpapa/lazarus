@@ -14,7 +14,7 @@ export type Response = Result<OkResponse, ErrResponse>
 export class LogoutCommand implements Command<Request, Response> {
   constructor(private userRepo: IUserRepo, private authService: IAuthService) {}
 
-  async execute(req: Request): Promise<Response> {
+  async exec(req: Request): Promise<Response> {
     try {
       const user = await this.userRepo.findById(req.userId)
       if (!user) return err(new UseCaseError('User not found'))

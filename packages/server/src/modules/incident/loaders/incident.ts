@@ -18,7 +18,7 @@ export class IncidentLoader {
   // create a batch loading function (load many users at once)
   private static batchGetIncidents(repo: IIncidentRepo): BatchLoadFn<string, Incident> {
     return async (ids) => {
-      const incidents = await repo.findManyByIds(ids)
+      const incidents = await repo.findManyByIds(ids.map((id) => id))
 
       // console.log(incidents)
       // TODO

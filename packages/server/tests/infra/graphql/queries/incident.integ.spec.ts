@@ -1,22 +1,15 @@
 import request from 'supertest'
 import { app } from 'src/infra/http/app'
-import {
-  cleanUpDatasources,
-  connectDataSources,
-  disconnectDatasources,
-  createIncident,
-  createUser,
-} from 'tests/helpers'
+import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
-// DOING
 describe('graphql queries: incident', () => {
   beforeAll(connectDataSources)
   beforeEach(cleanUpDatasources)
   afterAll(disconnectDatasources)
 
   test('it should get a incident', async () => {
-    await createUser('user-id')
-    await createIncident('my-existing-incident-id', 'user-id')
+    // await createUser('user-id')
+    // await createIncident('my-existing-incident-id', 'user-id')
 
     const response = await request(app.callback())
       .post('/graphql')

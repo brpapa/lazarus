@@ -8,9 +8,10 @@ import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
  */
 
 // GraphQL resolvers runs async (concurrently) and are atomic (each one is unawareness from other, don't know about the query as a whole)
+
 // the load function of a DataLoader instance:
 // imediatally add the key to an eventual batch later and so returns a promise (result data async)
-// is a memoized function (in -memory only), that is, after the load is called given a key,the result is cached to avoid redundant loads on later
+// is a memoized function (in -memory only), that is, after the load is called given a key, the result is cached to avoid redundant loads on later
 
 // to enable per-request caching/batching, a new instance of each DataLoader class should be created for each request
 
