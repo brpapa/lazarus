@@ -1,0 +1,114 @@
+"""The query root type"""
+type Query {
+  """Health check"""
+  health: String!
+
+  """
+  Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface
+  """
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  incident(
+    """The incident id"""
+    id: String!
+  ): Incident
+
+  """Search for all incidents localizated within the given box boundary"""
+  incidentsWithinBoundary(input: IncidentsWithinBoundaryInput!): [Incident]!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Incident implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The incident id"""
+  incidentId: String!
+  title: String!
+  coordinate: Coordinate!
+  createdAt: Date!
+}
+
+type Coordinate {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""Date type"""
+scalar Date
+
+input IncidentsWithinBoundaryInput {
+  boundary: BoundaryInput!
+  first: Int
+}
+
+"""The corner coordinates visible in map view"""
+input BoundaryInput {
+  northEast: CoordinateInput!
+  southWest: CoordinateInput!
+}
+
+input CoordinateInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""The mutation root type"""
+type Mutation {
+  createIncident(input: CreateIncidentInput!): CreateIncidentPayload
+}
+
+type CreateIncidentPayload {
+  incident: Incident
+  clientMutationId: String
+}
+
+input CreateIncidentInput {
+  userId: String!
+  title: String!
+  coordinate: CoordinateInput!
+  medias: [MediaInput]!
+  clientMutationId: String
+}
+
+input MediaInput {
+  url: String!
+}
+
+"""The subscription root type"""
+type Subscription {
+  userAdded: UserAddedOutput
+
+  """Triggered whenever a new incident is created"""
+  incidentCreated: Incident!
+}
+
+type UserAddedOutput {
+  userEdge: UserEdge
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The user id"""
+  userId: String
+  name: String
+  email: String
+}

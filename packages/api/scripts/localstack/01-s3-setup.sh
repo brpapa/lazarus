@@ -1,0 +1,1 @@
+awslocal s3api create-bucket --bucket metis-media-static-content
