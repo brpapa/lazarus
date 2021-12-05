@@ -1,0 +1,56 @@
+{
+  "name": "metis",
+  "entryPoint": "./index.js",
+  "expo": {
+    "name": "metis",
+    "slug": "metis",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.metis.app",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBaMynGjdodGZmYdySnyH1jB7hX5weFESU"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Please, enable location tracking when in usage for a better experience",
+        "NSCameraUsageDescription": "Please, enable access to camera before to report incidents",
+        "NSMicrophoneUsageDescription": "Please, enable access to microphone before to report incidents"
+      }
+    },
+    "android": {
+      "package": "com.metis.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "CAMERA",
+        "RECORD_AUDIO"
+      ]
+    },
+    "extra": {
+      "flipperHacker": "React Native packager is running"
+    },
+    "jsEngine": "hermes"
+  }
+}
