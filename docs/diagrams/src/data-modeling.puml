@@ -1,4 +1,4 @@
-' todo: professor reclamou que parece um diagrama de classes, mudar!
+' todo: professor reclamou que parece um diagrama de classes!
 @startuml my-erd-diagram
 
 hide circle
@@ -98,8 +98,8 @@ entity incident_comment {
 ' no registro, se a e b sao amigos, armazenar duplicado (linha a,b; linha b,a;) pra que só precise que uma coluna seja indice
 entity user_friendship {
   --
-  * user_id_1 : <<FK>> <<index>>
-  * user_id_2 : <<FK>>
+  * follower_user_id_1 : <<FK>> <<index>>
+  * followee_user_id_2 : <<FK>>
   + creation_timestamp
 }
 
