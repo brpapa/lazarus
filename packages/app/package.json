@@ -16,7 +16,7 @@
     "expo:eject": "expo eject",
     "run:android": "npm run relay && react-native run-android",
     "run:ios": "npm run relay && react-native run-ios",
-    "relay": "npx relay-compiler --src ./src --schema ../server/graphql/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
+    "relay": "npx relay-compiler --src ./src --schema ../api/graphql/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
     "relay:watch": "npm run relay -- --watch",
     "relay:clear": "find . -name '__generated__' -d -exec rm -rf '{}' +",
     "relay:flush": "npm run relay:clear && npm run relay"
@@ -25,7 +25,7 @@
     "expo:start": "starts a expo development server in your lan network",
     "expo:run:*": "build and run expo go in simulator, using expo-dev-client",
     "run:*": "build and run in simulator natively",
-    "relay": "considering the current graphql schema in server, generate new compiled artifacts inside a __generated__ folder"
+    "relay": "considering the current graphql schema in api, generate new compiled artifacts inside a __generated__ folder"
   },
   "engines": {
     "node": "16"

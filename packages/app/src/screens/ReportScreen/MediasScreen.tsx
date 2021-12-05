@@ -48,7 +48,7 @@ export default function MediasScreen() {
   const [title, setTitle] = useState('')
 
   const [commit, isInFlight] = useMutation(graphql`
-    mutation MediasMutation($input: CreateIncidentInput!) {
+    mutation MediasScreenMutation($input: CreateIncidentInput!) {
       createIncident(input: $input) {
         clientMutationId
         incident {
