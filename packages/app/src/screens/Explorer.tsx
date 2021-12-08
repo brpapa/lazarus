@@ -1,15 +1,14 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import Box from '~/components/atomics/Box'
 import MapView from '~/containers/MapView'
 import IncidentPreview from '~/containers/IncidentPreview'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
 import { useQueryLoader } from 'react-relay'
 import type { IncidentPreviewQuery } from '~/__generated__/IncidentPreviewQuery.graphql'
 import incidentPreviewQuery from '~/__generated__/IncidentPreviewQuery.graphql'
-import { Text } from '~/components/atomics'
 import { useRecoilState } from 'recoil'
 import { selectedIncidentIdInMap } from '~/data/recoil'
 import Loading from '~/components/Loading'
+import { XStack } from '~/components/atomics'
 
 export default function ExplorerScreen() {
   // const homeNavigation = useNavigation<BottomTabNavigationProp<HomeBottomTabParams, 'Explorer'>>()
@@ -26,9 +25,9 @@ export default function ExplorerScreen() {
   }, [loadQuery, selectedIncidentId])
 
   return (
-    <Box flex={1} bg="background" width={SCREEN_WIDTH} height={SCREEN_HEIGHT}>
+    <XStack flex={1} bg="$bg" width={SCREEN_WIDTH} height={SCREEN_HEIGHT}>
       <MapView />
-      <Box position="absolute" bottom={0} width={'100%'}>
+      <XStack position="absolute" bottom={0} width={'100%'}>
         {someIncidentIsSelected && preloadedQueryRef ? (
           <Suspense fallback={<Loading />}>
             <IncidentPreview
@@ -38,10 +37,10 @@ export default function ExplorerScreen() {
             />
           </Suspense>
         ) : (
-          <Box />
+          <XStack />
           // <NearbyHighlights />
         )}
-      </Box>
-    </Box>
+      </XStack>
+    </XStack>
   )
 }

@@ -1,11 +1,10 @@
 import React from 'react'
 
-import Box from '~/components/atomics/Box'
-import Text from '~/components/atomics/Text'
 import type { ReportStackParams } from '.'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/core'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
+import { XStack, Paragraph } from '~/components/atomics'
 
 export default function PermissionsScreen() {
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Permissions'>>()
@@ -22,26 +21,28 @@ export default function PermissionsScreen() {
   if (isLoading) return null
 
   return (
-    <Box flex={1} bg="background" alignItems="center" justifyContent="center">
-      <Text>Please, you need provides the following permissions before report an incident</Text>
-      <Box>
+    <XStack flex={1} bg="$bg" alignItems="center" justifyContent="center">
+      <Paragraph>
+        Please, you need provides the following permissions before report an incident
+      </Paragraph>
+      <XStack>
         {!cameraPermissionIsGranted && (
-          <Text>
+          <Paragraph>
             Camera permission
-            <Text variant="link" onPress={requestCameraPermission}>
+            <Paragraph color="$blue1" onPress={requestCameraPermission}>
               Grant
-            </Text>
-          </Text>
+            </Paragraph>
+          </Paragraph>
         )}
         {!microphonePermissionsIsGranted && (
-          <Text>
+          <Paragraph>
             Microphone permission
-            <Text variant="link" onPress={requestMicrophonePermission}>
+            <Paragraph color="$blue1" onPress={requestMicrophonePermission}>
               Grant
-            </Text>
-          </Text>
+            </Paragraph>
+          </Paragraph>
         )}
-      </Box>
-    </Box>
+      </XStack>
+    </XStack>
   )
 }

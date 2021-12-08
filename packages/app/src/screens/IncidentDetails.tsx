@@ -5,10 +5,9 @@ import type { StackNavigationProp } from '@react-navigation/stack'
 import { ScrollView } from 'react-native-gesture-handler'
 import React from 'react'
 import type { RootStackParams } from '~/RootNavigator'
-import RoundedButton from '~/components/RoundedButton'
 import { CloseIcon, MaximizeIcon, MessageCircleIcon, HeartIcon } from '~/assets/icons'
 import intl from '~/shared/intl'
-import { Box, Text } from '~/components/atomics'
+import { Box, Button, Text } from '~/components/atomics'
 import RelativeInfo from '~/components/RelativeInfo'
 import NotificationsAmount from '~/components/NotificationsAmount'
 import { graphql, useLazyLoadQuery, useQueryLoader } from 'react-relay'
@@ -80,12 +79,7 @@ export default function IncidentDetailsScreen() {
               homeNavigation.pop()
             }}
           />
-          <RoundedButton
-            my={'sm'}
-            justifyContent="center"
-            alignItems="center"
-            icon={MaximizeIcon}
-          />
+          <Button my="$2" justifyContent="center" alignItems="center" icon={MaximizeIcon} />
         </Box>
       </ScrollView>
       <Box
@@ -97,8 +91,8 @@ export default function IncidentDetailsScreen() {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.react} icon={HeartIcon} />
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.comment} icon={MessageCircleIcon} />
+        <Button p="sm" mx="sm" my="md" label={intl.react} icon={HeartIcon} />
+        <Button p="sm" mx="sm" my="md" label={intl.comment} icon={MessageCircleIcon} />
       </Box>
     </Box>
   )

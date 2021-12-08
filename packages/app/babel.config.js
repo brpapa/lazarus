@@ -7,10 +7,17 @@ module.exports = function (api) {
         'relay',
         {
           src: './src',
-          schema: '../server/graphql/schema.graphql',
+          schema: '../api/graphql/schema.graphql',
           artifactDirectory: './src/__generated__',
         },
       ], // babel-plugin-relay
+      [
+        '@tamagui/babel-plugin',
+        {
+          components: ['tamagui'],
+          config: './tamagui.config.ts',
+        },
+      ],
       [
         'module-resolver',
         {

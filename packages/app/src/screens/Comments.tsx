@@ -1,9 +1,9 @@
 import React from 'react'
-import Box from '~/components/atomics/Box'
+import { XStack } from '~/components/atomics'
 
 type CommentsScreenProps = {}
 
 // TODO: nao mostrar bottom tab
 export default function CommentsScreen(_props: CommentsScreenProps) {
-  return <Box flex={1}></Box>
+  return <XStack></XStack>
 }

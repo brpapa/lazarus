@@ -1,14 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
 import { Alert, StatusBar, StyleSheet } from 'react-native'
 import Camera, { CameraOrientation, CameraRef } from '~/containers/Camera'
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import type { ReportStackParams } from '.'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
+import Shutter from '~/components/Shutter'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { CloseIcon, RotateIcon } from '~/assets/icons'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
+import { XStack, Button } from '~/components/atomics'
 
 // const startRecordingVideo = async () => {
 //   if (cameraRef.current === null) return
@@ -34,7 +34,10 @@ export default function CameraScreen() {
   const insets = useSafeAreaInsets()
 
   const takePicture = useCallback(async () => {
-    if (cameraRef.current === null) return
+    if (cameraRef.current === null) {
+      console.warn('Camera is not ready yet')
+      return
+    }
     try {
       // picture is saved in app's cache directory
       const pic = await cameraRef.current.takePictureAsync({ exif: true })
@@ -59,8 +62,19 @@ export default function CameraScreen() {
     setCameraOrientation((prev) => (prev === 'back' ? 'front' : 'back'))
   }, [])
 
+  useFocusEffect(
+    useCallback(() => {
+      // when the screen is focused
+      cameraRef.current && cameraRef.current.resumePreview()
+      return () => {
+        // when the screen is unfocused
+        cameraRef.current && cameraRef.current.pausePreview()
+      }
+    }, []),
+  )
+
   return (
-    <Box flex={1}>
+    <XStack flex={1}>
       <StatusBar barStyle={'light-content'} />
       <Camera
         ref={cameraRef}
@@ -68,19 +82,12 @@ export default function CameraScreen() {
         orientation={cameraOrientation}
         onCameraReady={() => setCameraIsReady(true)}
       />
-      <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
-        <RoundedButton my={'sm'} icon={RotateIcon} onPress={flipCameraOrientation} />
-      </Box>
-      {cameraIsReady && (
-        <RoundedButton
-          position="absolute"
-          right="45%"
-          bottom={insets.bottom + 30}
-          onPress={takePicture}
-        />
-      )}
-    </Box>
+      <XStack position="absolute" right={insets.right + 10} top={insets.top + 10}>
+        <Button my="$1" icon={CloseIcon} onPress={closeCamera} />
+        <Button my="$1" icon={RotateIcon} onPress={flipCameraOrientation} />
+      </XStack>
+      {cameraIsReady && <Shutter style={styles.shutter} onClick={takePicture} />}
+    </XStack>
   )
 }
 
@@ -90,5 +97,10 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
     overflow: 'hidden',
+  },
+  shutter: {
+    position: 'absolute',
+    right: '45%',
+    bottom: 30,
   },
 })

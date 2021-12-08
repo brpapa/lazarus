@@ -1,31 +1,29 @@
 import React from 'react'
-import { StatusBar, StatusBarStyle } from 'react-native'
-import { ThemeProvider } from '@shopify/restyle'
+import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { RecoilRoot } from 'recoil'
 import { RelayEnvironmentProvider } from 'react-relay'
-
-import { theme, darkTheme } from '~/shared/theme'
-import { THEME_NAME } from '~/shared/config'
 import RootNavigator from '~/RootNavigator'
 import { environment } from '~/relay-environment'
+import Tamagui from './../tamagui.config'
+import { DEFAULT_THEME } from './shared/config'
 
 export default function App() {
   return (
     <RelayEnvironmentProvider environment={environment}>
       <RecoilRoot>
-        <ThemeProvider theme={THEME_NAME == 'default' ? theme : darkTheme}>
+        <Tamagui.Provider defaultTheme={DEFAULT_THEME}>
           <SafeAreaProvider>
-            <StatusBar barStyle={statusBarStyle[THEME_NAME]} />
+            <StatusBar barStyle={barStyleMap[DEFAULT_THEME]} />
             <RootNavigator />
           </SafeAreaProvider>
-        </ThemeProvider>
+        </Tamagui.Provider>
       </RecoilRoot>
     </RelayEnvironmentProvider>
   )
 }
 
-const statusBarStyle: Record<ThemeName, StatusBarStyle> = {
-  default: 'dark-content',
+const barStyleMap = {
+  light: 'dark-content',
   dark: 'light-content',
-}
+} as const

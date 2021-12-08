@@ -1,4 +1,4 @@
-import { LANG } from './config'
+import { DEFAULT_LANG } from './config'
 
 const buildTranslatedMessages = (lang: Language) =>
   ({
@@ -73,5 +73,5 @@ const buildTranslatedMessages = (lang: Language) =>
 // type MessageKeys = keyof PolygotMessages
 // type FormatArgsOf<K extends MessageKeys> = Parameters<PolygotMessages[K]['format']>
 
-const translatedMessages = buildTranslatedMessages(LANG)
+const translatedMessages = buildTranslatedMessages(DEFAULT_LANG)
 export default translatedMessages

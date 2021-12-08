@@ -5,15 +5,15 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Image } from 'react-native'
 import FormData from 'form-data'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
 import intl from '~/shared/intl'
-import Text from '~/components/atomics/Text'
 import { useRecoilValue } from 'recoil'
 import type { ReportStackParams } from '.'
 import { SERVER_BASE_URL } from '~/shared/config'
 import { graphql, useMutation } from 'react-relay'
 import { userCoordinateState } from '~/data/recoil'
+import { XStack, YStack } from '~/components/atomics'
+import { H1 } from '~/components/atomics'
+import { Button } from '~/components/atomics'
 
 // TODO: retornar s3 url de cada media
 const uploadMedias = async (medias: { uri: string }[]) => {
@@ -89,7 +89,7 @@ export default function MediasScreen() {
   if (isInFlight) return <Text>Sending</Text>
 
   return (
-    <Box flex={1} flexDirection="column" bg="background">
+    <YStack flex={1} flexDirection="column" bg="background">
       <ScrollView style={{ flex: 1, flexGrow: 9, marginTop: insets.top }}>
         <Text variant="link" onPress={backToCamera}>
           Adicionar outra midia
@@ -104,9 +104,7 @@ export default function MediasScreen() {
           />
         ))}
 
-        <Text variant="header" m="md">
-          {intl.publishIncident}
-        </Text>
+        <H1>{intl.publishIncident}</H1>
 
         <TextInput
           style={{ padding: 15, height: 50, fontSize: 24 }}
@@ -119,18 +117,17 @@ export default function MediasScreen() {
           }}
         />
       </ScrollView>
-      <Box
+      <XStack
         flexGrow={1}
-        bg="background"
         mx="sm"
         flex={1}
         flexDirection="row"
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.report} onPress={onPublish} />
-      </Box>
-    </Box>
+        <Button size="$1" p="sm" mx="sm" my="md" label={intl.report} onPress={onPublish} />
+      </XStack>
+    </YStack>
   )
 }
 

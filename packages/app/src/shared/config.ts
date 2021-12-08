@@ -6,8 +6,8 @@ export const __DEVICE_IS_SIMULATOR__ = !isDevice
 export const __RUNTIME_IS_EXPO_GO__ = AppOwnership.Expo
 export const __RUNTIME_IS_STANDALONE__ = AppOwnership.Standalone
 
-export const THEME_NAME: ThemeName = 'default'
-export const LANG: Language = 'pt-br'
+export const DEFAULT_THEME = 'light'
+export const DEFAULT_LANG: Language = 'pt-br'
 
 export const SERVER_BASE_URL = 'http://192.168.0.25:5000' // `ifconfig | grep inet`
 

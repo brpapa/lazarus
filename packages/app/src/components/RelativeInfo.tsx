@@ -1,19 +1,18 @@
 import React from 'react'
-
-import Box from '~/components/atomics/Box'
-import Text from '~/components/atomics/Text'
 import intl from '~/shared/intl'
+import { SizableText } from './atomics/SizableText'
+import { XStack } from './atomics/Stacks'
 
-type RelativeInfoProps = Omit<React.ComponentPropsWithoutRef<typeof Box>, 'children'>
+type RelativeInfoProps = Omit<React.ComponentPropsWithoutRef<typeof XStack>, 'children'>
 
 export default function RelativeInfo(props: RelativeInfoProps) {
   return (
-    <Box flex={1} flexDirection="row" {...props}>
-      <Text variant="body2">{intl.relativeUpdatedTimeToNow.format()}</Text>
-      <Text mx="sm" variant="body2">
+    <XStack flex={1} flexDirection="row" {...props}>
+      <SizableText size="$3">{intl.relativeUpdatedTimeToNow.format()}</SizableText>
+      <SizableText mx="sm" size="$3">
         {'·'}
-      </Text>
-      <Text variant="body2">{intl.relativeDistanceToCurrentLocation.format()}</Text>
-    </Box>
+      </SizableText>
+      <SizableText size="$3">{intl.relativeDistanceToCurrentLocation.format()}</SizableText>
+    </XStack>
   )
 }

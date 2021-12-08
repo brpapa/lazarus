@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { Marker } from 'react-native-maps'
 import { graphql, useFragment } from 'react-relay'
-import { useRecoilState } from 'recoil'
-import { Box } from '~/components/atomics'
-import { selectedIncidentIdInMap } from '~/data/recoil'
+import { XStack } from '~/components/atomics'
 import type { IncidentMarker_incident$key } from '~/__generated__/IncidentMarker_incident.graphql'
 
 type IncidentMarkerProps = {
@@ -26,7 +24,6 @@ function IncidentMarker(props: IncidentMarkerProps) {
     props.incident,
   )
 
-
   return (
     <Marker
       coordinate={data.coordinate}
@@ -36,14 +33,14 @@ function IncidentMarker(props: IncidentMarkerProps) {
         props.onPressed()
       }}
     >
-      <Box flex={1}>
-        <Box
+      <XStack flex={1}>
+        <XStack
           borderRadius={6}
-          bg={props.selected ? 'incident-selected' : 'accents-7'}
+          backgroundColor={props.selected ? '$5AF' : '#F20'}
           width={17}
           height={17}
         />
-      </Box>
+      </XStack>
     </Marker>
   )
 }

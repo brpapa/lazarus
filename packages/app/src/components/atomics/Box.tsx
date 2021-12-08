@@ -1,7 +1,11 @@
-import { createBox } from '@shopify/restyle'
-import type { Theme } from '~/shared/theme'
+import { GetProps, styled } from '@tamagui/core'
 
-// The Box component comes with the following Restyle functions: backgroundColor, opacity, visible, layout, spacing, border, shadow, position.
-const Box = createBox<Theme>()
+import { YStack } from './Stacks'
 
-export default Box
+export const Box = styled(YStack, {
+  backgroundColor: '$bg2',
+  borderRadius: '$2',
+  elevation: '$3',
+})
+
+export type BoxProps = GetProps<typeof Box>

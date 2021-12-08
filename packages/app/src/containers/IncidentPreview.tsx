@@ -1,8 +1,5 @@
 import React, { useCallback } from 'react'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
-import Text from '~/components/atomics/Text'
 import CloseIcon from '~/assets/icons/close'
 import RelativeInfo from '~/components/RelativeInfo'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
@@ -10,6 +7,7 @@ import type { IncidentPreviewQuery } from '~/__generated__/IncidentPreviewQuery.
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import type { RootStackParams } from '~/RootNavigator'
+import { XStack, Button, H1 } from '~/components/atomics'
 
 type IncidentPreviewProps = {
   preloadedQueryRef: PreloadedQuery<IncidentPreviewQuery>
@@ -43,9 +41,9 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
 
   return (
     <TouchableWithoutFeedback onPress={onTouched}>
-      <Box
+      <XStack
         flex={1}
-        bg="background"
+        bg="$bg"
         m="sm"
         px="md"
         py="sm"
@@ -53,23 +51,17 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         borderColor="accents-2"
         borderWidth={1}
       >
-        <Text variant="header">{data.incident?.title}</Text>
+        <H1>{data.incident?.title}</H1>
         <RelativeInfo mb="sm" />
 
         {/* <NotificationsAmount amount={incident.notificationsAmount} /> */}
 
         {props.closeable && (
-          <RoundedButton
-            position="absolute"
-            width={40}
-            height={40}
-            top={-40 - 5}
-            right={0}
-            icon={CloseIcon}
-            onPress={props.onClosed}
-          />
+          <XStack fullscreen flexDirection="end">
+            <Button size="$2" icon={CloseIcon} onPress={props.onClosed} />
+          </XStack>
         )}
-      </Box>
+      </XStack>
     </TouchableWithoutFeedback>
   )
 }

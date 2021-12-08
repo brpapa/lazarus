@@ -1,4 +1,4 @@
-type ThemeName = 'default' | 'dark'
+type ThemeName = 'light' | 'dark'
 type Language = 'pt-br' | 'en-us'
 
 type Coordinate = {

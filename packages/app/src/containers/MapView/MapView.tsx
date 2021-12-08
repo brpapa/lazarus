@@ -2,21 +2,20 @@ import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react
 import type { StyleProp, ViewStyle } from 'react-native'
 import GoogleMapView, { LatLng, Marker } from 'react-native-maps'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTheme } from '@shopify/restyle'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { useTheme } from '@tamagui/core'
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from 'react-relay'
 import customMapStyles from './custom-map-styles'
-import type { Theme } from '~/shared/theme'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
 import mapViewDefaultProps from './default-props'
 import { MapPinIcon } from '~/assets/icons'
-import { initialRegionState, selectedIncidentIdInMap, userCoordinateState } from '~/data/recoil'
-import { Text } from '~/components/atomics'
+import { initialRegionState, selectedIncidentIdInMap } from '~/data/recoil'
 import { IncidentMarkers } from './IncidentMarkers'
 import type { IncidentMarkersQuery } from '~/__generated__/IncidentMarkersQuery.graphql'
 import incidentMarkersQuery from '~/__generated__/IncidentMarkersQuery.graphql'
 import Loading from '~/components/Loading'
+import { XStack } from '~/components/atomics'
+import { Button } from '~/components/atomics'
+import { DEFAULT_THEME } from '~/shared/config'
 
 type MapViewProps = {
   style?: StyleProp<ViewStyle>
@@ -38,7 +37,7 @@ export default function MapView(props: MapViewProps) {
   // https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md#methods
   const mapRef = useRef<GoogleMapView>(null)
   const insets = useSafeAreaInsets()
-  const theme = useTheme<Theme>()
+  const theme = useTheme()
   const initialRegion = useRecoilValue(initialRegionState)
   // const [ne, setNe] = useState<LatLng | null>(null)
   // const [sw, setSw] = useState<LatLng | null>(null)
@@ -55,12 +54,12 @@ export default function MapView(props: MapViewProps) {
   }
 
   return (
-    <Box flex={1}>
+    <XStack flex={1}>
       <GoogleMapView
         {...mapViewDefaultProps}
         ref={mapRef}
         style={{ flex: 1 }}
-        customMapStyle={customMapStyles[theme.name]}
+        customMapStyle={customMapStyles[DEFAULT_THEME]}
         initialRegion={initialRegion}
         onPress={() => setSelectedIncidentId(null)}
         // onRegionChangeComplete={async () => {
@@ -76,16 +75,10 @@ export default function MapView(props: MapViewProps) {
         {/* {ne && <Marker coordinate={ne} pinColor="blue"></Marker>} */}
         {/* {sw && <Marker coordinate={sw} pinColor="red"></Marker>} */}
       </GoogleMapView>
-      <RoundedButton
-        position="absolute"
-        width={40}
-        height={40}
-        top={insets.top + 10}
-        right={insets.right + 10}
-        icon={MapPinIcon}
-        onPress={flyToUserLocation}
-      />
-    </Box>
+      <XStack fullscreen top={insets.top + 10} right={insets.right + 10}>
+        <Button size="$1" icon={MapPinIcon} onPress={flyToUserLocation} />
+      </XStack>
+    </XStack>
   )
 }
 
