@@ -5,6 +5,7 @@ import PermissionsScreen from './PermissionsScreen'
 import CameraScreen from './CameraScreen'
 import MediasScreen from './MediasScreen'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
+import type { CapturedMedia } from './types'
 
 export type ReportStackParams = {
   Permissions: undefined
@@ -17,7 +18,7 @@ export type ReportStackParams = {
 }
 const ReportStack = createStackNavigator<ReportStackParams>()
 
-// DOING: usuario adiona/remove imagens/videos no app, depois quando clica em submit report, sobe midias pro s3 e manda mutation pra criar incident
+// DOING: usuario adiona/remove imagens/videos no app, depois quando clica em submit report, sobe midias pro s3 e manda mutation com as urls pra criar incident
 export function ReportStackScreen() {
   const { isLoading, allPermissionsIsGranted } = useCameraPermissions()
   if (isLoading) return null

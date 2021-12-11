@@ -69,7 +69,7 @@ export default function MapView(props: MapViewProps) {
         // }}
       >
         {preloadedQueryRef && (
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Text>Loading</Text>}>
             <IncidentMarkers preloadedQueryRef={preloadedQueryRef} />
           </Suspense>
         )}

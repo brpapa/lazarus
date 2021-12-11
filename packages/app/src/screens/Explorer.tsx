@@ -30,7 +30,7 @@ export default function ExplorerScreen() {
       <MapView />
       <Box position="absolute" bottom={0} width={'100%'}>
         {someIncidentIsSelected && preloadedQueryRef ? (
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Text> Loading </Text>}>
             <IncidentPreview
               preloadedQueryRef={preloadedQueryRef}
               closeable={true}

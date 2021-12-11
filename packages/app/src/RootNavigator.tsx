@@ -6,6 +6,8 @@ import { HomeScreen } from '~/screens/Home'
 import NotFoundScreen from '~/screens/NotFound'
 import LoginScreen from '~/screens/Login'
 import IncidentDetailsScreen from '~/screens/IncidentDetails'
+import { useNavigationStatePersistence } from '~/hooks/use-navigation-state-persistence'
+import Loading from './components/Loading'
 
 export type RootStackParams = {
   Home: undefined
@@ -21,9 +23,12 @@ const RootStack = createStackNavigator<RootStackParams>()
 export default function RootNavigator() {
   const [isLogged] = useState(true)
 
+  const { isReady, persistenceProps } = useNavigationStatePersistence(PERSISTENCE_KEY)
+  if (!isReady) return <Loading />
+
   return (
-    <NavigationContainer>
-      <RootStack.Navigator initialRouteName="Home" >
+    <NavigationContainer {...persistenceProps}>
+      <RootStack.Navigator initialRouteName="Home">
         {isLogged ? (
           <>
             <RootStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
@@ -43,3 +48,5 @@ export default function RootNavigator() {
     </NavigationContainer>
   )
 }
+
+const PERSISTENCE_KEY = 'NAVIGATION_STATE'

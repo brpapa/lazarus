@@ -10,19 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { CloseIcon, RotateIcon } from '~/assets/icons'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
 
-// const startRecordingVideo = async () => {
-//   if (cameraRef.current === null) return
-//   try {
-//     const r = await cameraRef.current.recordAsync()
-//   } catch (e) {
-//     console.error(e)
-//   }
-// }
-// const stopRecordingVideo = async () => {
-//   if (cameraRef.current === null) return
-//   cameraRef.current.stopRecording()
-// }
-
 export default function CameraScreen() {
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Camera'>>()
   const { params } = useRoute<RouteProp<ReportStackParams, 'Camera'>>()
@@ -84,6 +71,19 @@ export default function CameraScreen() {
   )
 }
 
+// const startRecordingVideo = async () => {
+//   if (cameraRef.current === null) return
+//   try {
+//     const r = await cameraRef.current.recordAsync()
+//   } catch (e) {
+//     console.error(e)
+//   }
+// }
+// const stopRecordingVideo = async () => {
+//   if (cameraRef.current === null) return
+//   cameraRef.current.stopRecording()
+// }
+
 const styles = StyleSheet.create({
   camera: {
     backgroundColor: '#222',
@@ -92,3 +92,4 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 })
+

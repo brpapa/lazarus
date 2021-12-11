@@ -8,7 +8,7 @@ export default function Loading() {
   const theme = useTheme<Theme>()
 
   return (
-    <Box flex={1} alignItems="center" justifyContent="center">
+    <Box flex={1} alignItems="center" justifyContent="center" overflow={'hidden'}>
       <ActivityIndicator color={theme.colors.foreground} />
     </Box>
   )

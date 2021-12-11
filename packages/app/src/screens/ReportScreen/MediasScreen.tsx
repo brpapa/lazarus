@@ -4,40 +4,16 @@ import type { StackNavigationProp } from '@react-navigation/stack'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Image } from 'react-native'
-import FormData from 'form-data'
 import Box from '~/components/atomics/Box'
 import RoundedButton from '~/components/RoundedButton'
 import intl from '~/shared/intl'
 import Text from '~/components/atomics/Text'
 import { useRecoilValue } from 'recoil'
 import type { ReportStackParams } from '.'
-import { SERVER_BASE_URL } from '~/shared/config'
 import { graphql, useMutation } from 'react-relay'
 import { userCoordinateState } from '~/data/recoil'
-
-// TODO: retornar s3 url de cada media
-const uploadMedias = async (medias: { uri: string }[]) => {
-  const form = medias.reduce<FormData>((form, media, idx) => {
-    const imageKey = `image-${idx}`
-    form.append(imageKey, {
-      uri: media.uri,
-      name: imageKey,
-      type: 'image/jpeg',
-    })
-    return form
-  }, new FormData())
-
-  const response = await fetch(`${SERVER_BASE_URL}/uploads`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    body: form,
-  })
-  const bodyRes = await response.json()
-  console.log('uploaded to the server, response: ' + JSON.stringify(bodyRes))
-  return [] as string[]
-}
+import { uploadMedias } from './uploadMedias'
+import { CloseIcon } from '~/assets/icons'
 
 export default function MediasScreen() {
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Medias'>>()
@@ -86,6 +62,11 @@ export default function MediasScreen() {
     reportNavigation.replace('Camera', { previousCapturedMedias: params.capturedMedias })
   }, [params.capturedMedias, reportNavigation])
 
+  const closeReport = useCallback(() => {
+    reportNavigation.popToTop()
+    reportNavigation.goBack()
+  }, [reportNavigation])
+
   if (isInFlight) return <Text>Sending</Text>
 
   return (
@@ -119,6 +100,9 @@ export default function MediasScreen() {
           }}
         />
       </ScrollView>
+      <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
+        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeReport} />
+      </Box>
       <Box
         flexGrow={1}
         bg="background"

@@ -21,7 +21,3 @@ type Incident = {
   timelineUpdates: TimelineUpdate[]
   images: string[]
 }
-
-type CapturedMedia = {
-  uri: string
-}
