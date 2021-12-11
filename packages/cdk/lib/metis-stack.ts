@@ -4,14 +4,21 @@ import * as subs from '@aws-cdk/aws-sns-subscriptions'
 import * as sqs from '@aws-cdk/aws-sqs'
 import * as cdk from '@aws-cdk/core'
 
-export class AwsCdkStack extends cdk.Stack {
+export class MetisStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, {
       stackName: 'metis',
     })
 
-    const bucket = new s3.Bucket(this, 'MediaAssetsBucket', {
-      bucketName: 'metis-media-static-content',
+    const bucket = new s3.Bucket(this, 'StaticContentBucket', {
+      bucketName: 'metis-public-static-content',
+      publicReadAccess: true,
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      },
     })
 
     // const queue = new sqs.Queue(this, 'AwsCdkQueue', {

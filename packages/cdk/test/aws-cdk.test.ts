@@ -1,10 +1,10 @@
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert'
 import * as cdk from '@aws-cdk/core'
-import * as AwsCdk from '../lib/aws-cdk-stack'
+import * as AwsCdk from '../lib/metis-stack'
 
 test('s3 bucket is created', () => {
   const app = new cdk.App()
-  const stack = new AwsCdk.AwsCdkStack(app, 'MetisStack')
+  const stack = new AwsCdk.MetisStack(app, 'MetisStack')
   expectCDK(stack).to(haveResource('AWS::S3::Bucket'))
 })
 
