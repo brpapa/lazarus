@@ -1,11 +1,12 @@
 import { GraphQLContext } from 'src/infra/http/graphql/context'
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
 import { GraphQLTypes, nodeInterface } from 'src/infra/http/graphql/node'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'
 import { DateType } from 'src/shared/infra/graphql/types/date'
-import { CoordinateType } from '../../../../../../shared/infra/graphql/types/coordinate'
+import { CoordinateType } from 'src/shared/infra/graphql/types/coordinate'
+import { MediaType } from './media'
 
 export const IncidentType = GraphQLTypes.register(
   new GraphQLObjectType<IncidentDTO, GraphQLContext>({
@@ -25,6 +26,10 @@ export const IncidentType = GraphQLTypes.register(
       coordinate: {
         type: GraphQLNonNull(CoordinateType),
         resolve: (incident) => incident.coordinate,
+      },
+      medias: {
+        type: GraphQLNonNull(GraphQLList(MediaType)),
+        resolve: (incident) => incident.medias,
       },
       createdAt: {
         type: GraphQLNonNull(DateType),

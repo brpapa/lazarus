@@ -4,23 +4,31 @@ import debug from 'debug'
 import prettyBytes from 'pretty-bytes'
 import { hrtime } from 'process'
 import { AWS_SERVICE_ENDPOINT, AWS_REGION, AWS_S3_BUCKET_NAME } from 'src/shared/config'
+import { UUID } from 'src/shared/domain/models/uuid'
 import { Readable } from 'stream'
 import { FileMetadata } from './form-data-parser'
 
 const log = debug('app:uploader')
+
+export type UploadResult = {
+  s3Url: string
+} & FileMetadata
 
 /**
  * pipe the incoming file stream to the S3
  * @see [s3-multipart-upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html)
  * @see [aws-lib-storage](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_lib_storage.html)
  */
-export async function uploadToS3(incomingFile: Readable, fileMetadata: FileMetadata) {
+export async function uploadToS3(
+  incomingFile: Readable,
+  metadata: FileMetadata,
+): Promise<UploadResult> {
   const s3Client = new S3Client({
     region: AWS_REGION,
     endpoint: AWS_SERVICE_ENDPOINT,
   })
-
-  registerDownloadProgressReporter(incomingFile, fileMetadata)
+  const objectKey = new UUID().toString()
+  registerDownloadProgressReporter(incomingFile, metadata)
 
   try {
     // at most queueSize * partSize bytes will be buffered in memory
@@ -31,26 +39,30 @@ export async function uploadToS3(incomingFile: Readable, fileMetadata: FileMetad
       leavePartsOnError: true,
       params: {
         Bucket: AWS_S3_BUCKET_NAME,
-        Key: `${Date.now().toString(16)}-${fileMetadata.fileName}`,
+        Key: objectKey,
         Body: incomingFile,
-        ContentEncoding: fileMetadata.transferEncoding,
-        ContentType: fileMetadata.mimeType,
+        ContentEncoding: metadata.transferEncoding,
+        ContentType: metadata.mimeType,
       },
     })
 
     upload.on('httpUploadProgress', (progress) => {
       if (progress.loaded)
-        log(`${fileMetadata.fileName}: ${prettyBytes(progress.loaded)} uploaded to the S3`)
+        log(`${metadata.fileName}: ${prettyBytes(progress.loaded)} uploaded to the S3`)
     })
 
     await upload.done()
-    log(`${fileMetadata.fileName}: totally uploaded to the S3`)
+    log(`${metadata.fileName}: totally uploaded to the S3`)
+
+    const s3Url = `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${objectKey}`
+    return { s3Url, ...metadata }
   } catch (e) {
-    log(`${fileMetadata.fileName}: error to upload to the S3`, e)
+    log(`${metadata.fileName}: error to upload to the S3`, e)
+    throw e
   }
 }
 
-const registerDownloadProgressReporter = (incomingFile: Readable, fileMetadata: FileMetadata) => {
+const registerDownloadProgressReporter = (incomingFile: Readable, metadata: FileMetadata) => {
   let consumedBytes = 0
   let previousClientUpdateTickInNs: bigint | null = null
 
@@ -59,11 +71,11 @@ const registerDownloadProgressReporter = (incomingFile: Readable, fileMetadata: 
     // backpressure the client update
     if (canUpdateClientNow(previousClientUpdateTickInNs)) {
       previousClientUpdateTickInNs = hrtime.bigint()
-      log(`${fileMetadata.fileName}: ${prettyBytes(consumedBytes)} downloaded by server`) // TODO: notificar cliente via websocket
+      log(`${metadata.fileName}: ${prettyBytes(consumedBytes)} downloaded by server`) // TODO: notificar cliente via websocket
     }
   })
   incomingFile.on('end', () => {
-    log(`${fileMetadata.fileName}: totally downloaded by server`)
+    log(`${metadata.fileName}: totally downloaded by server`)
   })
 }
 

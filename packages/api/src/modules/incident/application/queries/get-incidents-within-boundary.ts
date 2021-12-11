@@ -36,7 +36,7 @@ export class GetIncidentsWithinBoundary implements Query<Request, Response> {
       const sw = req.boundary.southWest
       const se = { latitude: ne.latitude, longitude: sw.longitude }
 
-      const centerPoint = getCenter([ne, sw]) 
+      const centerPoint = getCenter([ne, sw])
       assert(centerPoint !== false)
 
       const incidents = await this.incidentRepo.findManyWithinBox(centerPoint, {

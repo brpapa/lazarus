@@ -6,34 +6,33 @@ import { Readable } from 'stream'
 const log = debug('app:utils')
 
 export type FileMetadata = {
+  /** formdata field */
   fieldName: string
   fileName: string
   transferEncoding: string
   mimeType: string
 }
 
-/**
- * @returns promise that resolves when the last chunk of the last file was loaded in memory
- */
-export function parseFormData(
+type ParsedFormData<T> = { files: T[] }
+
+export function parseFormData<T>(
   request: IncomingMessage,
-  options: {
-    /** the file stream must be consumed, otherwise it will never ends */
-    onFile: (file: Readable, fileMetadata: FileMetadata) => Promise<void>
-  },
-): Promise<{ fields: Record<string, any> }> {
+  /** the file stream must be consumed, otherwise it will never ends */
+  fileHandler: (file: Readable, metadata: FileMetadata) => Promise<T>,
+): Promise<ParsedFormData<T>> {
   // a parser of xml formdata received from http to node stream
   const busboyWritable = new Busboy({ headers: request.headers })
 
   return new Promise((resolve, reject) => {
-    const accFields: Record<string, any> = {}
+    const fields: Record<string, any> = {}
+    const fileHandlerPromises: Promise<T>[] = []
 
     request.on('close', cleanup)
 
     busboyWritable
-      .on('field', onField) // when a field is find
-      .on('file', onFile) // when a file is find
-      .on('finish', onEnd) // when all files was consumed
+      .on('field', onField) // when a formdata field is find
+      .on('file', onFile) // when a formdata file is find
+      .on('finish', onEnd) // when the last chunk of the last file was loaded in memory (not uploaded yet)
       .on('error', onError)
       .on('partsLimit', onError.bind(null, new Error('Reach parts limit')))
       .on('filesLimit', onError.bind(null, new Error('Reach files limit')))
@@ -42,9 +41,10 @@ export function parseFormData(
     // pipe the incoming request into the busboy writable (with all listeners already registered)
     request.pipe(busboyWritable)
 
+    // FIXME
     function onField(
       fieldName: string,
-      value: any,
+      value: string,
       fieldNameTruncated: boolean,
       valueTruncated: boolean,
       encoding: string,
@@ -56,15 +56,15 @@ export function parseFormData(
       // this looks like a stringified array, so let's parse it
       if (fieldName.indexOf('[') > -1) {
         const obj = objectFromBluePrint(extractFormData(fieldName), value)
-        reconcile(obj, accFields)
-      } else if (fieldName in accFields) {
-        if (Array.isArray(accFields[fieldName])) {
-          accFields[fieldName].push(value)
+        reconcile(obj, fields)
+      } else if (fieldName in fields) {
+        if (Array.isArray(fields[fieldName])) {
+          fields[fieldName].push(value)
         } else {
-          accFields[fieldName] = [accFields[fieldName], value]
+          fields[fieldName] = [fields[fieldName], value]
         }
       } else {
-        accFields[fieldName] = value
+        fields[fieldName] = value
       }
     }
 
@@ -75,12 +75,15 @@ export function parseFormData(
       transferEncoding: string,
       mimeType: string,
     ) {
-      await options.onFile(incomingFile, {
+      const fileMetadata = {
         fieldName,
         fileName,
         transferEncoding,
         mimeType,
-      })
+      }
+
+      const fileHandlerPromise = fileHandler(incomingFile, fileMetadata)
+      fileHandlerPromises.push(fileHandlerPromise)
     }
 
     function onError(err: Error) {
@@ -91,8 +94,12 @@ export function parseFormData(
     function onEnd(err: Error) {
       if (err) reject(err)
       else {
-        cleanup()
-        resolve({ fields: accFields })
+        Promise.all(fileHandlerPromises)
+          .then((uploadResults) => {
+            cleanup()
+            resolve({ files: uploadResults })
+          })
+          .catch(reject)
       }
     }
 

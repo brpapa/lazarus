@@ -40,7 +40,7 @@ export const CreateIncidentMutationType: GraphQLFieldConfig<any, GraphQLContext>
         coordinate: args.coordinate,
         medias: args.medias.map((media) => ({
           url: media.url,
-          type: MediaType.PHOTO, // TODO
+          type: MediaType.IMAGE, // TODO
           recordedAt: new Date(), // TODO
         })),
       })

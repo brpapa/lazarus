@@ -30,7 +30,7 @@ describe('repository: incident', () => {
         Media.create({
           incidentId: incident.id,
           url: 'url',
-          type: MediaType.PHOTO,
+          type: MediaType.IMAGE,
           recordedAt: new Date(),
         }),
       ])

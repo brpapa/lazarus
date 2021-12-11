@@ -6,9 +6,9 @@ export default function uploader(): Middleware {
   return async (ctx, next) => {
     if (!ctx.is('multipart/form-data')) next()
 
-    const { fields } = await parseFormData(ctx.req, { onFile: uploadToS3 })
+    const { files } = await parseFormData(ctx.req, uploadToS3)
 
     ctx.status = 200
-    ctx.body = { message: 'Uploaded', fields }
+    ctx.body = { files }
   }
 }

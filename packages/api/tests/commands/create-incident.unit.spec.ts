@@ -15,7 +15,7 @@ describe('command: create incident', () => {
       medias: [
         {
           url: 'https://s3.amazonaws.com',
-          type: MediaType.PHOTO,
+          type: MediaType.IMAGE,
           recordedAt: new Date(),
         },
       ],
@@ -44,7 +44,7 @@ describe('command: create incident', () => {
           .fill(null)
           .map(() => ({
             url: 'https://s3.amazonaws.com',
-            type: MediaType.PHOTO,
+            type: MediaType.IMAGE,
             recordedAt: new Date(),
           })),
       })

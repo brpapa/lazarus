@@ -46,6 +46,7 @@ export class IncidentMapper {
       id: domain.id.toString(),
       title: domain.title,
       coordinate: CoordinateMapper.fromDomainToDTO(domain.coordinate),
+      medias: domain.medias.map(MediaMapper.fromDomainToDTO),
       createdAt: domain.createdAt,
     }
   }

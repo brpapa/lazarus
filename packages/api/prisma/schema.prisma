@@ -43,7 +43,7 @@ model IncidentModel {
 
 model MediaModel {
   id         String        @id @default(uuid()) @db.VarChar(36)
-  url        String        @unique @db.VarChar(256)
+  url        String        @db.VarChar(256)
   type       MediaType
   recordedAt DateTime
   incidentId String        @map("incident_id") @db.VarChar(36)
@@ -103,6 +103,6 @@ enum ReactionType {
 }
 
 enum MediaType {
-  PHOTO
+  IMAGE
   VIDEO
 }

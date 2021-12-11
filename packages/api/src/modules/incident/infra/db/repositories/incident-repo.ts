@@ -9,7 +9,7 @@ import { MediaMapper } from '../../../adapter/mappers/media'
 import { IIncidentRepo } from '../../../adapter/repositories/incident'
 import { PrismaRepo } from '../../../../../shared/infra/db/prisma-repo'
 import { ICommentRepo } from '../../../adapter/repositories/comment'
-import { Coordinate, CoordinateProps } from '../../../../../shared/domain/models/coordinate'
+import { CoordinateProps } from '../../../../../shared/domain/models/coordinate'
 
 export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo {
   private baseInclude = { medias: true, comments: { take: 25 } }

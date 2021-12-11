@@ -8,6 +8,8 @@ import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { User } from 'src/modules/user/domain/models/user'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
+import { Media } from 'src/modules/incident/domain/models/media'
+import { MediaType } from 'src/modules/incident/domain/models/media-type'
 
 async function main() {
   await connectDataSources()
@@ -33,16 +35,25 @@ const populate = async () => {
   const RADIUS_IN_METERS = 1e5
 
   await Promise.all(
-    new Array(100).fill(null).map(async (_, i) => {
+    new Array(50).fill(null).map(async (_, i) => {
       const randomPoint = randomCirclePoint(CENTER_POINT, RADIUS_IN_METERS)
 
-      await incidentRepo.commit(
-        Incident.create({
-          ownerUserId: user.id,
-          title: `incident ${i}`,
-          coordinate: Coordinate.create(randomPoint).asOk(),
-        }).asOk(),
-      )
+      const incident = Incident.create({
+        ownerUserId: user.id,
+        title: `incident ${i}`,
+        coordinate: Coordinate.create(randomPoint).asOk(),
+      }).asOk()
+
+      incident.addMedias([
+        Media.create({
+          incidentId: incident.id,
+          url: 'https://metis-public-static-content.s3.amazonaws.com/17dab4a1c98-image.jpg',
+          type: MediaType.IMAGE,
+          recordedAt: new Date(),
+        }),
+      ])
+
+      await incidentRepo.commit(incident)
     }),
   )
 }
