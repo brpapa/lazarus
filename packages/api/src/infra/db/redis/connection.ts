@@ -1,15 +1,15 @@
 import debug from 'debug'
 import { redisClient } from 'src/infra/db/redis/client'
 
-const log = debug('app:db:redis')
+const log = debug('app:infra:db')
 
 export const connectRedis = async () => {
   try {
     await redisClient.connect()
     // await redisClient.scriptLoad('geo.lua')
-    log('database connection has been stablished successfully')
+    log('[redis] database connection has been stablished successfully')
   } catch (error) {
-    log('unable to connect to the database', { error })
+    log('[redis] unable to connect to the database', { error })
     throw error
   }
 }

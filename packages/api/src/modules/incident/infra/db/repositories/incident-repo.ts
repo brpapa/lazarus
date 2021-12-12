@@ -1,3 +1,4 @@
+import debug from 'debug'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { PrismaClient } from 'src/infra/db/prisma/client'
 import { RedisClient } from 'src/infra/db/redis/client'
@@ -10,6 +11,8 @@ import { IIncidentRepo } from '../../../adapter/repositories/incident'
 import { PrismaRepo } from '../../../../../shared/infra/db/prisma-repo'
 import { ICommentRepo } from '../../../adapter/repositories/comment'
 import { CoordinateProps } from '../../../../../shared/domain/models/coordinate'
+
+const log = debug('app:incident:infra')
 
 export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo {
   private baseInclude = { medias: true, comments: { take: 25 } }
@@ -100,10 +103,12 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
     const isNew = !(await this.exists(incident))
     if (isNew) {
+      log(`Persisting a new incident: ${incident.id}`)
       await this.prismaClient.incidentModel.create({ data: incidentModel })
       await this.commentRepo.commitMany(incident.comments)
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
     } else {
+      log(`Persisting an updated incident: ${incident.id}`)
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
       await this.commentRepo.commitMany(incident.comments)
       await this.prismaClient.incidentModel.update({

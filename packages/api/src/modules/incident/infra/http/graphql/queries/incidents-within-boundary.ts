@@ -3,7 +3,7 @@ import {
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLList,
-  GraphQLNonNull,
+  GraphQLNonNull
 } from 'graphql'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'

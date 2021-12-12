@@ -1,6 +1,6 @@
 import { DomainEvent } from './domain-event'
 
+/** also known as Observer */
 export interface IHandler<T extends DomainEvent> {
-  setupSubscriptions(): void
   handle(event: T): void
 }

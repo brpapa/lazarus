@@ -11,13 +11,10 @@ import { IncidentType } from '../types/incident'
 import { MediaInputType } from '../types/media'
 
 // create a mutation based on relay specs: https://github.com/graphql/graphql-relay-js#mutations
-export const CreateIncidentMutationType: GraphQLFieldConfig<any, GraphQLContext> =
+export const ReportIncidentMutationType: GraphQLFieldConfig<any, GraphQLContext> =
   mutationWithClientMutationId({
-    name: 'CreateIncident',
+    name: 'ReportIncident',
     inputFields: {
-      userId: {
-        type: GraphQLNonNull(GraphQLString),
-      },
       title: {
         type: GraphQLNonNull(GraphQLString),
       },
@@ -28,14 +25,21 @@ export const CreateIncidentMutationType: GraphQLFieldConfig<any, GraphQLContext>
         type: GraphQLNonNull(GraphQLList(MediaInputType)),
       },
     },
-    mutateAndGetPayload: async (args: {
-      userId: string
-      title: string
-      coordinate: CoordinateDTO
-      medias: MediaDTO[]
-    }) => {
+    mutateAndGetPayload: async (
+      args: {
+        userId: string
+        title: string
+        coordinate: CoordinateDTO
+        medias: MediaDTO[]
+      },
+      ctx: GraphQLContext,
+    ) => {
+      // if (!ctx.viewer) throw new Error('Unauthorized')
+      // const userId = ctx.viewer.id.toString()
+      const userId = '70e9ba9e-4c5b-4bf3-ae0a-c6d29ecad36b' // TODO
+
       const incident = await createIncidentCommand.exec({
-        userId: args.userId,
+        userId,
         title: args.title,
         coordinate: args.coordinate,
         medias: args.medias.map((media) => ({

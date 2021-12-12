@@ -1,9 +1,12 @@
+import debug from 'debug'
 import { PrismaClient } from 'src/infra/db/prisma/client'
 import { RedisClient } from 'src/infra/db/redis/client'
 import { UserMapper } from 'src/modules/user/adapter/mappers/user'
 import { User } from 'src/modules/user/domain/models/user'
 import { PrismaRepo } from 'src/shared/infra/db/prisma-repo'
 import { IUserRepo } from '../../../adapter/repositories/user'
+
+const log = debug('app:user:infra')
 
 // TODO: gravar no redis a location do usuario, e retornar nos gets
 export class UserRepo extends PrismaRepo<User> implements IUserRepo {
@@ -30,8 +33,10 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
     const isNew = !(await this.exists(user))
     if (isNew) {
+      log(`Persisting a new user: ${user.id}`)
       await this.prismaClient.userModel.create({ data: userModel })
     } else {
+      log(`Persisting an updated user: ${user.id}`)
       await this.prismaClient.incidentModel.update({
         where: { id: user.id.toString() },
         data: userModel,

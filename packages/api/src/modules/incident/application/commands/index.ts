@@ -1,4 +1,4 @@
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
-import { CreateIncidentCommand } from './create-incident/command'
+import { ReportIncidentCommand } from './report-incident/command'
 
-export const createIncidentCommand = new CreateIncidentCommand(incidentRepo)
+export const createIncidentCommand = new ReportIncidentCommand(incidentRepo)

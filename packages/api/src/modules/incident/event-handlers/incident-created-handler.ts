@@ -4,8 +4,8 @@ import { IHandler } from 'src/shared/domain/events/handler'
 import { events, pubSub } from 'src/infra/http/graphql/pub-sub'
 
 export class IncidentCreatedHandler implements IHandler<IncidentCreated> {
-  setupSubscriptions() {
-    DomainEvents.subscribeEventHandler(this.handle.bind(this), IncidentCreated.constructor.name)
+  constructor() {
+    DomainEvents.subscribeEventHandler(this, IncidentCreated.eventName)
   }
 
   handle(e: IncidentCreated) {

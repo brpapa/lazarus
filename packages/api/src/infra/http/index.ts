@@ -7,7 +7,7 @@ import { HTTP_PORT, GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/shared/config'
 import { schema } from 'src/infra/http/graphql/schema'
 import { app } from './app'
 
-const log = debug('app:http')
+const log = debug('app:infra:http')
 
 export function initialize() {
   const httpServer = http.createServer(app.callback())

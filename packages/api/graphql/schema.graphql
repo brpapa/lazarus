@@ -33,12 +33,17 @@ type Incident implements Node {
   incidentId: String!
   title: String!
   coordinate: Coordinate!
+  medias: [Media]!
   createdAt: Date!
 }
 
 type Coordinate {
   latitude: Float!
   longitude: Float!
+}
+
+type Media {
+  url: String!
 }
 
 """Date type"""
@@ -62,16 +67,15 @@ input CoordinateInput {
 
 """The mutation root type"""
 type Mutation {
-  createIncident(input: CreateIncidentInput!): CreateIncidentPayload
+  reportIncident(input: ReportIncidentInput!): ReportIncidentPayload
 }
 
-type CreateIncidentPayload {
+type ReportIncidentPayload {
   incident: Incident
   clientMutationId: String
 }
 
-input CreateIncidentInput {
-  userId: String!
+input ReportIncidentInput {
   title: String!
   coordinate: CoordinateInput!
   medias: [MediaInput]!
@@ -79,6 +83,7 @@ input CreateIncidentInput {
 }
 
 input MediaInput {
+  """S3 url"""
   url: String!
 }
 

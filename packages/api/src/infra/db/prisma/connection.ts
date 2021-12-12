@@ -1,14 +1,14 @@
 import debug from 'debug'
 import { prismaClient } from './client'
 
-const log = debug('app:db:prisma')
+const log = debug('app:infra:db')
 
 export const connectPrisma = async () => {
   try {
     await prismaClient.$connect()
-    log('database connection has been stablished successfully')
+    log('[prisma] database connection has been stablished successfully')
   } catch (error) {
-    log('unable to connect to the database', { error })
+    log('[prisma] unable to connect to the database', { error })
     throw error
   }
 }

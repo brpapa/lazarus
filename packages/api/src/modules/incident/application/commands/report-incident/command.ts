@@ -29,7 +29,7 @@ export type OkResponse = IncidentDTO
 export type ErrResponse = DomainError | UseCaseError | UnexpectedError
 export type Response = Result<OkResponse, ErrResponse>
 
-export class CreateIncidentCommand implements Command<Request, Response> {
+export class ReportIncidentCommand implements Command<Request, Response> {
   constructor(private incidentRepo: IIncidentRepo) {}
 
   async exec(req: Request): Promise<Response> {

@@ -7,8 +7,7 @@ import { MediaDTO } from '../dtos/media'
 export class MediaMapper {
   static fromDomainToDTO(media: Media): MediaDTO {
     return {
-      url: media.url,
-      recordedAt: media.recordedAt,
+      url: media.url
     }
   }
   static fromPersistenceToDomain(model: MediaModel): Media {

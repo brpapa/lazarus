@@ -4,8 +4,8 @@ import { events, pubSub } from 'src/infra/http/graphql/pub-sub'
 import { UserLoggedIn } from '../domain/events/user-logged-in'
 
 export class UserLoggedInHandler implements IHandler<UserLoggedIn> {
-  setupSubscriptions() {
-    DomainEvents.subscribeEventHandler(this.handle.bind(this), UserLoggedIn.constructor.name)
+  constructor() {
+    DomainEvents.subscribeEventHandler(this, UserLoggedIn.eventName)
   }
 
   handle(e: UserLoggedIn) {

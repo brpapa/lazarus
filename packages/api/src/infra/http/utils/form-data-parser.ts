@@ -3,7 +3,7 @@ import debug from 'debug'
 import { IncomingMessage } from 'http'
 import { Readable } from 'stream'
 
-const log = debug('app:utils')
+const log = debug('app:form-data-parser')
 
 export type FileMetadata = {
   /** formdata field */
@@ -81,6 +81,7 @@ export function parseFormData<T>(
         transferEncoding,
         mimeType,
       }
+      log('file received: ', fileMetadata)
 
       const fileHandlerPromise = fileHandler(incomingFile, fileMetadata)
       fileHandlerPromises.push(fileHandlerPromise)

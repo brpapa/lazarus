@@ -5,6 +5,7 @@ interface EntityProps {
 }
 
 export abstract class Entity<T extends EntityProps> {
+  /** The id of entity */
   public id: UUID
   public props: T
 

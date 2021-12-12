@@ -6,13 +6,13 @@ const prismaClient = new PrismaClient({
   log: ['error', 'warn'],
 })
 
-// dispatch domain events after a save of an aggregate root entity
+/** dispatch domain events after an aggregate root is saved */
 prismaClient.$use(async (params, next) => {
   const result = await next(params)
 
   if (mutationActions.includes(params.action) && typeof result?.id === 'string') {
     const entityId = result.id as string
-    DomainEvents.dispatchEventsOfAggregate(new UUID(entityId))
+    DomainEvents.dispatchAllPendingEventsOfAggregate(new UUID(entityId))
   }
   return result
 })

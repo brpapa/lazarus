@@ -27,7 +27,7 @@ export async function uploadToS3(
     region: AWS_REGION,
     endpoint: AWS_SERVICE_ENDPOINT,
   })
-  const objectKey = new UUID().toString()
+  const objectKey = createObjectKey(metadata)
   registerDownloadProgressReporter(incomingFile, metadata)
 
   try {
@@ -85,4 +85,10 @@ function canUpdateClientNow(previousTickInNs: bigint | null) {
   const nowTickInNs = hrtime.bigint()
   const minimalAllowedPeriodInMs = MINIMAL_CLIENT_UPDATE_PERIOD_IN_MS * 1e6
   return nowTickInNs - previousTickInNs >= minimalAllowedPeriodInMs
+}
+
+const createObjectKey = (metadata: FileMetadata) => {
+  const uuid = new UUID().toString()
+  const extension = metadata.fileName.split('.').pop()
+  return extension ? `${uuid}.${extension}` : uuid
 }

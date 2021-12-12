@@ -3,14 +3,19 @@ import { UUID } from 'src/shared/domain/models/uuid'
 import { User } from 'src/modules/user/domain/models/user'
 
 export class UserRegistered extends DomainEvent {
-  public user: User
-
-  constructor(user: User) {
-    super()
-    this.user = user
+  static get eventName() {
+    return 'UserRegistered'
   }
 
-  public getAggregatorId(): UUID {
+  constructor(public user: User) {
+    super()
+  }
+
+  get eventName() {
+    return UserRegistered.eventName
+  }
+
+  get aggregatorId(): UUID {
     return this.user.id
   }
 }

@@ -4,11 +4,19 @@ import { Comment } from 'src/modules/incident/domain/models/comment'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 
 export class CommentPostedOnIncident extends DomainEvent {
+  static get eventName() {
+    return 'CommentPostedOnIncident'
+  }
+
   constructor(public incident: Incident, public comment: Comment) {
     super()
   }
 
-  public getAggregatorId(): UUID {
+  get eventName() {
+    return CommentPostedOnIncident.eventName
+  }
+
+  get aggregatorId(): UUID {
     return this.incident.id
   }
 }

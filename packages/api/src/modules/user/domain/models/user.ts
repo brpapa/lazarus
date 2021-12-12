@@ -1,3 +1,4 @@
+import debug from 'debug'
 import assert from 'assert'
 import { Guard } from 'src/shared/logic/guard'
 import { DomainError } from 'src/shared/logic/errors'
@@ -11,6 +12,8 @@ import { UserPassword } from './user-password'
 import { UserPhoneNumber } from './user-phone-number'
 import { JwtAccessToken, JwtRefreshToken } from './jwt'
 import { UserLoggedIn } from '../events/user-logged-in'
+
+const log = debug('app:user:domain')
 
 interface UserProps {
   username: string
@@ -55,6 +58,9 @@ export class User extends AggregateRoot<UserProps> {
     const user = new User(props, id)
     const isNew = !!id
     if (isNew) user.addDomainEvent(new UserRegistered(user))
+
+    log(`User created: ${user.id}`)
+
     return ok(user)
   }
 
