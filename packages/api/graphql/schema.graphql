@@ -14,9 +14,20 @@ type Query {
     """The incident id"""
     id: String!
   ): Incident
+  incidents(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
 
-  """Search for all incidents localizated within the given box boundary"""
-  incidentsWithinBoundary(input: IncidentsWithinBoundaryInput!): [Incident]!
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filter: IncidentsFilterInputType
+  ): IncidentConnection
 }
 
 """An object with an ID"""
@@ -26,7 +37,7 @@ interface Node {
 }
 
 type Incident implements Node {
-  """The ID of an object"""
+  """The opaque identifier of GraphQL node, based on relay specs"""
   id: ID!
 
   """The incident id"""
@@ -49,13 +60,45 @@ type Media {
 """Date type"""
 scalar Date
 
-input IncidentsWithinBoundaryInput {
-  boundary: BoundaryInput!
-  first: Int
+"""A connection to a list of items."""
+type IncidentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [IncidentEdge]
 }
 
-"""The corner coordinates visible in map view"""
-input BoundaryInput {
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type IncidentEdge {
+  """The item at the end of the edge"""
+  node: Incident!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input IncidentsFilterInputType {
+  withinBoundary: WithinBoundaryInput
+}
+
+"""Filter by incidents localizated within a box boundary"""
+input WithinBoundaryInput {
   northEast: CoordinateInput!
   southWest: CoordinateInput!
 }
@@ -109,7 +152,7 @@ type UserEdge {
 }
 
 type User implements Node {
-  """The ID of an object"""
+  """The opaque identifier of GraphQL node, based on relay specs"""
   id: ID!
 
   """The user id"""

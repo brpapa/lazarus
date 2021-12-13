@@ -34,15 +34,15 @@ const populate = async () => {
   )
 
   const CENTER_POINT = { latitude: -22.877187463558492, longitude: -48.44966612756252 }
-  const RADIUS_IN_METERS = 1e4
+  const RADIUS_IN_METERS = 1e2
 
   await Promise.all(
-    new Array(5).fill(null).map(async (_, i) => {
+    new Array(1).fill(null).map(async (_, i) => {
       const randomPoint = randomCirclePoint(CENTER_POINT, RADIUS_IN_METERS)
 
       const incident = Incident.create({
         ownerUserId: user.id,
-        title: `incident ${i}`,
+        title: `generated incident ${i}`,
         coordinate: Coordinate.create(randomPoint).asOk(),
       }).asOk()
 

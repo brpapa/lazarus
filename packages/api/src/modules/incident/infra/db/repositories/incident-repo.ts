@@ -66,6 +66,28 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     return []
   }
 
+  async findMany(): Promise<Incident[]> {
+    const incidentsModels = await this.prismaClient.incidentModel.findMany({
+      include: { ...this.baseInclude },
+    })
+
+    if (incidentsModels.length > 0) {
+      const incidentsCoordsModels = await this.redisClient.geoPos(
+        this.REDIS_GEO_SET_KEY,
+        incidentsModels.map((i) => i.id),
+      )
+
+      return zip(incidentsModels, incidentsCoordsModels).map(
+        ([incidentModel, incidentCoordModel]) => {
+          assert(!!incidentModel && !!incidentCoordModel)
+          return IncidentMapper.fromPersistenceToDomain(incidentModel, incidentCoordModel)
+        },
+      )
+    }
+
+    return []
+  }
+
   async findManyWithinBox(
     centerPoint: CoordinateProps,
     dimensionsInMeters: { width: number; height: number },

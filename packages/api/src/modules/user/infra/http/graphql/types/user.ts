@@ -33,7 +33,7 @@ export const UserType = GraphQLTypes.register(
 
 export const { connectionType: UserConnectionType, edgeType: UserEdgeType } = connectionDefinitions(
   {
-    name: 'User',
+    name: USER_TYPE_NAME,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nodeType: GraphQLNonNull(UserType),

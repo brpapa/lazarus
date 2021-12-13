@@ -6,7 +6,7 @@ const prismaClient = new PrismaClient({
   log: ['error', 'warn'],
 })
 
-/** dispatch domain events after an aggregate root is saved */
+/** dispatch domain events after an aggregate root is persisted */
 prismaClient.$use(async (params, next) => {
   const result = await next(params)
 

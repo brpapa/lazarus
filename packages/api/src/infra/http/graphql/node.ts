@@ -4,7 +4,7 @@ import { GraphQLObjectType } from 'graphql'
 import DataLoader from 'dataloader'
 import { GraphQLContext } from './context'
 
-const log = debug('app:graphql')
+const log = debug('app:infra:http:graphql')
 
 /** Encapsulated global state, containing all custom graphql types defined */
 export class GraphQLTypes {

@@ -18,7 +18,7 @@ export class DomainEvents {
     const alreadyRegistered = this.aggregateRoots.some((r) => r.equals(agg))
     if (!alreadyRegistered) {
       this.aggregateRoots.push(agg)
-      log(`'${agg.aggregateRootName}' aggregate root registered`)
+      // log(`'${agg.aggregateRootName}' aggregate root registered`)
     }
   }
 
@@ -40,7 +40,7 @@ export class DomainEvents {
 
   private static dispatchEvent(event: DomainEvent) {
     const handlers = DomainEvents.eventHandlers.get(event.eventName) || []
-    if (handlers.length === 0) log(`'${event.eventName}' has no any subscribed handler yet`)
+    if (handlers.length === 0) log(`'${event.eventName}' event has no any subscribed handler yet`)
     handlers.forEach((handler) => {
       const handlerName = handler.constructor.name
       handler.handle(event)
@@ -53,8 +53,6 @@ export class DomainEvents {
   }
 
   static subscribeEventHandler<T extends DomainEvent>(handler: IHandler<T>, eventName: string) {
-    if (!DomainEvents.eventHandlers.has(eventName)) DomainEvents.eventHandlers.set(eventName, [])
-
     const previousHandlers = DomainEvents.eventHandlers.get(eventName) || []
     DomainEvents.eventHandlers.set(eventName, [...previousHandlers, handler])
 

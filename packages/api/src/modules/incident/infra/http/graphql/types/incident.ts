@@ -46,7 +46,7 @@ export const IncidentType = GraphQLTypes.register(
 
 export const { connectionType: IncidentConnectionType, edgeType: IncidentEdgeType } =
   connectionDefinitions({
-    name: 'Incident',
+    name: INCIDENT_TYPE_NAME,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nodeType: GraphQLNonNull(IncidentType),

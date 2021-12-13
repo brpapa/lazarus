@@ -8,7 +8,7 @@ import { UUID } from 'src/shared/domain/models/uuid'
 import { Readable } from 'stream'
 import { FileMetadata } from './form-data-parser'
 
-const log = debug('app:uploader')
+const log = debug('app:infra:http')
 
 export type UploadResult = {
   s3Url: string

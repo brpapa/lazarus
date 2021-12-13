@@ -1,4 +1,3 @@
-import debug from 'debug'
 import assert from 'assert'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
@@ -15,8 +14,6 @@ import { Comment } from './comment'
 import { ActivityLog } from './activity-log'
 import { Reaction } from './reaction'
 import { IncidentStatistics } from './statistics'
-
-const log = debug('app:incident:domain')
 
 interface IncidentProps {
   ownerUserId: UUID
@@ -77,7 +74,6 @@ export class Incident extends AggregateRoot<IncidentProps> {
     const isNew = id === undefined
     if (isNew) incident.addDomainEvent(new IncidentCreated(incident))
 
-    log(`Incident created: ${incident.id}`)
     return ok(incident)
   }
 

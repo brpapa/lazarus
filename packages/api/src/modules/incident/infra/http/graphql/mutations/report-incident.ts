@@ -36,7 +36,7 @@ export const ReportIncidentMutationType: GraphQLFieldConfig<any, GraphQLContext>
     ) => {
       // if (!ctx.viewer) throw new Error('Unauthorized')
       // const userId = ctx.viewer.id.toString()
-      const userId = '70e9ba9e-4c5b-4bf3-ae0a-c6d29ecad36b' // TODO
+      const userId = '4f514673-1283-40b6-abaf-71e488e84000' // TODO
 
       const incident = await createIncidentCommand.exec({
         userId,
