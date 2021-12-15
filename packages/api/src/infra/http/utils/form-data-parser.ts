@@ -81,7 +81,7 @@ export function parseFormData<T>(
         transferEncoding,
         mimeType,
       }
-      log('file received: ', fileMetadata)
+      // log('file received: ', fileMetadata)
 
       const fileHandlerPromise = fileHandler(incomingFile, fileMetadata)
       fileHandlerPromises.push(fileHandlerPromise)

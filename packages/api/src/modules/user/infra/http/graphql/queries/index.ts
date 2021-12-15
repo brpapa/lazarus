@@ -1,7 +1,7 @@
 import { GraphQLString, GraphQLNonNull, GraphQLID, GraphQLFieldConfig } from 'graphql'
 import { connectionArgs, ConnectionArguments, fromGlobalId } from 'graphql-relay'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
-import { UserType, UserConnectionType } from 'src/modules/user/infra/http/graphql/types/user'
+// import { UserType, UserConnectionType } from 'src/modules/user/infra/http/graphql/types/user'
 
 export const userQueriesFields: Record<string, GraphQLFieldConfig<void, GraphQLContext>> = {
   // me: {
@@ -38,6 +38,6 @@ export const userQueriesFields: Record<string, GraphQLFieldConfig<void, GraphQLC
   // },
 }
 
-type UserArgs = ConnectionArguments & {
-  search?: string
-}
+// type UserArgs = ConnectionArguments & {
+//   search?: string
+// }

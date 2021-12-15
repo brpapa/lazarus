@@ -34,7 +34,7 @@ const IncidentsFilterInputType = new GraphQLInputObjectType({
 })
 
 export const IncidentsQueryType: GraphQLFieldConfig<void, GraphQLContext, any> = {
-  type: IncidentConnectionType,
+  type: GraphQLNonNull(IncidentConnectionType),
   args: {
     ...connectionArgs,
     filter: {

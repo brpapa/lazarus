@@ -4,7 +4,7 @@ import { UUID } from '../models/uuid'
 import { DomainEvent } from './domain-event'
 import { IHandler } from './handler'
 
-const log = debug('app:shared:domain')
+const log = debug('app:domain')
 
 /** Encapsulated global state */
 export class DomainEvents {
@@ -18,7 +18,6 @@ export class DomainEvents {
     const alreadyRegistered = this.aggregateRoots.some((r) => r.equals(agg))
     if (!alreadyRegistered) {
       this.aggregateRoots.push(agg)
-      // log(`'${agg.aggregateRootName}' aggregate root registered`)
     }
   }
 
@@ -30,7 +29,9 @@ export class DomainEvents {
     const agg = this.aggregateRoots.find((r) => r.id.equals(aggRootId))
     if (agg) {
       log(
-        `Dispatching ${agg.pendingEvents.length} pending event(s) of '${agg.aggregateRootName}' aggregate root`,
+        'Dispatching %o pending event(s) of %o aggregate root',
+        agg.pendingEvents.length,
+        agg.aggregateRootName,
       )
       agg.pendingEvents.forEach(this.dispatchEvent)
       agg.clearEvents()
@@ -40,11 +41,11 @@ export class DomainEvents {
 
   private static dispatchEvent(event: DomainEvent) {
     const handlers = DomainEvents.eventHandlers.get(event.eventName) || []
-    if (handlers.length === 0) log(`'${event.eventName}' event has no any subscribed handler yet`)
+    if (handlers.length === 0) log('%o event has no any subscribed handler yet', event.eventName)
     handlers.forEach((handler) => {
       const handlerName = handler.constructor.name
       handler.handle(event)
-      log(`'${event.eventName}' event dispatched to '${handlerName}' handler`)
+      log('%o event dispatched to the %o handler', event.eventName, handlerName)
     })
   }
 
@@ -57,7 +58,7 @@ export class DomainEvents {
     DomainEvents.eventHandlers.set(eventName, [...previousHandlers, handler])
 
     const handlerName = handler.constructor.name
-    log(`'${handlerName}' handler subscribed to '${eventName}' event`)
+    log('%o handler subscribed to the %o event', handlerName, eventName)
   }
 
   static unsubscribeAllEventHandlers() {

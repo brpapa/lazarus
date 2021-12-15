@@ -12,10 +12,10 @@ export type ErrResponse = UseCaseError | UnexpectedError
 export type Response = Result<OkResponse, ErrResponse>
 
 // TODO
-export class UpdateUserLocation implements Command<Request, Response> {
-  constructor(private userRepo: IUserRepo) {}
+export class UpdateUserLocation extends Command<Request, Response> {
+  constructor(private userRepo: IUserRepo) {super()}
 
-  async exec(req: Request): Promise<Response> {
+  async execImpl(req: Request): Promise<Response> {
     try {
       return okVoid()
     } catch (e) {

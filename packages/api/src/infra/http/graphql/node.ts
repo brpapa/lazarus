@@ -26,11 +26,11 @@ export const { nodeField, nodeInterface } = nodeDefinitions<GraphQLContext>(
   // returns an object of a given globalId
   (globalId, ctx) => {
     const { type: typeName, id } = fromGlobalId(globalId)
-    log(`resolving an object to the ${typeName} graphql type with id ${id}`)
+    log('resolving an object to the %o graphql type with id %o', typeName, id)
 
     // @ts-ignore
     const loader = ctx.loaders[typeName.toLowerCase()] as DataLoader<any, any>
-    log(`data loader found: ${loader}`)
+    log('data loader found: %o', loader)
 
     return (loader && loader.load(id)) || null
   },

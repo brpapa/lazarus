@@ -14,7 +14,7 @@ interface IResult<T, E> {
 
   /**
    * Maps a `Result<T, E>` to `Result<U, E>` by applying a function to a contained `Ok` value, leaving an `Err` value untouched.
-   * @param f The function to apply an `OK` value
+   * @param f The function to apply an `Ok` value
    * @returns the result of applying `f` or an `Err` untouched
    */
   mapOk<A>(f: (v: T) => A): Result<A, E>
@@ -27,7 +27,7 @@ interface IResult<T, E> {
 
   /**
    * Maps a `Result<T, E>` to `Result<A, U>`
-   * @param okFn The function to map an `OK` value
+   * @param okFn The function to map an `Ok` value
    * @param errFn The function to map an `Err` value
    */
   map<A, U>(okFn: (v: T) => A, errFn: (e: E) => U): Result<A, U>

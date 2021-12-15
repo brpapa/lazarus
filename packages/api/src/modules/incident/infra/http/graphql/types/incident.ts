@@ -33,7 +33,7 @@ export const IncidentType = GraphQLTypes.register(
         resolve: (incident) => incident.coordinate,
       },
       medias: {
-        type: GraphQLNonNull(GraphQLList(MediaType)),
+        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
         resolve: (incident) => incident.medias,
       },
       createdAt: {

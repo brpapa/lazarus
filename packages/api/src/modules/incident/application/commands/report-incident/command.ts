@@ -11,6 +11,7 @@ import { UUID } from 'src/shared/domain/models/uuid'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { Guard } from 'src/shared/logic/guard'
+import debug, { Debugger } from 'debug'
 
 export type Request = {
   userId: string
@@ -29,10 +30,12 @@ export type OkResponse = IncidentDTO
 export type ErrResponse = DomainError | UseCaseError | UnexpectedError
 export type Response = Result<OkResponse, ErrResponse>
 
-export class ReportIncidentCommand implements Command<Request, Response> {
-  constructor(private incidentRepo: IIncidentRepo) {}
+export class ReportIncidentCommand extends Command<Request, Response> {
+  constructor(log: Debugger, private incidentRepo: IIncidentRepo) {
+    super(log)
+  }
 
-  async exec(req: Request): Promise<Response> {
+  async execImpl(req: Request): Promise<Response> {
     try {
       const incidentOrErr = Coordinate.create(req.coordinate)
         .andThen<Incident, DomainError>((coordinate) => {

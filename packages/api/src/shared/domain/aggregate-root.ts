@@ -4,7 +4,7 @@ import { DomainEvent } from './events/domain-event'
 import { DomainEvents } from './events/domain-events'
 import { Entity } from './entity'
 
-const log = debug('app:shared:domain:aggregate-root')
+const log = debug('app:domain:aggregate-root')
 
 /**
  * The main entity inside a aggregate cluster of related entities and value objects which are treated as a unit for data changes
@@ -30,7 +30,9 @@ export abstract class AggregateRoot<T> extends Entity<T> {
   protected addDomainEvent(event: DomainEvent) {
     this._pendingEvents.push(event)
     log(
-      `'${event.eventName}' event added to pending events of '${this.aggregateRootName}' aggregate root`,
+      '%o event added to pending events of %o aggregate root',
+      event.eventName,
+      this.aggregateRootName,
     )
 
     DomainEvents.registerAggregate(this)

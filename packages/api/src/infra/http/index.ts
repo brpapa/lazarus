@@ -14,7 +14,7 @@ export function initialize() {
 
   httpServer.listen(HTTP_PORT, () => {
     const httpAddress = httpServer.address() as unknown as Address
-    log(`HTTP server started at http://${httpAddress.address}:${httpAddress.port}`)
+    log('HTTP server started at %o', `http://${httpAddress.address}:${httpAddress.port}`)
 
     const wsServer = new WebSocketServer({
       server: httpServer,
@@ -26,29 +26,29 @@ export function initialize() {
         execute,
         subscribe,
         onConnect: (ctx) => {
-          log('client connected', ctx)
+          log('client connected: %o', ctx)
         },
         onDisconnect: (ctx) => {
-          log('client disconnected', ctx)
+          log('client disconnected: %o', ctx)
         },
         onSubscribe: (ctx, msg) => {
-          log('subscribed', { ctx, msg })
+          log('subscribed: %o', { ctx, msg })
         },
         onNext: (ctx, msg, args, result) => {
-          log('next', { ctx, msg, args, result })
+          log('next: %o', { ctx, msg, args, result })
         },
         onError: (ctx, msg, errors) => {
-          log('error', { ctx, msg, errors })
+          log('error: %o', { ctx, msg, errors })
         },
         onComplete: (ctx, msg) => {
-          log('completed', { ctx, msg })
+          log('completed: %o', { ctx, msg })
         },
       },
       wsServer,
     )
 
     const wsAddress = wsServer.address() as unknown as Address
-    log(`WebSocket server started at ws://${wsAddress.address}:${wsAddress.port}`)
+    log('WebSocker server started at %o', `http://${wsAddress.address}:${wsAddress.port}`)
   })
 
   return httpServer

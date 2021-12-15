@@ -33,10 +33,10 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
     const isNew = !(await this.exists(user))
     if (isNew) {
-      log(`Persisting a new user: ${user.id}`)
+      log('Persisting a new user: ', user.id.toString())
       await this.prismaClient.userModel.create({ data: userModel })
     } else {
-      log(`Persisting an updated user: ${user.id}`)
+      log('Persisting an updated user: ', user.id.toString())
       await this.prismaClient.incidentModel.update({
         where: { id: user.id.toString() },
         data: userModel,

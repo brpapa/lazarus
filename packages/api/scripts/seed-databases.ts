@@ -10,6 +10,7 @@ import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-numbe
 import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { AWS_S3_BUCKET_NAME } from 'src/shared/config'
 import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { UUID } from 'src/shared/domain/models/uuid'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
 async function main() {
@@ -25,12 +26,15 @@ const populate = async () => {
   }
 
   const user = await userRepo.commit(
-    User.create({
-      username: 'my-username',
-      password: UserPassword.create({ value: '1234567890' }).asOk(),
-      phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-      currentLocation: Coordinate.create(USER_COORDINATE).asOk(),
-    }).asOk(),
+    User.create(
+      {
+        username: 'my-username',
+        password: UserPassword.create({ value: '1234567890' }).asOk(),
+        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        currentLocation: Coordinate.create(USER_COORDINATE).asOk(),
+      },
+      new UUID('my-user-id'),
+    ).asOk(),
   )
 
   const CENTER_POINT = { latitude: -22.877187463558492, longitude: -48.44966612756252 }

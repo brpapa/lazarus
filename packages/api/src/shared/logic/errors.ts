@@ -17,7 +17,6 @@ export class AppError {
 export class UnexpectedError extends AppError {
   constructor(err: any) {
     super('An unexpected error occurred')
-    log('An unexpected error occurred')
-    log(err)
+    log('Unexpected error: %o', err)
   }
 }

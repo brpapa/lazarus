@@ -27,7 +27,7 @@ type Query {
     """Returns the last n items from the list."""
     last: Int
     filter: IncidentsFilterInputType
-  ): IncidentConnection
+  ): IncidentConnection!
 }
 
 """An object with an ID"""
@@ -44,7 +44,7 @@ type Incident implements Node {
   incidentId: String!
   title: String!
   coordinate: Coordinate!
-  medias: [Media]!
+  medias: [Media!]!
   createdAt: Date!
 }
 

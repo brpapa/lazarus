@@ -125,12 +125,12 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
     const isNew = !(await this.exists(incident))
     if (isNew) {
-      log(`Persisting a new incident: ${incident.id}`)
+      log('Persisting a new incident: %o', incident.id.toString())
       await this.prismaClient.incidentModel.create({ data: incidentModel })
       await this.commentRepo.commitMany(incident.comments)
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
     } else {
-      log(`Persisting an updated incident: ${incident.id}`)
+      log('Persisting an updated incident: %o', incident.id.toString())
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
       await this.commentRepo.commitMany(incident.comments)
       await this.prismaClient.incidentModel.update({

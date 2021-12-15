@@ -48,16 +48,16 @@ export async function uploadToS3(
 
     upload.on('httpUploadProgress', (progress) => {
       if (progress.loaded)
-        log(`${metadata.fileName}: ${prettyBytes(progress.loaded)} uploaded to the S3`)
+        log(`%o file: %s uploaded to the S3`, metadata.fileName, prettyBytes(progress.loaded))
     })
 
     await upload.done()
-    log(`${metadata.fileName}: totally uploaded to the S3`)
+    log(`%o file: totally uploaded to the S3`, metadata.fileName)
 
     const s3Url = `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${objectKey}`
     return { s3Url, ...metadata }
   } catch (e) {
-    log(`${metadata.fileName}: error to upload to the S3`, e)
+    log(`%o file: error to upload to the S3`, metadata.fileName)
     throw e
   }
 }
@@ -71,11 +71,11 @@ const registerDownloadProgressReporter = (incomingFile: Readable, metadata: File
     // backpressure the client update
     if (canUpdateClientNow(previousClientUpdateTickInNs)) {
       previousClientUpdateTickInNs = hrtime.bigint()
-      log(`${metadata.fileName}: ${prettyBytes(consumedBytes)} downloaded by server`) // TODO: notificar cliente via websocket
+      log(`%o file: %s downloaded by server`, metadata.fileName, prettyBytes(consumedBytes)) // TODO: notificar cliente via websocket
     }
   })
   incomingFile.on('end', () => {
-    log(`${metadata.fileName}: totally downloaded by server`)
+    log(`%o file: totally downloaded by server`, metadata.fileName)
   })
 }
 

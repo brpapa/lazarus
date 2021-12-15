@@ -5,6 +5,7 @@ import { IUserRepo } from 'src/modules/user/adapter/repositories/user'
 import { DomainError, UnexpectedError, UseCaseError } from 'src/shared/logic/errors'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
+import { Debugger } from 'debug'
 
 export type Request = {
   username: string
@@ -15,12 +16,14 @@ export type OkResponse = void
 export type ErrResponse = DomainError | UseCaseError | UnexpectedError
 export type Response = Result<void, ErrResponse>
 
-export class RegisterUserCommand implements Command<Request, Response> {
-  constructor(private userRepo: IUserRepo) {}
+export class RegisterUserCommand extends Command<Request, Response> {
+  constructor(log: Debugger, private userRepo: IUserRepo) {
+    super(log)
+  }
 
-  async exec(req: Request): Promise<Response> {
+  async execImpl(req: Request): Promise<Response> {
     try {
-      // todo: validar unicidade do username e do phoeNumber
+      // todo: validar unicidade do username e do phoneNumber
       // new UseCaseError(`The phone number ${phoneNumber} is already associated to another account`)
       // new UseCaseError(`The username ${username} was already taken`)
 
