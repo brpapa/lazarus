@@ -2,15 +2,15 @@ import debug from 'debug'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
 import { UUID } from '../models/uuid'
 import { DomainEvent } from './domain-event'
-import { IHandler } from './handler'
+import { IObserver } from './observer'
 
 const log = debug('app:domain')
 
 /** Encapsulated global state */
 export class DomainEvents {
-  /** handlers by event name */
-  private static eventHandlers = new Map<string, IHandler<DomainEvent>[]>()
-  /** aggregate root instances that contains domain events that eventually will be dispatched to your handlers when the infra commits the unit of work */
+  /** observers by event name */
+  private static observers = new Map<string, IObserver<DomainEvent>[]>()
+  /** aggregate root instances that contains domain events that eventually will be dispatched to your observers when the infra commits the unit of work */
   private static aggregateRoots: AggregateRoot<any>[] = []
 
   /** register the instance reference, so if an instance already was registered, the new pending events are visibile too */
@@ -40,12 +40,12 @@ export class DomainEvents {
   }
 
   private static dispatchEvent(event: DomainEvent) {
-    const handlers = DomainEvents.eventHandlers.get(event.eventName) || []
-    if (handlers.length === 0) log('%o event has no any subscribed handler yet', event.eventName)
-    handlers.forEach((handler) => {
-      const handlerName = handler.constructor.name
-      handler.handle(event)
-      log('%o event dispatched to the %o handler', event.eventName, handlerName)
+    const observers = DomainEvents.observers.get(event.eventName) || []
+    if (observers.length === 0) log('%o event has no any subscribed observer yet', event.eventName)
+    observers.forEach((observer) => {
+      const observerName = observer.constructor.name
+      observer.handle(event)
+      log('%o event dispatched to the %o observer', event.eventName, observerName)
     })
   }
 
@@ -53,15 +53,15 @@ export class DomainEvents {
     DomainEvents.aggregateRoots = DomainEvents.aggregateRoots.filter((r) => !r.equals(agg))
   }
 
-  static subscribeEventHandler<T extends DomainEvent>(handler: IHandler<T>, eventName: string) {
-    const previousHandlers = DomainEvents.eventHandlers.get(eventName) || []
-    DomainEvents.eventHandlers.set(eventName, [...previousHandlers, handler])
+  static subscribeObserver<T extends DomainEvent>(observer: IObserver<T>, eventName: string) {
+    const previousObservers = DomainEvents.observers.get(eventName) || []
+    DomainEvents.observers.set(eventName, [...previousObservers, observer])
 
-    const handlerName = handler.constructor.name
-    log('%o handler subscribed to the %o event', handlerName, eventName)
+    const observerName = observer.constructor.name
+    log('%o observer subscribed to the %o event', observerName, eventName)
   }
 
-  static unsubscribeAllEventHandlers() {
-    DomainEvents.eventHandlers.clear()
+  static unsubscribeAllObservers() {
+    DomainEvents.observers.clear()
   }
 }

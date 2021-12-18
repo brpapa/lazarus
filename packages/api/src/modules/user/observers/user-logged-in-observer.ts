@@ -1,11 +1,11 @@
 import { DomainEvents } from 'src/shared/domain/events/domain-events'
-import { IHandler } from 'src/shared/domain/events/handler'
+import { IObserver } from 'src/shared/domain/events/observer'
 import { events, pubSub } from 'src/infra/http/graphql/pub-sub'
 import { UserLoggedIn } from '../domain/events/user-logged-in'
 
-export class UserLoggedInHandler implements IHandler<UserLoggedIn> {
+export class UserLoggedInObserver implements IObserver<UserLoggedIn> {
   constructor() {
-    DomainEvents.subscribeEventHandler(this, UserLoggedIn.eventName)
+    DomainEvents.subscribeObserver(this, UserLoggedIn.eventName)
   }
 
   handle(e: UserLoggedIn) {

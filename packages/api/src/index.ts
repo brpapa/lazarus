@@ -3,8 +3,8 @@ import { initialize } from './infra/http/index'
 import { connectPrisma } from './infra/db/prisma/connection'
 import { connectRedis } from './infra/db/redis/connection'
 
-import './modules/incident/event-handlers'
-import './modules/user/event-handlers'
+import './modules/incident/observers'
+import './modules/user/observers'
 
 async function main() {
   await connectPrisma()
