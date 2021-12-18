@@ -1,12 +1,12 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { nodeField } from 'src/infra/http/graphql/node'
-import { incidentQueryFields as incidentQueriesFields } from 'src/modules/incident/infra/http/graphql/queries'
-import { incidentSubscriptionsFields } from 'src/modules/incident/infra/http/graphql/subscriptions'
-import { incidentMutationsFields } from 'src/modules/incident/infra/http/graphql/mutations'
-import { userQueriesFields } from 'src/modules/user/infra/http/graphql/queries'
-import { userMutationsFields } from 'src/modules/user/infra/http/graphql/mutations'
-import { userSubscriptionsFields } from 'src/modules/user/infra/http/graphql/subscriptions'
+import * as IncidentQueries from 'src/modules/incident/infra/http/graphql/queries'
+import * as IncidentMutations from 'src/modules/incident/infra/http/graphql/mutations'
+import * as IncidentSubscriptions from 'src/modules/incident/infra/http/graphql/subscriptions'
+import * as UserQueries from 'src/modules/user/infra/http/graphql/queries'
+import * as UserMutations from 'src/modules/user/infra/http/graphql/mutations'
+import * as UserSubscriptions from 'src/modules/user/infra/http/graphql/subscriptions'
 
 const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Query',
@@ -22,8 +22,8 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
       description:
         'Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface',
     },
-    ...userQueriesFields,
-    ...incidentQueriesFields,
+    incident: IncidentQueries.IncidentQueryType,
+    incidents: IncidentQueries.IncidentsQueryType,
   }),
 })
 
@@ -32,17 +32,23 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Mutation',
   description: 'The mutation root type',
   fields: () => ({
-    ...userMutationsFields,
-    ...incidentMutationsFields,
+    signUp: UserMutations.SignUpMutationType,
+    signIn: UserMutations.SignInMutationType,
+    reportIncident: IncidentMutations.ReportIncidentMutationType,
   }),
 })
 
+/*
+  Resolvers for subscription are slightly different from others:
+    - Rather than returning any data directly, they return an AsyncIterator which subsequently is used by the GraphQL server to push the event data to the client.
+    - Subscription resolvers are wrapped inside an object and need to be provided as the value for a subscribe field. You also need to provide another field called resolve that actually returns the data from the data emitted by the AsyncIterator.
+*/
 const SubscriptionType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Subscription',
   description: 'The subscription root type',
   fields: () => ({
-    ...userSubscriptionsFields,
-    ...incidentSubscriptionsFields,
+    userAdded: UserSubscriptions.UserAddedSubscriptionType,
+    incidentCreated: IncidentSubscriptions.IncidentCreatedSubscriptionType,
   }),
 })
 

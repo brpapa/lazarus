@@ -12,7 +12,7 @@ type Query {
   ): Node
   incident(
     """The incident id"""
-    id: String!
+    incidentId: String!
   ): Incident
   incidents(
     """Returns the items in the list that come after the specified cursor."""
@@ -110,7 +110,43 @@ input CoordinateInput {
 
 """The mutation root type"""
 type Mutation {
+  signUp(input: SignUpInput!): SignUpPayload
+  signIn(input: SignInInput!): SignInPayload
   reportIncident(input: ReportIncidentInput!): ReportIncidentPayload
+}
+
+type SignUpPayload {
+  user: User!
+  clientMutationId: String
+}
+
+type User implements Node {
+  """The opaque identifier of GraphQL node, based on relay specs"""
+  id: ID!
+
+  """The user id"""
+  userId: String
+  name: String
+  email: String
+}
+
+input SignUpInput {
+  username: String!
+  password: String!
+  phoneNumber: String!
+  clientMutationId: String
+}
+
+type SignInPayload {
+  accessToken: String!
+  refreshToken: String!
+  clientMutationId: String
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+  clientMutationId: String
 }
 
 type ReportIncidentPayload {
@@ -149,14 +185,4 @@ type UserEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
-}
-
-type User implements Node {
-  """The opaque identifier of GraphQL node, based on relay specs"""
-  id: ID!
-
-  """The user id"""
-  userId: String
-  name: String
-  email: String
 }

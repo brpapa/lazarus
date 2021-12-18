@@ -17,17 +17,26 @@ export class CommentRepo extends PrismaRepo<Comment> implements ICommentRepo {
     throw new Error('Method not implemented.')
   }
 
+  findManyByIds(ids: string[]): Promise<Comment[]> {
+    throw new Error('Method not implemented.')
+  }
+
   async commit(comment: Comment): Promise<Comment> {
-    const commentModel = CommentMapper.fromDomainToPersistence(comment)
+    try {
+      const commentModel = CommentMapper.fromDomainToPersistence(comment)
 
-    log('Persisting a new comment or comment update: %o', comment.id.toString())
-    await this.prismaClient.commentModel.upsert({
-      where: { id: comment.id.toString() },
-      create: commentModel,
-      update: commentModel,
-    })
+      log('Persisting a new comment or comment update: %o', comment.id.toString())
+      await this.prismaClient.commentModel.upsert({
+        where: { id: comment.id.toString() },
+        create: commentModel,
+        update: commentModel,
+      })
 
-    return comment
+      return comment
+    } catch (e) {
+      log('Unexpected error: %O', e)
+      throw e
+    }
   }
 
   async commitMany(comments: WatchedList<Comment>): Promise<void> {

@@ -41,7 +41,7 @@ export class DomainEvents {
 
   private static dispatchEvent(event: DomainEvent) {
     const observers = DomainEvents.observers.get(event.eventName) || []
-    if (observers.length === 0) log('%o event has no any subscribed observer yet', event.eventName)
+    if (observers.length === 0) log('%o event has no any observer subscribed yet', event.eventName)
     observers.forEach((observer) => {
       const observerName = observer.constructor.name
       observer.handle(event)

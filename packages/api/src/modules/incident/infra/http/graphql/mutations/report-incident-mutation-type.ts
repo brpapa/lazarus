@@ -1,18 +1,20 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { reportIncidentCommand } from 'src/modules/incident/application/commands'
-import { ReportIncidentInput } from 'src/modules/incident/application/commands/report-incident-command'
+import {
+  ReportIncidentInput,
+  ReportIncidentOkOutput,
+} from 'src/modules/incident/application/commands/report-incident-command'
 import { GetIncidentById } from 'src/modules/incident/application/queries'
-import { createMutationWithClientMutationId } from 'src/shared/infra/graphql/create-mutation'
+import { createMutation } from 'src/shared/infra/graphql/create-mutation'
 import { CoordinateInputType } from 'src/shared/infra/graphql/types/coordinate-type'
 import { IncidentType } from '../types/incident-type'
 import { MediaInputType } from '../types/media-type'
-import { ReportIncidentOkOutput } from './../../../../application/commands/report-incident-command'
 
-export const ReportIncidentMutationType = createMutationWithClientMutationId<
+export const ReportIncidentMutationType = createMutation<
   GraphQLContext,
   ReportIncidentInput,
-  { incidentId: string }
+  ReportIncidentOkOutput
 >({
   name: 'ReportIncident',
   inputFields: {
@@ -23,14 +25,12 @@ export const ReportIncidentMutationType = createMutationWithClientMutationId<
   mutateAndGetPayload: async (args, ctx) => {
     const incident = await reportIncidentCommand.exec(args, ctx)
     if (incident.isErr()) throw incident.error
-    return { incidentId: incident.value.id }
+    return incident.value
   },
   outputFields: {
     incident: {
       type: IncidentType,
-      resolve: (payload, _, ctx) => {
-        return GetIncidentById.gen({ id: payload.incidentId }, ctx)
-      },
+      resolve: (payload, _, ctx) => GetIncidentById.gen(payload, ctx),
     },
   },
 })

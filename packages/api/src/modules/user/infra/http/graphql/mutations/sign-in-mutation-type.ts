@@ -2,13 +2,9 @@ import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { signInCommand } from 'src/modules/user/application/commands'
 import { SignInInput, SignInOkOutput } from 'src/modules/user/application/commands/sign-in-command'
-import { createMutationWithClientMutationId } from 'src/shared/infra/graphql/create-mutation'
+import { createMutation } from 'src/shared/infra/graphql/create-mutation'
 
-export const SignInMutationType = createMutationWithClientMutationId<
-  GraphQLContext,
-  SignInInput,
-  SignInOkOutput
->({
+export const SignInMutationType = createMutation<GraphQLContext, SignInInput, SignInOkOutput>({
   name: 'SignIn',
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },

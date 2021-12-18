@@ -6,7 +6,6 @@ export interface IIncidentRepo extends IRepository<Incident> {
   /** by default, the retrieved incident will bring only the last 25 comments */
   findById(id: string): Promise<Incident | null>
   findMany(): Promise<Incident[]>
-  findManyByIds(ids: string[]): Promise<Incident[]>
   findManyWithinBox(
     centerPoint: CoordinateProps,
     dimensionsInMeters: { width: number; height: number },

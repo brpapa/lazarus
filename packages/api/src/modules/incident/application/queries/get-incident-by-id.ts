@@ -4,8 +4,8 @@ import { IncidentDTO } from '../../adapter/dtos/incident-dto'
 import { IncidentMapper } from '../../adapter/mappers/incident-mapper'
 
 export class GetIncidentById {
-  static async gen(args: { id: string }, ctx: GraphQLContext): Promise<IncidentDTO | null> {
-    const incident = await ctx.loaders.incident.load(args.id)
+  static async gen(args: { incidentId: string }, ctx: GraphQLContext): Promise<IncidentDTO | null> {
+    const incident = await ctx.loaders.incident.load(args.incidentId)
     return this.canSee(ctx.viewer) ? IncidentMapper.fromDomainToDTO(incident) : null
   }
 

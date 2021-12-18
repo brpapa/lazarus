@@ -24,25 +24,30 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     return userModel ? UserMapper.fromPersistenceToDomain(userModel) : null
   }
 
-  async findByIdBatch(ids: string[]): Promise<User[]> {
-    throw new Error('Method not implemented.')
+  async findManyByIds(ids: string[]): Promise<User[]> {
+    const userModels = await this.prismaClient.userModel.findMany({ where: { id: { in: ids } } })
+    return userModels.map((userModel) => UserMapper.fromPersistenceToDomain(userModel))
   }
 
   async commit(user: User): Promise<User> {
-    const userModel = await UserMapper.fromDomainToPersistence(user)
+    try {
+      const userModel = await UserMapper.fromDomainToPersistence(user)
 
-    const isNew = !(await this.exists(user))
-    if (isNew) {
-      log('Persisting a new user: %o', user.id.toString())
-      await this.prismaClient.userModel.create({ data: userModel })
-    } else {
-      log('Persisting an updated user: %o', user.id.toString())
-      await this.prismaClient.incidentModel.update({
-        where: { id: user.id.toString() },
-        data: userModel,
-      })
+      const isNew = !(await this.exists(user))
+      if (isNew) {
+        log('Persisting a new user: %o', user.id.toString())
+        await this.prismaClient.userModel.create({ data: userModel })
+      } else {
+        log('Persisting an updated user: %o', user.id.toString())
+        await this.prismaClient.incidentModel.update({
+          where: { id: user.id.toString() },
+          data: userModel,
+        })
+      }
+      return user
+    } catch (e) {
+      log('Unexpected error: %O', e)
+      throw e
     }
-
-    return user
   }
 }

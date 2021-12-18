@@ -8,7 +8,8 @@ type Config<Ctx, Args, Payload> = {
   outputFields: Record<string, GraphQLFieldConfig<Payload, Ctx>>
 }
 
-export function createMutationWithClientMutationId<Ctx, Args, Payload>(
+/** create mutation with clientMutationId field based on relay specs */
+export function createMutation<Ctx, Args, Payload>(
   config: Config<Ctx, Args, Payload>,
 ): GraphQLFieldConfig<any, Ctx> {
   return mutationWithClientMutationId(config)

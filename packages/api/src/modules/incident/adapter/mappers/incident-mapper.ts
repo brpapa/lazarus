@@ -43,7 +43,7 @@ export class IncidentMapper {
 
   static fromDomainToDTO(domain: Incident): IncidentDTO {
     return {
-      id: domain.id.toString(),
+      incidentId: domain.id.toString(),
       title: domain.title,
       coordinate: CoordinateMapper.fromDomainToDTO(domain.coordinate),
       medias: domain.medias.map(MediaMapper.fromDomainToDTO),

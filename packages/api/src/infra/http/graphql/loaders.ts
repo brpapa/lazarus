@@ -1,5 +1,5 @@
-import { IncidentLoader } from 'src/modules/incident/application/loaders/incident-loader'
-import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
+import { incidentLoaderFactory } from 'src/modules/incident/application/loaders'
+import { userLoaderFactory } from 'src/modules/user/application/loaders'
 
 /**
  * DataLoader is a pattern to optimize graphql requests, like these that contains a circular reference and require the same data multiple times, for example (user -> article -> comments -> writtenByUser (can be the same that wrote the article)). The idea is that resolver calls are batched and thus the data source (database or external APIs) only has to be hit once, avoiding round-trips.
@@ -30,8 +30,11 @@ import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 
 // todo: filtered 'find all' queries nao precisam de data loader, ou teria que gerar um hash dado os filtros para ser a data loader key
 
-export const createLoaders = (_dbClient?: any) => ({
-  incident: IncidentLoader.createDataLoader(incidentRepo),
+// data loader implementaion should belongs to business layer because batching/caching exists for any inner data storage layer and for any outer layer (rest, graphql)
+
+export const createDataLoaders = () => ({
+  incident: incidentLoaderFactory.create(),
+  user: userLoaderFactory.create(),
 })
 
-export type DataLoaders = ReturnType<typeof createLoaders>
+export type DataLoaders = ReturnType<typeof createDataLoaders>

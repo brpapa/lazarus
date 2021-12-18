@@ -5,8 +5,11 @@ import { graphql } from 'graphql'
 // @ts-ignore
 import { introspectionQuery, printSchema } from 'graphql/utilities'
 import { schema } from 'src/infra/http/graphql/schema'
+import debug from 'debug'
 
-const fromGraphQLDir = path.join.bind(this, __dirname, '..', 'graphql')
+const log = debug('app:scripts')
+
+const pathRelativeToGraphQLDir = path.join.bind(this, __dirname, '..', 'graphql')
 
 // Save JSON of full schema introspection for Babel Relay Plugin to use
 async function saveFullSchema() {
@@ -16,19 +19,19 @@ async function saveFullSchema() {
   const result = await graphql(schema, introspectionQuery)
 
   if (result.errors) {
-    console.error('error introspecting schema')
-    console.error(result.errors)
+    log('error introspecting schema: %s', result.errors)
   } else {
-    fs.writeFileSync(fromGraphQLDir('schema.json'), JSON.stringify(result, null, 2))
+    fs.writeFileSync(pathRelativeToGraphQLDir('schema.json'), JSON.stringify(result, null, 2))
     process.exit(0)
   }
 }
 
 // Save user readable type system shorthand of schema
-function saveUserReadableSchema() {
-  const sdlSchema = printSchema(schema) // create the SDL representaion of the GraphQLSchema instance
-  fs.writeFileSync(fromGraphQLDir('schema.graphql'), sdlSchema)
+function saveSDLSchema() {
+  const sdlSchema = printSchema(schema)
+  fs.writeFileSync(pathRelativeToGraphQLDir('schema.graphql'), sdlSchema)
+  log('SDL generated')
 }
 
-saveFullSchema()
-saveUserReadableSchema()
+// saveFullSchema()
+saveSDLSchema()

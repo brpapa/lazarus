@@ -1,6 +1,8 @@
 import { Entity } from 'src/shared/domain/entity'
 
 export interface IRepository<T extends Entity<any>> {
+  /** data loader requirement */
+  findManyByIds(ids: string[]): Promise<T[]>
   /** 
     update if already exists or add entity into database 
     after commit, should dispatch domain events if T is an Aggregate Root

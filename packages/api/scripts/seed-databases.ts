@@ -29,7 +29,7 @@ const populate = async () => {
     User.create(
       {
         username: 'my-username',
-        password: UserPassword.create({ value: '1234567890' }).asOk(),
+        password: UserPassword.create({ value: 'my-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         currentLocation: Coordinate.create(USER_COORDINATE).asOk(),
       },

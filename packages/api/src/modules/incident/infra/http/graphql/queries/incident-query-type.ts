@@ -7,12 +7,12 @@ import { IncidentType } from '../types/incident-type'
 export const IncidentQueryType: GraphQLFieldConfig<void, GraphQLContext, any> = {
   type: IncidentType,
   args: {
-    id: {
+    incidentId: {
       description: 'The incident id',
       type: GraphQLNonNull(GraphQLString),
     },
   },
-  resolve: (_, args: { id: string }, ctx): Promise<IncidentDTO | null> => {
+  resolve: async (_, args: { incidentId: string }, ctx): Promise<IncidentDTO | null> => {
     return GetIncidentById.gen(args, ctx)
   },
 }

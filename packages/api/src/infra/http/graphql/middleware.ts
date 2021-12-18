@@ -2,7 +2,7 @@ import graphqlHttp from 'koa-graphql'
 import { GraphQLError } from 'graphql'
 import { schema } from 'src/infra/http/graphql/schema'
 import { GRAPHQL_SUBSCRIPTIONS_PATH, IS_PRODUCTION, HTTP_PORT } from 'src/shared/config'
-import { createLoaders } from 'src/infra/http/graphql/loaders'
+import { createDataLoaders } from 'src/infra/http/graphql/loaders'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { authService } from 'src/modules/user/services'
 import { User } from 'src/modules/user/domain/models/user'
@@ -17,7 +17,7 @@ export const graphqlHttpServer = graphqlHttp(async (req, _res, _koaCtx) => {
   const context: GraphQLContext = {
     viewer: await getViewer(req.header),
     req,
-    loaders: createLoaders(),
+    loaders: createDataLoaders(),
   }
 
   return {
@@ -33,8 +33,8 @@ export const graphqlHttpServer = graphqlHttp(async (req, _res, _koaCtx) => {
   }
 })
 
+// graphql query mal-formated errors, etc
 const formatError = (error: GraphQLError) => {
-  log('Returned error message: %o', error.message)
   return {
     message: error.message,
     coordinates: error.locations,

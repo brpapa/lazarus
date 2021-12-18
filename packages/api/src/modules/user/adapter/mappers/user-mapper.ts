@@ -3,8 +3,17 @@ import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { User } from 'src/modules/user/domain/models/user'
 import { UserModel } from '@prisma/client'
 import { UUID } from 'src/shared/domain/models/uuid'
+import { UserDTO } from '../dtos/user-dto'
 
 export class UserMapper {
+  static fromDomainToDTO(user: User): UserDTO {
+    return {
+      userId: user.id.toString(),
+      username: user.username,
+      phoneNumber: user.phoneNumber.value,
+    }
+  }
+
   static fromPersistenceToDomain(model: UserModel): User {
     const user = User.create(
       {

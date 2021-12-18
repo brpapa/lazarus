@@ -1,3 +1,4 @@
+import { DomainEvents } from 'src/shared/domain/events/domain-events'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { Command } from 'src/shared/logic/command'
 import { UnexpectedError, UseCaseError } from 'src/shared/logic/errors'
@@ -16,6 +17,7 @@ export type SignInOkOutput = {
 export type SignInErrOutput = UseCaseError | UnexpectedError
 export type SignInOutput = Result<SignInOkOutput, SignInErrOutput>
 
+/** login user */
 export class SignInCommand extends Command<SignInInput, SignInOutput> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
@@ -37,6 +39,9 @@ export class SignInCommand extends Command<SignInInput, SignInOutput> {
       user.setTokens(accessToken, refreshToken)
 
       await this.authService.commitAuthenticatedUser(user)
+
+      DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
+
       return ok({ accessToken, refreshToken })
     } catch (e) {
       return err(new UnexpectedError(e))

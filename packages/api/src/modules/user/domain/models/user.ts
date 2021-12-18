@@ -54,7 +54,7 @@ export class User extends AggregateRoot<UserProps> {
 
     const user = new User(props, id)
 
-    const isNew = !!id
+    const isNew = id === undefined
     if (isNew) user.addDomainEvent(new UserRegistered(user))
 
     return ok(user)

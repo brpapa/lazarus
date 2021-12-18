@@ -1,16 +1,16 @@
+import assert from 'assert'
 import debug from 'debug'
-import { Incident } from 'src/modules/incident/domain/models/incident'
+import { GeoReplyWith } from 'redis/dist/lib/commands/generic-transformers'
 import { PrismaClient } from 'src/infra/db/prisma/client'
 import { RedisClient } from 'src/infra/db/redis/client'
-import assert from 'assert'
+import { Incident } from 'src/modules/incident/domain/models/incident'
 import { zip } from 'src/shared/logic/helpers/zip'
-import { GeoReplyWith } from 'redis/dist/lib/commands/generic-transformers'
+import { CoordinateProps } from '../../../../../shared/domain/models/coordinate'
+import { PrismaRepo } from '../../../../../shared/infra/db/prisma-repo'
 import { IncidentMapper } from '../../../adapter/mappers/incident-mapper'
 import { MediaMapper } from '../../../adapter/mappers/media-mapper'
-import { IIncidentRepo } from '../../../adapter/repositories/incident-repo'
-import { PrismaRepo } from '../../../../../shared/infra/db/prisma-repo'
 import { ICommentRepo } from '../../../adapter/repositories/comment-repo'
-import { CoordinateProps } from '../../../../../shared/domain/models/coordinate'
+import { IIncidentRepo } from '../../../adapter/repositories/incident-repo'
 
 const log = debug('app:incident:infra')
 
@@ -113,32 +113,36 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   }
 
   async commit(incident: Incident): Promise<Incident> {
-    const incidentModel = IncidentMapper.fromDomainToPersistence(incident)
-    const mediasModel = incident.medias.map((m) => MediaMapper.fromDomainToPersistence(m))
+    try {
+      const incidentModel = IncidentMapper.fromDomainToPersistence(incident)
+      const mediasModel = incident.medias.map((m) => MediaMapper.fromDomainToPersistence(m))
 
-    // upsert, because member is unique between a redis geo set
-    await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, {
-      member: incident.id.toString(),
-      latitude: incident.coordinate.latitude,
-      longitude: incident.coordinate.longitude,
-    })
-
-    const isNew = !(await this.exists(incident))
-    if (isNew) {
-      log('Persisting a new incident: %o', incident.id.toString())
-      await this.prismaClient.incidentModel.create({ data: incidentModel })
-      await this.commentRepo.commitMany(incident.comments)
-      await this.prismaClient.mediaModel.createMany({ data: mediasModel })
-    } else {
-      log('Persisting an updated incident: %o', incident.id.toString())
-      await this.prismaClient.mediaModel.createMany({ data: mediasModel })
-      await this.commentRepo.commitMany(incident.comments)
-      await this.prismaClient.incidentModel.update({
-        where: { id: incident.id.toString() },
-        data: incidentModel,
+      // upsert, because member is unique between a redis geo set
+      await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, {
+        member: incident.id.toString(),
+        latitude: incident.coordinate.latitude,
+        longitude: incident.coordinate.longitude,
       })
-    }
 
-    return incident
+      const isNew = !(await this.exists(incident))
+      if (isNew) {
+        log('Persisting a new incident: %o', incident.id.toString())
+        await this.prismaClient.incidentModel.create({ data: incidentModel })
+        await this.commentRepo.commitMany(incident.comments)
+        await this.prismaClient.mediaModel.createMany({ data: mediasModel })
+      } else {
+        log('Persisting an updated incident: %o', incident.id.toString())
+        await this.prismaClient.mediaModel.createMany({ data: mediasModel })
+        await this.commentRepo.commitMany(incident.comments)
+        await this.prismaClient.incidentModel.update({
+          where: { id: incident.id.toString() },
+          data: incidentModel,
+        })
+      }
+      return incident
+    } catch (e) {
+      log('Unexpected error: %O', e)
+      throw e
+    }
   }
 }

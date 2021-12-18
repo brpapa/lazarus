@@ -2,7 +2,7 @@ import { Debugger } from 'debug'
 import { AppContext } from './app-context'
 import { Result } from './result'
 
-export abstract class Command<Input, Output extends Result<void | any, any>> {
+export abstract class Command<Input, Output extends Result<any, any>> {
   constructor(private readonly log: Debugger) {}
 
   async exec(input: Input, ctx?: AppContext): Promise<Output> {
