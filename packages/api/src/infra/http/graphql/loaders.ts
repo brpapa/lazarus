@@ -1,4 +1,4 @@
-import { IncidentLoader } from 'src/modules/incident/loaders/incident'
+import { IncidentLoader } from 'src/modules/incident/application/loaders/incident-loader'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 
 /**

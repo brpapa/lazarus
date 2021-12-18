@@ -1,10 +1,10 @@
 import debug from 'debug'
 import { PrismaClient } from 'src/infra/db/prisma/client'
 import { RedisClient } from 'src/infra/db/redis/client'
-import { UserMapper } from 'src/modules/user/adapter/mappers/user'
+import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
 import { User } from 'src/modules/user/domain/models/user'
 import { PrismaRepo } from 'src/shared/infra/db/prisma-repo'
-import { IUserRepo } from '../../../adapter/repositories/user'
+import { IUserRepo } from '../../../adapter/repositories/user-repo'
 
 const log = debug('app:user:infra')
 
@@ -33,10 +33,10 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
     const isNew = !(await this.exists(user))
     if (isNew) {
-      log('Persisting a new user: ', user.id.toString())
+      log('Persisting a new user: %o', user.id.toString())
       await this.prismaClient.userModel.create({ data: userModel })
     } else {
-      log('Persisting an updated user: ', user.id.toString())
+      log('Persisting an updated user: %o', user.id.toString())
       await this.prismaClient.incidentModel.update({
         where: { id: user.id.toString() },
         data: userModel,

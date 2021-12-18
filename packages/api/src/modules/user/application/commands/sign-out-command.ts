@@ -1,23 +1,21 @@
 import { err, okVoid, Result } from 'src/shared/logic/result/result'
 import { Command } from 'src/shared/logic/command'
 import { UnexpectedError, UseCaseError } from 'src/shared/logic/errors'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { Debugger } from 'debug'
 
-export type Request = {
+export type SignOutInput = {
   userId: string
 }
-export type OkResponse = void
-export type ErrResponse = UseCaseError | UnexpectedError
-export type Response = Result<OkResponse, ErrResponse>
+export type SignOutOutput = Result<void, UseCaseError | UnexpectedError>
 
-export class LogoutCommand extends Command<Request, Response> {
+export class SignOutCommand extends Command<SignOutInput, SignOutOutput> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(req: Request): Promise<Response> {
+  async execImpl(req: SignOutInput): Promise<SignOutOutput> {
     try {
       const user = await this.userRepo.findById(req.userId)
       if (!user) return err(new UseCaseError('User not found'))

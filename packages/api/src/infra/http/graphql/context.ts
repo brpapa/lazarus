@@ -8,7 +8,7 @@ export type GraphQLContext = {
    *
    * should be passed from resolvers to the bussiness layer, where permissions/authorization is implemented (viewer can see methods)
    */
-  viewer?: User
+  viewer: User | null
   req: Request
   /**
    * the same data loader instance is shared between all resolvers within one request lifetime

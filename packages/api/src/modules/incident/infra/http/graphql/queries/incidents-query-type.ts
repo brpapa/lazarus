@@ -8,10 +8,10 @@ import {
 import { Connection, connectionFromArray } from 'graphql-relay'
 import { connectionArgs, ConnectionArguments } from 'graphql-relay'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
-import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'
+import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { getIncidentsWithinBoundary } from 'src/modules/incident/application/queries'
-import { CoordinateInputType } from 'src/shared/infra/graphql/types/coordinate'
-import { IncidentConnectionType, IncidentType } from '../types/incident'
+import { CoordinateInputType } from 'src/shared/infra/graphql/types/coordinate-type'
+import { IncidentConnectionType, IncidentType } from '../types/incident-type'
 
 const IncidentsFilterInputType = new GraphQLInputObjectType({
   name: 'IncidentsFilterInputType',

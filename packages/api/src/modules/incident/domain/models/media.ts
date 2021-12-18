@@ -7,7 +7,7 @@ interface MediaProps {
   url: string
   type: MediaType
   recordedAt: Date
-  // recordLocation: Location
+  // recordLocation: Location // TODO
 }
 
 /** media metadata */

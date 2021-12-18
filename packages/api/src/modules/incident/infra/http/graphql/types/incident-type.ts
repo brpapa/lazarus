@@ -3,10 +3,10 @@ import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList } from 'g
 import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
 import { GraphQLTypes, nodeInterface } from 'src/infra/http/graphql/node'
-import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'
-import { DateType } from 'src/shared/infra/graphql/types/date'
-import { CoordinateType } from 'src/shared/infra/graphql/types/coordinate'
-import { MediaType } from './media'
+import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
+import { DateType } from 'src/shared/infra/graphql/types/date-type'
+import { CoordinateType } from 'src/shared/infra/graphql/types/coordinate-type'
+import { MediaType } from './media-type'
 
 const INCIDENT_TYPE_NAME = 'Incident'
 

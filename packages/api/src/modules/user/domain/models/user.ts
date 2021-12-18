@@ -1,16 +1,16 @@
 import assert from 'assert'
-import { Guard } from 'src/shared/logic/guard'
-import { DomainError } from 'src/shared/logic/errors'
-import { err, ok, Result } from 'src/shared/logic/result/result'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { UUID } from 'src/shared/domain/models/uuid'
-import { combine } from 'src/shared/logic/result'
 import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { UUID } from 'src/shared/domain/models/uuid'
+import { DomainError } from 'src/shared/logic/errors'
+import { Guard } from 'src/shared/logic/guard'
+import { combine } from 'src/shared/logic/result'
+import { err, ok, Result } from 'src/shared/logic/result/result'
+import { UserLoggedIn } from '../events/user-logged-in'
 import { UserRegistered } from '../events/user-registered'
+import { JwtAccessToken, JwtRefreshToken } from './jwt'
 import { UserPassword } from './user-password'
 import { UserPhoneNumber } from './user-phone-number'
-import { JwtAccessToken, JwtRefreshToken } from './jwt'
-import { UserLoggedIn } from '../events/user-logged-in'
 
 interface UserProps {
   username: string

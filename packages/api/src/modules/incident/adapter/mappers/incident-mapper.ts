@@ -4,11 +4,11 @@ import { Comment } from 'src/modules/incident/domain/models/comment'
 import { WatchedList } from 'src/shared/domain/watched-list'
 import { Coordinate } from 'src/shared/domain/models/coordinate'
 import { UUID } from 'src/shared/domain/models/uuid'
-import { IncidentDTO } from '../dtos/incident'
-import { CoordinateMapper } from './coordinate'
+import { IncidentDTO } from '../dtos/incident-dto'
+import { CoordinateMapper } from './coordinate-mapper'
 import { IncidentStatus } from '../../domain/models/incident-status'
-import { MediaMapper } from './media'
-import { CommentMapper } from './comment'
+import { MediaMapper } from './media-mapper'
+import { CommentMapper } from './comment-mapper'
 
 export class IncidentMapper {
   static fromPersistenceToDomain(

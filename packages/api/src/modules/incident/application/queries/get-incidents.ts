@@ -2,11 +2,11 @@ import { getDistance, getCenter } from 'geolib'
 import { UnexpectedError } from 'src/shared/logic/errors'
 import { Query } from 'src/shared/logic/query'
 import { err, ok, Result } from 'src/shared/logic/result'
-import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident'
-import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident'
-import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident'
+import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
+import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
+import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
 import assert from 'assert'
-import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate'
+import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
 import { Incident } from '../../domain/models/incident'
 
 type WithinBoundaryFilter = {
@@ -28,9 +28,9 @@ export type ErrResponse = UnexpectedError
 export type Response = Result<OkResponse, ErrResponse>
 
 /**
- * requisitado a cada novo onRegionChangeComplete do MapView
+ * requisitado a cada resize do MapView
  */
-export class GetIncidentsWithinBoundary implements Query<Request, Response> {
+export class GetIncidents implements Query<Request, Response> {
   private DIST_ACCURACY = 1e-5
 
   constructor(private readonly incidentRepo: IIncidentRepo) {}

@@ -1,5 +1,5 @@
-import { CoordinateDTO } from '../../../../shared/adapter/dtos/coordinate'
-import { MediaDTO } from './media'
+import { CoordinateDTO } from '../../../../shared/adapter/dtos/coordinate-dto'
+import { MediaDTO } from './media-dto'
 
 export interface IncidentDTO {
   id: string

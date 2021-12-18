@@ -1,5 +1,5 @@
 import { GraphQLFloat, GraphQLInputObjectType, GraphQLNonNull, GraphQLObjectType } from 'graphql'
-import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate'
+import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
 
 export const CoordinateType = new GraphQLObjectType<CoordinateDTO>({
   name: 'Coordinate',

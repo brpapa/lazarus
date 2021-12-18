@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql'
 import { offsetToCursor } from 'graphql-relay'
-import { UserEdgeType } from 'src/modules/user/infra/http/graphql/types/user'
+import { UserEdgeType } from 'src/modules/user/infra/http/graphql/types/user-type'
 import { pubSub, events } from 'src/infra/http/graphql/pub-sub'
 
 const UserAddedOutputType = new GraphQLObjectType({

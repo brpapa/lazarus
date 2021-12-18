@@ -1,7 +1,7 @@
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { User } from 'src/modules/user/domain/models/user'
-import { IncidentDTO } from '../../adapter/dtos/incident'
-import { IncidentMapper } from '../../adapter/mappers/incident'
+import { IncidentDTO } from '../../adapter/dtos/incident-dto'
+import { IncidentMapper } from '../../adapter/mappers/incident-mapper'
 
 export class GetIncidentById {
   static async gen(args: { id: string }, ctx: GraphQLContext): Promise<IncidentDTO | null> {
@@ -10,7 +10,7 @@ export class GetIncidentById {
   }
 
   // permissions and authorizations lives here
-  private static canSee(_viewer?: User) {
+  private static canSee(_viewer: User | null) {
     return true
   }
 }

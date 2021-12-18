@@ -8,22 +8,16 @@ import { authService } from 'src/modules/user/services'
 import { User } from 'src/modules/user/domain/models/user'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
 import debug from 'debug'
+import { IncomingHttpHeaders } from 'http'
 
-const log = debug('app:infra:http')
+const log = debug('app:infra:http:graphql')
 
 // build the graphql middleware, given a function that it'll be executed per request
 export const graphqlHttpServer = graphqlHttp(async (req, _res, _koaCtx) => {
   const context: GraphQLContext = {
-    viewer: undefined,
+    viewer: await getViewer(req.header),
     req,
     loaders: createLoaders(),
-  }
-
-  const { authorization } = req.header
-  if (authorization) {
-    const token = authorization.replace('Bearer ', '').trim()
-    const user = await getAuthenticatedUser(token)
-    context.viewer = user
   }
 
   return {
@@ -40,7 +34,7 @@ export const graphqlHttpServer = graphqlHttp(async (req, _res, _koaCtx) => {
 })
 
 const formatError = (error: GraphQLError) => {
-  log('GraphQL query error message: %o', error.message)
+  log('Returned error message: %o', error.message)
   return {
     message: error.message,
     coordinates: error.locations,
@@ -49,10 +43,18 @@ const formatError = (error: GraphQLError) => {
   }
 }
 
-const getAuthenticatedUser = async (token: string): Promise<User> => {
-  const decoded = await authService.decodeJwt(token)
-  if (!decoded) throw new Error('Access token expired')
-  const user = await userRepo.findById(decoded.userId)
-  if (!user) throw new Error('User not found')
-  return user
+const getViewer = async (headers: IncomingHttpHeaders): Promise<User | null> => {
+  const { authorization } = headers
+  if (authorization) {
+    const token = authorization.replace('Bearer ', '').trim()
+
+    const decodedToken = await authService.decodeJwt(token)
+    if (!decodedToken) throw new Error('Access token expired')
+
+    const user = await userRepo.findById(decodedToken.userId)
+    if (!user) throw new Error(`User ${decodedToken.userId} no more exists`)
+
+    return user
+  }
+  return null
 }

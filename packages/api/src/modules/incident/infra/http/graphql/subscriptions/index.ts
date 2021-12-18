@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLFieldConfig } from 'graphql'
 import { pubSub, events } from 'src/infra/http/graphql/pub-sub'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
-import { IncidentType } from '../types/incident'
+import { IncidentType } from '../types/incident-type'
 
 const IncidentCreatedOutputType = GraphQLNonNull(IncidentType)
 

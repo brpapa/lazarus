@@ -2,12 +2,12 @@ import { MediaModel } from '@prisma/client'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { Media } from '../../domain/models/media'
 import { MediaType } from '../../domain/models/media-type'
-import { MediaDTO } from '../dtos/media'
+import { MediaDTO } from '../dtos/media-dto'
 
 export class MediaMapper {
   static fromDomainToDTO(media: Media): MediaDTO {
     return {
-      url: media.url
+      url: media.url,
     }
   }
   static fromPersistenceToDomain(model: MediaModel): Media {

@@ -1,7 +1,7 @@
 import DataLoader, { BatchLoadFn } from 'dataloader'
 import { LRUMap } from 'lru_map'
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident'
+import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
 
 // data loader is business layer, batching/caching exists for any inner data storage layer, for any outer layer (rest, graphql)
 export class IncidentLoader {

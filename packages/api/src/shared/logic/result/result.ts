@@ -137,7 +137,9 @@ export class Err<T, E> implements IResult<T, E> {
     return v
   }
   asOk(): T {
-    console.error(this.error)
-    throw new Error(`Assertion error, this result it is an error`)
+    const valueJson = JSON.stringify(this.error)
+    throw new Error(
+      `Assertion to Ok failed. The result has actually the following Err value:\n ${valueJson}`,
+    )
   }
 }

@@ -1,43 +1,41 @@
 import { Result, err, okVoid } from 'src/shared/logic/result/result'
 import { Command } from 'src/shared/logic/command'
 import { User } from 'src/modules/user/domain/models/user'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { DomainError, UnexpectedError, UseCaseError } from 'src/shared/logic/errors'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { Debugger } from 'debug'
 
-export type Request = {
+export type SignUpInput = {
   username: string
   password: string
   phoneNumber: string
 }
-export type OkResponse = void
-export type ErrResponse = DomainError | UseCaseError | UnexpectedError
-export type Response = Result<void, ErrResponse>
+export type SignUpOkOutput = void
+export type SignUpErrOutput = DomainError | UseCaseError | UnexpectedError
+export type SignUpOutput = Result<SignUpOkOutput, SignUpErrOutput>
 
-export class RegisterUserCommand extends Command<Request, Response> {
+/** register a new user */
+export class SignUpCommand extends Command<SignUpInput, SignUpOutput> {
   constructor(log: Debugger, private userRepo: IUserRepo) {
     super(log)
   }
 
-  async execImpl(req: Request): Promise<Response> {
+  async execImpl(input: SignUpInput): Promise<SignUpOutput> {
     try {
-      // todo: validar unicidade do username e do phoneNumber
+      // todo: validar unicidade do username e do phoneNumber em relacao aos demais usuarios
       // new UseCaseError(`The phone number ${phoneNumber} is already associated to another account`)
       // new UseCaseError(`The username ${username} was already taken`)
 
-      const passwordOrErr = UserPassword.create({ value: req.password })
-      if (passwordOrErr.isErr()) return err(passwordOrErr.error)
-
-      const phoneOrErr = UserPhoneNumber.create({ value: req.phoneNumber })
-      if (phoneOrErr.isErr()) return err(phoneOrErr.error)
-
-      const userOrErr = User.create({
-        username: req.username,
-        password: passwordOrErr.value,
-        phoneNumber: phoneOrErr.value,
-      })
+      const userOrErr = UserPassword.create({ value: input.password }).andThen<User, DomainError>(
+        (userPassword) =>
+          User.create({
+            username: input.username,
+            password: userPassword,
+            phoneNumber: UserPhoneNumber.create({ value: '123' }).asOk(), // TODO
+          }),
+      )
 
       if (userOrErr.isErr()) return err(userOrErr.error)
 

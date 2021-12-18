@@ -1,11 +1,13 @@
+import { Debugger } from 'debug'
 import { mockDeep } from 'jest-mock-extended'
-import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident'
+import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { ReportIncidentCommand } from '../../src/modules/incident/application/commands/report-incident/command'
+import { ReportIncidentCommand } from '../../src/modules/incident/application/commands/report-incident-command'
 
 describe('command: create incident', () => {
   const mockedIncidentRepo = mockDeep<IIncidentRepo>()
-  const createIncidentCommand = new ReportIncidentCommand(mockedIncidentRepo)
+  const log = mockDeep<Debugger>()
+  const createIncidentCommand = new ReportIncidentCommand(log, mockedIncidentRepo)
 
   test('it should create if a valid incident is given', async () => {
     const createdIncidentDTO = await createIncidentCommand.exec({

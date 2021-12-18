@@ -1,18 +1,19 @@
 import { Debugger } from 'debug'
+import { AppContext } from './app-context'
 import { Result } from './result'
 
-export abstract class Command<Req, Res extends Result<void | any, any>> {
+export abstract class Command<Input, Output extends Result<void | any, any>> {
   constructor(private readonly log: Debugger) {}
 
-  async exec(req: Req): Promise<Res> {
+  async exec(input: Input, ctx?: AppContext): Promise<Output> {
     const commandName = Reflect.getPrototypeOf(this)?.constructor.name
 
-    this.log(`Running %o with: %O`, commandName, req)
+    this.log(`Running %o given input: %O`, commandName, input)
 
-    const res = await Promise.resolve(this.execImpl(req))
+    const res = await Promise.resolve(this.execImpl(input, ctx))
 
     this.log(
-      `%o returned an %o value: %O`,
+      `%o outputs the %o value: %O`,
       commandName,
       res.isOk() ? 'Ok' : 'Err',
       res.isOk() ? res.value : res.error,
@@ -20,5 +21,5 @@ export abstract class Command<Req, Res extends Result<void | any, any>> {
     return res
   }
 
-  abstract execImpl(req: Req): Res | Promise<Res>
+  abstract execImpl(input: Input, ctx?: AppContext): Output | Promise<Output>
 }

@@ -27,6 +27,7 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   }),
 })
 
+// each mutation field should be created based on relay specs: https://github.com/graphql/graphql-relay-js#mutations
 const MutationType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Mutation',
   description: 'The mutation root type',
