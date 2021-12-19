@@ -48,7 +48,7 @@ export function initialize() {
     )
 
     const wsAddress = wsServer.address() as unknown as Address
-    log('WebSocker server started at %o', `http://${wsAddress.address}:${wsAddress.port}`)
+    log('WebSocket server started at %o', `http://${wsAddress.address}:${wsAddress.port}`)
   })
 
   return httpServer

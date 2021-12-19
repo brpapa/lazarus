@@ -16,7 +16,7 @@ export const IncidentType = GraphQLTypes.register(
     interfaces: [nodeInterface], // this type implements the Node GraphQL interface
     fields: () => ({
       id: {
-        ...globalIdField(INCIDENT_TYPE_NAME),
+        ...globalIdField(INCIDENT_TYPE_NAME, (incident) => incident.incidentId),
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       incidentId: {

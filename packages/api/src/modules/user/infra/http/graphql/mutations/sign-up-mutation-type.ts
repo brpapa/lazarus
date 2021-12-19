@@ -21,9 +21,7 @@ export const SignUpMutationType = createMutation<GraphQLContext, SignUpInput, Si
   outputFields: {
     user: {
       type: GraphQLNonNull(UserType),
-      resolve: (payload, _, ctx) => {
-        return GetUserById.gen(payload, ctx)
-      },
+      resolve: (payload, _, ctx) => GetUserById.gen(payload, ctx),
     },
   },
 })

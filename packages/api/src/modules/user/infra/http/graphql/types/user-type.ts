@@ -13,7 +13,7 @@ export const UserType = GraphQLTypes.register(
     interfaces: [nodeInterface], // this type implements the Node GraphQL interface
     fields: () => ({
       id: {
-        ...globalIdField(USER_TYPE_NAME),
+        ...globalIdField(USER_TYPE_NAME, (user) => user.userId),
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       userId: {
