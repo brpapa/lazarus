@@ -16,4 +16,4 @@ export const ENABLE_GOOGLE_MAPS = ['ios', 'android'].includes(Platform.OS)
 export const ENABLE_CAMERA_MOCK = true
 
 /** if true, every time that app is reloaded, the user will going to be in last screen visited */
-export const ENABLE_NAVIGATION_STATE_PERSISTENCE = false // i am passing query ref as route params
+export const ENABLE_NAVIGATION_STATE_PERSISTENCE = false

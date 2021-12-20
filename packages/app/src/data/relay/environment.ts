@@ -1,17 +1,32 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { SERVER_BASE_URL } from '~/shared/config'
+import { JwtToken } from '../jwt-token-loader'
+
+const getRequestHeaders = async () => {
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  }
+
+  const jwtToken = await JwtToken.get()
+  if (jwtToken !== null)
+    return {
+      ...headers,
+      Authorization: `Bearer ${jwtToken}`,
+    }
+
+  return headers
+}
 
 const network = Network.create(async (params, variables) => {
   console.log(`Fetching query '${params.name}' with variables: ${JSON.stringify(variables)}`)
 
   let json = {} as any
   try {
+    const headers = await getRequestHeaders()
     const response = await fetch(`${SERVER_BASE_URL}/graphql`, {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         query: params.text,
         variables,

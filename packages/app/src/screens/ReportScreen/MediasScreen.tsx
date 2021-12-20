@@ -34,13 +34,17 @@ export default function MediasScreen() {
   const [reportIncident] = useReportIncidentMutation()
 
   const onReportButtonPressed = useCallback(() => {
-    reportIncident({
-      title: title,
-      coordinate: userCoordinate,
-      pictures: params.capturedPictures,
-    }),
-      reportNavigation.popToTop()
-  }, [reportIncident, reportNavigation, title, userCoordinate])
+    reportIncident(
+      {
+        title: title,
+        coordinate: userCoordinate,
+        pictures: params.capturedPictures,
+      },
+      {
+        onOkResult: closeReport,
+      },
+    )
+  }, [closeReport, params.capturedPictures, reportIncident, title, userCoordinate])
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
