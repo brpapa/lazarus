@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
-import { GraphQLTypes, nodeInterface } from 'src/infra/http/graphql/node'
+import { GraphQLTypes, NodeInterfaceType } from 'src/infra/http/graphql/node'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 
@@ -10,7 +10,7 @@ const USER_TYPE_NAME = 'User'
 export const UserType = GraphQLTypes.register(
   new GraphQLObjectType<UserDTO, GraphQLContext>({
     name: USER_TYPE_NAME,
-    interfaces: [nodeInterface], // this type implements the Node GraphQL interface
+    interfaces: [NodeInterfaceType], // this type implements the Node GraphQL interface
     fields: () => ({
       id: {
         ...globalIdField(USER_TYPE_NAME, (user) => user.userId),

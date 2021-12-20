@@ -3,7 +3,7 @@ import http from 'http'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { execute, subscribe } from 'graphql'
-import { HTTP_PORT, GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/shared/config'
+import { HTTP_PORT, HTTP_GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/shared/config'
 import { schema } from 'src/infra/http/graphql/schema'
 import { app } from './app'
 
@@ -18,7 +18,7 @@ export function initialize() {
 
     const wsServer = new WebSocketServer({
       server: httpServer,
-      path: GRAPHQL_SUBSCRIPTIONS_PATH,
+      path: HTTP_GRAPHQL_SUBSCRIPTIONS_PATH,
     })
     useServer(
       {

@@ -2,7 +2,7 @@ import { GraphQLScalarType, Kind, GraphQLError } from 'graphql'
 
 export const DateType = new GraphQLScalarType({
   name: 'Date',
-  description: 'Date type',
+  description: 'Date type serialized into ISO string',
   /**
    * @param value comes from client in variables
    * @returns value sent to the resolvers

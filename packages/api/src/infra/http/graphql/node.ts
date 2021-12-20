@@ -22,7 +22,7 @@ export class GraphQLTypes {
  * Learn: https://graphql.org/learn/global-object-identification/
  * Relay specs: https://relay.dev/docs/guides/graphql-server-specification/#object-identification
  */
-export const { nodeField, nodeInterface } = nodeDefinitions<GraphQLContext>(
+export const { nodeField, nodeInterface: NodeInterfaceType } = nodeDefinitions<GraphQLContext>(
   // returns an object of a given globalId
   (globalId, ctx) => {
     const { type: typeName, id } = fromGlobalId(globalId)

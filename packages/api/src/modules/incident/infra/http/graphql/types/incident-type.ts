@@ -2,7 +2,7 @@ import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
-import { GraphQLTypes, nodeInterface } from 'src/infra/http/graphql/node'
+import { GraphQLTypes, NodeInterfaceType } from 'src/infra/http/graphql/node'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { DateType } from 'src/shared/infra/graphql/types/date-type'
 import { CoordinateType } from 'src/shared/infra/graphql/types/coordinate-type'
@@ -13,7 +13,7 @@ const INCIDENT_TYPE_NAME = 'Incident'
 export const IncidentType = GraphQLTypes.register(
   new GraphQLObjectType<IncidentDTO, GraphQLContext>({
     name: INCIDENT_TYPE_NAME,
-    interfaces: [nodeInterface], // this type implements the Node GraphQL interface
+    interfaces: [NodeInterfaceType], // this type implements the Node GraphQL interface
     fields: () => ({
       id: {
         ...globalIdField(INCIDENT_TYPE_NAME, (incident) => incident.incidentId),

@@ -1,5 +1,4 @@
 import { getDistance, getCenter } from 'geolib'
-import { UnexpectedError } from 'src/shared/logic/errors'
 import { Query } from 'src/shared/logic/query'
 import { err, ok, Result } from 'src/shared/logic/result'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
@@ -24,7 +23,7 @@ export type Request = {
   // first?: number
 }
 export type OkResponse = IncidentDTO[]
-export type ErrResponse = UnexpectedError
+export type ErrResponse = void
 export type Response = Result<OkResponse, ErrResponse>
 
 /**
@@ -36,15 +35,11 @@ export class GetIncidents implements Query<Request, Response> {
   constructor(private readonly incidentRepo: IIncidentRepo) {}
 
   async exec(req: Request): Promise<Response> {
-    try {
-      const incidents = await (req.filter?.withinBoundary !== undefined
-        ? this.findManyWithinBoundary(req.filter?.withinBoundary)
-        : this.incidentRepo.findMany())
+    const incidents = await (req.filter?.withinBoundary !== undefined
+      ? this.findManyWithinBoundary(req.filter?.withinBoundary)
+      : this.incidentRepo.findMany())
 
-      return ok(incidents.map((incident) => IncidentMapper.fromDomainToDTO(incident)))
-    } catch (e) {
-      return err(new UnexpectedError(e))
-    }
+    return ok(incidents.map((incident) => IncidentMapper.fromDomainToDTO(incident)))
   }
 
   private findManyWithinBoundary(boundary: WithinBoundaryFilter): Promise<Incident[]> {

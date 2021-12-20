@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { getIncidentsWithinBoundary } from 'src/modules/incident/application/queries'
+import { getIncidents } from 'src/modules/incident/application/queries'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 import { User } from 'src/modules/user/domain/models/user'
@@ -56,7 +56,7 @@ describe('queries: get incidents inside boundary', () => {
   })
 
   test.todo('it should return only the incidents inside the boundaries', async () => {
-    const incidents = await getIncidentsWithinBoundary.exec({
+    const incidents = await getIncidents.exec({
       boundary: {
         northEast: {
           latitude: -22.871394175410675,

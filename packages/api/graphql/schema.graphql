@@ -57,7 +57,7 @@ type Media {
   url: String!
 }
 
-"""Date type"""
+"""Date type serialized into ISO string"""
 scalar Date
 
 """A connection to a list of items."""
@@ -110,14 +110,20 @@ input CoordinateInput {
 
 """The mutation root type"""
 type Mutation {
-  signUp(input: SignUpInput!): SignUpPayload
-  signIn(input: SignInInput!): SignInPayload
-  reportIncident(input: ReportIncidentInput!): ReportIncidentPayload
+  signUp(input: SignUpInput!): SignUpOutput!
+  signIn(input: SignInInput!): SignInOutput!
+  reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
 }
 
-type SignUpPayload {
-  user: User!
+type SignUpOutput {
+  result: SignUpResult!
   clientMutationId: String
+}
+
+union SignUpResult = SignUpOkResult | SignUpErrResult
+
+type SignUpOkResult {
+  user: User!
 }
 
 type User implements Node {
@@ -126,8 +132,18 @@ type User implements Node {
 
   """The user id"""
   userId: String
-  name: String
-  email: String
+  username: String
+  phoneNumber: String
+}
+
+type SignUpErrResult {
+  reason: String!
+  code: SignUpErrCodeType!
+}
+
+enum SignUpErrCodeType {
+  DOMAIN_ERROR
+  BUSINESS_ERROR
 }
 
 input SignUpInput {
@@ -137,10 +153,25 @@ input SignUpInput {
   clientMutationId: String
 }
 
-type SignInPayload {
+type SignInOutput {
+  result: SignInResult!
+  clientMutationId: String
+}
+
+union SignInResult = SignInOkResult | SignInErrResult
+
+type SignInOkResult {
   accessToken: String!
   refreshToken: String!
-  clientMutationId: String
+}
+
+type SignInErrResult {
+  reason: String!
+  code: SignInErrCodeType!
+}
+
+enum SignInErrCodeType {
+  BUSINESS_ERROR
 }
 
 input SignInInput {
@@ -149,9 +180,26 @@ input SignInInput {
   clientMutationId: String
 }
 
-type ReportIncidentPayload {
-  incident: Incident
+type ReportIncidentOutput {
+  result: ReportIncidentResult!
   clientMutationId: String
+}
+
+union ReportIncidentResult = ReportIncidentOkResult | ReportIncidentErrResult
+
+type ReportIncidentOkResult {
+  incident: Incident!
+}
+
+type ReportIncidentErrResult {
+  reason: String!
+  code: ReportIncidentErrCodeType!
+}
+
+enum ReportIncidentErrCodeType {
+  UNAUTHENTICATED_ERROR
+  DOMAIN_ERROR
+  BUSINESS_ERROR
 }
 
 input ReportIncidentInput {

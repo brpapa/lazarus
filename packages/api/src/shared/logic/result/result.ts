@@ -100,6 +100,12 @@ export class Ok<T, E> implements IResult<T, E> {
   asOk(): T {
     return this.value
   }
+  asErr(): E {
+    const valueJson = JSON.stringify(this.value)
+    throw new Error(
+      `Assertion to Err failed. The result has actually the following Ok value:\n ${valueJson}`,
+    )
+  }
 }
 
 export class Err<T, E> implements IResult<T, E> {
@@ -137,9 +143,12 @@ export class Err<T, E> implements IResult<T, E> {
     return v
   }
   asOk(): T {
-    const valueJson = JSON.stringify(this.error)
+    const errorJson = JSON.stringify(this.error)
     throw new Error(
-      `Assertion to Ok failed. The result has actually the following Err value:\n ${valueJson}`,
+      `Assertion to Ok failed. The result has actually the following Err value:\n ${errorJson}`,
     )
+  }
+  asErr(): E {
+    return this.error
   }
 }

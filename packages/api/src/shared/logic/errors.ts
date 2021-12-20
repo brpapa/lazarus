@@ -1,21 +1,14 @@
-import debug from 'debug'
-
-const log = debug('app:errors')
-
-export class DomainError {
+export abstract class AppError {
   constructor(public readonly reason: string) {}
 }
 
-export class UseCaseError {
-  constructor(public readonly reason: string) {}
-}
+export class DomainError extends AppError {}
 
-export class AppError {
-  constructor(public readonly reason: string) {}
-}
+/** use case error */
+export class BusinessError extends AppError {}
 
-export class UnexpectedError extends AppError {
-  constructor(err: any) {
-    super('An unexpected error occurred')
+export class UnauthenticatedError extends AppError {
+  constructor() {
+    super('User authentication required')
   }
 }

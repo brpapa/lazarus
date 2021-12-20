@@ -16,7 +16,8 @@ dotenvSafe.config({
 })
 
 export const HTTP_PORT = env.HTTP_PORT ? Number(env.HTTP_PORT) : 5000
-export const GRAPHQL_SUBSCRIPTIONS_PATH = '/subscriptions'
+export const HTTP_GRAPHQL_SUBSCRIPTIONS_PATH = '/subscriptions'
+export const HTTP_GRAPHQL_FORCED_MIN_LATENCY_IN_MS = 1000
 export const JWT_SECRET_KEY = env.JWT_SECRET_KEY || 'awesome_secret_key'
 export const JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S = 60 * 5
 export const JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S = 60 * 6 * 24 * 7
