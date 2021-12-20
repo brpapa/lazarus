@@ -3,10 +3,13 @@ import { LANG } from './config'
 const buildTranslatedMessages = (lang: Language) =>
   ({
     relativeUpdatedTimeToNow: {
-      format: (_params?: { _timestamp?: Date; min?: number }) => {
+      format: (params: { timestamp: Date }) => {
+        const now = new Date()
+        const elapsedMs = now.getTime() - params.timestamp.getTime()
+        const elapsedMin = Math.round(elapsedMs / 6e4)
         return {
-          'en-us': 'Updated 56 mins ago',
-          'pt-br': `Atualizado há ${_params?.min ?? 2} minutos`,
+          'en-us': `Updated ${elapsedMin} mins ago`,
+          'pt-br': `Atualizado há ${elapsedMin} minutos`,
         }[lang]
       },
     },

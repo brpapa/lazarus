@@ -13,7 +13,8 @@ const mapViewDefaultProps: MapViewProps = {
   zoomEnabled: true,
   pitchEnabled: true,
   scrollEnabled: true,
-  zoomTapEnabled: true
+  zoomTapEnabled: true,
+  showsMyLocationButton: true, // TODO: criar meu proprio botao
 }
 
 export default mapViewDefaultProps

@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil'
+export { userJwtToken } from './user-jwt-token'
 
 export const userCoordinateState = atom({
   key: 'userCoordinate',
@@ -14,8 +15,8 @@ export const initialRegionState = selector({
     const userCoordinate = get(userCoordinateState)
     return {
       ...userCoordinate,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.1322,
+      longitudeDelta: 0.0921,
     }
   },
 })
@@ -26,7 +27,7 @@ export const selectedIncidentIdInMap = atom<string | null>({
   effects_UNSTABLE: [
     ({ onSet }) => {
       onSet((newValue) => {
-        console.log(`incident select on map: ${newValue}`)
+        console.log(`selectedIncidentIdInMap changed to: ${newValue}`)
       })
     },
   ],

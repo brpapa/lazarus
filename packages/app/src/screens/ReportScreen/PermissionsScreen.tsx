@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
@@ -6,8 +6,12 @@ import type { ReportStackParams } from '.'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/core'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
+import RoundedButton from '~/components/RoundedButton'
+import { CloseIcon } from '~/assets/icons'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function PermissionsScreen() {
+  const insets = useSafeAreaInsets()
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Permissions'>>()
   const {
     isLoading,
@@ -18,6 +22,10 @@ export default function PermissionsScreen() {
   } = useCameraPermissions({
     onAllPermissionsGranted: () => reportNavigation.replace('Camera', {}),
   })
+
+  const closeCamera = useCallback(() => {
+    reportNavigation.goBack()
+  }, [reportNavigation])
 
   if (isLoading) return null
 
@@ -41,6 +49,9 @@ export default function PermissionsScreen() {
             </Text>
           </Text>
         )}
+      </Box>
+      <Box position="absolute" right={insets.right+10} top={insets.top+10}>
+        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
       </Box>
     </Box>
   )

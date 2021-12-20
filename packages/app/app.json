@@ -51,6 +51,7 @@
     "extra": {
       "flipperHacker": "React Native packager is running"
     },
-    "jsEngine": "hermes"
+    "jsEngine": "hermes",
+    "sdkVersion": "44.0.0"
   }
 }

@@ -39,8 +39,6 @@
     "react-native/split-platform-components": 2,
     "react-native/no-inline-styles": 1,
     "react-native/no-color-literals": 0,
-    "no-class-assign": 1,
-    "no-console": 1,
     "object-curly-spacing": [
       1,
       "always"
@@ -54,6 +52,9 @@
       }
     ],
     "no-undef": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-class-assign": 1,
+    "no-console": "off",
+    "relay/generated-flow-types": "off"
   }
 }

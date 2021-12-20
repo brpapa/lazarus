@@ -1,16 +1,17 @@
-import React, { useState, useRef, useCallback } from 'react'
-import { Alert, StatusBar, StyleSheet } from 'react-native'
-import Camera, { CameraOrientation, CameraRef } from '~/containers/Camera'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
-import type { ReportStackParams } from '.'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
+import React, { useCallback, useRef, useState } from 'react'
+import { Alert, StatusBar, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { CloseIcon, RotateIcon } from '~/assets/icons'
+import Box from '~/components/atomics/Box'
+import RoundedButton from '~/components/RoundedButton'
+import Camera, { CameraOrientation, CameraRef } from '~/containers/Camera'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
+import type { ReportStackParams } from '.'
 
 export default function CameraScreen() {
+  const insets = useSafeAreaInsets()
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Camera'>>()
   const { params } = useRoute<RouteProp<ReportStackParams, 'Camera'>>()
 
@@ -18,23 +19,17 @@ export default function CameraScreen() {
   const [cameraIsReady, setCameraIsReady] = useState(false)
   const [cameraOrientation, setCameraOrientation] = useState<CameraOrientation>('back')
 
-  const insets = useSafeAreaInsets()
-
   const takePicture = useCallback(async () => {
     if (cameraRef.current === null) return
     try {
-      // picture is saved in app's cache directory
-      const pic = await cameraRef.current.takePictureAsync({ exif: true })
-      // console.log(pic.exif?.DateTimeOriginal + pic.exif?.OffsetTimeOriginal)
-
-      const capturedMedia = {
-        uri: `file://${pic.uri}`,
-      }
-      const newCapturedMedias = [...(params?.previousCapturedMedias || []), capturedMedia]
-      reportNavigation.navigate('Medias', { capturedMedias: newCapturedMedias })
+      const newCapturedPicture = await cameraRef.current.takePictureAsync()
+      const previousCapturedMedias = params?.previousCapturedPictures || []
+      reportNavigation.navigate('Medias', {
+        capturedPictures: [...previousCapturedMedias, newCapturedPicture],
+      })
     } catch (e) {
       console.error(e)
-      Alert.alert('Unexpect error to take a picture')
+      Alert.alert('Unexpect error to take picture')
     }
   }, [params, reportNavigation])
 
@@ -92,4 +87,3 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 })
-

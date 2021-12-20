@@ -1,82 +1,51 @@
-import React, { useCallback, useState } from 'react'
-import { ScrollView, TextInput } from 'react-native-gesture-handler'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import type { StackNavigationProp } from '@react-navigation/stack'
+import React, { useCallback, useState } from 'react'
 import { Image } from 'react-native'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
-import intl from '~/shared/intl'
-import Text from '~/components/atomics/Text'
+import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRecoilValue } from 'recoil'
-import type { ReportStackParams } from '.'
-import { graphql, useMutation } from 'react-relay'
-import { userCoordinateState } from '~/data/recoil'
-import { uploadMedias } from './uploadMedias'
 import { CloseIcon } from '~/assets/icons'
+import Box from '~/components/atomics/Box'
+import Text from '~/components/atomics/Text'
+import RoundedButton from '~/components/RoundedButton'
+import { userCoordinateState } from '~/data/recoil'
+import { useReportIncidentMutation } from '~/hooks/mutations/ReportIncidentMutation'
+import intl from '~/shared/intl'
+import type { ReportStackParams } from '.'
 
 export default function MediasScreen() {
+  const insets = useSafeAreaInsets()
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Medias'>>()
   const { params } = useRoute<RouteProp<ReportStackParams, 'Medias'>>()
-  const userCoordinate = useRecoilValue(userCoordinateState)
 
-  const insets = useSafeAreaInsets()
+  const userCoordinate = useRecoilValue(userCoordinateState)
   const [title, setTitle] = useState('')
 
-  const [commit, isInFlight] = useMutation(graphql`
-    mutation MediasScreenMutation($input: CreateIncidentInput!) {
-      createIncident(input: $input) {
-        clientMutationId
-        incident {
-          incidentId
-          title
-        }
-      }
-    }
-  `)
-
-  const onPublish = useCallback(async () => {
-    // if (title === '') return
-    if (params.capturedMedias.length === 0) return
-
-    const s3Urls = await uploadMedias(params.capturedMedias)
-
-    commit({
-      variables: {
-        input: {
-          userId: 'user-id',
-          title: title,
-          coordinate: userCoordinate,
-          medias: s3Urls.map((url) => ({ url })),
-        },
-      },
-      onCompleted: (response, errors) => {
-        console.log('response: ')
-        console.log(response)
-        reportNavigation.popToTop()
-      },
-    })
-  }, [commit])
-
   const backToCamera = useCallback(() => {
-    reportNavigation.replace('Camera', { previousCapturedMedias: params.capturedMedias })
-  }, [params.capturedMedias, reportNavigation])
+    reportNavigation.replace('Camera', { previousCapturedPictures: params.capturedPictures })
+  }, [params.capturedPictures, reportNavigation])
 
   const closeReport = useCallback(() => {
     reportNavigation.popToTop()
     reportNavigation.goBack()
   }, [reportNavigation])
 
-  if (isInFlight) return <Text>Sending</Text>
+  const [reportIncident] = useReportIncidentMutation()
+
+  const onReportButtonPressed = useCallback(() => {
+    reportIncident({
+      title: title,
+      coordinate: userCoordinate,
+      pictures: params.capturedPictures,
+    }),
+      reportNavigation.popToTop()
+  }, [reportIncident, reportNavigation, title, userCoordinate])
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
       <ScrollView style={{ flex: 1, flexGrow: 9, marginTop: insets.top }}>
-        <Text variant="link" onPress={backToCamera}>
-          Adicionar outra midia
-        </Text>
-
-        {params.capturedMedias.map((media, i) => (
+        {params.capturedPictures.map((media, i) => (
           <Image
             key={i}
             source={{ uri: media.uri }}
@@ -84,6 +53,10 @@ export default function MediasScreen() {
             resizeMode="cover"
           />
         ))}
+
+        <Text variant="link" onPress={backToCamera}>
+          Adicionar outra midia
+        </Text>
 
         <Text variant="header" m="md">
           {intl.publishIncident}
@@ -112,12 +85,13 @@ export default function MediasScreen() {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.report} onPress={onPublish} />
+        <RoundedButton p="sm" mx="sm" my="md" label={intl.report} onPress={onReportButtonPressed} />
       </Box>
     </Box>
   )
 }
 
+// example react native vision camera
 /*
 const isVideoOnLoadEvent = (
   event: OnLoadData | NativeSyntheticEvent<ImageLoadEventData>,

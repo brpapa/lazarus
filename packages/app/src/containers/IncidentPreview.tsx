@@ -1,18 +1,18 @@
-import React, { useCallback } from 'react'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
-import Text from '~/components/atomics/Text'
-import CloseIcon from '~/assets/icons/close'
-import RelativeInfo from '~/components/RelativeInfo'
-import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
-import type { IncidentPreviewQuery } from '~/__generated__/IncidentPreviewQuery.graphql'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
+import React, { useCallback } from 'react'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
+import CloseIcon from '~/assets/icons/close'
+import Box from '~/components/atomics/Box'
+import Text from '~/components/atomics/Text'
+import RoundedButton from '~/components/RoundedButton'
 import type { RootStackParams } from '~/RootNavigator'
+import intl from '~/shared/intl'
+import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
 
 type IncidentPreviewProps = {
-  preloadedQueryRef: PreloadedQuery<IncidentPreviewQuery>
+  preloadedQuery: PreloadedQuery<IncidentPreviewQueryType>
   closeable: boolean
   onClosed?: () => void
 }
@@ -23,20 +23,21 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
 
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'Home'>>()
 
-  const data = usePreloadedQuery<IncidentPreviewQuery>(
+  const data = usePreloadedQuery<IncidentPreviewQueryType>(
     graphql`
       query IncidentPreviewQuery($id: String!) {
-        incident(id: $id) {
+        incident(incidentId: $id) {
           incidentId
           title
+          createdAt
         }
       }
     `,
-    props.preloadedQueryRef,
+    props.preloadedQuery,
   )
 
   const onTouched = useCallback(() => {
-    rootNavigation.push('IncidentDetails', {
+    rootNavigation.push('Incident', {
       incidentId: data.incident?.incidentId!,
     })
   }, [])
@@ -54,7 +55,15 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         borderWidth={1}
       >
         <Text variant="header">{data.incident?.title}</Text>
-        <RelativeInfo mb="sm" />
+        <Box flex={1} flexDirection="row" mb="sm">
+          <Text variant="body2">
+            {intl.relativeUpdatedTimeToNow.format({
+              timestamp: new Date(data?.incident?.createdAt as string),
+            })}
+          </Text>
+          {/* <Text mx="sm" variant="body2">{'·'}</Text>
+          <Text variant="body2">{intl.relativeDistanceToCurrentLocation.format()}</Text> */}
+        </Box>
 
         {/* <NotificationsAmount amount={incident.notificationsAmount} /> */}
 

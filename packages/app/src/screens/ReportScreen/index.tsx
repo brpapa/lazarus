@@ -1,27 +1,26 @@
-import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-
-import PermissionsScreen from './PermissionsScreen'
+import React from 'react'
+import Loading from '~/components/Loading'
+import type { CapturedPicture } from '~/containers/Camera'
+import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import CameraScreen from './CameraScreen'
 import MediasScreen from './MediasScreen'
-import { useCameraPermissions } from '~/hooks/use-camera-permissions'
-import type { CapturedMedia } from './types'
+import PermissionsScreen from './PermissionsScreen'
 
 export type ReportStackParams = {
   Permissions: undefined
   Camera: {
-    previousCapturedMedias?: CapturedMedia[]
+    previousCapturedPictures?: CapturedPicture[]
   }
   Medias: {
-    capturedMedias: CapturedMedia[]
+    capturedPictures: CapturedPicture[]
   }
 }
 const ReportStack = createStackNavigator<ReportStackParams>()
 
-// DOING: usuario adiona/remove imagens/videos no app, depois quando clica em submit report, sobe midias pro s3 e manda mutation com as urls pra criar incident
 export function ReportStackScreen() {
   const { isLoading, allPermissionsIsGranted } = useCameraPermissions()
-  if (isLoading) return null
+  if (isLoading) return <Loading />
 
   return (
     <ReportStack.Navigator

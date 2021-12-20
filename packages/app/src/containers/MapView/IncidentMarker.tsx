@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Marker } from 'react-native-maps'
 import { graphql, useFragment } from 'react-relay'
-import { useRecoilState } from 'recoil'
 import { Box } from '~/components/atomics'
-import { selectedIncidentIdInMap } from '~/data/recoil'
 import type { IncidentMarker_incident$key } from '~/__generated__/IncidentMarker_incident.graphql'
 
 type IncidentMarkerProps = {
@@ -13,7 +11,7 @@ type IncidentMarkerProps = {
 }
 
 function IncidentMarker(props: IncidentMarkerProps) {
-  const data = useFragment(
+  const data = useFragment<IncidentMarker_incident$key>(
     graphql`
       fragment IncidentMarker_incident on Incident {
         incidentId
@@ -25,7 +23,6 @@ function IncidentMarker(props: IncidentMarkerProps) {
     `,
     props.incident,
   )
-
 
   return (
     <Marker

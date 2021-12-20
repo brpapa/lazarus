@@ -1,52 +1,59 @@
-import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-
-import { HomeScreen } from '~/screens/Home'
-import NotFoundScreen from '~/screens/NotFound'
-import LoginScreen from '~/screens/Login'
-import IncidentDetailsScreen from '~/screens/IncidentDetails'
+import React from 'react'
 import { useNavigationStatePersistence } from '~/hooks/use-navigation-state-persistence'
+import { useAuth } from '~/hooks/use-auth'
+import { HomeScreen } from '~/screens/HomeScreen'
+import IncidentScreen from '~/screens/IncidentScreen'
+import SignInScreen from '~/screens/SignInScreen'
+import SignUpScreen from '~/screens/SignUpScreen'
 import Loading from './components/Loading'
 
 export type RootStackParams = {
   Home: undefined
-  IncidentDetails: {
+  Incident: {
     incidentId: string
   }
-  Login: undefined
+  SignIn: undefined
+  SignUp: undefined
   NotFound: undefined
 }
 
 const RootStack = createStackNavigator<RootStackParams>()
 
 export default function RootNavigator() {
-  const [isLogged] = useState(true)
+  const { isSignedIn } = useAuth()
+  const { isLoading, persistenceProps } = useNavigationStatePersistence()
 
-  const { isReady, persistenceProps } = useNavigationStatePersistence(PERSISTENCE_KEY)
-  if (!isReady) return <Loading />
+  if (isLoading) return <Loading />
 
   return (
     <NavigationContainer {...persistenceProps}>
       <RootStack.Navigator initialRouteName="Home">
-        {isLogged ? (
+        {isSignedIn ? (
           <>
             <RootStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             <RootStack.Screen
-              name="IncidentDetails"
-              component={IncidentDetailsScreen}
+              name="Incident"
+              component={IncidentScreen}
               options={{ headerShown: false }}
             />
           </>
         ) : (
           <>
-            <RootStack.Screen name="Login" component={LoginScreen} />
-            <RootStack.Screen name="NotFound" component={NotFoundScreen} />
+            <RootStack.Screen
+              name="SignIn"
+              component={SignInScreen}
+              options={{ title: 'Sign in', animationTypeForReplace: 'pop' }}
+            />
+            <RootStack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ title: 'Sign up' }}
+            />
           </>
         )}
       </RootStack.Navigator>
     </NavigationContainer>
   )
 }
-
-const PERSISTENCE_KEY = 'NAVIGATION_STATE'
