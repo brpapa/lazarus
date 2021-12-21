@@ -7,7 +7,7 @@ import { useQueryLoader } from 'react-relay'
 import { CloseIcon, HeartIcon, MaximizeIcon, MessageCircleIcon } from '~/assets/icons'
 import { Box } from '~/components/atomics'
 import Loading from '~/components/Loading'
-import RoundedButton from '~/components/RoundedButton'
+import MyButton from '~/components/MyButton'
 import type { RootStackParams } from '~/RootNavigator'
 import intl from '~/shared/intl'
 import type { IncidentDataQuery as IncidentDataQueryType } from '~/__generated__/IncidentDataQuery.graphql'
@@ -34,7 +34,7 @@ export default function IncidentScreen() {
           </Suspense>
         )}
         <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-          <RoundedButton
+          <MyButton
             my={'sm'}
             justifyContent="center"
             alignItems="center"
@@ -43,7 +43,7 @@ export default function IncidentScreen() {
               homeNavigation.pop()
             }}
           />
-          <RoundedButton
+          <MyButton
             my={'sm'}
             justifyContent="center"
             alignItems="center"
@@ -60,8 +60,8 @@ export default function IncidentScreen() {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.react} icon={HeartIcon} />
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.comment} icon={MessageCircleIcon} />
+        <MyButton p="sm" mx="sm" my="md" label={intl.react} icon={HeartIcon} />
+        <MyButton p="sm" mx="sm" my="md" label={intl.comment} icon={MessageCircleIcon} />
       </Box>
     </Box>
   )

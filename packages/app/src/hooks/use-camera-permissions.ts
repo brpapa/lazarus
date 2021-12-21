@@ -1,5 +1,5 @@
 import { Camera, PermissionStatus } from 'expo-camera'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Linking } from 'react-native'
 
 type Options = {

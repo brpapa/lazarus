@@ -1,7 +1,7 @@
 import { JwtToken } from '~/data/jwt-token-loader'
 import { atom, DefaultValue } from 'recoil'
 
-export const userJwtToken = atom<string | null>({
+export const userJwtTokenState = atom<string | null>({
   key: 'userJwtToken',
   default: null,
   effects_UNSTABLE: [

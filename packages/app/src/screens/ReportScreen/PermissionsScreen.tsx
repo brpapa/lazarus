@@ -6,7 +6,7 @@ import type { ReportStackParams } from '.'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/core'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
-import RoundedButton from '~/components/RoundedButton'
+import MyButton from '~/components/MyButton'
 import { CloseIcon } from '~/assets/icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -51,7 +51,7 @@ export default function PermissionsScreen() {
         )}
       </Box>
       <Box position="absolute" right={insets.right+10} top={insets.top+10}>
-        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
+        <MyButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
       </Box>
     </Box>
   )

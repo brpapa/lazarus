@@ -1,18 +1,16 @@
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
-import { userJwtToken } from '~/data/recoil/user-jwt-token'
-import { useSignInMutation } from './mutations/SignInMutation'
-import { useSignUpMutation } from './mutations/SignUpMutation'
+import { userJwtTokenState } from '~/data/recoil'
 
 export const useSession = () => {
-  const [jwtToken, setJwtToken] = useRecoilState(userJwtToken)
+  const [userJwtToken, setUserJwtToken] = useRecoilState(userJwtTokenState)
 
-  const signOut = useCallback(() => {
-    setJwtToken(null)
-  }, [setJwtToken])
+  const openSession = useCallback((jwtToken: string) => setUserJwtToken(jwtToken), [setUserJwtToken])
+  const closeSession = useCallback(() => setUserJwtToken(null), [setUserJwtToken])
 
   return {
-    isSignedIn: jwtToken !== null,
-    signOut,
+    isSignedIn: userJwtToken !== null,
+    openSession,
+    closeSession,
   }
 }

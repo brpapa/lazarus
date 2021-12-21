@@ -5,9 +5,8 @@ import { uploadPictures } from '~/screens/ReportScreen/upload-pictures'
 import type {
   ReportIncidentErrCodeType,
   ReportIncidentInput,
-  ReportIncidentMutation as ReportIncidentMutationType,
+  ReportIncidentMutation as ReportIncidentMutationType
 } from '~/__generated__/ReportIncidentMutation.graphql'
-import { useSession } from '../use-session'
 
 // REBEMBER THAT THE MUTATION PAYLOAD QUERY ABOVE SHOULD CONTAINS ALL FIELDS AVAILABLE IN SCHEMA TO AVOID FUTURE ERRORS, BECAUSE OF MY UPDATER IMPLEMENTATION BELOW
 const mutation = graphql`
@@ -44,12 +43,11 @@ type Input = Omit<ReportIncidentInput, 'medias'> & {
 }
 type Listeners = {
   onOkResult?: () => void
-  onErrResult?: (code: ReportIncidentErrCodeType) => void
+  onErrResult?: (result: { reason: string; code: ReportIncidentErrCodeType }) => void
 }
 
 export const useReportIncidentMutation = () => {
-  const [commit] = useMutation<ReportIncidentMutationType>(mutation)
-  const { signOut } = useSession()
+  const [commit, isSending] = useMutation<ReportIncidentMutationType>(mutation)
 
   const reportIncident = useCallback(
     async (input: Input, listeners?: Listeners) => {
@@ -74,8 +72,7 @@ export const useReportIncidentMutation = () => {
             case 'ReportIncidentOkResult':
               return listeners?.onOkResult && listeners.onOkResult()
             case 'ReportIncidentErrResult':
-              if (result.code === 'UnauthenticatedError') signOut()
-              return listeners?.onErrResult && listeners.onErrResult(result.code)
+              return listeners?.onErrResult && listeners.onErrResult(result)
             default:
               throw new Error(`Unexpected result typename: ${result.__typename}`)
           }
@@ -126,5 +123,5 @@ export const useReportIncidentMutation = () => {
     [commit],
   )
 
-  return [reportIncident]
+  return [reportIncident, isSending] as const
 }

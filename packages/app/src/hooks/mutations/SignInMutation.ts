@@ -1,11 +1,9 @@
 import { useCallback } from 'react'
 import { graphql, useMutation } from 'react-relay'
-import { useRecoilState } from 'recoil'
-import { userJwtToken } from '~/data/recoil'
 import type {
   SignInErrCodeType,
   SignInInput,
-  SignInMutation as SignInMutationType,
+  SignInMutation as SignInMutationType
 } from '~/__generated__/SignInMutation.graphql'
 
 const mutation = graphql`

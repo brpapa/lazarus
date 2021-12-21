@@ -4,13 +4,12 @@ import React, { useCallback, useState } from 'react'
 import { Image } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useRecoilValue } from 'recoil'
 import { CloseIcon } from '~/assets/icons'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
-import RoundedButton from '~/components/RoundedButton'
-import { userCoordinateState } from '~/data/recoil'
+import MyButton from '~/components/MyButton'
 import { useReportIncidentMutation } from '~/hooks/mutations/ReportIncidentMutation'
+import { useSession } from '~/hooks/use-session'
 import intl from '~/shared/intl'
 import type { ReportStackParams } from '.'
 
@@ -19,7 +18,6 @@ export default function MediasScreen() {
   const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Medias'>>()
   const { params } = useRoute<RouteProp<ReportStackParams, 'Medias'>>()
 
-  const userCoordinate = useRecoilValue(userCoordinateState)
   const [title, setTitle] = useState('')
 
   const backToCamera = useCallback(() => {
@@ -31,20 +29,23 @@ export default function MediasScreen() {
     reportNavigation.goBack()
   }, [reportNavigation])
 
-  const [reportIncident] = useReportIncidentMutation()
+  const [reportIncident, isSending] = useReportIncidentMutation()
+  const { closeSession } = useSession()
 
   const onReportButtonPressed = useCallback(() => {
     reportIncident(
       {
         title: title,
-        coordinate: userCoordinate,
         pictures: params.capturedPictures,
       },
       {
         onOkResult: closeReport,
+        onErrResult: (res) => {
+          if (res.code === 'UnauthenticatedError') closeSession()
+        },
       },
     )
-  }, [closeReport, params.capturedPictures, reportIncident, title, userCoordinate])
+  }, [closeReport, closeSession, params.capturedPictures, reportIncident, title])
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
@@ -78,7 +79,7 @@ export default function MediasScreen() {
         />
       </ScrollView>
       <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeReport} />
+        <MyButton my={'sm'} icon={CloseIcon} onPress={closeReport} />
       </Box>
       <Box
         flexGrow={1}
@@ -89,7 +90,14 @@ export default function MediasScreen() {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <RoundedButton p="sm" mx="sm" my="md" label={intl.report} onPress={onReportButtonPressed} />
+        <MyButton
+          p="sm"
+          mx="sm"
+          my="md"
+          label={intl.report}
+          onPress={onReportButtonPressed}
+          isLoading={isSending}
+        />
       </Box>
     </Box>
   )

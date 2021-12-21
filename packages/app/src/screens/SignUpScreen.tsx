@@ -5,6 +5,7 @@ import { Button } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { Box, Text } from '~/components/atomics'
 import Loading from '~/components/Loading'
+import MyButton from '~/components/MyButton'
 import { useSignUpMutation } from '~/hooks/mutations/SignUpMutation'
 import type { RootStackParams } from '~/RootNavigator'
 
@@ -45,8 +46,14 @@ export default function SignUpScreen() {
         onChangeText={setPasswordConfirm}
         secureTextEntry
       />
-      <Button title="SignUp" onPress={onSignUpPressed} />
-      {isSending && <Text>sending</Text>}
+      <MyButton
+        p="sm"
+        mx="sm"
+        my="md"
+        label={'SignUp'}
+        onPress={onSignUpPressed}
+        isLoading={isSending}
+      />
       {errorMsg && <Text>{errorMsg}</Text>}
       <Box style={{ height: 100 }} />
       <Text>{'Or already have an account?'}</Text>

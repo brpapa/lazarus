@@ -16,7 +16,7 @@ export default function App() {
     <RelayEnvironmentProvider environment={environment}>
       <ThemeProvider theme={THEME_NAME == 'default' ? theme : darkTheme}>
         <RecoilRoot>
-          {/* show a fallback while waiting for recoil load async values (when setSelf received a Promise) */}
+          {/* show a fallback while waiting for recoil load async values (those where setSelf receives a Promise) */}
           <Suspense fallback={<Loading />}>
             <SafeAreaProvider>
               <StatusBar barStyle={statusBarStyle[THEME_NAME]} />

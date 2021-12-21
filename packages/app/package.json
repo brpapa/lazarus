@@ -63,7 +63,8 @@
     "react-relay": "^11.0.2",
     "recoil": "^0.4.0",
     "relay-runtime": "^12.0.0",
-    "expo-constants": "~13.0.0"
+    "expo-constants": "~13.0.0",
+    "expo-location": "~14.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

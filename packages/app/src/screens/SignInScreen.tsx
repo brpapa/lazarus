@@ -5,15 +5,17 @@ import { Button } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { Box, Text } from '~/components/atomics'
+import MyButton from '~/components/MyButton'
 import { userJwtToken } from '~/data/recoil'
 import { useSignInMutation } from '~/hooks/mutations/SignInMutation'
+import { useSession } from '~/hooks/use-session'
 import type { RootStackParams } from '~/RootNavigator'
 
 export default function SignInScreen() {
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'SignIn'>>()
 
-  const setJwtToken = useSetRecoilState(userJwtToken)
   const [signIn, isSending] = useSignInMutation()
+  const { openSession } = useSession()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -22,11 +24,11 @@ export default function SignInScreen() {
     signIn(
       { username, password },
       {
-        onOkResult: (res) => setJwtToken(res.accessToken),
+        onOkResult: (res) => openSession(res.accessToken),
         onErrResult: (res) => setErrorMsg(res.reason),
       },
     )
-  }, [password, setJwtToken, signIn, username])
+  }, [password, signIn, openSession, username])
 
   return (
     <Box flex={1} alignItems="center" justifyContent="center">
@@ -37,8 +39,14 @@ export default function SignInScreen() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="SignIn" onPress={onSignInPressed} />
-      {isSending && <Text>sending</Text>}
+      <MyButton
+        p="sm"
+        mx="sm"
+        my="md"
+        label={'SignIn'}
+        onPress={onSignInPressed}
+        isLoading={isSending}
+      />
       {errorMsg && <Text>{errorMsg}</Text>}
       <Box style={{ height: 100 }} />
       <Text>{'Or not have an account yet?'}</Text>

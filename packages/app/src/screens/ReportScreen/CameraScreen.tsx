@@ -5,7 +5,7 @@ import { Alert, StatusBar, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { CloseIcon, RotateIcon } from '~/assets/icons'
 import Box from '~/components/atomics/Box'
-import RoundedButton from '~/components/RoundedButton'
+import MyButton from '~/components/MyButton'
 import Camera, { CameraOrientation, CameraRef } from '~/containers/Camera'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
 import type { ReportStackParams } from '.'
@@ -51,11 +51,11 @@ export default function CameraScreen() {
         onCameraReady={() => setCameraIsReady(true)}
       />
       <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-        <RoundedButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
-        <RoundedButton my={'sm'} icon={RotateIcon} onPress={flipCameraOrientation} />
+        <MyButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
+        <MyButton my={'sm'} icon={RotateIcon} onPress={flipCameraOrientation} />
       </Box>
       {cameraIsReady && (
-        <RoundedButton
+        <MyButton
           position="absolute"
           right="45%"
           bottom={insets.bottom + 30}

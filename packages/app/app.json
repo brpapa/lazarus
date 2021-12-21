@@ -29,9 +29,10 @@
         "googleMapsApiKey": "AIzaSyBaMynGjdodGZmYdySnyH1jB7hX5weFESU"
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Please, enable location tracking when in usage for a better experience",
-        "NSCameraUsageDescription": "Please, enable access to camera before to report incidents",
-        "NSMicrophoneUsageDescription": "Please, enable access to microphone before to report incidents"
+        "NSLocationAlwaysUsageDescription": "Please enable this permission to receive accurate notifications about new incidents created around you",
+        "NSLocationWhenInUseUsageDescription": "Please enable this permission to view incidents nearby you",
+        "NSCameraUsageDescription": "Please enable camera access so you can report incidents",
+        "NSMicrophoneUsageDescription": "Please enable microphone access so you can report incidents"
       }
     },
     "android": {

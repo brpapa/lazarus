@@ -6,7 +6,7 @@ import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import CloseIcon from '~/assets/icons/close'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
-import RoundedButton from '~/components/RoundedButton'
+import MyButton from '~/components/MyButton'
 import type { RootStackParams } from '~/RootNavigator'
 import intl from '~/shared/intl'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
@@ -68,7 +68,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         {/* <NotificationsAmount amount={incident.notificationsAmount} /> */}
 
         {props.closeable && (
-          <RoundedButton
+          <MyButton
             position="absolute"
             width={40}
             height={40}

@@ -18,19 +18,19 @@ type ButtonProps = Omit<React.ComponentPropsWithoutRef<typeof BaseButton>, 'chil
   isLoading?: boolean
 }
 
-export default function RoundedButton({ label, icon, isLoading, ...props }: ButtonProps) {
+export default function MyButton({ label, icon, isLoading, ...props }: ButtonProps) {
   const theme = useTheme<Theme>()
 
   return (
     <BaseButton
       flexDirection="row"
-      flex={1}
       alignItems="center"
       justifyContent="center"
       bg="accents-2"
       borderRadius={999}
       p="xs"
-      width={BUTTON_SIZE}
+      // width="auto"
+      width={BUTTON_SIZE} // to be circle
       height={BUTTON_SIZE}
       {...props}
     >
