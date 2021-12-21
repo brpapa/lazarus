@@ -7,7 +7,7 @@ import type {
   ReportIncidentInput,
   ReportIncidentMutation as ReportIncidentMutationType,
 } from '~/__generated__/ReportIncidentMutation.graphql'
-import { useAuth } from '../use-auth'
+import { useSession } from '../use-session'
 
 // REBEMBER THAT THE MUTATION PAYLOAD QUERY ABOVE SHOULD CONTAINS ALL FIELDS AVAILABLE IN SCHEMA TO AVOID FUTURE ERRORS, BECAUSE OF MY UPDATER IMPLEMENTATION BELOW
 const mutation = graphql`
@@ -49,7 +49,7 @@ type Listeners = {
 
 export const useReportIncidentMutation = () => {
   const [commit] = useMutation<ReportIncidentMutationType>(mutation)
-  const { signOut } = useAuth()
+  const { signOut } = useSession()
 
   const reportIncident = useCallback(
     async (input: Input, listeners?: Listeners) => {
@@ -74,7 +74,7 @@ export const useReportIncidentMutation = () => {
             case 'ReportIncidentOkResult':
               return listeners?.onOkResult && listeners.onOkResult()
             case 'ReportIncidentErrResult':
-              if (result.code === 'UNAUTHENTICATED_ERROR') signOut()
+              if (result.code === 'UnauthenticatedError') signOut()
               return listeners?.onErrResult && listeners.onErrResult(result.code)
             default:
               throw new Error(`Unexpected result typename: ${result.__typename}`)

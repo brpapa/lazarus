@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { useNavigationStatePersistence } from '~/hooks/use-navigation-state-persistence'
-import { useAuth } from '~/hooks/use-auth'
+import { useSession } from '~/hooks/use-session'
 import { HomeScreen } from '~/screens/HomeScreen'
 import IncidentScreen from '~/screens/IncidentScreen'
 import SignInScreen from '~/screens/SignInScreen'
@@ -22,7 +22,7 @@ export type RootStackParams = {
 const RootStack = createStackNavigator<RootStackParams>()
 
 export default function RootNavigator() {
-  const { isSignedIn } = useAuth()
+  const { isSignedIn } = useSession()
   const { isLoading, persistenceProps } = useNavigationStatePersistence()
 
   if (isLoading) return <Loading />
@@ -44,12 +44,12 @@ export default function RootNavigator() {
             <RootStack.Screen
               name="SignIn"
               component={SignInScreen}
-              options={{ title: 'Sign in', animationTypeForReplace: 'pop' }}
+              options={{ title: 'Sign in', animationTypeForReplace: 'pop', headerShown: false }}
             />
             <RootStack.Screen
               name="SignUp"
               component={SignUpScreen}
-              options={{ title: 'Sign up' }}
+              options={{ title: 'Sign up', headerShown: false }}
             />
           </>
         )}

@@ -1,4 +1,12 @@
-import { graphql } from 'react-relay'
+import { useCallback } from 'react'
+import { graphql, useMutation } from 'react-relay'
+import { useRecoilState } from 'recoil'
+import { userJwtToken } from '~/data/recoil'
+import type {
+  SignInErrCodeType,
+  SignInInput,
+  SignInMutation as SignInMutationType,
+} from '~/__generated__/SignInMutation.graphql'
 
 const mutation = graphql`
   mutation SignInMutation($input: SignInInput!) {
@@ -18,4 +26,38 @@ const mutation = graphql`
   }
 `
 
-export const useSignInMutation = () => {}
+type Listeners = {
+  onOkResult?: (result: { accessToken: string; refreshToken: string }) => void
+  onErrResult?: (result: { reason: string; code: SignInErrCodeType }) => void
+}
+
+export const useSignInMutation = () => {
+  const [commit, isSending] = useMutation<SignInMutationType>(mutation)
+
+  const wrappedCommit = useCallback(
+    (input: SignInInput, listeners?: Listeners) =>
+      commit({
+        variables: { input },
+        onCompleted: (response, errors) => {
+          if (errors !== null) throw new Error(`Unexpected error: ${JSON.stringify(errors)}`)
+
+          const result = response.signIn.result
+
+          switch (result.__typename) {
+            case 'SignInOkResult':
+              return listeners?.onOkResult && listeners.onOkResult(result)
+            case 'SignInErrResult':
+              return listeners?.onErrResult && listeners.onErrResult(result)
+            default:
+              throw new Error(`Unexpected result typename: ${result.__typename}`)
+          }
+        },
+        onError: (error) => {
+          throw error
+        },
+      }),
+    [],
+  )
+
+  return [wrappedCommit, isSending] as const
+}

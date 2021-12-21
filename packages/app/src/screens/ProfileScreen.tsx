@@ -4,12 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
-import { useAuth } from '~/hooks/use-auth'
+import { useSession } from '~/hooks/use-session'
 import intl from '~/shared/intl'
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets()
-  const { signOut } = useAuth()
+  const { signOut } = useSession()
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
