@@ -48,16 +48,13 @@ export class User extends AggregateRoot<UserProps> {
     )
   }
 
-  static create(props: UserProps, id?: UUID): Result<User, DomainError> {
-    const guarded = combine([Guard.againstNullOrUndefined(props.username, 'name')])
-    if (guarded.isErr()) return err(new DomainError(guarded.error))
-
+  static create(props: UserProps, id?: UUID): User {
     const user = new User(props, id)
 
     const isNew = id === undefined
     if (isNew) user.addDomainEvent(new UserRegistered(user))
 
-    return ok(user)
+    return user
   }
 
   isAuthenticated() {

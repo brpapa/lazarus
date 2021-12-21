@@ -7,10 +7,10 @@ import { IncidentStatus } from 'src/modules/incident/domain/models/incident-stat
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Coordinate, InvalidCoordinateError } from 'src/shared/domain/models/coordinate'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
-import { BusinessError, DomainError, UnauthenticatedError } from 'src/shared/logic/errors'
+import { ApplicationError, DomainError, UnauthenticatedError } from 'src/shared/logic/errors'
 import { Guard } from 'src/shared/logic/guard'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
@@ -21,7 +21,10 @@ export type ReportIncidentInput = {
   medias: MediaDTO[]
 }
 export type ReportIncidentOkResult = IncidentDTO
-export type ReportIncidentErrResult = DomainError | BusinessError | UnauthenticatedError
+export type ReportIncidentErrResult =
+  | InvalidCoordinateError
+  | MediaQuantityError
+  | UnauthenticatedError
 export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
 
 export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIncidentResult> {
@@ -34,7 +37,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
     const ownerUserId = ctx.viewer.id
 
     const incidentOrErr = Coordinate.create(input.coordinate)
-      .andThen<Incident, DomainError>((coordinate) =>
+      .mapOk((coordinate) =>
         Incident.create({
           ownerUserId,
           title: input.title,
@@ -42,7 +45,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
           status: IncidentStatus.ACTIVE,
         }),
       )
-      .andThen<Incident, DomainError | BusinessError>((incident) =>
+      .andThen((incident) =>
         Guard.inRange(
           input.medias.length,
           Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT,
@@ -59,7 +62,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
             )
             return incident.addMedias(medias)
           },
-          (r) => new BusinessError(r),
+          (r) => new MediaQuantityError(r),
         ),
       )
 
@@ -69,3 +72,5 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
     return ok(IncidentMapper.fromDomainToDTO(incidentOrErr.value))
   }
 }
+
+class MediaQuantityError extends ApplicationError {}

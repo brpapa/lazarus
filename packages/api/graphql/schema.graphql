@@ -142,14 +142,14 @@ type SignUpErrResult {
 }
 
 enum SignUpErrCodeType {
-  DOMAIN_ERROR
-  BUSINESS_ERROR
+  PasswordSizeError
+  InvalidPhoneNumberError
 }
 
 input SignUpInput {
   username: String!
   password: String!
-  phoneNumber: String!
+  phoneNumber: String
   clientMutationId: String
 }
 
@@ -171,7 +171,7 @@ type SignInErrResult {
 }
 
 enum SignInErrCodeType {
-  BUSINESS_ERROR
+  UserOrPasswordInvalidError
 }
 
 input SignInInput {
@@ -197,9 +197,9 @@ type ReportIncidentErrResult {
 }
 
 enum ReportIncidentErrCodeType {
-  UNAUTHENTICATED_ERROR
-  DOMAIN_ERROR
-  BUSINESS_ERROR
+  UnauthenticatedError
+  MediaQuantityError
+  InvalidCoordinateError
 }
 
 input ReportIncidentInput {

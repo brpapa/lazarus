@@ -34,7 +34,7 @@ const populate = async () => {
         currentLocation: Coordinate.create(USER_COORDINATE).asOk(),
       },
       new UUID('my-user-id'),
-    ).asOk(),
+    ),
   )
 
   const CENTER_POINT = { latitude: -22.877187463558492, longitude: -48.44966612756252 }
@@ -48,7 +48,7 @@ const populate = async () => {
         ownerUserId: user.id,
         title: `generated incident ${i}`,
         coordinate: Coordinate.create(randomPoint).asOk(),
-      }).asOk()
+      })
 
       incident.addMedias([
         Media.create({

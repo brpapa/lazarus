@@ -1,6 +1,6 @@
 import { err, okVoid, Result } from 'src/shared/logic/result/result'
 import { Command } from 'src/shared/logic/command'
-import { BusinessError } from 'src/shared/logic/errors'
+import { ApplicationError } from 'src/shared/logic/errors'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { Debugger } from 'debug'
@@ -8,7 +8,7 @@ import { Debugger } from 'debug'
 export type RefreshTokenInput = {
   refreshToken: string
 }
-export type RefreshTokenOutput = Result<void, BusinessError>
+export type RefreshTokenOutput = Result<void, ApplicationError>
 
 export class RefreshAccessTokenCommand extends Command<RefreshTokenInput, RefreshTokenOutput> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
@@ -17,10 +17,10 @@ export class RefreshAccessTokenCommand extends Command<RefreshTokenInput, Refres
 
   async execImpl(req: RefreshTokenInput): Promise<RefreshTokenOutput> {
     const username = await this.authService.getUserNameFromRefreshToken(req.refreshToken)
-    if (!username) return err(new BusinessError('Refresh token expired'))
+    if (!username) return err(new ApplicationError('Refresh token expired'))
 
     const user = await this.userRepo.findByUsername(username)
-    if (!user) return err(new BusinessError('User not found'))
+    if (!user) return err(new ApplicationError('User not found'))
 
     const accessToken = this.authService.encodeJwt({
       userId: user.id.toString(),

@@ -1,17 +1,15 @@
 import assert from 'assert'
-import { UUID } from 'src/shared/domain/models/uuid'
-import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { ok, Result } from 'src/shared/logic/result'
-import { DomainError } from 'src/shared/logic/errors'
-import { WatchedList } from 'src/shared/domain/watched-list'
 import { CommentPostedOnIncident } from 'src/modules/incident/domain/events/comment-posted-on-incident'
+import { AggregateRoot } from 'src/shared/domain/aggregate-root'
+import { UUID } from 'src/shared/domain/models/uuid'
+import { WatchedList } from 'src/shared/domain/watched-list'
 import { Range } from 'src/shared/logic/guard'
-import { IncidentStatus } from './incident-status'
 import { Coordinate } from '../../../../shared/domain/models/coordinate'
 import { IncidentCreated } from '../events/incident-created'
-import { Media } from './media'
-import { Comment } from './comment'
 import { ActivityLog } from './activity-log'
+import { Comment } from './comment'
+import { IncidentStatus } from './incident-status'
+import { Media } from './media'
 import { Reaction } from './reaction'
 import { IncidentStatistics } from './statistics'
 
@@ -68,13 +66,13 @@ export class Incident extends AggregateRoot<IncidentProps> {
     )
   }
 
-  public static create(props: IncidentProps, id?: UUID): Result<Incident, DomainError> {
+  public static create(props: IncidentProps, id?: UUID): Incident {
     const incident = new Incident(props, id)
 
     const isNew = id === undefined
     if (isNew) incident.addDomainEvent(new IncidentCreated(incident))
 
-    return ok(incident)
+    return incident
   }
 
   public addMedias(medias: Media[]) {

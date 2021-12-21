@@ -1,9 +1,12 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { signInCommand } from 'src/modules/user/application/commands'
-import { SignInInput, SignInResult } from 'src/modules/user/application/commands/sign-in-command'
+import {
+  SignInInput,
+  SignInResult,
+  UserOrPasswordInvalidError,
+} from 'src/modules/user/application/commands/sign-in-command'
 import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
-import { BusinessError } from 'src/shared/logic/errors'
 
 export const SignInMutationType = createMutationType<GraphQLContext, SignInInput, SignInResult>({
   name: 'SignIn',
@@ -32,15 +35,11 @@ export const SignInMutationType = createMutationType<GraphQLContext, SignInInput
         new GraphQLEnumType({
           name: 'SignInErrCodeType',
           values: {
-            BUSINESS_ERROR: { value: 'BUSINESS_ERROR' },
+            UserOrPasswordInvalidError: { value: 'UserOrPasswordInvalidError' },
           },
         }),
       ),
-      resolve: (result) => {
-        const err = result.asErr()
-        if (err instanceof BusinessError) return 'BUSINESS_ERROR'
-        throw new Error('Err is instance of an unexpected class')
-      },
+      resolve: (result) => result.asErr().code,
     },
   },
 })

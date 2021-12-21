@@ -1,21 +1,23 @@
 import { Debugger } from 'debug'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { User } from 'src/modules/user/domain/models/user'
-import { UserPassword } from 'src/modules/user/domain/models/user-password'
-import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
+import { PasswordSizeError, UserPassword } from 'src/modules/user/domain/models/user-password'
+import {
+  InvalidPhoneNumberError,
+  UserPhoneNumber,
+} from 'src/modules/user/domain/models/user-phone-number'
 import { Command } from 'src/shared/logic/command'
-import { BusinessError, DomainError } from 'src/shared/logic/errors'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
 
 export type SignUpInput = {
   username: string
-  password: string
   phoneNumber: string
+  password: string
 }
 export type SignUpOkResult = UserDTO
-export type SignUpErrResult = DomainError | BusinessError
+export type SignUpErrResult = PasswordSizeError | InvalidPhoneNumberError
 export type SignUpResult = Result<SignUpOkResult, SignUpErrResult>
 
 /** register a new user */
@@ -26,8 +28,8 @@ export class SignUpCommand extends Command<SignUpInput, SignUpResult> {
 
   async execImpl(input: SignUpInput): Promise<SignUpResult> {
     // todo: validar unicidade do username e do phoneNumber em relacao aos demais usuarios
-    // new BusinessError(`The phone number ${phoneNumber} is already associated to another account`)
-    // new BusinessError(`The username ${username} was already taken`)
+    // new PhoneNumberTakenError(`The phone number ${phoneNumber} is already associated to another account`)
+    // new UsernameTakenError(`The username ${username} was already taken`)
 
     const userOrErr = UserPassword.create({ value: input.password })
       .andThen((password) =>
@@ -35,7 +37,7 @@ export class SignUpCommand extends Command<SignUpInput, SignUpResult> {
           (phoneNumber) => [password, phoneNumber] as const,
         ),
       )
-      .andThen<User, DomainError>(([password, phoneNumber]) =>
+      .mapOk<User>(([password, phoneNumber]) =>
         User.create({
           username: input.username,
           password,
@@ -49,3 +51,6 @@ export class SignUpCommand extends Command<SignUpInput, SignUpResult> {
     return ok(UserMapper.fromDomainToDTO(userOrErr.value))
   }
 }
+
+// class UsernameTakenError extends ApplicationError {}
+// class PhoneNumberTakenError extends ApplicationError {}

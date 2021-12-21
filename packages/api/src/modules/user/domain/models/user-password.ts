@@ -21,13 +21,10 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     this.generatedHashes = []
   }
 
-  static create(props: UserPasswordProps): Result<UserPassword, DomainError> {
-    const passwordOrErr = Guard.againstNullOrUndefined(props.value, 'password')
-    if (passwordOrErr.isErr()) return err(new DomainError(passwordOrErr.error))
-
+  static create(props: UserPasswordProps): Result<UserPassword, PasswordSizeError> {
     if (!props.isAlreadyHashed) {
       const lengthOrErr = Guard.againstAtLeast(this.MIN_LENGTH, props.value, 'password')
-      if (lengthOrErr.isErr()) return err(new DomainError(lengthOrErr.error))
+      if (lengthOrErr.isErr()) return err(new PasswordSizeError(lengthOrErr.error))
     }
 
     return ok(new UserPassword({ ...props }))
@@ -61,3 +58,5 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     })
   }
 }
+
+export class PasswordSizeError extends DomainError {}

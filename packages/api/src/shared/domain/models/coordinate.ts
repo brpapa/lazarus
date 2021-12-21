@@ -21,12 +21,12 @@ export class Coordinate extends ValueObject<CoordinateProps> {
     super(props)
   }
 
-  public static create(props: CoordinateProps): Result<Coordinate, DomainError> {
+  public static create(props: CoordinateProps): Result<Coordinate, InvalidCoordinateError> {
     const result = combine([
       Guard.inRange(props.latitude, this.LAT_RANGE, 'latitude', 'degrees'),
       Guard.inRange(props.longitude, this.LNG_RANGE, 'longitude', 'degrees'),
     ])
-    if (result.isErr()) return err(new DomainError(result.error))
+    if (result.isErr()) return err(new InvalidCoordinateError(result.error))
     return ok(new Coordinate(props))
   }
 
@@ -34,3 +34,5 @@ export class Coordinate extends ValueObject<CoordinateProps> {
     return `${this.latitude}, ${this.longitude}`
   }
 }
+
+export class InvalidCoordinateError extends DomainError {}

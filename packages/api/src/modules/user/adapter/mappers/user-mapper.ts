@@ -27,7 +27,7 @@ export class UserMapper {
         createdAt: model.createdAt,
       },
       new UUID(model.id),
-    ).asOk()
+    )
 
     return user
   }

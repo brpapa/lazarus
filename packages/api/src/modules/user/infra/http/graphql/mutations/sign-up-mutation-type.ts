@@ -4,7 +4,6 @@ import { signUpCommand } from 'src/modules/user/application/commands'
 import { SignUpInput, SignUpResult } from 'src/modules/user/application/commands/sign-up-command'
 import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
 import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
-import { BusinessError, DomainError } from 'src/shared/logic/errors'
 import { UserType } from '../types/user-type'
 
 export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput, SignUpResult>({
@@ -12,9 +11,13 @@ export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
-    phoneNumber: { type: GraphQLNonNull(GraphQLString) },
+    phoneNumber: { type: GraphQLString },
   },
-  mutateAndGetResult: async (args, ctx) => signUpCommand.exec(args, ctx),
+  mutateAndGetResult: async (args, ctx) =>
+    signUpCommand.exec(
+      { ...args, phoneNumber: '14999999' }, // TODO
+      ctx,
+    ),
   okResultFields: {
     user: {
       type: GraphQLNonNull(UserType),
@@ -31,17 +34,12 @@ export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput
         new GraphQLEnumType({
           name: 'SignUpErrCodeType',
           values: {
-            DOMAIN_ERROR: { value: 'DOMAIN_ERROR' },
-            BUSINESS_ERROR: { value: 'BUSINESS_ERROR' },
+            PasswordSizeError: { value: 'PasswordSizeError' },
+            InvalidPhoneNumberError: { value: 'InvalidPhoneNumberError' },
           },
         }),
       ),
-      resolve: (result) => {
-        const err = result.asErr()
-        if (err instanceof DomainError) return 'DOMAIN_ERROR'
-        if (err instanceof BusinessError) return 'BUSINESS_ERROR'
-        throw new Error('Err is instance of an unexpected class')
-      },
+      resolve: (result) => result.asErr().code,
     },
   },
 })

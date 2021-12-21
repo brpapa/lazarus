@@ -33,7 +33,7 @@ export class IncidentMapper {
         ),
       },
       new UUID(incidentModel.id),
-    ).asOk()
+    )
 
     const medias = incidentModel.medias.map((m) => MediaMapper.fromPersistenceToDomain(m))
     incident.addMedias(medias)

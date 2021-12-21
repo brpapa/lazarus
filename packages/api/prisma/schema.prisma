@@ -11,7 +11,7 @@ model UserModel {
   id                  String          @id @default(uuid()) @db.VarChar(36)
   username            String          @unique @db.VarChar(32)
   password            String          @db.VarChar(256)
-  phoneNumber         String          @unique @map("phone_number") @db.VarChar(32)
+  phoneNumber         String          @map("phone_number") @db.VarChar(32)
   phoneNumberVerified Boolean         @map("phone_number_verified")
   createdAt           DateTime        @default(now()) @map("created_at")
   incidents           IncidentModel[]
