@@ -7,7 +7,7 @@ import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-numbe
 import { User } from 'src/modules/user/domain/models/user'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Location } from 'src/shared/domain/models/location'
 
 describe('graphql queries: incident', () => {
   beforeAll(async () => {
@@ -31,7 +31,7 @@ describe('graphql queries: incident', () => {
       Incident.create({
         ownerUserId: user.id,
         title: 'incident 1',
-        coordinate: Coordinate.create({ latitude: 2, longitude: 2 }).asOk(),
+        location: Location.create({ latitude: 2, longitude: 2 }).asOk(),
       }).asOk(),
     )
 

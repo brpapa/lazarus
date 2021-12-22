@@ -6,8 +6,8 @@ import { Incident } from 'src/modules/incident/domain/models/incident'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
-import { Coordinate, InvalidCoordinateError } from 'src/shared/domain/models/coordinate'
+import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
+import { Location, InvalidLocationError } from 'src/shared/domain/models/location'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
 import { ApplicationError, DomainError, UnauthenticatedError } from 'src/shared/logic/errors'
@@ -17,12 +17,11 @@ import { MediaDTO } from '../../adapter/dtos/media-dto'
 
 export type ReportIncidentInput = {
   title: string
-  coordinate: CoordinateDTO
   medias: MediaDTO[]
 }
 export type ReportIncidentOkResult = IncidentDTO
 export type ReportIncidentErrResult =
-  | InvalidCoordinateError
+  | InvalidLocationError
   | MediaQuantityError
   | UnauthenticatedError
 export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
@@ -35,13 +34,15 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
   async execImpl(input: ReportIncidentInput, ctx: AppContext): Promise<ReportIncidentResult> {
     if (!ctx.viewer) return err(new UnauthenticatedError())
     const ownerUserId = ctx.viewer.id
+    const incidentLocation = ctx.viewer.currentLocation
+    if (!incidentLocation) throw new Error('User has not location saved') // TODO
 
-    const incidentOrErr = Coordinate.create(input.coordinate)
-      .mapOk((coordinate) =>
+    const incidentOrErr = Location.create(incidentLocation)
+      .mapOk((location) =>
         Incident.create({
           ownerUserId,
           title: input.title,
-          coordinate,
+          location,
           status: IncidentStatus.ACTIVE,
         }),
       )

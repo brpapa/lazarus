@@ -8,14 +8,14 @@ import { Debugger } from 'debug'
 export type RefreshTokenInput = {
   refreshToken: string
 }
-export type RefreshTokenOutput = Result<void, ApplicationError>
+export type RefreshTokenResult = Result<void, ApplicationError>
 
-export class RefreshAccessTokenCommand extends Command<RefreshTokenInput, RefreshTokenOutput> {
+export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshTokenResult> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(req: RefreshTokenInput): Promise<RefreshTokenOutput> {
+  async execImpl(req: RefreshTokenInput): Promise<RefreshTokenResult> {
     const username = await this.authService.getUserNameFromRefreshToken(req.refreshToken)
     if (!username) return err(new ApplicationError('Refresh token expired'))
 

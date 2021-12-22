@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Location } from 'src/shared/domain/models/location'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { DomainError } from 'src/shared/logic/errors'
 import { Guard } from 'src/shared/logic/guard'
@@ -19,11 +19,11 @@ interface UserProps {
   isPhoneNumberVerified?: boolean
   createdAt?: Date
   lastLogin?: Date
-  // TODO: props persistida no redis, e preenchida pelo repo ao carregar um usuario existente
-  currentLocation?: Coordinate
-  // props persistidas no redis, mas repo nao as preenche ao carregar um usuario existente
+  expoPushToken?: string // TODO
+  currentLocation?: Location // TODO: props persistida no redis, e preenchida pelo repository ao carregar na aplicacao um usuario existente na base
+  // props persistidas no redis, mas repository nao as preenche ao carregar na aplicacao um usuario existente na base
   accessToken?: JwtAccessToken
-  refreshToken?: JwtAccessToken
+  refreshToken?: JwtRefreshToken
 }
 
 export class User extends AggregateRoot<UserProps> {

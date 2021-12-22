@@ -1,30 +1,17 @@
 import assert from 'assert'
 import jwt from 'jsonwebtoken'
-import {
-  JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S,
-  JWT_SECRET_KEY,
-  JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S,
-} from 'src/shared/config'
-import { UUID } from 'src/shared/domain/models/uuid'
+import { IUserSessionRepo } from 'src/modules/incident/adapter/repositories/user-session-repo'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { JwtAccessToken, JwtClaims, JwtRefreshToken } from 'src/modules/user/domain/models/jwt'
 import { User } from 'src/modules/user/domain/models/user'
-import { RedisClient } from 'src/infra/db/redis/client'
+import { JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S, JWT_SECRET_KEY } from 'src/shared/config'
+import { UUID } from 'src/shared/domain/models/uuid'
 
-interface RedisKeyParams {
-  username: string
-  refreshToken: string
-}
-
-// each data entry in redis represents a session of an user
-// key: sessions/username={USERNAME}&refreshToken={REFRESH_TOKEN}
-// value: {ACCESS_TOKEN}
-
-/** persists jwt tokens to redis if is signed, and determine their validity */
+/**
+ * persists jwt tokens to redis if is signed, and determine their validity
+ */
 export class AuthService implements IAuthService {
-  private REDIS_KEY_PREFFIX = 'sessions/'
-
-  constructor(private redisClient: RedisClient) {}
+  constructor(private userSessionRepo: IUserSessionRepo) {}
 
   encodeJwt(claims: JwtClaims): JwtAccessToken {
     return jwt.sign(claims, JWT_SECRET_KEY, {
@@ -48,64 +35,23 @@ export class AuthService implements IAuthService {
     if (user.isAuthenticated()) {
       assert(user.accessToken && user.refreshToken)
 
-      const key = this.hashToKey({
+      await this.userSessionRepo.commit({
         username: user.username,
         refreshToken: user.refreshToken,
+        accessToken: user.accessToken,
       })
-
-      await this.redisClient.set(key, user.accessToken)
-      await this.redisClient.expire(key, JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S)
     }
   }
 
   async unauthenticateUser(username: string): Promise<void> {
-    const keys = await this.redisClient.keys(this.genKeyPattern({ username }))
-    if (keys.length > 0) await this.redisClient.del(keys)
+    this.userSessionRepo.delete(username)
   }
 
-  async getActiveTokens(username: string): Promise<string[]> {
-    const keys = await this.redisClient.keys(this.genKeyPattern({ username }))
-    const values = keys.length > 0 ? await this.redisClient.mGet(keys) : []
-    return values.filter((v) => v !== null) as string[]
+  getActiveTokens(username: string): Promise<JwtAccessToken[]> {
+    return this.userSessionRepo.findAccessTokens(username)
   }
 
-  async getUserNameFromRefreshToken(refreshToken: JwtRefreshToken): Promise<string | null> {
-    const [key] = await this.redisClient.keys(this.genKeyPattern({ refreshToken }))
-    const refreshTokenExists = !!key
-    if (!refreshTokenExists) return null
-
-    return this.unhashKey(key).username
-  }
-
-  // keys match pattern: https://redis.io/commands/keys
-  private genKeyPattern(keyParamsOpt: Partial<RedisKeyParams>) {
-    const queryString = new URLSearchParams({
-      username: keyParamsOpt.username || '*',
-      refreshToken: keyParamsOpt.refreshToken || '*',
-    }).toString()
-    return `${this.REDIS_KEY_PREFFIX}${queryString}`
-  }
-
-  private hashToKey(keyParams: RedisKeyParams): string {
-    const queryString = new URLSearchParams({
-      username: keyParams.username,
-      refreshToken: keyParams.refreshToken,
-    }).toString()
-    return `${this.REDIS_KEY_PREFFIX}${queryString}`
-  }
-
-  private unhashKey(key: string): RedisKeyParams {
-    const preffix = key.indexOf(this.REDIS_KEY_PREFFIX)
-    if (preffix === -1) throw new Error(`Key preffix not found into: ${key}`)
-    const preffixEndIndex = preffix + this.REDIS_KEY_PREFFIX.length
-
-    const queryString = key.substring(preffixEndIndex)
-    const keyParams = new URLSearchParams(queryString)
-
-    const username = keyParams.get('username')
-    assert(username !== null)
-    const refreshToken = keyParams.get('refreshToken')
-    assert(refreshToken !== null)
-    return { username, refreshToken }
+  getUserNameFromRefreshToken(refreshToken: JwtRefreshToken): Promise<string | null> {
+    return this.userSessionRepo.findUserName(refreshToken)
   }
 }

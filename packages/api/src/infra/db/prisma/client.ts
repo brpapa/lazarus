@@ -1,9 +1,16 @@
 import { PrismaClient } from '@prisma/client'
+import { PG_CONN_STRING } from 'src/shared/config'
 import { DomainEvents } from 'src/shared/domain/events/domain-events'
 import { UUID } from 'src/shared/domain/models/uuid'
 
 const prismaClient = new PrismaClient({
   log: ['error', 'warn'],
+  errorFormat: 'pretty',
+  datasources: {
+    db: {
+      url: PG_CONN_STRING,
+    },
+  },
 })
 
 /** dispatch domain events after an aggregate root change is persisted */

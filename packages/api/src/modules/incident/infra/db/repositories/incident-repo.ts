@@ -5,7 +5,7 @@ import { PrismaClient } from 'src/infra/db/prisma/client'
 import { RedisClient } from 'src/infra/db/redis/client'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { zip } from 'src/shared/logic/helpers/zip'
-import { CoordinateProps } from '../../../../../shared/domain/models/coordinate'
+import { LocationProps } from '../../../../../shared/domain/models/location'
 import { PrismaRepo } from '../../../../../shared/infra/db/prisma-repo'
 import { IncidentMapper } from '../../../adapter/mappers/incident-mapper'
 import { MediaMapper } from '../../../adapter/mappers/media-mapper'
@@ -14,11 +14,14 @@ import { IIncidentRepo } from '../../../adapter/repositories/incident-repo'
 
 const log = debug('app:incident:infra')
 
+/**
+ * each pair (incidentId, location) is persisted on Redis in a GeoSet data structure
+ */
 export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo {
   private baseInclude = { medias: true, comments: { take: 25 } }
 
   // redis geo set: maps each key to a list of pairs of member and location
-  // member: <INCIDENT_ID>
+  // here member is incidentId
   private REDIS_GEO_SET_KEY = 'incidentLocations'
 
   constructor(
@@ -36,7 +39,10 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     })
 
     if (incidentModel) {
-      const [incidentCoordModel] = await this.redisClient.geoPos(this.REDIS_GEO_SET_KEY, id)
+      const [incidentCoordModel] = await this.redisClient.geoPos(
+        this.REDIS_GEO_SET_KEY,
+        incidentModel.id,
+      )
       assert(!!incidentCoordModel)
       return IncidentMapper.fromPersistenceToDomain(incidentModel, incidentCoordModel)
     }
@@ -53,7 +59,10 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     })
 
     if (incidentsModels.length > 0) {
-      const incidentsCoordsModels = await this.redisClient.geoPos(this.REDIS_GEO_SET_KEY, ids)
+      const incidentsCoordsModels = await this.redisClient.geoPos(
+        this.REDIS_GEO_SET_KEY,
+        incidentsModels.map((i) => i.id),
+      )
 
       return zip(incidentsModels, incidentsCoordsModels).map(
         ([incidentModel, incidentCoordModel]) => {
@@ -89,27 +98,32 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   }
 
   async findManyWithinBox(
-    centerPoint: CoordinateProps,
+    centerPoint: LocationProps,
     dimensionsInMeters: { width: number; height: number },
   ): Promise<Incident[]> {
-    const incidentsCoordsModels = await this.redisClient.geoSearchWith(
+    const incidentLocationsModels = await this.redisClient.geoSearchWith(
       this.REDIS_GEO_SET_KEY,
       centerPoint,
       { ...dimensionsInMeters, unit: 'm' },
       [GeoReplyWith.COORDINATES],
     )
-    const incidentsIds = incidentsCoordsModels.map((i) => i.member)
+    const incidentsIds = incidentLocationsModels.map((i) => i.member)
 
     const incidentsModel = await this.prismaClient.incidentModel.findMany({
       where: { id: { in: incidentsIds } },
       include: { ...this.baseInclude },
     })
 
-    return zip(incidentsModel, incidentsCoordsModels).map(([incidentModel, incidentCoordModel]) => {
-      assert(!!incidentModel && !!incidentCoordModel)
-      assert(incidentCoordModel.coordinates !== undefined)
-      return IncidentMapper.fromPersistenceToDomain(incidentModel, incidentCoordModel.coordinates)
-    })
+    return zip(incidentsModel, incidentLocationsModels).map(
+      ([incidentModel, incidentLocationModel]) => {
+        assert(!!incidentModel && !!incidentLocationModel)
+        assert(incidentLocationModel.coordinates !== undefined)
+        return IncidentMapper.fromPersistenceToDomain(
+          incidentModel,
+          incidentLocationModel.coordinates,
+        )
+      },
+    )
   }
 
   async commit(incident: Incident): Promise<Incident> {
@@ -120,8 +134,8 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
       // upsert, because member is unique between a redis geo set
       await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, {
         member: incident.id.toString(),
-        latitude: incident.coordinate.latitude,
-        longitude: incident.coordinate.longitude,
+        latitude: incident.location.latitude,
+        longitude: incident.location.longitude,
       })
 
       const isNew = !(await this.exists(incident))

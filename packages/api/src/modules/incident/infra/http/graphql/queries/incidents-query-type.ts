@@ -3,7 +3,7 @@ import { Connection, connectionArgs, ConnectionArguments, connectionFromArray } 
 import { GraphQLContext } from 'src/infra/http/graphql/context'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { getIncidents } from 'src/modules/incident/application/queries'
-import { CoordinateInputType } from 'src/shared/infra/graphql/types/coordinate-type'
+import { LocationInputType } from 'src/shared/infra/graphql/types/location-type'
 import { IncidentConnectionType } from '../types/incident-type'
 
 const IncidentsFilterInputType = new GraphQLInputObjectType({
@@ -15,10 +15,10 @@ const IncidentsFilterInputType = new GraphQLInputObjectType({
         description: 'Filter by incidents localizated within a box boundary',
         fields: () => ({
           northEast: {
-            type: GraphQLNonNull(CoordinateInputType),
+            type: GraphQLNonNull(LocationInputType),
           },
           southWest: {
-            type: GraphQLNonNull(CoordinateInputType),
+            type: GraphQLNonNull(LocationInputType),
           },
         }),
       }),

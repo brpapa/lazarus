@@ -4,7 +4,7 @@ import { AggregateRoot } from 'src/shared/domain/aggregate-root'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { WatchedList } from 'src/shared/domain/watched-list'
 import { Range } from 'src/shared/logic/guard'
-import { Coordinate } from '../../../../shared/domain/models/coordinate'
+import { Location } from '../../../../shared/domain/models/location'
 import { IncidentCreated } from '../events/incident-created'
 import { ActivityLog } from './activity-log'
 import { Comment } from './comment'
@@ -16,14 +16,14 @@ import { IncidentStatistics } from './statistics'
 interface IncidentProps {
   ownerUserId: UUID
   title: string
-  coordinate: Coordinate
+  location: Location
   medias?: Media[]
   status?: IncidentStatus
   comments?: WatchedList<Comment>
   reactions?: WatchedList<Reaction>
   activityLogs?: ActivityLog[]
   statistics?: IncidentStatistics
-  relevance?: number // TODO: importante, para que no mapa só mostre os mais relevantes no caso de ter muitos
+  relevanceScore?: number // TODO: para que no mapa só mostre os mais relevantes no caso de ter muitos
   createdAt?: Date
   lastUpdateAt?: Date
 }
@@ -33,7 +33,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
 
   public get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
   public get title() { return this.props.title } // prettier-ignore
-  public get coordinate() { return this.props.coordinate } // prettier-ignore
+  public get location() { return this.props.location } // prettier-ignore
   public get medias() { assert(this.props.medias); return this.props.medias } // prettier-ignore
   public get status() { assert(this.props.status); return this.props.status } // prettier-ignore
   public get comments() { assert(this.props.comments); return this.props.comments } // prettier-ignore

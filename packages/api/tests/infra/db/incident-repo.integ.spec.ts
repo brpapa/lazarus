@@ -5,7 +5,7 @@ import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Location } from 'src/shared/domain/models/location'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { Comment } from 'src/modules/incident/domain/models/comment'
@@ -22,7 +22,7 @@ describe('repository: incident', () => {
       const incident = Incident.create({
         ownerUserId: new UUID('my-user-id'),
         title: 'title',
-        coordinate: Coordinate.create({ latitude: -20, longitude: 40 }).asOk(),
+        location: Location.create({ latitude: -20, longitude: 40 }).asOk(),
         status: IncidentStatus.ACTIVE,
       }).asOk()
 

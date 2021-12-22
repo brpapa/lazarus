@@ -1,5 +1,5 @@
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { CoordinateProps } from 'src/shared/domain/models/coordinate'
+import { LocationProps } from 'src/shared/domain/models/location'
 import { IRepository } from '../../../../shared/infra/db/repository'
 
 export interface IIncidentRepo extends IRepository<Incident> {
@@ -7,7 +7,7 @@ export interface IIncidentRepo extends IRepository<Incident> {
   findById(id: string): Promise<Incident | null>
   findMany(): Promise<Incident[]>
   findManyWithinBox(
-    centerPoint: CoordinateProps,
+    centerPoint: LocationProps,
     dimensionsInMeters: { width: number; height: number },
   ): Promise<Incident[]>
   exists(incident: Incident): Promise<boolean>

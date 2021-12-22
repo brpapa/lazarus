@@ -4,30 +4,30 @@ import { DomainError } from 'src/shared/logic/errors'
 import { combine } from 'src/shared/logic/result'
 import { Guard, Range } from 'src/shared/logic/guard'
 
-export interface CoordinateProps {
+export interface LocationProps {
   latitude: number
   longitude: number
 }
 
 /** lat/lng in decimal degrees */
-export class Coordinate extends ValueObject<CoordinateProps> {
+export class Location extends ValueObject<LocationProps> {
   public static LAT_RANGE: Range = [-90, 90]
   public static LNG_RANGE: Range = [-180, 180]
 
   get latitude() { return this.props.latitude } // prettier-ignore
   get longitude() { return this.props.longitude } // prettier-ignore
 
-  private constructor(props: CoordinateProps) {
+  private constructor(props: LocationProps) {
     super(props)
   }
 
-  public static create(props: CoordinateProps): Result<Coordinate, InvalidCoordinateError> {
+  public static create(props: LocationProps): Result<Location, InvalidLocationError> {
     const result = combine([
       Guard.inRange(props.latitude, this.LAT_RANGE, 'latitude', 'degrees'),
       Guard.inRange(props.longitude, this.LNG_RANGE, 'longitude', 'degrees'),
     ])
-    if (result.isErr()) return err(new InvalidCoordinateError(result.error))
-    return ok(new Coordinate(props))
+    if (result.isErr()) return err(new InvalidLocationError(result.error))
+    return ok(new Location(props))
   }
 
   public toString() {
@@ -35,4 +35,4 @@ export class Coordinate extends ValueObject<CoordinateProps> {
   }
 }
 
-export class InvalidCoordinateError extends DomainError {}
+export class InvalidLocationError extends DomainError {}

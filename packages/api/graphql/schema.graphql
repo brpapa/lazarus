@@ -204,7 +204,6 @@ enum ReportIncidentErrCodeType {
 
 input ReportIncidentInput {
   title: String!
-  coordinate: CoordinateInput!
   medias: [MediaInput]!
   clientMutationId: String
 }

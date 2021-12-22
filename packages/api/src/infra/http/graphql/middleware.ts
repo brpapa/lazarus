@@ -45,7 +45,7 @@ export const graphqlHttpServer = graphqlHttp(async (req, _res, _koaCtx) => {
 const formatError = (error: GraphQLError) => {
   return {
     message: error.message,
-    coordinates: error.locations,
+    locations: error.locations,
     stack: IS_PRODUCTION && error.stack ? error.stack.split('\n') : [],
     path: error.path,
   }

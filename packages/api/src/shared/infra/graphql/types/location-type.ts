@@ -1,22 +1,22 @@
 import { GraphQLFloat, GraphQLInputObjectType, GraphQLNonNull, GraphQLObjectType } from 'graphql'
-import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
+import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
 
-export const CoordinateType = new GraphQLObjectType<CoordinateDTO>({
-  name: 'Coordinate',
+export const LocationType = new GraphQLObjectType<LocationDTO>({
+  name: 'Location',
   fields: () => ({
     latitude: {
       type: GraphQLNonNull(GraphQLFloat),
-      resolve: (coord) => coord.latitude,
+      resolve: (location) => location.latitude,
     },
     longitude: {
       type: GraphQLNonNull(GraphQLFloat),
-      resolve: (coord) => coord.longitude,
+      resolve: (location) => location.longitude,
     },
   }),
 })
 
-export const CoordinateInputType = new GraphQLInputObjectType({
-  name: 'CoordinateInput',
+export const LocationInputType = new GraphQLInputObjectType({
+  name: 'LocationInput',
   fields: () => ({
     latitude: {
       type: GraphQLNonNull(GraphQLFloat),

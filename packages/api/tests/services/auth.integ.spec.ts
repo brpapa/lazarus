@@ -21,7 +21,7 @@ describe('services: auth', () => {
         phoneNumber: UserPhoneNumber.create({ value: '14 9999999' }).asOk(),
       },
       new UUID('my-user-id'),
-    ).asOk()
+    )
 
     test('generating the first token', async () => {
       const accessToken = authService.encodeJwt({

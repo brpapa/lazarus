@@ -9,45 +9,57 @@ import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { AWS_S3_BUCKET_NAME } from 'src/shared/config'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Location } from 'src/shared/domain/models/location'
 import { UUID } from 'src/shared/domain/models/uuid'
-import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
+import { cleanUpDatasources as cleanUpDataSources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
 async function main() {
   await connectDataSources()
-  await cleanUpDatasources()
+  await cleanUpDataSources()
   await populate()
 }
 
 const populate = async () => {
-  const USER_COORDINATE = {
-    latitude: -22.8886,
-    longitude: -48.4406,
-  }
-
-  const user = await userRepo.commit(
+  const user1 = await userRepo.commit(
     User.create(
       {
-        username: 'my-username',
-        password: UserPassword.create({ value: 'my-password' }).asOk(),
+        username: 'user1',
+        password: UserPassword.create({ value: 'user1-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-        currentLocation: Coordinate.create(USER_COORDINATE).asOk(),
+        currentLocation: Location.create({
+          latitude: -22.8886,
+          longitude: -48.4406,
+        }).asOk(),
       },
-      new UUID('my-user-id'),
+      new UUID('user1'),
+    ),
+  )
+  const user2 = await userRepo.commit(
+    User.create(
+      {
+        username: 'user2',
+        password: UserPassword.create({ value: 'user2-password' }).asOk(),
+        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        currentLocation: Location.create({
+          latitude: -22.8886,
+          longitude: -48.4406,
+        }).asOk(),
+      },
+      new UUID('user2'),
     ),
   )
 
   const CENTER_POINT = { latitude: -22.877187463558492, longitude: -48.44966612756252 }
-  const RADIUS_IN_METERS = 1e5
+  const RADIUS_IN_METERS = 1e3
 
   await Promise.all(
-    new Array(1).fill(null).map(async (_, i) => {
+    new Array(10).fill(null).map(async (_, i) => {
       const randomPoint = randomCirclePoint(CENTER_POINT, RADIUS_IN_METERS)
 
       const incident = Incident.create({
-        ownerUserId: user.id,
-        title: `generated incident ${i}`,
-        coordinate: Coordinate.create(randomPoint).asOk(),
+        ownerUserId: user1.id,
+        title: `incident ${i}`,
+        location: Location.create(randomPoint).asOk(),
       })
 
       incident.addMedias([

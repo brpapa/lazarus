@@ -5,7 +5,7 @@ import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
 import { GraphQLTypes, NodeInterfaceType } from 'src/infra/http/graphql/node'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { DateType } from 'src/shared/infra/graphql/types/date-type'
-import { CoordinateType } from 'src/shared/infra/graphql/types/coordinate-type'
+import { LocationType } from 'src/shared/infra/graphql/types/location-type'
 import { MediaType } from './media-type'
 
 const INCIDENT_TYPE_NAME = 'Incident'
@@ -28,9 +28,9 @@ export const IncidentType = GraphQLTypes.register(
         type: GraphQLNonNull(GraphQLString),
         resolve: (incident) => incident.title,
       },
-      coordinate: {
-        type: GraphQLNonNull(CoordinateType),
-        resolve: (incident) => incident.coordinate,
+      location: {
+        type: GraphQLNonNull(LocationType),
+        resolve: (incident) => incident.location,
       },
       medias: {
         type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),

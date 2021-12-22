@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import path from 'path'
 import dotenvSafe from 'dotenv-safe'
 
@@ -21,7 +22,8 @@ export const HTTP_GRAPHQL_FORCED_MIN_LATENCY_IN_MS = 1000
 export const JWT_SECRET_KEY = env.JWT_SECRET_KEY || 'awesome_secret_key'
 export const JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S = 86_400 // 1 day
 export const JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S = 604_800 // 7 days
-export const REDIS_CONN_STRING = env.DATABASE_REDIS_CONNECTION_STRING || 'redis://localhost:6379'
+export const REDIS_CONN_STRING = env.DATABASE_REDIS_CONNECTION_STRING!
+export const PG_CONN_STRING = env.DATABASE_PG_CONNECTION_STRING!
 export const AWS_S3_BUCKET_NAME = 'metis-public-static-content'
 export const AWS_REGION = 'us-east-1'
 export const AWS_SERVICE_ENDPOINT = undefined

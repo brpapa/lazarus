@@ -1,4 +1,4 @@
-export interface CoordinateDTO {
+export interface LocationDTO {
   latitude: number
   longitude: number
 }

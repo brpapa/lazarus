@@ -2,10 +2,10 @@ import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { Comment } from 'src/modules/incident/domain/models/comment'
 import { WatchedList } from 'src/shared/domain/watched-list'
-import { Coordinate } from 'src/shared/domain/models/coordinate'
+import { Location } from 'src/shared/domain/models/location'
 import { UUID } from 'src/shared/domain/models/uuid'
 import { IncidentDTO } from '../dtos/incident-dto'
-import { CoordinateMapper } from './coordinate-mapper'
+import { LocationMapper } from '../../../../shared/adapter/mappers/location-mapper'
 import { IncidentStatus } from '../../domain/models/incident-status'
 import { MediaMapper } from './media-mapper'
 import { CommentMapper } from './comment-mapper'
@@ -16,15 +16,15 @@ export class IncidentMapper {
       medias: MediaModel[]
       comments: CommentModel[]
     },
-    incidentCoordModel: { latitude: string; longitude: string },
+    incidentLocationModel: { latitude: string; longitude: string },
   ): Incident {
     const incident = Incident.create(
       {
         ownerUserId: new UUID(incidentModel.creatorUserId),
         title: incidentModel.title,
-        coordinate: Coordinate.create({
-          latitude: Number(incidentCoordModel.latitude),
-          longitude: Number(incidentCoordModel.longitude),
+        location: Location.create({
+          latitude: Number(incidentLocationModel.latitude),
+          longitude: Number(incidentLocationModel.longitude),
         }).asOk(),
         status: IncidentStatus[incidentModel.status],
         createdAt: incidentModel.createdAt,
@@ -45,7 +45,7 @@ export class IncidentMapper {
     return {
       incidentId: domain.id.toString(),
       title: domain.title,
-      coordinate: CoordinateMapper.fromDomainToDTO(domain.coordinate),
+      location: LocationMapper.fromDomainToDTO(domain.location),
       medias: domain.medias.map(MediaMapper.fromDomainToDTO),
       createdAt: domain.createdAt,
     }

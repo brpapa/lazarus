@@ -1,16 +1,16 @@
-import { getDistance, getCenter } from 'geolib'
-import { Query } from 'src/shared/logic/query'
-import { err, ok, Result } from 'src/shared/logic/result'
+import assert from 'assert'
+import { getCenter, getDistance } from 'geolib'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
 import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
-import assert from 'assert'
-import { CoordinateDTO } from 'src/shared/adapter/dtos/coordinate-dto'
+import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
+import { Query } from 'src/shared/logic/query'
+import { ok, Result } from 'src/shared/logic/result'
 import { Incident } from '../../domain/models/incident'
 
 type WithinBoundaryFilter = {
-  northEast: CoordinateDTO
-  southWest: CoordinateDTO
+  northEast: LocationDTO
+  southWest: LocationDTO
 }
 
 export type Request = {

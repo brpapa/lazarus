@@ -1,10 +1,10 @@
-import { CoordinateDTO } from '../../../../shared/adapter/dtos/coordinate-dto'
+import { LocationDTO } from '../../../../shared/adapter/dtos/location-dto'
 import { MediaDTO } from './media-dto'
 
 export interface IncidentDTO {
   incidentId: string
   title: string
-  coordinate: CoordinateDTO
+  location: LocationDTO
   medias: MediaDTO[]
   createdAt: Date
 }
