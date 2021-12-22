@@ -1,18 +1,18 @@
-import React, { useCallback } from 'react'
-
+import { useNavigation } from '@react-navigation/core'
+import type { StackNavigationProp } from '@react-navigation/stack'
+import React from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { CloseIcon } from '~/assets/icons'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
-import type { ReportStackParams } from '.'
-import type { StackNavigationProp } from '@react-navigation/stack'
-import { useNavigation } from '@react-navigation/core'
-import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import MyButton from '~/components/MyButton'
-import { CloseIcon } from '~/assets/icons'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useCameraPermissions } from '~/hooks/use-camera-permissions'
+import type { ReportStackParams } from '.'
 
-export default function PermissionsScreen() {
+export default function CameraPermissionsScreen() {
   const insets = useSafeAreaInsets()
-  const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Permissions'>>()
+  const reportNavigation =
+    useNavigation<StackNavigationProp<ReportStackParams, 'CameraPermissions'>>()
   const {
     isLoading,
     cameraPermissionIsGranted,
@@ -20,12 +20,8 @@ export default function PermissionsScreen() {
     requestCameraPermission,
     requestMicrophonePermission,
   } = useCameraPermissions({
-    onAllPermissionsGranted: () => reportNavigation.replace('Camera', {}),
+    onAllPermissionsGranted: () => reportNavigation.push('Camera'),
   })
-
-  const closeCamera = useCallback(() => {
-    reportNavigation.goBack()
-  }, [reportNavigation])
 
   if (isLoading) return null
 
@@ -50,8 +46,8 @@ export default function PermissionsScreen() {
           </Text>
         )}
       </Box>
-      <Box position="absolute" right={insets.right+10} top={insets.top+10}>
-        <MyButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
+      <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
+        <MyButton my={'sm'} icon={CloseIcon} onPress={reportNavigation.goBack} />
       </Box>
     </Box>
   )

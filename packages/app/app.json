@@ -29,10 +29,11 @@
         "googleMapsApiKey": "AIzaSyBaMynGjdodGZmYdySnyH1jB7hX5weFESU"
       },
       "infoPlist": {
-        "NSLocationAlwaysUsageDescription": "Please enable this permission to receive accurate notifications about new incidents created around you",
+        "NSLocationAlwaysUsageDescription": "Please enable this permission to receive accurate notifications about new incidents around you",
         "NSLocationWhenInUseUsageDescription": "Please enable this permission to view incidents nearby you",
         "NSCameraUsageDescription": "Please enable camera access so you can report incidents",
-        "NSMicrophoneUsageDescription": "Please enable microphone access so you can report incidents"
+        "NSMicrophoneUsageDescription": "Please enable microphone access so you can report incidents",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {

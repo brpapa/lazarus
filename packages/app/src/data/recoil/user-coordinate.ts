@@ -1,15 +1,10 @@
 import * as Location from 'expo-location'
-import { atom, DefaultValue } from 'recoil'
+import { atom } from 'recoil'
 
 const getCurrentUserCoordinate = async () => {
-  const response = await Location.requestForegroundPermissionsAsync()
-  if (response.status !== Location.PermissionStatus.GRANTED) {
-    console.error('Permission to access location was denied by user')
-    return new DefaultValue()
-  }
   const { coords } = await Location.getCurrentPositionAsync()
-  
   console.log(`Initial user location: (${coords.latitude}, ${coords.longitude})`)
+
   return {
     latitude: coords.latitude,
     longitude: coords.longitude,
@@ -28,10 +23,12 @@ export const userCoordinateState = atom<Coordinate>({
       const subscription = Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.High,
+          timeInterval: 100,
+          distanceInterval: 10,
+          mayShowUserSettingsDialog: false,
         },
         ({ coords }) => {
-          console.log(`New user location: (${coords.latitude}, ${coords.longitude})`)
-          // TODO: send to server
+          console.log(`[recoil] New location: (${coords.latitude}, ${coords.longitude})`)
           setSelf({
             latitude: coords.latitude,
             longitude: coords.longitude,

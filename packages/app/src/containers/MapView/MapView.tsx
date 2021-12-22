@@ -37,8 +37,6 @@ export default function MapView(props: MapViewProps) {
     })
   }
 
-  useEffect(flyToUserCoordinate, [userCoordinate])
-
   return (
     <Box flex={1}>
       <GoogleMapView

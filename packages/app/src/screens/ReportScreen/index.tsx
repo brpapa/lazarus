@@ -5,11 +5,11 @@ import type { CapturedPicture } from '~/containers/Camera'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import CameraScreen from './CameraScreen'
 import MediasScreen from './MediasScreen'
-import PermissionsScreen from './PermissionsScreen'
+import CameraPermissionsScreen from './CameraPermissionsScreen'
 
 export type ReportStackParams = {
-  Permissions: undefined
-  Camera: {
+  CameraPermissions: undefined
+  Camera?: {
     previousCapturedPictures?: CapturedPicture[]
   }
   Medias: {
@@ -25,9 +25,9 @@ export function ReportStackScreen() {
   return (
     <ReportStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName={allPermissionsIsGranted ? 'Camera' : 'Permissions'}
+      initialRouteName={allPermissionsIsGranted ? 'Camera' : 'CameraPermissions'}
     >
-      <ReportStack.Screen name="Permissions" component={PermissionsScreen} />
+      <ReportStack.Screen name="CameraPermissions" component={CameraPermissionsScreen} />
       <ReportStack.Screen name="Camera" component={CameraScreen} />
       <ReportStack.Screen name="Medias" component={MediasScreen} />
     </ReportStack.Navigator>
