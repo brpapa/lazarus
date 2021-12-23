@@ -48,10 +48,10 @@ export class AuthService implements IAuthService {
   }
 
   getActiveTokens(username: string): Promise<JwtAccessToken[]> {
-    return this.userSessionRepo.findAccessTokens(username)
+    return this.userSessionRepo.getAccessTokens(username)
   }
 
   getUserNameFromRefreshToken(refreshToken: JwtRefreshToken): Promise<string | null> {
-    return this.userSessionRepo.findUserName(refreshToken)
+    return this.userSessionRepo.getUserName(refreshToken)
   }
 }

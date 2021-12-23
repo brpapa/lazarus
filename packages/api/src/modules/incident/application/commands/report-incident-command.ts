@@ -6,11 +6,10 @@ import { Incident } from 'src/modules/incident/domain/models/incident'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
-import { Location, InvalidLocationError } from 'src/shared/domain/models/location'
+import { InvalidLocationError, Location } from 'src/shared/domain/models/location'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
-import { ApplicationError, DomainError, UnauthenticatedError } from 'src/shared/logic/errors'
+import { ApplicationError, UnauthenticatedError } from 'src/shared/logic/errors'
 import { Guard } from 'src/shared/logic/guard'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
@@ -34,7 +33,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
   async execImpl(input: ReportIncidentInput, ctx: AppContext): Promise<ReportIncidentResult> {
     if (!ctx.viewer) return err(new UnauthenticatedError())
     const ownerUserId = ctx.viewer.id
-    const incidentLocation = ctx.viewer.currentLocation
+    const incidentLocation = ctx.viewer.location
     if (!incidentLocation) throw new Error('User has not location saved') // TODO
 
     const incidentOrErr = Location.create(incidentLocation)

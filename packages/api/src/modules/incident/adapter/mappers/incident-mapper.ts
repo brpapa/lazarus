@@ -1,31 +1,40 @@
-import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
-import { Incident } from 'src/modules/incident/domain/models/incident'
 import { Comment } from 'src/modules/incident/domain/models/comment'
-import { WatchedList } from 'src/shared/domain/watched-list'
-import { Location } from 'src/shared/domain/models/location'
+import { Incident } from 'src/modules/incident/domain/models/incident'
 import { UUID } from 'src/shared/domain/models/uuid'
-import { IncidentDTO } from '../dtos/incident-dto'
-import { LocationMapper } from '../../../../shared/adapter/mappers/location-mapper'
+import { WatchedList } from 'src/shared/domain/watched-list'
+import {
+  LocationMapper,
+  LocationRedisModel,
+} from '../../../../shared/adapter/mappers/location-mapper'
 import { IncidentStatus } from '../../domain/models/incident-status'
-import { MediaMapper } from './media-mapper'
+import {
+  IncidentPgModel,
+  IncidentPgModelPopulated,
+} from '../../infra/db/repositories/incident-repo'
+import { IncidentDTO } from '../dtos/incident-dto'
 import { CommentMapper } from './comment-mapper'
+import { MediaMapper } from './media-mapper'
 
 export class IncidentMapper {
+  static fromDomainToDTO(domain: Incident): IncidentDTO {
+    return {
+      incidentId: domain.id.toString(),
+      title: domain.title,
+      location: LocationMapper.fromDomainToDTO(domain.location),
+      medias: domain.medias.map(MediaMapper.fromDomainToDTO),
+      createdAt: domain.createdAt,
+    }
+  }
+
   static fromPersistenceToDomain(
-    incidentModel: IncidentModel & {
-      medias: MediaModel[]
-      comments: CommentModel[]
-    },
-    incidentLocationModel: { latitude: string; longitude: string },
+    incidentModel: IncidentPgModelPopulated,
+    incidentLocationModel: LocationRedisModel,
   ): Incident {
     const incident = Incident.create(
       {
         ownerUserId: new UUID(incidentModel.creatorUserId),
         title: incidentModel.title,
-        location: Location.create({
-          latitude: Number(incidentLocationModel.latitude),
-          longitude: Number(incidentLocationModel.longitude),
-        }).asOk(),
+        location: LocationMapper.fromPersistenceToDomain(incidentLocationModel),
         status: IncidentStatus[incidentModel.status],
         createdAt: incidentModel.createdAt,
         comments: WatchedList.create<Comment>(
@@ -41,18 +50,8 @@ export class IncidentMapper {
     return incident
   }
 
-  static fromDomainToDTO(domain: Incident): IncidentDTO {
-    return {
-      incidentId: domain.id.toString(),
-      title: domain.title,
-      location: LocationMapper.fromDomainToDTO(domain.location),
-      medias: domain.medias.map(MediaMapper.fromDomainToDTO),
-      createdAt: domain.createdAt,
-    }
-  }
-
-  /** to postgress persistence model only */
-  static fromDomainToPersistence(domain: Incident): IncidentModel {
+  /** to pg model only */
+  static fromDomainToPersistence(domain: Incident): IncidentPgModel {
     return {
       id: domain.id.toString(),
       title: domain.title,

@@ -21,7 +21,6 @@ export const IncidentType = GraphQLTypes.register(
       },
       incidentId: {
         type: GraphQLNonNull(GraphQLString),
-        description: 'The incident id',
         resolve: (incident) => incident.incidentId,
       },
       title: {

@@ -18,7 +18,7 @@ export abstract class LoaderFactory<T extends Entity<any>> {
   // returns a batch loading function to load many entities at once
   private batch(): BatchLoadFn<string, T> {
     return async (ids) => {
-      const entities = await this.repo.findManyByIds(ids.map((id) => id))
+      const entities = await this.repo.findByIdBatch(ids.map((id) => id))
       return ids.map(
         (id) =>
           entities.find((entity) => entity.id.toString() === id) ??

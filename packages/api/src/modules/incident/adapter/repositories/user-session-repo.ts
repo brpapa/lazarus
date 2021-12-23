@@ -2,8 +2,8 @@ import { JwtAccessToken, JwtRefreshToken } from 'src/modules/user/domain/models/
 import { UserSession } from 'src/modules/user/domain/models/session'
 
 export interface IUserSessionRepo {
-  findAccessTokens(username: string): Promise<JwtAccessToken[]>
-  findUserName(refreshToken: JwtRefreshToken): Promise<string | null>
+  getAccessTokens(username: string): Promise<JwtAccessToken[]>
+  getUserName(refreshToken: JwtRefreshToken): Promise<string | null>
   commit(session: UserSession): Promise<void>
   delete(username: string): Promise<void>
 }

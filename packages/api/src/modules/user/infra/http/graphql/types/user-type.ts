@@ -4,6 +4,7 @@ import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
 import { GraphQLTypes, NodeInterfaceType } from 'src/infra/http/graphql/node'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
 import { GraphQLContext } from 'src/infra/http/graphql/context'
+import { LocationType } from 'src/shared/infra/graphql/types/location-type'
 
 const USER_TYPE_NAME = 'User'
 
@@ -17,17 +18,20 @@ export const UserType = GraphQLTypes.register(
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       userId: {
-        type: GraphQLString,
-        description: 'The user id',
+        type: GraphQLNonNull(GraphQLString),
         resolve: (user) => user.userId,
       },
       username: {
-        type: GraphQLString,
+        type: GraphQLNonNull(GraphQLString),
         resolve: (user) => user.username,
       },
       phoneNumber: {
-        type: GraphQLString,
+        type: GraphQLNonNull(GraphQLString),
         resolve: (user) => user.phoneNumber,
+      },
+      location: {
+        type: LocationType,
+        resolve: (user) => user.location,
       },
     }),
   }),

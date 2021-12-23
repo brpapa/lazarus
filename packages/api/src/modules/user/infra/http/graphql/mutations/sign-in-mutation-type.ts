@@ -10,6 +10,7 @@ import { createMutationType } from 'src/shared/infra/graphql/create-mutation-typ
 
 export const SignInMutationType = createMutationType<GraphQLContext, SignInInput, SignInResult>({
   name: 'SignIn',
+  description: 'Login',
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },

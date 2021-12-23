@@ -13,33 +13,28 @@ export class CommentRepo extends PrismaRepo<Comment> implements ICommentRepo {
     super('commentModel')
   }
 
-  findByIncidentId(incidenId: string, offset?: number): Promise<Comment[]> {
+  findAllOfIncident(incidentId: string, offset?: number): Promise<Comment[]> {
     throw new Error('Method not implemented.')
   }
 
-  findManyByIds(ids: string[]): Promise<Comment[]> {
+  findByIdBatch(ids: string[]): Promise<Comment[]> {
     throw new Error('Method not implemented.')
   }
 
   async commit(comment: Comment): Promise<Comment> {
-    try {
-      const commentModel = CommentMapper.fromDomainToPersistence(comment)
+    const commentModel = CommentMapper.fromDomainToPersistence(comment)
 
-      log('Persisting a new comment or comment update: %o', comment.id.toString())
-      await this.prismaClient.commentModel.upsert({
-        where: { id: comment.id.toString() },
-        create: commentModel,
-        update: commentModel,
-      })
+    log('Persisting a new comment or comment update: %o', comment.id.toString())
+    await this.prismaClient.commentModel.upsert({
+      where: { id: comment.id.toString() },
+      create: commentModel,
+      update: commentModel,
+    })
 
-      return comment
-    } catch (e) {
-      log('Unexpected error: %O', e)
-      throw e
-    }
+    return comment
   }
 
-  async commitMany(comments: WatchedList<Comment>): Promise<void> {
+  async commitBatch(comments: WatchedList<Comment>): Promise<void> {
     const removedItemsPromise = Promise.all(comments.removedItems.map((c) => this.delete(c)))
     const addedItemsPromise = Promise.all(comments.addedItems.map((c) => this.commit(c)))
 

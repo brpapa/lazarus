@@ -11,7 +11,11 @@ import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { AWS_S3_BUCKET_NAME } from 'src/shared/config'
 import { Location } from 'src/shared/domain/models/location'
 import { UUID } from 'src/shared/domain/models/uuid'
-import { cleanUpDatasources as cleanUpDataSources, connectDataSources, disconnectDatasources } from 'tests/helpers'
+import {
+  cleanUpDatasources as cleanUpDataSources,
+  connectDataSources,
+  disconnectDatasources,
+} from 'tests/helpers'
 
 async function main() {
   await connectDataSources()
@@ -26,7 +30,7 @@ const populate = async () => {
         username: 'user1',
         password: UserPassword.create({ value: 'user1-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-        currentLocation: Location.create({
+        location: Location.create({
           latitude: -22.8886,
           longitude: -48.4406,
         }).asOk(),
@@ -40,7 +44,7 @@ const populate = async () => {
         username: 'user2',
         password: UserPassword.create({ value: 'user2-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-        currentLocation: Location.create({
+        location: Location.create({
           latitude: -22.8886,
           longitude: -48.4406,
         }).asOk(),

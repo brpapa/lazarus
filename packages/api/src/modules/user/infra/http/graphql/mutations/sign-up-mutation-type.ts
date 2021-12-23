@@ -8,6 +8,7 @@ import { UserType } from '../types/user-type'
 
 export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput, SignUpResult>({
   name: 'SignUp',
+  description: 'Register a new user',
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },

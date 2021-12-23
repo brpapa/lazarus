@@ -37,7 +37,7 @@ export class GetIncidents implements Query<Request, Response> {
   async exec(req: Request): Promise<Response> {
     const incidents = await (req.filter?.withinBoundary !== undefined
       ? this.findManyWithinBoundary(req.filter?.withinBoundary)
-      : this.incidentRepo.findMany())
+      : this.incidentRepo.findAll())
 
     return ok(incidents.map((incident) => IncidentMapper.fromDomainToDTO(incident)))
   }
@@ -50,7 +50,7 @@ export class GetIncidents implements Query<Request, Response> {
     const centerPoint = getCenter([ne, sw])
     assert(centerPoint !== false)
 
-    return this.incidentRepo.findManyWithinBox(centerPoint, {
+    return this.incidentRepo.findAllLocatedWithinBox(centerPoint, {
       width: getDistance(se, sw, this.DIST_ACCURACY),
       height: getDistance(ne, se, this.DIST_ACCURACY),
     })

@@ -22,6 +22,7 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
       description:
         'Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface',
     },
+    me: UserQueries.MeQueryType,
     incident: IncidentQueries.IncidentQueryType,
     incidents: IncidentQueries.IncidentsQueryType,
   }),
@@ -34,6 +35,7 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
   fields: () => ({
     signUp: UserMutations.SignUpMutationType,
     signIn: UserMutations.SignInMutationType,
+    updateUserLocation: UserMutations.UpdateUserLocationMutationType,
     reportIncident: IncidentMutations.ReportIncidentMutationType,
   }),
 })

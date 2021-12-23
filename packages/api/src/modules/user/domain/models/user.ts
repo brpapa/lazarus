@@ -20,7 +20,7 @@ interface UserProps {
   createdAt?: Date
   lastLogin?: Date
   expoPushToken?: string // TODO
-  currentLocation?: Location // TODO: props persistida no redis, e preenchida pelo repository ao carregar na aplicacao um usuario existente na base
+  location?: Location
   // props persistidas no redis, mas repository nao as preenche ao carregar na aplicacao um usuario existente na base
   accessToken?: JwtAccessToken
   refreshToken?: JwtRefreshToken
@@ -35,7 +35,7 @@ export class User extends AggregateRoot<UserProps> {
   get lastLogin() { return this.props.lastLogin } // prettier-ignore
   get accessToken() { return this.props.accessToken } // prettier-ignore
   get refreshToken() { return this.props.refreshToken } // prettier-ignore
-  get currentLocation() { return this.props.currentLocation } // prettier-ignore
+  get location() { return this.props.location } // prettier-ignore
 
   private constructor(props: UserProps, id?: UUID) {
     super(
@@ -66,5 +66,9 @@ export class User extends AggregateRoot<UserProps> {
     this.props.accessToken = accessToken
     this.props.refreshToken = refreshToken || this.props.refreshToken
     this.props.lastLogin = new Date()
+  }
+
+  updateLocation(newLocation: Location) {
+    this.props.location = newLocation
   }
 }

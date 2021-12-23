@@ -11,7 +11,7 @@ interface RedisKeyParams {
 }
 
 /**
- * each user session is persisted in Redis on key-value data structure:
+ * each user session is persisted on Redis in a key-value data structure where:
  *  key: sessions/username={USERNAME}&refreshToken={REFRESH_TOKEN}
  *  value: {ACCESS_TOKEN}
  */
@@ -20,13 +20,13 @@ export class UserSessionRepo implements IUserSessionRepo {
 
   constructor(private redisClient: RedisClient) {}
 
-  async findAccessTokens(username: string): Promise<JwtAccessToken[]> {
+  async getAccessTokens(username: string): Promise<JwtAccessToken[]> {
     const keys = await this.redisClient.keys(this.genKeyPattern({ username }))
     const values = keys.length > 0 ? await this.redisClient.mGet(keys) : []
     return values.filter((v) => v !== null) as string[]
   }
 
-  async findUserName(refreshToken: JwtRefreshToken): Promise<string | null> {
+  async getUserName(refreshToken: JwtRefreshToken): Promise<string | null> {
     const [key] = await this.redisClient.keys(this.genKeyPattern({ refreshToken }))
     const refreshTokenExists = !!key
     if (!refreshTokenExists) return null

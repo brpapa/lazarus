@@ -10,6 +10,7 @@ type Query {
     """The ID of an object"""
     id: ID!
   ): Node
+  me: User
   incident(
     """The incident id"""
     incidentId: String!
@@ -36,21 +37,28 @@ interface Node {
   id: ID!
 }
 
+type User implements Node {
+  """The opaque identifier of GraphQL node, based on relay specs"""
+  id: ID!
+  userId: String!
+  username: String!
+  phoneNumber: String!
+  location: Location
+}
+
+type Location {
+  latitude: Float!
+  longitude: Float!
+}
+
 type Incident implements Node {
   """The opaque identifier of GraphQL node, based on relay specs"""
   id: ID!
-
-  """The incident id"""
   incidentId: String!
   title: String!
-  coordinate: Coordinate!
+  location: Location!
   medias: [Media!]!
   createdAt: Date!
-}
-
-type Coordinate {
-  latitude: Float!
-  longitude: Float!
 }
 
 type Media {
@@ -99,19 +107,25 @@ input IncidentsFilterInputType {
 
 """Filter by incidents localizated within a box boundary"""
 input WithinBoundaryInput {
-  northEast: CoordinateInput!
-  southWest: CoordinateInput!
+  northEast: LocationInput!
+  southWest: LocationInput!
 }
 
-input CoordinateInput {
+input LocationInput {
   latitude: Float!
   longitude: Float!
 }
 
 """The mutation root type"""
 type Mutation {
+  """Register a new user"""
   signUp(input: SignUpInput!): SignUpOutput!
+
+  """Login"""
   signIn(input: SignInInput!): SignInOutput!
+
+  """Update the current location of the authenticated user"""
+  updateUserLocation(input: UpdateUserLocationInput!): UpdateUserLocationOutput!
   reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
 }
 
@@ -124,16 +138,6 @@ union SignUpResult = SignUpOkResult | SignUpErrResult
 
 type SignUpOkResult {
   user: User!
-}
-
-type User implements Node {
-  """The opaque identifier of GraphQL node, based on relay specs"""
-  id: ID!
-
-  """The user id"""
-  userId: String
-  username: String
-  phoneNumber: String
 }
 
 type SignUpErrResult {
@@ -180,6 +184,32 @@ input SignInInput {
   clientMutationId: String
 }
 
+type UpdateUserLocationOutput {
+  result: UpdateUserLocationResult!
+  clientMutationId: String
+}
+
+union UpdateUserLocationResult = UpdateUserLocationOkResult | UpdateUserLocationErrResult
+
+type UpdateUserLocationOkResult {
+  user: User!
+}
+
+type UpdateUserLocationErrResult {
+  reason: String!
+  code: UpdateUserLocationErrCodeType!
+}
+
+enum UpdateUserLocationErrCodeType {
+  UnauthenticatedError
+  InvalidLocationError
+}
+
+input UpdateUserLocationInput {
+  location: LocationInput!
+  clientMutationId: String
+}
+
 type ReportIncidentOutput {
   result: ReportIncidentResult!
   clientMutationId: String
@@ -199,7 +229,7 @@ type ReportIncidentErrResult {
 enum ReportIncidentErrCodeType {
   UnauthenticatedError
   MediaQuantityError
-  InvalidCoordinateError
+  InvalidLocationError
 }
 
 input ReportIncidentInput {
