@@ -12,7 +12,7 @@ export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('wi
 
 export const ENABLE_GOOGLE_MAPS = ['ios', 'android'].includes(Platform.OS)
 
-/** if true  the Camera component will be mocked */
+/** if true the Camera component will be mocked */
 export const ENABLE_CAMERA_MOCK = true
 
 /** if true, every time that app is reloaded, the user will going to be in last screen visited */

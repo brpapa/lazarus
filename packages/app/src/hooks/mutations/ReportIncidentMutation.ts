@@ -19,7 +19,7 @@ const mutation = graphql`
             id
             incidentId
             title
-            coordinate {
+            location {
               latitude
               longitude
             }

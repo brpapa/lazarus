@@ -19,7 +19,7 @@ const getRequestHeaders = async () => {
 }
 
 const network = Network.create(async (params, variables) => {
-  console.log(`Fetching query '${params.name}' with variables: ${JSON.stringify(variables)}`)
+  console.log(`Fetching operation '${params.name}' with variables: ${JSON.stringify(variables)}`)
 
   let json = {} as any
   try {

@@ -15,7 +15,7 @@ function IncidentMarker(props: IncidentMarkerProps) {
     graphql`
       fragment IncidentMarker_incident on Incident {
         incidentId
-        coordinate {
+        location {
           latitude
           longitude
         }
@@ -26,7 +26,7 @@ function IncidentMarker(props: IncidentMarkerProps) {
 
   return (
     <Marker
-      coordinate={data.coordinate}
+      coordinate={data.location}
       tracksViewChanges={false}
       onPress={(e) => {
         e.stopPropagation()
