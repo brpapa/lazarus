@@ -22,7 +22,7 @@ export const userCoordinateState = atom<Coordinate>({
       // subscribe for location updates when app is in foreground
       const subscription = Location.watchPositionAsync(
         {
-          accuracy: Location.Accuracy.High,
+          accuracy: Location.Accuracy.Balanced,
           timeInterval: 100,
           distanceInterval: 10,
           mayShowUserSettingsDialog: false,

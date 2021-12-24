@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
-import { ConnectionHandler, graphql, useMutation } from 'react-relay'
+import { graphql, useMutation } from 'react-relay'
 import type { CapturedPicture } from '~/containers/Camera'
+import { appendIncidentToConnection } from '~/data/relay/utils'
 import { uploadPictures } from '~/screens/ReportScreen/upload-pictures'
 import type {
   ReportIncidentErrCodeType,
@@ -80,34 +81,18 @@ export const useReportIncidentMutation = () => {
         updater: (store) => {
           // define how update the relay store after a successfull response
 
-          const reportIncidentOutputRecord = store.getRootField('reportIncident') // relative to this mutation only
-          const resultRecord = reportIncidentOutputRecord.getLinkedRecord('result')
+          const payloadRecord = store.getRootField('reportIncident') // relative to this mutation only
+          const resultRecord = payloadRecord.getLinkedRecord('result')
 
           // abort store update if is an err result
           if (resultRecord.getValue('__typename') === 'ReportIncidentErrResult') return
-
-          // get the connection record
-          const rootRecord = store.getRoot() // relative to all store
-          const connectionKey = 'IncidentMarkers_incidents'
-          const connectionRecord = ConnectionHandler.getConnection(rootRecord, connectionKey)
-          if (!connectionRecord)
-            throw new Error(`Not found connection record in root with key: ${connectionKey}`)
 
           // get the incident record created by mutation
           const incidentRecord = resultRecord.getLinkedRecord('incident')
           if (!incidentRecord)
             throw new Error('Not found reportIncident.incident record in mutation payload')
-
-          // create a new edge record
-          const newEdgeRecord = ConnectionHandler.createEdge(
-            store,
-            connectionRecord,
-            incidentRecord, // the node record of the creating edge
-            'IncidentEdge', // graphql type of edge record
-          )
-
-          // add the new edge record to the end of the connection record
-          ConnectionHandler.insertEdgeAfter(connectionRecord, newEdgeRecord)
+          
+          appendIncidentToConnection(store, incidentRecord)
         },
         onError: (error) => {
           // onError is called when:

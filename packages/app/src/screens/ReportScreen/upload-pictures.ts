@@ -1,6 +1,6 @@
 import FormData from 'form-data'
 import { CapturedPicture, MediaType } from '~/containers/Camera'
-import { SERVER_BASE_URL } from '~/shared/config'
+import { HTTP_SERVER_BASE_URL } from '~/shared/config'
 
 type UploadResponseBody = {
   files: {
@@ -20,7 +20,7 @@ export const uploadPictures = async (medias: CapturedPicture[]): Promise<{ s3Url
     return acc
   }, new FormData())
 
-  const response = await fetch(`${SERVER_BASE_URL}/uploads`, {
+  const response = await fetch(`${HTTP_SERVER_BASE_URL}/uploads`, {
     method: 'POST',
     headers: {
       'Content-Type': 'multipart/form-data',

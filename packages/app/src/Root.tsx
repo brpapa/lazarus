@@ -5,6 +5,7 @@ import { HomeScreen } from '~/screens/HomeScreen'
 import IncidentScreen from '~/screens/IncidentScreen'
 import SignInScreen from '~/screens/SignInScreen'
 import SignUpScreen from '~/screens/SignUpScreen'
+import { useOnNearbyIncidentCreatedSubscription } from '~/hooks/subscriptions/OnNearbyIncidentCreatedSubscription'
 
 export type RootStackParams = {
   Home: undefined
@@ -19,6 +20,7 @@ const RootStack = createStackNavigator<RootStackParams>()
 
 export default function Root() {
   const { isSignedIn } = useSession()
+  useOnNearbyIncidentCreatedSubscription({ isOn: isSignedIn })
 
   return (
     <RootStack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>

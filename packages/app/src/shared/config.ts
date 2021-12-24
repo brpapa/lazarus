@@ -6,7 +6,9 @@ export const __DEVICE_IS_SIMULATOR__ = !isDevice
 export const THEME_NAME: ThemeName = 'default'
 export const LANG: Language = 'pt-br'
 
-export const SERVER_BASE_URL = 'http://192.168.0.25:5555' // `ifconfig | grep inet`
+// `ifconfig | grep inet`
+export const HTTP_SERVER_BASE_URL = 'http://192.168.0.25:5555'
+export const WS_SERVER_BASE_URL = 'ws://192.168.0.25:5555'
 
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
 

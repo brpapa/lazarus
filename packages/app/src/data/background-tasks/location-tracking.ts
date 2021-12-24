@@ -30,14 +30,18 @@ TaskManager.defineTask(TASK_NAME, async (body: any) => {
 })
 
 export const startLocationTracking = async () => {
-  // register for location updates when app is in background or foreground
-  await Location.startLocationUpdatesAsync(TASK_NAME, {
-    accuracy: Location.Accuracy.High,
-    timeInterval: 10_000,
-    distanceInterval: 100,
-    mayShowUserSettingsDialog: false,
-    pausesUpdatesAutomatically: true,
-  })
-  const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
-  console.log(`Background location tracking started? ${started}`)
+  try {
+    // register for location updates when app is in background or foreground
+    await Location.startLocationUpdatesAsync(TASK_NAME, {
+      accuracy: Location.Accuracy.Balanced,
+      timeInterval: 10_000,
+      distanceInterval: 100,
+      mayShowUserSettingsDialog: false,
+      pausesUpdatesAutomatically: true,
+    })
+    const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
+    if (started) console.log(`Background location tracking started`)
+  } catch (e) {
+    console.error('Error to start background location tracking', e)
+  }
 }

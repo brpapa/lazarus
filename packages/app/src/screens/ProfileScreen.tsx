@@ -9,7 +9,7 @@ import intl from '~/shared/intl'
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets()
-  const { closeSession: signOut } = useSession()
+  const { closeSession } = useSession()
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
@@ -17,7 +17,7 @@ export default function ProfileScreen() {
         <Text variant="header" m="md">
           {intl.myProfile}
         </Text>
-        <Button title="Sair" onPress={signOut} />
+        <Button title="Sair" onPress={closeSession} />
       </ScrollView>
     </Box>
   )

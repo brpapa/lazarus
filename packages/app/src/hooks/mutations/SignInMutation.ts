@@ -3,7 +3,7 @@ import { graphql, useMutation } from 'react-relay'
 import type {
   SignInErrCodeType,
   SignInInput,
-  SignInMutation as SignInMutationType
+  SignInMutation as SignInMutationType,
 } from '~/__generated__/SignInMutation.graphql'
 
 const mutation = graphql`

@@ -1,53 +1,97 @@
-import { Environment, Network, RecordSource, Store } from 'relay-runtime'
-import { SERVER_BASE_URL } from '~/shared/config'
+import {
+  Environment,
+  FetchFunction,
+  Network,
+  Observable,
+  RecordSource,
+  Store,
+  SubscribeFunction,
+} from 'relay-runtime'
+import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/shared/config'
 import { JwtToken } from '../jwt-token-loader'
+import { createClient } from 'graphql-ws'
 
-const getRequestHeaders = async () => {
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  }
-
-  const jwtToken = await JwtToken.get()
-  if (jwtToken !== null)
-    return {
-      ...headers,
-      Authorization: `Bearer ${jwtToken}`,
-    }
-
-  return headers
-}
-
-const network = Network.create(async (params, variables) => {
-  console.log(`Fetching operation '${params.name}' with variables: ${JSON.stringify(variables)}`)
+const fetchFn: FetchFunction = async (operation, variables) => {
+  console.log(`Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`)
 
   let json = {} as any
   try {
     const headers = await getRequestHeaders()
-    const response = await fetch(`${SERVER_BASE_URL}/graphql`, {
+    const response = await fetch(`${HTTP_SERVER_BASE_URL}/graphql`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        query: params.text,
+        query: operation.text,
         variables,
       }),
     })
     json = await response.json()
   } catch (e) {
     throw new Error(
-      `Unexpected error fetching GraphQL query '${params.name}': ${JSON.stringify(e)}`,
+      `Unexpected error fetching GraphQL operation '${operation.name}': ${JSON.stringify(e)}`,
     )
   }
 
   if (json?.errors && Array.isArray(json.errors))
     throw new Error(
-      `Error fetching GraphQL query '${params.name}' with variables '${JSON.stringify(
+      `Error fetching GraphQL operation '${operation.name}' with variables '${JSON.stringify(
         variables,
       )}': ${JSON.stringify(json.errors)}`,
     )
 
   return json
+
+  async function getRequestHeaders() {
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+
+    const jwtToken = await JwtToken.get()
+    if (jwtToken !== null)
+      return {
+        ...headers,
+        Authorization: `Bearer ${jwtToken}`,
+      }
+
+    return headers
+  }
+}
+
+const subscriptionsClient = createClient({
+  url: `${WS_SERVER_BASE_URL}/graphql/subscriptions`,
+  connectionParams: async () => {
+    const jwtToken = await JwtToken.get()
+    if (jwtToken === null) return {}
+    return { Authorization: `Bearer ${jwtToken}` }
+  },
 })
+
+const subscribeFn: SubscribeFunction = (operation, variables) => {
+  return Observable.create((sink) => {
+    if (!operation.text) return sink.error(new Error('Operation text cannot be empty'))
+
+    return subscriptionsClient.subscribe(
+      {
+        operationName: operation.name,
+        query: operation.text,
+        variables,
+      },
+      // @ts-ignore
+      {
+        ...sink,
+        error: (err) => {
+          if (Array.isArray(err))
+            return sink.error(new Error(err.map(({ message }) => message).join(', '))) // GraphQLError[]
+
+          return sink.error(err as Error)
+        },
+      },
+    )
+  })
+}
+
+const network = Network.create(fetchFn, subscribeFn)
 
 /** store: where relay keeps  all the data returned from graphql operations around the app */
 const store = new Store(new RecordSource(), {
