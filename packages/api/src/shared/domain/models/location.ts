@@ -11,7 +11,7 @@ export interface LocationProps {
 
 /** lat/lng in decimal degrees */
 export class Location extends ValueObject<LocationProps> {
-  public static LAT_RANGE: Range = [-90, 90]
+  public static LAT_RANGE: Range = [-85.05112878, 85.05112878] // redis geo set requirement
   public static LNG_RANGE: Range = [-180, 180]
 
   get latitude() { return this.props.latitude } // prettier-ignore
@@ -31,7 +31,7 @@ export class Location extends ValueObject<LocationProps> {
   }
 
   public toString() {
-    return `${this.latitude}, ${this.longitude}`
+    return `(${this.latitude}, ${this.longitude})`
   }
 }
 

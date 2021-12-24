@@ -8,7 +8,7 @@ export abstract class Command<Input, Res extends Result<any, any>> {
   async exec(input: Input, ctx?: AppContext): Promise<Res> {
     const commandName = Reflect.getPrototypeOf(this)?.constructor.name
 
-    this.log(`Running %o given input: %O`, commandName, input)
+    this.log(`Running %o by user %o with the given input: %O`, commandName, ctx?.userId, input)
 
     try {
       const res = await Promise.resolve(this.execImpl(input, ctx))

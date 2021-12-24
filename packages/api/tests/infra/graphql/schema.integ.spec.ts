@@ -1,7 +1,7 @@
 // @ts-ignore
 import { introspectionQuery } from 'graphql/utilities'
 import { graphql, graphqlSync } from 'graphql'
-import { schema } from 'src/infra/http/graphql/schema'
+import { schema } from 'src/infra/graphql/schema'
 
 describe('graphql schema', () => {
   test.skip('it should be instropected succesfully', async () => {

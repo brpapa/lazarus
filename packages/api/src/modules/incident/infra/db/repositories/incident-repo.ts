@@ -89,21 +89,22 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     const incidentModel = IncidentMapper.fromDomainToPersistence(incident)
     const mediasModel = incident.medias.map((m) => MediaMapper.fromDomainToPersistence(m))
 
-    // upsert (incidentId, location) pair (member is unique in a redis geo set)
-    await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, {
-      member: incident.id.toString(),
+    const toAdd = {
+      member: incident.id.toString(), // member is unique in a redis geo set
       latitude: incident.location.latitude,
       longitude: incident.location.longitude,
-    })
+    }
+    log('Persisting a new or updated (member, location) on Redis: %o', toAdd)
+    await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, toAdd)
 
     const isNew = !(await this.exists(incident))
     if (isNew) {
-      log('Persisting a new incident: %o', incident.id.toString())
+      log('Persisting a new incident on Pg: %o', incident.id.toString())
       await this.prismaClient.incidentModel.create({ data: incidentModel })
       await this.commentRepo.commitBatch(incident.comments)
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
     } else {
-      log('Persisting an updated incident: %o', incident.id.toString())
+      log('Persisting an updated incident on Pg: %o', incident.id.toString())
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
       await this.commentRepo.commitBatch(incident.comments)
       await this.prismaClient.incidentModel.update({
@@ -111,6 +112,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
         data: incidentModel,
       })
     }
+
     return incident
   }
 

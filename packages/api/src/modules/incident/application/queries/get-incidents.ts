@@ -1,4 +1,5 @@
 import assert from 'assert'
+import { Debugger } from 'debug'
 import { getCenter, getDistance } from 'geolib'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
@@ -13,7 +14,7 @@ type WithinBoundaryFilter = {
   southWest: LocationDTO
 }
 
-export type Request = {
+export type GetIncidentsInput = {
   filter?: {
     /** the corner coordinates of map view in app */
     withinBoundary?: WithinBoundaryFilter
@@ -22,19 +23,19 @@ export type Request = {
   // https://redis.io/topics/indexes
   // first?: number
 }
-export type OkResponse = IncidentDTO[]
-export type ErrResponse = void
-export type Response = Result<OkResponse, ErrResponse>
+export type GetIncidentsOkResult = IncidentDTO[]
+export type GetIncidentsErrResult = void
+export type GetIncidentsResult = Result<GetIncidentsOkResult, GetIncidentsErrResult>
 
-/**
- * requisitado a cada resize do MapView
- */
-export class GetIncidents implements Query<Request, Response> {
-  private DIST_ACCURACY = 1e-5
+/** requested on each map view resize */
+export class GetIncidents extends Query<GetIncidentsInput, GetIncidentsResult> {
+  private DIST_ACCURACY = 0.01 // centimeter accuracy
 
-  constructor(private readonly incidentRepo: IIncidentRepo) {}
+  constructor(log: Debugger, private readonly incidentRepo: IIncidentRepo) {
+    super(log)
+  }
 
-  async exec(req: Request): Promise<Response> {
+  async execImpl(req: GetIncidentsInput): Promise<GetIncidentsResult> {
     const incidents = await (req.filter?.withinBoundary !== undefined
       ? this.findManyWithinBoundary(req.filter?.withinBoundary)
       : this.incidentRepo.findAll())

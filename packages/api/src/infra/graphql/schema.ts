@@ -1,12 +1,12 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
-import { GraphQLContext } from 'src/infra/http/graphql/context'
-import { nodeField } from 'src/infra/http/graphql/node'
-import * as IncidentQueries from 'src/modules/incident/infra/http/graphql/queries'
-import * as IncidentMutations from 'src/modules/incident/infra/http/graphql/mutations'
-import * as IncidentSubscriptions from 'src/modules/incident/infra/http/graphql/subscriptions'
-import * as UserQueries from 'src/modules/user/infra/http/graphql/queries'
-import * as UserMutations from 'src/modules/user/infra/http/graphql/mutations'
-import * as UserSubscriptions from 'src/modules/user/infra/http/graphql/subscriptions'
+import { GraphQLContext } from 'src/infra/graphql/context'
+import { nodeField } from 'src/infra/graphql/node'
+import * as IncidentQueries from 'src/modules/incident/infra/graphql/queries'
+import * as IncidentMutations from 'src/modules/incident/infra/graphql/mutations'
+import * as IncidentSubscriptions from 'src/modules/incident/infra/graphql/subscriptions'
+import * as UserQueries from 'src/modules/user/infra/graphql/queries'
+import * as UserMutations from 'src/modules/user/infra/graphql/mutations'
+import * as UserSubscriptions from 'src/modules/user/infra/graphql/subscriptions'
 
 const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Query',
@@ -45,12 +45,12 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
     - Rather than returning any data directly, they return an AsyncIterator which subsequently is used by the GraphQL server to push the event data to the client.
     - Subscription resolvers are wrapped inside an object and need to be provided as the value for a subscribe field. You also need to provide another field called resolve that actually returns the data from the data emitted by the AsyncIterator.
 */
-const SubscriptionType = new GraphQLObjectType<void, GraphQLContext>({
+const SubscriptionType = new GraphQLObjectType<any, GraphQLContext>({
   name: 'Subscription',
   description: 'The subscription root type',
   fields: () => ({
-    userAdded: UserSubscriptions.UserAddedSubscriptionType,
-    incidentCreated: IncidentSubscriptions.IncidentCreatedSubscriptionType,
+    onUserAdded: UserSubscriptions.OnUserAddedSubscriptionType,
+    onNearbyIncidentCreated: IncidentSubscriptions.OnNearbyIncidentCreatedSubscriptionType,
   }),
 })
 

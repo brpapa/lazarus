@@ -1,9 +1,9 @@
 import { GraphQLEnumType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/http/graphql/context'
+import { GraphQLContext } from 'src/infra/graphql/context'
 import { reportIncidentCommand } from 'src/modules/incident/application/commands'
 import {
   ReportIncidentInput,
-  ReportIncidentResult
+  ReportIncidentResult,
 } from 'src/modules/incident/application/commands/report-incident-command'
 import { GetIncidentById } from 'src/modules/incident/application/queries'
 import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
@@ -24,7 +24,7 @@ export const ReportIncidentMutationType = createMutationType<
   okResultFields: {
     incident: {
       type: GraphQLNonNull(IncidentType),
-      resolve: (result: ReportIncidentResult, _, ctx) => GetIncidentById.gen(result.asOk(), ctx),
+      resolve: (result, _, ctx) => GetIncidentById.gen(result.asOk(), ctx),
     },
   },
   errResultFields: {
@@ -40,6 +40,7 @@ export const ReportIncidentMutationType = createMutationType<
             UnauthenticatedError: { value: 'UnauthenticatedError' },
             MediaQuantityError: { value: 'MediaQuantityError' },
             InvalidLocationError: { value: 'InvalidLocationError' },
+            UserWithoutLocationError: { value: 'UserWithoutLocationError' },
           },
         }),
       ),

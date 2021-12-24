@@ -203,6 +203,7 @@ type UpdateUserLocationErrResult {
 enum UpdateUserLocationErrCodeType {
   UnauthenticatedError
   InvalidLocationError
+  UserNotFoundError
 }
 
 input UpdateUserLocationInput {
@@ -230,6 +231,7 @@ enum ReportIncidentErrCodeType {
   UnauthenticatedError
   MediaQuantityError
   InvalidLocationError
+  UserWithoutLocationError
 }
 
 input ReportIncidentInput {
@@ -245,21 +247,8 @@ input MediaInput {
 
 """The subscription root type"""
 type Subscription {
-  userAdded: UserAddedOutput
-
-  """Triggered whenever a new incident is created"""
-  incidentCreated: Incident!
-}
-
-type UserAddedOutput {
-  userEdge: UserEdge
-}
-
-"""An edge in a connection."""
-type UserEdge {
-  """The item at the end of the edge"""
-  node: User!
-
-  """A cursor for use in pagination"""
-  cursor: String!
+  """
+  Triggered whenever a new incident is created nearby to the subscriber user
+  """
+  onNearbyIncidentCreated: Incident!
 }

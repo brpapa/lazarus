@@ -1,6 +1,6 @@
 import type { Middleware } from 'koa'
-import { parseFormData } from 'src/infra/http/utils/form-data-parser'
-import { uploadToS3 } from 'src/infra/http/utils/s3-uploader'
+import { parseFormData } from 'src/infra/http/helpers/form-data-parser'
+import { uploadToS3 } from 'src/infra/http/helpers/s3-uploader'
 
 export default function uploader(): Middleware {
   return async (ctx, next) => {

@@ -6,6 +6,7 @@ import { Incident } from 'src/modules/incident/domain/models/incident'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { InvalidLocationError, Location } from 'src/shared/domain/models/location'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
@@ -23,54 +24,54 @@ export type ReportIncidentErrResult =
   | InvalidLocationError
   | MediaQuantityError
   | UnauthenticatedError
+  | UserWithoutLocationError
 export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
 
 export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIncidentResult> {
-  constructor(log: Debugger, private incidentRepo: IIncidentRepo) {
+  constructor(log: Debugger, private incidentRepo: IIncidentRepo, private userRepo: IUserRepo) {
     super(log)
   }
 
   async execImpl(input: ReportIncidentInput, ctx: AppContext): Promise<ReportIncidentResult> {
-    if (!ctx.viewer) return err(new UnauthenticatedError())
-    const ownerUserId = ctx.viewer.id
-    const incidentLocation = ctx.viewer.location
-    if (!incidentLocation) throw new Error('User has not location saved') // TODO
+    if (!ctx.userId) return err(new UnauthenticatedError())
 
-    const incidentOrErr = Location.create(incidentLocation)
-      .mapOk((location) =>
-        Incident.create({
-          ownerUserId,
-          title: input.title,
-          location,
-          status: IncidentStatus.ACTIVE,
-        }),
-      )
-      .andThen((incident) =>
-        Guard.inRange(
-          input.medias.length,
-          Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT,
-          'media quantity',
-        ).map(
-          () => {
-            const medias = input.medias.map((m) =>
-              Media.create({
-                ...m,
-                incidentId: incident.id,
-                type: MediaType.IMAGE, // TODO
-                recordedAt: new Date(), // TODO
-              }),
-            )
-            return incident.addMedias(medias)
-          },
-          (r) => new MediaQuantityError(r),
-        ),
-      )
+    const user = await this.userRepo.findById(ctx.userId)
+    if (!user?.location)
+      return err(new UserWithoutLocationError(`User ${ctx.userId} has not location saved yet`))
 
-    if (incidentOrErr.isErr()) return err(incidentOrErr.error)
+    const incident = Incident.create({
+      ownerUserId: user.id,
+      title: input.title,
+      location: user.location,
+      status: IncidentStatus.ACTIVE,
+    })
 
-    await this.incidentRepo.commit(incidentOrErr.value)
-    return ok(IncidentMapper.fromDomainToDTO(incidentOrErr.value))
+    const incidentWithMediasOrErr = Guard.inRange(
+      input.medias.length,
+      Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT,
+      'media quantity',
+    ).map(
+      () => {
+        const medias = input.medias.map((m) =>
+          Media.create({
+            ...m,
+            incidentId: incident.id,
+            type: MediaType.IMAGE, // TODO
+            recordedAt: new Date(), // TODO
+          }),
+        )
+        return incident.addMedias(medias)
+      },
+      (r) => new MediaQuantityError(r),
+    )
+
+    if (incidentWithMediasOrErr.isErr()) return err(incidentWithMediasOrErr.error)
+
+    await this.incidentRepo.commit(incidentWithMediasOrErr.value)
+
+    return ok(IncidentMapper.fromDomainToDTO(incidentWithMediasOrErr.value))
   }
 }
 
 class MediaQuantityError extends ApplicationError {}
+class UserWithoutLocationError extends ApplicationError {}

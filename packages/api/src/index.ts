@@ -1,6 +1,6 @@
-import { initialize } from './infra/http/index'
 import { connectPrisma, disconnectPrisma } from './infra/db/prisma/connection'
-import { connectRedis } from './infra/db/redis/connection'
+import { connectRedis, disconnectRedis } from './infra/db/redis/connection'
+import { initialize } from './infra/index'
 
 import './modules/incident/observers'
 import './modules/user/observers'
@@ -8,13 +8,11 @@ import './modules/user/observers'
 async function main() {
   await connectPrisma()
   await connectRedis()
-  initialize()
+  await initialize()
 }
 
-main()
-  .catch((e) => {
-    throw e
-  })
-  .finally(async () => {
-    await disconnectPrisma()
-  })
+main().catch(async (e) => {
+  await disconnectRedis()
+  await disconnectPrisma()
+  throw e
+})

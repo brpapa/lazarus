@@ -12,7 +12,8 @@ export class UserMapper {
       userId: user.id.toString(),
       username: user.username,
       phoneNumber: user.phoneNumber.value,
-      location: user.location ? LocationMapper.fromDomainToDTO(user.location) : undefined,
+      location:
+        user.location !== undefined ? LocationMapper.fromDomainToDTO(user.location) : undefined,
     }
   }
 
@@ -27,9 +28,10 @@ export class UserMapper {
           value: userModel.password,
           isAlreadyHashed: true,
         }).asOk(),
-        location: userLocationModel
-          ? LocationMapper.fromPersistenceToDomain(userLocationModel)
-          : undefined,
+        location:
+          userLocationModel !== null
+            ? LocationMapper.fromPersistenceToDomain(userLocationModel)
+            : undefined,
         phoneNumber: UserPhoneNumber.create({ value: userModel.phoneNumber }).asOk(),
         isPhoneNumberVerified: userModel.phoneNumberVerified,
         createdAt: userModel.createdAt,

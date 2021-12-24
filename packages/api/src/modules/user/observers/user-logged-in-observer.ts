@@ -1,6 +1,6 @@
 import { DomainEvents } from 'src/shared/domain/events/domain-events'
 import { IObserver } from 'src/shared/domain/events/observer'
-import { events, pubSub } from 'src/infra/http/graphql/pub-sub'
+import { TOPICS, pubSub } from 'src/infra/graphql/pub-sub'
 import { UserLoggedIn } from '../domain/events/user-logged-in'
 
 export class UserLoggedInObserver implements IObserver<UserLoggedIn> {
@@ -9,6 +9,6 @@ export class UserLoggedInObserver implements IObserver<UserLoggedIn> {
   }
 
   handle(e: UserLoggedIn) {
-    pubSub.publish(events.USER.LOGGED_IN, { UserLoggedIn: e.user })
+    pubSub.publish(TOPICS.USER.LOGGED_IN, { UserLoggedIn: e.user })
   }
 }

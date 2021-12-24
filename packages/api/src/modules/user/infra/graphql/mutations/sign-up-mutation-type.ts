@@ -1,5 +1,5 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/http/graphql/context'
+import { GraphQLContext } from 'src/infra/graphql/context'
 import { signUpCommand } from 'src/modules/user/application/commands'
 import { SignUpInput, SignUpResult } from 'src/modules/user/application/commands/sign-up-command'
 import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'

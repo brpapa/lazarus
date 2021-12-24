@@ -25,7 +25,7 @@ export class DomainEvents {
     DomainEvents.aggregateRoots = []
   }
 
-  static dispatchAllPendingEventsOfAggregate(aggRootId: UUID) {
+  static async dispatchAllPendingEventsOfAggregate(aggRootId: UUID) {
     const agg = this.aggregateRoots.find((r) => r.id.equals(aggRootId))
     if (agg) {
       log(
@@ -33,20 +33,22 @@ export class DomainEvents {
         agg.pendingEvents.length,
         agg.aggregateRootName,
       )
-      agg.pendingEvents.forEach(this.dispatchEvent)
+      await Promise.all(agg.pendingEvents.map(this.dispatchEvent))
       agg.clearEvents()
       DomainEvents.unregisterAggregate(agg)
     }
   }
 
-  private static dispatchEvent(event: DomainEvent) {
+  private static async dispatchEvent(event: DomainEvent) {
     const observers = DomainEvents.observers.get(event.eventName) || []
     if (observers.length === 0) log('%o event has no any observer subscribed yet', event.eventName)
-    observers.forEach((observer) => {
-      const observerName = observer.constructor.name
-      observer.handle(event)
-      log('%o event dispatched to the %o observer', event.eventName, observerName)
-    })
+    await Promise.all(
+      observers.map(async (observer) => {
+        const observerName = observer.constructor.name
+        await Promise.resolve(observer.handle(event))
+        log('%o event handled by %o observer', event.eventName, observerName)
+      }),
+    )
   }
 
   private static unregisterAggregate(agg: AggregateRoot<any>) {

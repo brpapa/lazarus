@@ -19,7 +19,7 @@ prismaClient.$use(async (params, next) => {
 
   if (mutatingActions.includes(params.action) && typeof result?.id === 'string') {
     const entityId = result.id as string
-    DomainEvents.dispatchAllPendingEventsOfAggregate(new UUID(entityId))
+    await DomainEvents.dispatchAllPendingEventsOfAggregate(new UUID(entityId))
   }
   return result
 })

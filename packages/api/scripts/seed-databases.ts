@@ -31,8 +31,8 @@ const populate = async () => {
         password: UserPassword.create({ value: 'user1-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         location: Location.create({
-          latitude: -22.8886,
-          longitude: -48.4406,
+          latitude: -22.89,
+          longitude: -48.45,
         }).asOk(),
       },
       new UUID('user1'),
@@ -45,11 +45,25 @@ const populate = async () => {
         password: UserPassword.create({ value: 'user2-password' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         location: Location.create({
-          latitude: -22.8886,
-          longitude: -48.4406,
+          latitude: -22.87,
+          longitude: -48.43,
         }).asOk(),
       },
       new UUID('user2'),
+    ),
+  )
+  const user3 = await userRepo.commit(
+    User.create(
+      {
+        username: 'user3',
+        password: UserPassword.create({ value: 'user3-password' }).asOk(),
+        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        location: Location.create({
+          latitude: -22.27,
+          longitude: -47.93,
+        }).asOk(),
+      },
+      new UUID('user3'),
     ),
   )
 

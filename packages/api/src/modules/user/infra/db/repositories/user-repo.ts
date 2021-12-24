@@ -78,20 +78,21 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     const userModel = await UserMapper.fromDomainToPersistence(user)
 
     if (user.location) {
-      // upsert (userId, currentLocation) pair (member is unique in a redis geo set)
-      await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, {
-        member: user.id.toString(),
+      const toAdd = {
+        member: user.id.toString(), // member is unique in a redis geo set
         latitude: user.location.latitude,
         longitude: user.location.longitude,
-      })
+      }
+      log('Persisting a new or updated (member, location) on Redis: %o', toAdd)
+      await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, toAdd)
     }
 
     const isNew = !(await this.exists(user))
     if (isNew) {
-      log('Persisting a new user: %o', user.id.toString())
+      log('Persisting a new user on Pg: %o', user.id.toString())
       await this.prismaClient.userModel.create({ data: userModel })
     } else {
-      log('Persisting an updated user: %o', user.id.toString())
+      log('Persisting an updated user on Pg: %o', user.id.toString())
       await this.prismaClient.userModel.update({
         where: { id: user.id.toString() },
         data: userModel,

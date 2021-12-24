@@ -39,7 +39,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
 
     await this.authService.commitAuthenticatedUser(user)
 
-    DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
+    await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
     return ok({ accessToken, refreshToken })
   }

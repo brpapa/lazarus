@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import debug from 'debug'
 import { app } from '../../src/infra/http/app'
-import * as s3Uploader from '../../src/infra/http/utils/s3-uploader'
+import * as s3Uploader from '../../src/infra/http/helpers/s3-uploader'
 
 const log = debug('test:uploader')
 

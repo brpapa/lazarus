@@ -1,5 +1,4 @@
-import { Request } from 'koa'
-import { User } from 'src/modules/user/domain/models/user'
+import { IncomingMessage } from 'http'
 import type { DataLoaders } from './loaders'
 
 export type GraphQLContext = {
@@ -8,8 +7,8 @@ export type GraphQLContext = {
    *
    * should be passed from resolvers to the bussiness layer, where permissions/authorization is implemented (viewer can see methods)
    */
-  viewer: User | null
-  req: Request
+  userId: string | null
+  request: IncomingMessage
   /**
    * the same data loader instance is shared between all resolvers within one request lifetime
    */

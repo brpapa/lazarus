@@ -4,7 +4,7 @@ import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
 import { InvalidLocationError, Location } from 'src/shared/domain/models/location'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
-import { UnauthenticatedError } from 'src/shared/logic/errors'
+import { UnauthenticatedError, ApplicationError } from 'src/shared/logic/errors'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
@@ -13,7 +13,10 @@ export type UpdateUserLocationInput = {
   location: LocationDTO
 }
 export type UpdateUserLocationOkResult = UserDTO
-export type UpdateUserLocationErrResult = UnauthenticatedError | InvalidLocationError
+export type UpdateUserLocationErrResult =
+  | UnauthenticatedError
+  | InvalidLocationError
+  | UserNotFoundError
 export type UpdateUserLocationResult = Result<
   UpdateUserLocationOkResult,
   UpdateUserLocationErrResult
@@ -31,15 +34,20 @@ export class UpdateUserLocationCommand extends Command<
     input: UpdateUserLocationInput,
     ctx: AppContext,
   ): Promise<UpdateUserLocationResult> {
-    if (!ctx.viewer) return err(new UnauthenticatedError())
+    if (!ctx.userId) return err(new UnauthenticatedError())
 
     const location = Location.create(input.location)
     if (location.isErr()) return err(location.error)
 
-    const user = ctx.viewer
+    const user = await this.userRepo.findById(ctx.userId)
+    if (!user) return err(new UserNotFoundError(`User ${ctx.userId} not found`))
+
     user.updateLocation(location.value)
+
     await this.userRepo.commit(user)
 
     return ok(UserMapper.fromDomainToDTO(user))
   }
 }
+
+class UserNotFoundError extends ApplicationError {}
