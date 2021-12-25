@@ -1,13 +1,8 @@
-import { appendIncidentToConnection } from './../../data/relay/utils'
 import { useEffect, useMemo } from 'react'
 import { useRelayEnvironment } from 'react-relay'
-import {
-  ConnectionHandler,
-  graphql,
-  GraphQLSubscriptionConfig,
-  requestSubscription,
-} from 'relay-runtime'
+import { graphql, GraphQLSubscriptionConfig, requestSubscription } from 'relay-runtime'
 import type { OnIncidentCreatedSubscription as OnIncidentCreatedSubscriptionType } from '~/__generated__/OnIncidentCreatedSubscription.graphql'
+import { appendIncidentToConnection } from '~/data/relay/store-utils'
 
 const subscription = graphql`
   subscription OnNearbyIncidentCreatedSubscription {
@@ -30,12 +25,6 @@ export const useOnNearbyIncidentCreatedSubscription = ({ isOn }: { isOn: boolean
     () => ({
       subscription,
       variables: {},
-      onCompleted: () => {
-        console.log('Subscription established')
-      },
-      onNext: (response) => {
-        console.log('Subscription payload received', response)
-      },
       updater: (store) => {
         // define how update the relay store when a new payload is received
 

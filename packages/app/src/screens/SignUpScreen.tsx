@@ -6,7 +6,7 @@ import { TextInput } from 'react-native-gesture-handler'
 import { Box, Text } from '~/components/atomics'
 import Loading from '~/components/Loading'
 import MyButton from '~/components/MyButton'
-import { useSignUpMutation } from '~/hooks/mutations/SignUpMutation'
+import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
 import type { RootStackParams } from '~/RootNavigator'
 
 export default function SignUpScreen() {

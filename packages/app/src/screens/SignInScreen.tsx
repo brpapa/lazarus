@@ -3,13 +3,11 @@ import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
 import { Button } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 import { Box, Text } from '~/components/atomics'
 import MyButton from '~/components/MyButton'
-import { userJwtToken } from '~/data/recoil'
-import { useSignInMutation } from '~/hooks/mutations/SignInMutation'
+import { useSignInMutation } from '~/data/relay/mutations/SignInMutation'
 import { useSession } from '~/hooks/use-session'
-import type { RootStackParams } from '~/RootNavigator'
+import type { RootStackParams } from '~/Root'
 
 export default function SignInScreen() {
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'SignIn'>>()
@@ -24,7 +22,7 @@ export default function SignInScreen() {
     signIn(
       { username, password },
       {
-        onOkResult: (res) => openSession(res.accessToken),
+        onOkResult: (res) => openSession(res.accessToken, new Date(res.accessTokenExpiresIn)),
         onErrResult: (res) => setErrorMsg(res.reason),
       },
     )

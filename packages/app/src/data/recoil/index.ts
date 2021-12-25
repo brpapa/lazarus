@@ -1,6 +1,7 @@
 import { atom } from 'recoil'
+
 export { userCoordinateState } from './user-coordinate'
-export { userJwtTokenState } from './user-jwt-token'
+export { accessTokenState } from './access-token'
 
 export const selectedIncidentIdInMap = atom<string | null>({
   key: 'selectedIncidentIdInMap',

@@ -1,15 +1,25 @@
-import { useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useRecoilState } from 'recoil'
-import { userJwtTokenState } from '~/data/recoil'
+import { accessTokenState } from '~/data/recoil'
 
 export const useSession = () => {
-  const [userJwtToken, setUserJwtToken] = useRecoilState(userJwtTokenState)
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState)
 
-  const openSession = useCallback((jwtToken: string) => setUserJwtToken(jwtToken), [setUserJwtToken])
-  const closeSession = useCallback(() => setUserJwtToken(null), [setUserJwtToken])
+  const openSession = useCallback(
+    (accessToken: string, expiresIn: Date) => setAccessToken({ value: accessToken, expiresIn }),
+    [setAccessToken],
+  )
+  const closeSession = useCallback(() => setAccessToken(null), [setAccessToken])
+
+  useEffect(() => {
+    if (!accessToken) return
+
+    const isExpired = accessToken.expiresIn <= new Date()
+    if (isExpired) closeSession()
+  }, [accessToken, closeSession])
 
   return {
-    isSignedIn: userJwtToken !== null,
+    isOpened: accessToken !== null,
     openSession,
     closeSession,
   }

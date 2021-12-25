@@ -13,6 +13,7 @@ const mutation = graphql`
         __typename
         ... on SignInOkResult {
           accessToken
+          accessTokenExpiresIn
           refreshToken
         }
         ... on SignInErrResult {
@@ -25,7 +26,11 @@ const mutation = graphql`
 `
 
 type Listeners = {
-  onOkResult?: (result: { accessToken: string; refreshToken: string }) => void
+  onOkResult?: (result: {
+    accessToken: string
+    accessTokenExpiresIn: string
+    refreshToken: string
+  }) => void
   onErrResult?: (result: { reason: string; code: SignInErrCodeType }) => void
 }
 

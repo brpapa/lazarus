@@ -2,7 +2,7 @@ import type { LocationObject } from 'expo-location'
 import type { TaskManagerTaskBody } from 'expo-task-manager'
 import * as TaskManager from 'expo-task-manager'
 import * as Location from 'expo-location'
-import { commitUpdateUserLocationMutation } from '../relay/UpdateUserLocationMutation'
+import { commitUpdateUserLocationMutation } from '../../data/relay/mutations/UpdateUserLocationMutation'
 
 export const TASK_NAME = 'background-location-tracking-task'
 

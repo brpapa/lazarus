@@ -8,7 +8,7 @@ import {
   SubscribeFunction,
 } from 'relay-runtime'
 import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/shared/config'
-import { JwtToken } from '../jwt-token-loader'
+import { SecureStoreProxy } from '../secure-store-proxy'
 import { createClient } from 'graphql-ws'
 
 const fetchFn: FetchFunction = async (operation, variables) => {
@@ -47,11 +47,11 @@ const fetchFn: FetchFunction = async (operation, variables) => {
       'Content-Type': 'application/json',
     }
 
-    const jwtToken = await JwtToken.get()
-    if (jwtToken !== null)
+    const accessToken = await SecureStoreProxy.getAccessToken()
+    if (accessToken !== null)
       return {
         ...headers,
-        Authorization: `Bearer ${jwtToken}`,
+        Authorization: `Bearer ${accessToken.value}`,
       }
 
     return headers
@@ -61,9 +61,9 @@ const fetchFn: FetchFunction = async (operation, variables) => {
 const subscriptionsClient = createClient({
   url: `${WS_SERVER_BASE_URL}/graphql/subscriptions`,
   connectionParams: async () => {
-    const jwtToken = await JwtToken.get()
-    if (jwtToken === null) return {}
-    return { Authorization: `Bearer ${jwtToken}` }
+    const accessToken = await SecureStoreProxy.getAccessToken()
+    if (accessToken === null) return {}
+    return { Authorization: `Bearer ${accessToken.value}` }
   },
 })
 
@@ -93,9 +93,9 @@ const subscribeFn: SubscribeFunction = (operation, variables) => {
 
 const network = Network.create(fetchFn, subscribeFn)
 
-/** store: where relay keeps  all the data returned from graphql operations around the app */
+/** store: where relay keeps all the data returned from graphql operations around the app */
 const store = new Store(new RecordSource(), {
-  // This property tells Relay to not immediately clear its cache when the user navigates around the app. Relay will hold onto the specified number of query results, allowing the user to return to recently visited pages and reusing cached data if its available/fresh
+  // this property tells Relay to not immediately clear its cache when the user navigates around the app. Relay will hold onto the specified number of query results, allowing the user to return to recently visited pages and reusing cached data if its available/fresh
   gcReleaseBufferSize: 10,
 })
 

@@ -5,7 +5,7 @@ import { HomeScreen } from '~/screens/HomeScreen'
 import IncidentScreen from '~/screens/IncidentScreen'
 import SignInScreen from '~/screens/SignInScreen'
 import SignUpScreen from '~/screens/SignUpScreen'
-import { useOnNearbyIncidentCreatedSubscription } from '~/hooks/subscriptions/OnNearbyIncidentCreatedSubscription'
+import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
 
 export type RootStackParams = {
   Home: undefined
@@ -19,12 +19,12 @@ export type RootStackParams = {
 const RootStack = createStackNavigator<RootStackParams>()
 
 export default function Root() {
-  const { isSignedIn } = useSession()
-  useOnNearbyIncidentCreatedSubscription({ isOn: isSignedIn })
+  const { isOpened } = useSession()
+  useOnNearbyIncidentCreatedSubscription({ isOn: isOpened })
 
   return (
     <RootStack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
-      {isSignedIn ? (
+      {isOpened ? (
         <>
           <RootStack.Screen name="Home" component={HomeScreen} />
           <RootStack.Screen name="Incident" component={IncidentScreen} />

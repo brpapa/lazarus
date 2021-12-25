@@ -21,3 +21,8 @@ type Incident = {
   timelineUpdates: TimelineUpdate[]
   images: string[]
 }
+
+type AccessToken = {
+  value: string
+  expiresIn: Date
+}

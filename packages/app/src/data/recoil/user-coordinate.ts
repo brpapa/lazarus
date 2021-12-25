@@ -28,11 +28,11 @@ export const userCoordinateState = atom<Coordinate>({
           mayShowUserSettingsDialog: false,
         },
         ({ coords }) => {
-          console.log(`[recoil] New location: (${coords.latitude}, ${coords.longitude})`)
           setSelf({
             latitude: coords.latitude,
             longitude: coords.longitude,
           })
+          console.log(`[recoil] New location: (${coords.latitude}, ${coords.longitude})`)
         },
       )
 
