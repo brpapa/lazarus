@@ -1,12 +1,9 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/infra/graphql/context'
 import { signInCommand } from 'src/modules/user/application/commands'
-import {
-  SignInInput,
-  SignInResult,
-  UserOrPasswordInvalidError,
-} from 'src/modules/user/application/commands/sign-in-command'
+import { SignInInput, SignInResult } from 'src/modules/user/application/commands/sign-in-command'
 import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
+import { DateType } from 'src/shared/infra/graphql/types/date-type'
 
 export const SignInMutationType = createMutationType<GraphQLContext, SignInInput, SignInResult>({
   name: 'SignIn',
@@ -24,6 +21,11 @@ export const SignInMutationType = createMutationType<GraphQLContext, SignInInput
     refreshToken: {
       type: GraphQLNonNull(GraphQLString),
       resolve: (result) => result.asOk().refreshToken,
+    },
+    accessTokenExpiresIn: {
+      type: GraphQLNonNull(DateType),
+      description: 'The timestamp where the access token is no longer more valid',
+      resolve: (result) => result.asOk().accessTokenExpiresIn,
     },
   },
   errResultFields: {

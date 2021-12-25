@@ -13,7 +13,7 @@ import { UUID } from 'src/shared/domain/models/uuid'
 export class AuthService implements IAuthService {
   constructor(private userSessionRepo: IUserSessionRepo) {}
 
-  encodeJwt(claims: JwtClaims): JwtAccessToken {
+  encodeJwt(claims: Omit<JwtClaims, 'exp'>): JwtAccessToken {
     return jwt.sign(claims, JWT_SECRET_KEY, {
       expiresIn: JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S,
     })

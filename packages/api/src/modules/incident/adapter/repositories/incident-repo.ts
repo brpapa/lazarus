@@ -2,7 +2,7 @@ import { Incident } from 'src/modules/incident/domain/models/incident'
 import { LocationProps } from 'src/shared/domain/models/location'
 import { IRepository } from '../../../../shared/infra/db/repository'
 
-/** the incident loaded from database comes with the last 25 comments */
+/** the incident loaded from database comes only with the last 25 comments */
 export interface IIncidentRepo extends IRepository<Incident> {
   findById(id: string): Promise<Incident | null>
   findByIdBatch(ids: string[]): Promise<Incident[]>

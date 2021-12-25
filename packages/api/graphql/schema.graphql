@@ -167,6 +167,9 @@ union SignInResult = SignInOkResult | SignInErrResult
 type SignInOkResult {
   accessToken: String!
   refreshToken: String!
+
+  """The timestamp where the access token is no longer more valid"""
+  accessTokenExpiresIn: Date!
 }
 
 type SignInErrResult {
@@ -247,8 +250,21 @@ input MediaInput {
 
 """The subscription root type"""
 type Subscription {
-  """
-  Triggered whenever a new incident is created nearby to the subscriber user
-  """
+  onUserAdded: UserAddedOutput
+
+  """Triggered whenever a incident is created nearby to the subscriber user"""
   onNearbyIncidentCreated: Incident!
+}
+
+type UserAddedOutput {
+  userEdge: UserEdge
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User!
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }

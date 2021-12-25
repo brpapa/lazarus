@@ -22,12 +22,8 @@ export const OnNearbyIncidentCreatedSubscriptionType: GraphQLFieldConfig<
 
       if (ctx.userId === payload.incident.ownerUserId.toString()) return true
 
-      const shouldNofity = await locationService.userIsNearbyToIncident(
-        ctx.userId,
-        payload.incident,
-      )
-
-      return shouldNofity
+      const shouldSend = await locationService.userIsNearbyToIncident(ctx.userId, payload.incident)
+      return shouldSend
     },
   ),
   resolve: (payload) => IncidentMapper.fromDomainToDTO(payload.incident),

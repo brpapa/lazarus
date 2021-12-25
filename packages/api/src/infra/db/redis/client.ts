@@ -1,11 +1,11 @@
 import * as redis from 'redis'
-import { REDIS_CONN_STRING } from 'src/shared/config'
+import { DB_CONN_STRING_REDIS } from 'src/shared/config'
 
 /**
  * h preffix: hashes (https://redis.io/commands#hash)
  * https://redis.io/topics/data-types-intro
  */
-const redisClient = redis.createClient({ url: REDIS_CONN_STRING })
+const redisClient = redis.createClient({ url: DB_CONN_STRING_REDIS })
 
 type RedisClient = typeof redisClient
 

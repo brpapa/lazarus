@@ -23,14 +23,15 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
     {
       schema,
       subscribe,
+      // client 1 <-> 1 ws connection
       onConnect: async (ctx) => {
         const userId = await getUserId(ctx.connectionParams?.Authorization as string | undefined)
         if (!userId) return ctx.extra.socket.close(CloseCode.Forbidden, 'Forbidden')
 
-        log('User connected: %o', userId)
+        log('User %o connected', userId)
         return true
       },
-      // a same client can subscribe to many subscriptions
+      // client 1 <-> n subscription
       onSubscribe: async (ctx, msg) => {
         const userId = await getUserId(ctx.connectionParams?.Authorization as string | undefined)
         if (!userId) return ctx.extra.socket.close(CloseCode.Forbidden, 'Forbidden')
@@ -66,6 +67,7 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
         )
         return execArgs
       },
+      // subscription 1 <-> n payload published
       onNext: (_, msg) => {
         log('Publishing payload to the subscription %o', msg.id)
       },

@@ -44,8 +44,9 @@ export const IncidentsQueryType: GraphQLFieldConfig<void, GraphQLContext, any> =
         }
       }
     },
+    ctx,
   ): Promise<Connection<IncidentDTO>> => {
-    const incidents = await getIncidents.exec({ filter: args.filter })
+    const incidents = await getIncidents.exec({ filter: args.filter }, ctx)
     if (incidents.isErr()) throw incidents.error
     return connectionFromArray(incidents.value, args)
   },

@@ -3,7 +3,7 @@ import { User } from '../domain/models/user'
 
 export interface IAuthService {
   /** generate/sign a JWT access token */
-  encodeJwt(claims: JwtClaims): JwtAccessToken
+  encodeJwt(claims: Omit<JwtClaims, 'exp'>): JwtAccessToken
   /** decode the JWT access token, returns null if the token expired or is invalid */
   decodeJwt(token: JwtAccessToken): Promise<JwtClaims | null>
   genRefreshToken(): JwtRefreshToken

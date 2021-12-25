@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { PG_CONN_STRING } from 'src/shared/config'
+import { DB_CONN_STRING_PG } from 'src/shared/config'
 import { DomainEvents } from 'src/shared/domain/events/domain-events'
 import { UUID } from 'src/shared/domain/models/uuid'
 
@@ -8,7 +8,7 @@ const prismaClient = new PrismaClient({
   errorFormat: 'pretty',
   datasources: {
     db: {
-      url: PG_CONN_STRING,
+      url: DB_CONN_STRING_PG,
     },
   },
 })
