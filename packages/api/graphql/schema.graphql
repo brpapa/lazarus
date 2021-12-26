@@ -126,6 +126,9 @@ type Mutation {
 
   """Update the current location of the authenticated user"""
   updateUserLocation(input: UpdateUserLocationInput!): UpdateUserLocationOutput!
+
+  """Login"""
+  refreshToken(input: RefreshTokenInput!): RefreshTokenOutput!
   reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
 }
 
@@ -211,6 +214,35 @@ enum UpdateUserLocationErrCodeType {
 
 input UpdateUserLocationInput {
   location: LocationInput!
+  clientMutationId: String
+}
+
+type RefreshTokenOutput {
+  result: RefreshTokenResult!
+  clientMutationId: String
+}
+
+union RefreshTokenResult = RefreshTokenOkResult | RefreshTokenErrResult
+
+type RefreshTokenOkResult {
+  accessToken: String!
+
+  """The timestamp where the access token is no longer more valid"""
+  accessTokenExpiresIn: Date!
+}
+
+type RefreshTokenErrResult {
+  reason: String!
+  code: RefreshTokenErrCodeType!
+}
+
+enum RefreshTokenErrCodeType {
+  RefreshTokenExpiredError
+  UserNotFoundError
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
   clientMutationId: String
 }
 

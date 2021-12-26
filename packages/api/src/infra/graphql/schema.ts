@@ -36,6 +36,7 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
     signUp: UserMutations.SignUpMutationType,
     signIn: UserMutations.SignInMutationType,
     updateUserLocation: UserMutations.UpdateUserLocationMutationType,
+    refreshToken: UserMutations.RefreshTokenMutationType,
     reportIncident: IncidentMutations.ReportIncidentMutationType,
   }),
 })

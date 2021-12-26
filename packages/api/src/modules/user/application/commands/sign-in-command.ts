@@ -40,7 +40,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
     const refreshToken = this.authService.genRefreshToken()
     user.setTokens(accessToken, refreshToken)
 
-    await this.authService.commitAuthenticatedUser(user)
+    await this.authService.authenticateUser(user)
 
     const jwtClaims = await this.authService.decodeJwt(accessToken)
     assert(jwtClaims !== null)

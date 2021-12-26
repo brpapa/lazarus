@@ -16,12 +16,17 @@ export abstract class AppError {
 }
 
 export class DomainError extends AppError {}
-
 /** use case error, business error */
 export class ApplicationError extends AppError {}
 
-export class UnauthenticatedError extends AppError {
+export class UnauthenticatedError extends ApplicationError {
   constructor() {
     super('User authentication required')
+  }
+}
+
+export class UserNotFoundError extends ApplicationError {
+  constructor(userIdOrUsername: string) {
+    super(`User ${userIdOrUsername} not found`)
   }
 }

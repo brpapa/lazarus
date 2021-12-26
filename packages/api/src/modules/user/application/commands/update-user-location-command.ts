@@ -4,7 +4,7 @@ import { LocationDTO } from 'src/shared/adapter/dtos/location-dto'
 import { InvalidLocationError, Location } from 'src/shared/domain/models/location'
 import { AppContext } from 'src/shared/logic/app-context'
 import { Command } from 'src/shared/logic/command'
-import { UnauthenticatedError, ApplicationError } from 'src/shared/logic/errors'
+import { UnauthenticatedError, ApplicationError, UserNotFoundError } from 'src/shared/logic/errors'
 import { err, ok, Result } from 'src/shared/logic/result/result'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
@@ -40,7 +40,7 @@ export class UpdateUserLocationCommand extends Command<
     if (location.isErr()) return err(location.error)
 
     const user = await this.userRepo.findById(ctx.userId)
-    if (!user) return err(new UserNotFoundError(`User ${ctx.userId} not found`))
+    if (!user) return err(new UserNotFoundError(ctx.userId))
 
     user.updateLocation(location.value)
 
@@ -49,5 +49,3 @@ export class UpdateUserLocationCommand extends Command<
     return ok(UserMapper.fromDomainToDTO(user))
   }
 }
-
-class UserNotFoundError extends ApplicationError {}

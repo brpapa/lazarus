@@ -31,7 +31,7 @@ export class AuthService implements IAuthService {
     return new UUID().toString()
   }
 
-  async commitAuthenticatedUser(user: User): Promise<void> {
+  async authenticateUser(user: User): Promise<void> {
     if (user.isAuthenticated()) {
       assert(user.accessToken && user.refreshToken)
 

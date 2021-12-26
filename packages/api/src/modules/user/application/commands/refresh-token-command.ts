@@ -1,34 +1,51 @@
-import { err, okVoid, Result } from 'src/shared/logic/result/result'
-import { Command } from 'src/shared/logic/command'
-import { ApplicationError } from 'src/shared/logic/errors'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
-import { IAuthService } from 'src/modules/user/adapter/auth-service'
+import assert from 'assert'
 import { Debugger } from 'debug'
+import { IAuthService } from 'src/modules/user/adapter/auth-service'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { Command } from 'src/shared/logic/command'
+import { ApplicationError, UserNotFoundError } from 'src/shared/logic/errors'
+import { unixEpochtoDate } from 'src/shared/logic/helpers/unix-epoch'
+import { err, ok, Result } from 'src/shared/logic/result/result'
 
 export type RefreshTokenInput = {
   refreshToken: string
 }
-export type RefreshTokenResult = Result<void, ApplicationError>
+export type RefreshTokenOkResult = {
+  accessToken: string
+  accessTokenExpiresIn: Date
+}
+export type RefreshTokenErrResult = RefreshTokenExpiredError | UserNotFoundError
+export type RefreshTokenResult = Result<RefreshTokenOkResult, RefreshTokenErrResult>
 
 export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshTokenResult> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(req: RefreshTokenInput): Promise<RefreshTokenResult> {
-    const username = await this.authService.getUserNameFromRefreshToken(req.refreshToken)
-    if (!username) return err(new ApplicationError('Refresh token expired'))
+  async execImpl(input: RefreshTokenInput): Promise<RefreshTokenResult> {
+    const username = await this.authService.getUserNameFromRefreshToken(input.refreshToken)
+    if (!username) return err(new RefreshTokenExpiredError())
 
     const user = await this.userRepo.findByUsername(username)
-    if (!user) return err(new ApplicationError('User not found'))
+    if (!user) return err(new UserNotFoundError(username))
 
     const accessToken = this.authService.encodeJwt({
       userId: user.id.toString(),
       username: user.username,
     })
-    user.setTokens(accessToken, req.refreshToken)
+    user.setTokens(accessToken, input.refreshToken)
 
-    await this.authService.commitAuthenticatedUser(user)
-    return okVoid()
+    const jwtClaims = await this.authService.decodeJwt(accessToken)
+    assert(jwtClaims !== null)
+    const accessTokenExpiresIn = unixEpochtoDate(jwtClaims.exp)
+
+    await this.authService.authenticateUser(user)
+    return ok({ accessToken, accessTokenExpiresIn })
+  }
+}
+
+class RefreshTokenExpiredError extends ApplicationError {
+  constructor() {
+    super('Refresh token expired')
   }
 }
