@@ -39,7 +39,7 @@ export const commitUpdateUserLocationMutation = (newLocation: LocationInput) => 
       mutation,
       variables: { input: { location: newLocation } },
       onCompleted: (response, errors) => {
-        if (errors !== null) throw new Error(`Unexpected error: ${JSON.stringify(errors)}`)
+        if (errors !== null) rej(new Error(`Unexpected error: ${JSON.stringify(errors)}`))
 
         const result = response.updateUserLocation.result
 

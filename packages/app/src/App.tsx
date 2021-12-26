@@ -36,16 +36,16 @@ export default function App() {
   return (
     <ThemeProvider theme={THEME_NAME == 'default' ? theme : darkTheme}>
       <NavigationContainer {...navigationState.persistenceProps}>
-        <RelayEnvironmentProvider environment={environment}>
-          <AppStack.Navigator
-            initialRouteName={
-              locationPermissions.allPermissionsIsGranted ? 'App' : 'LocationPermissions'
-            }
-            screenOptions={{ headerShown: false }}
-          >
-            <AppStack.Screen name="LocationPermissions" component={LocationPermissionsScreen} />
-            <AppStack.Screen name="App">
-              {() => (
+        <AppStack.Navigator
+          initialRouteName={
+            locationPermissions.allPermissionsIsGranted ? 'App' : 'LocationPermissions'
+          }
+          screenOptions={{ headerShown: false }}
+        >
+          <AppStack.Screen name="LocationPermissions" component={LocationPermissionsScreen} />
+          <AppStack.Screen name="App">
+            {() => (
+              <RelayEnvironmentProvider environment={environment}>
                 <RecoilRoot>
                   {/* show a fallback while waiting for recoil load async values (those where setSelf receives a Promise) */}
                   <Suspense fallback={<Loading />}>
@@ -55,10 +55,10 @@ export default function App() {
                     </SafeAreaProvider>
                   </Suspense>
                 </RecoilRoot>
-              )}
-            </AppStack.Screen>
-          </AppStack.Navigator>
-        </RelayEnvironmentProvider>
+              </RelayEnvironmentProvider>
+            )}
+          </AppStack.Screen>
+        </AppStack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
   )

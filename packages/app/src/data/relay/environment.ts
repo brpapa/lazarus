@@ -9,7 +9,7 @@ import {
 } from 'relay-runtime'
 import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/shared/config'
 import { SecureStoreProxy } from '../secure-store-proxy'
-import { createClient } from 'graphql-ws'
+import { CloseCode, createClient } from 'graphql-ws'
 
 const fetchFn: FetchFunction = async (operation, variables) => {
   console.log(`Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`)
@@ -64,6 +64,18 @@ const subscriptionsClient = createClient({
     const accessToken = await SecureStoreProxy.getAccessToken()
     if (accessToken === null) return {}
     return { Authorization: `Bearer ${accessToken.value}` }
+  },
+  on: {
+    connected: () => {
+      console.log('Connection established')
+    },
+    closed: (event: any) => {
+      console.log('Connection closed', event)
+
+      if (event.code == CloseCode.Forbidden) {
+        console.log('The access token expired') // in the next connection try it should be already refreshed (by useSession hook)
+      }
+    },
   },
 })
 

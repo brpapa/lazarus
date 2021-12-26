@@ -22,7 +22,11 @@ export default function SignInScreen() {
     signIn(
       { username, password },
       {
-        onOkResult: (res) => openSession(res.accessToken, new Date(res.accessTokenExpiresIn)),
+        onOkResult: (res) =>
+          openSession(
+            { value: res.accessToken, expiresIn: new Date(res.accessTokenExpiresIn) },
+            res.refreshToken,
+          ),
         onErrResult: (res) => setErrorMsg(res.reason),
       },
     )
