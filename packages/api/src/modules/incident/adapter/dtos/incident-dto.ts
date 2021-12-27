@@ -1,4 +1,4 @@
-import { LocationDTO } from '../../../../shared/adapter/dtos/location-dto'
+import { LocationDTO } from '../../../shared/adapter/dtos/location-dto'
 import { MediaDTO } from './media-dto'
 
 export interface IncidentDTO {

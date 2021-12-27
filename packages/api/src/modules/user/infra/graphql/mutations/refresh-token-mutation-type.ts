@@ -1,12 +1,12 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { refreshTokenCommand } from 'src/modules/user/application/commands'
 import {
   RefreshTokenInput,
   RefreshTokenResult,
 } from 'src/modules/user/application/commands/refresh-token-command'
-import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
-import { DateType } from 'src/shared/infra/graphql/types/date-type'
+import { createMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
 
 export const RefreshTokenMutationType = createMutationType<
   GraphQLContext,

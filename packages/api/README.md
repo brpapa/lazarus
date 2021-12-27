@@ -12,13 +12,14 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/ddd-
 ├── /data                      # Generated GraphQL schema from code (source of truth)
 ├── /scripts                   # GraphQL schema and database scripts
 ├── /src                       # Source code
+|   ├── /api
 │   ├── /modules
 │   │   ├── /<module>          # Isolated piece of code, also referred as subdomain
 │   │   │   ├── /domain        # Declaration of core business logic/rules, entities, value objects and domain events
 │   │   │   ├── /application   # Use cases (features) that relies on domain objects, application services, external services, domain event handlers
 │   │   │   ├── /adapter       # Abstractions so that the application layer code can interact with the infra layer code without depends from it (i.e. IUserRepo, IJWTTokenService)
 │   │   │   ├── /infra         # Concrete implementations of the abstractions from the adapter layer code so that they can be spun up at runtime, like controllers, routes, databases, external APIs, caches and ORMs
-│   ├── /shared                # Shared code between all modules, like a global module
+│   │   │   ├── /shared        # Shared code between all modules, like a global module
 ├── /test                      # Test helpers
 ```
 
@@ -26,8 +27,17 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/ddd-
 
 # Dependency rules
 
-`infra` depends from `modules/*`
-`modules/*` depends from `shared`
+## High level
+
+- `api` depends from `modules/*`
+- `modules/*` depends from `modules/shared`
+
+## Module level
+
+- `domain` depends from anyone
+- `adapter` depends from `domain`
+- `application` depends from `adapter`, `domain`
+- `infra` depends from `domain`, `adapter`, `application`
 
 # Command-Query Segregation (CQS)
 

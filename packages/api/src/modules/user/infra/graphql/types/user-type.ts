@@ -1,10 +1,10 @@
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
 import { globalIdField } from 'graphql-relay'
-import { connectionDefinitions } from 'src/shared/infra/graphql/connections'
-import { GraphQLTypes, NodeInterfaceType } from 'src/infra/graphql/node'
+import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
+import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
-import { GraphQLContext } from 'src/infra/graphql/context'
-import { LocationType } from 'src/shared/infra/graphql/types/location-type'
+import { GraphQLContext } from 'src/api/graphql/context'
+import { LocationType } from 'src/modules/shared/infra/graphql/types/location-type'
 
 const USER_TYPE_NAME = 'User'
 

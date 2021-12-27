@@ -1,6 +1,6 @@
 import { expect, describe, it } from '@jest/globals'
-import { AggregateRoot } from '../../src/shared/domain/aggregate-root'
-import { UUID } from '../../src/shared/domain/models/uuid'
+import { AggregateRoot } from '../../src/modules/shared/domain/aggregate-root'
+import { UUID } from '../../src/modules/shared/domain/models/uuid'
 
 class MyAgg extends AggregateRoot<number> {}
 

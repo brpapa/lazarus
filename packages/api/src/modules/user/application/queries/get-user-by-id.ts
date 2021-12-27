@@ -1,4 +1,4 @@
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { User } from 'src/modules/user/domain/models/user'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'

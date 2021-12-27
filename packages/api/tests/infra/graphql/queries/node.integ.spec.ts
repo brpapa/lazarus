@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, afterAll, it, expect } from '@jest/globals'
 import { graphql } from 'graphql'
 import { toGlobalId } from 'graphql-relay'
-import { schema } from '../../../../src/infra/graphql/schema'
+import { schema } from '../../../../src/api/graphql/schema'
 
 // beforeAll(connectMongoose)
 

@@ -7,12 +7,12 @@ import { IncidentStatus } from 'src/modules/incident/domain/models/incident-stat
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
-import { InvalidLocationError, Location } from 'src/shared/domain/models/location'
-import { AppContext } from 'src/shared/logic/app-context'
-import { Command } from 'src/shared/logic/command'
-import { ApplicationError, UnauthenticatedError } from 'src/shared/logic/errors'
-import { Guard } from 'src/shared/logic/guard'
-import { err, ok, Result } from 'src/shared/logic/result/result'
+import { InvalidLocationError, Location } from 'src/modules/shared/domain/models/location'
+import { AppContext } from 'src/modules/shared/logic/app-context'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError, UnauthenticatedError } from 'src/modules/shared/logic/errors'
+import { Guard } from 'src/modules/shared/logic/guard'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
 
 export type ReportIncidentInput = {

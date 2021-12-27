@@ -1,4 +1,4 @@
-import { LoaderFactory } from 'src/shared/application/loader-factory'
+import { LoaderFactory } from 'src/modules/shared/application/loader-factory'
 import { IUserRepo } from '../../adapter/repositories/user-repo'
 import { User } from '../../domain/models/user'
 

@@ -1,9 +1,9 @@
 import assert from 'assert'
-import { RedisClient } from 'src/infra/db/redis/client'
+import { RedisClient } from 'src/api/db/redis/client'
 import { IUserSessionRepo } from 'src/modules/incident/adapter/repositories/user-session-repo'
 import { JwtAccessToken, JwtRefreshToken } from 'src/modules/user/domain/models/jwt'
 import { UserSession } from 'src/modules/user/domain/models/session'
-import { JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S } from 'src/shared/config'
+import { JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S } from 'src/config'
 
 interface RedisKeyParams {
   username: string

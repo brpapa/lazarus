@@ -8,9 +8,9 @@ import { User } from 'src/modules/user/domain/models/user'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
-import { AWS_S3_BUCKET_NAME } from 'src/shared/config'
-import { Location } from 'src/shared/domain/models/location'
-import { UUID } from 'src/shared/domain/models/uuid'
+import { AWS_S3_BUCKET_NAME } from 'src/config'
+import { Location } from 'src/modules/shared/domain/models/location'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import {
   cleanUpDatasources as cleanUpDataSources,
   connectDataSources,

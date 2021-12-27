@@ -7,6 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// OF USER MODULE BELOW
+
 model UserModel {
   id                  String          @id @default(uuid()) @db.VarChar(36)
   username            String          @unique @db.VarChar(32)
@@ -20,6 +22,8 @@ model UserModel {
 
   @@map("users")
 }
+
+// OF INCIDENT MODULE BELOW
 
 model IncidentModel {
   id                  String             @id @default(uuid()) @db.VarChar(36)

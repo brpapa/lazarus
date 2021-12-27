@@ -1,11 +1,11 @@
 import { Comment } from 'src/modules/incident/domain/models/comment'
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { UUID } from 'src/shared/domain/models/uuid'
-import { WatchedList } from 'src/shared/domain/watched-list'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { WatchedList } from 'src/modules/shared/domain/watched-list'
 import {
   LocationMapper,
   LocationRedisModel,
-} from '../../../../shared/adapter/mappers/location-mapper'
+} from '../../../shared/adapter/mappers/location-mapper'
 import { IncidentStatus } from '../../domain/models/incident-status'
 import {
   IncidentPgModel,

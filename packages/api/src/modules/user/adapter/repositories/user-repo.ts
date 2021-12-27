@@ -1,5 +1,5 @@
 import { User } from 'src/modules/user/domain/models/user'
-import { IRepository } from 'src/shared/infra/db/repository'
+import { IRepository } from 'src/modules/shared/infra/db/repository'
 
 export interface UserWithinCircle {
   user: User

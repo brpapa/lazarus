@@ -1,5 +1,5 @@
-import { DomainEvent } from 'src/shared/domain/events/domain-event'
-import { UUID } from 'src/shared/domain/models/uuid'
+import { DomainEvent } from 'src/modules/shared/domain/events/domain-event'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { Comment } from 'src/modules/incident/domain/models/comment'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 

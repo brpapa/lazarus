@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { mockDeep, mockReset } from 'jest-mock-extended'
 import { DeepMockProxy } from 'jest-mock-extended/lib/cjs/Mock'
 
-import { prismaClient } from '../src/infra/db/prisma/client'
+import { prismaClient } from '../src/api/db/prisma/client'
 import { cleanUpDatasources } from './helpers'
 
 // code executed before each test

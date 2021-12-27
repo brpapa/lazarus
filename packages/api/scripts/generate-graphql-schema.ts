@@ -4,7 +4,7 @@ import { graphql } from 'graphql'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { introspectionQuery, printSchema } from 'graphql/utilities'
-import { schema } from 'src/infra/graphql/schema'
+import { schema } from 'src/api/graphql/schema'
 import debug from 'debug'
 
 const log = debug('app:scripts')

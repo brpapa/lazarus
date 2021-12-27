@@ -1,16 +1,17 @@
-import { DomainEvents } from 'src/shared/domain/events/domain-events'
-import { err, ok, Result } from 'src/shared/logic/result/result'
-import { Command } from 'src/shared/logic/command'
-import { ApplicationError } from 'src/shared/logic/errors'
+import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError } from 'src/modules/shared/logic/errors'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { Debugger } from 'debug'
-import { unixEpochtoDate } from 'src/shared/logic/helpers/unix-epoch'
+import { unixEpochtoDate } from 'src/modules/shared/logic/helpers/unix-epoch'
 import assert from 'assert'
 
 export type SignInInput = {
   username: string
   password: string
+  pushToken?: string
 }
 export type SignInOkResult = {
   accessToken: string
@@ -38,7 +39,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
       username: user.username,
     })
     const refreshToken = this.authService.genRefreshToken()
-    user.setTokens(accessToken, refreshToken)
+    user.withTokens(accessToken, refreshToken, input.pushToken)
 
     await this.authService.authenticateUser(user)
 
@@ -48,7 +49,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
 
     await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
-    return ok({ accessToken, refreshToken, accessTokenExpiresIn })
+    return ok({ accessToken, accessTokenExpiresIn, refreshToken })
   }
 }
 

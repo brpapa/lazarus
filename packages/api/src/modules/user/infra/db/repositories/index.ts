@@ -1,5 +1,5 @@
-import { prismaClient } from 'src/infra/db/prisma/client'
-import { redisClient } from 'src/infra/db/redis/client'
+import { prismaClient } from 'src/api/db/prisma/client'
+import { redisClient } from 'src/api/db/redis/client'
 import { UserSessionRepo } from './user-session-repo'
 import { UserRepo } from './user-repo'
 

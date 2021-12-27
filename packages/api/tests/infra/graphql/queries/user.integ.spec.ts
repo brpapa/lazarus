@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { app } from 'src/infra/http/app'
+import { app } from 'src/api/http/app'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
 // DOING

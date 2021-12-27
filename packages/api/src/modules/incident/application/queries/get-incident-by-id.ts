@@ -1,4 +1,4 @@
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { IncidentDTO } from '../../adapter/dtos/incident-dto'
 import { IncidentMapper } from '../../adapter/mappers/incident-mapper'
 

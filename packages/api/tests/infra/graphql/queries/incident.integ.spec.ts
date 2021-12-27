@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { app } from 'src/infra/http/app'
+import { app } from 'src/api/http/app'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
@@ -7,7 +7,7 @@ import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-numbe
 import { User } from 'src/modules/user/domain/models/user'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { Location } from 'src/shared/domain/models/location'
+import { Location } from 'src/modules/shared/domain/models/location'
 
 describe('graphql queries: incident', () => {
   beforeAll(async () => {

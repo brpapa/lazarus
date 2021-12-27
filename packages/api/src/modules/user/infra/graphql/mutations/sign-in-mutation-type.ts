@@ -1,9 +1,9 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { signInCommand } from 'src/modules/user/application/commands'
 import { SignInInput, SignInResult } from 'src/modules/user/application/commands/sign-in-command'
-import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
-import { DateType } from 'src/shared/infra/graphql/types/date-type'
+import { createMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
 
 export const SignInMutationType = createMutationType<GraphQLContext, SignInInput, SignInResult>({
   name: 'SignIn',
@@ -11,6 +11,7 @@ export const SignInMutationType = createMutationType<GraphQLContext, SignInInput
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
+    pushToken: { type: GraphQLString },
   },
   mutateAndGetResult: async (args, ctx) => signInCommand.exec(args, ctx),
   okResultFields: {

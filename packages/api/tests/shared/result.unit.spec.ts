@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
-import { err, ok, Result, combine } from '../../src/shared/logic/result'
+import { err, ok, Result, combine } from '../../src/modules/shared/logic/result'
 
 describe('result', () => {
   it('andThen', () => {

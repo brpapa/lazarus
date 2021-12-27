@@ -6,8 +6,8 @@ import {
   InvalidPhoneNumberError,
   UserPhoneNumber,
 } from 'src/modules/user/domain/models/user-phone-number'
-import { Command } from 'src/shared/logic/command'
-import { err, ok, Result } from 'src/shared/logic/result/result'
+import { Command } from 'src/modules/shared/logic/command'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
 

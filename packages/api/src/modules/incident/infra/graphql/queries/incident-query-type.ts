@@ -1,5 +1,5 @@
 import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { GetIncidentById } from 'src/modules/incident/application/queries'
 import { IncidentType } from '../types/incident-type'

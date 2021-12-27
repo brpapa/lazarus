@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import { DomainError } from 'src/shared/logic/errors'
-import { Guard } from 'src/shared/logic/guard'
-import { Result, err, ok } from 'src/shared/logic/result/result'
-import { ValueObject } from 'src/shared/domain/value-object'
+import { DomainError } from 'src/modules/shared/logic/errors'
+import { Guard } from 'src/modules/shared/logic/guard'
+import { Result, err, ok } from 'src/modules/shared/logic/result/result'
+import { ValueObject } from 'src/modules/shared/domain/value-object'
 
 interface UserPasswordProps {
   value: string

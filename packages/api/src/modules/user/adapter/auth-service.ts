@@ -6,6 +6,7 @@ export interface IAuthService {
   encodeJwt(claims: Omit<JwtClaims, 'exp'>): JwtAccessToken
   /** decode the JWT access token, returns null if the token expired or is invalid */
   decodeJwt(token: JwtAccessToken): Promise<JwtClaims | null>
+  decodeJwtIgnoringExpiration(token: JwtAccessToken): Promise<JwtClaims>
   genRefreshToken(): JwtRefreshToken
   getActiveTokens(username: string): Promise<string[]>
   /** persist accessToken and refreshToken of user, if refresh token already exists, overwrites the related accessToken */

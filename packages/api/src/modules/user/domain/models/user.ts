@@ -1,12 +1,12 @@
 import assert from 'assert'
-import { AggregateRoot } from 'src/shared/domain/aggregate-root'
-import { Location } from 'src/shared/domain/models/location'
-import { UUID } from 'src/shared/domain/models/uuid'
-import { DomainError } from 'src/shared/logic/errors'
-import { Guard } from 'src/shared/logic/guard'
-import { combine } from 'src/shared/logic/result'
-import { err, ok, Result } from 'src/shared/logic/result/result'
-import { UserLoggedIn } from '../events/user-logged-in'
+import { AggregateRoot } from 'src/modules/shared/domain/aggregate-root'
+import { Location } from 'src/modules/shared/domain/models/location'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { DomainError } from 'src/modules/shared/logic/errors'
+import { Guard } from 'src/modules/shared/logic/guard'
+import { combine } from 'src/modules/shared/logic/result'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
+import { UserSignedIn } from '../events/user-signed-in'
 import { UserRegistered } from '../events/user-registered'
 import { JwtAccessToken, JwtRefreshToken } from './jwt'
 import { UserPassword } from './user-password'
@@ -19,7 +19,6 @@ interface UserProps {
   isPhoneNumberVerified?: boolean
   createdAt?: Date
   lastLogin?: Date
-  expoPushToken?: string // TODO
   location?: Location
   // props persistidas no redis, mas repository nao as preenche ao carregar na aplicacao um usuario existente na base
   accessToken?: JwtAccessToken
@@ -61,8 +60,12 @@ export class User extends AggregateRoot<UserProps> {
     return !!this.accessToken && !!this.refreshToken
   }
 
-  setTokens(accessToken: JwtAccessToken, refreshToken?: JwtRefreshToken): void {
-    this.addDomainEvent(new UserLoggedIn(this))
+  withTokens(
+    accessToken: JwtAccessToken,
+    refreshToken?: JwtRefreshToken,
+    pushToken?: string,
+  ): void {
+    this.addDomainEvent(new UserSignedIn(this, pushToken))
     this.props.accessToken = accessToken
     this.props.refreshToken = refreshToken || this.props.refreshToken
     this.props.lastLogin = new Date()

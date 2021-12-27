@@ -1,12 +1,12 @@
 import { GraphQLEnumType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { reportIncidentCommand } from 'src/modules/incident/application/commands'
 import {
   ReportIncidentInput,
   ReportIncidentResult,
 } from 'src/modules/incident/application/commands/report-incident-command'
 import { GetIncidentById } from 'src/modules/incident/application/queries'
-import { createMutationType } from 'src/shared/infra/graphql/create-mutation-type'
+import { createMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
 import { IncidentType } from '../types/incident-type'
 import { MediaInputType } from '../types/media-type'
 

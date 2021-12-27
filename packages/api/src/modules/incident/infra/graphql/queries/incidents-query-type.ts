@@ -1,9 +1,9 @@
 import { GraphQLFieldConfig, GraphQLInputObjectType, GraphQLNonNull } from 'graphql'
 import { Connection, connectionArgs, ConnectionArguments, connectionFromArray } from 'graphql-relay'
-import { GraphQLContext } from 'src/infra/graphql/context'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { getIncidents } from 'src/modules/incident/application/queries'
-import { LocationInputType } from 'src/shared/infra/graphql/types/location-type'
+import { LocationInputType } from 'src/modules/shared/infra/graphql/types/location-type'
 import { IncidentConnectionType } from '../types/incident-type'
 
 const IncidentsFilterInputType = new GraphQLInputObjectType({

@@ -2,10 +2,10 @@ import assert from 'assert'
 import { Debugger } from 'debug'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
-import { Command } from 'src/shared/logic/command'
-import { ApplicationError, UserNotFoundError } from 'src/shared/logic/errors'
-import { unixEpochtoDate } from 'src/shared/logic/helpers/unix-epoch'
-import { err, ok, Result } from 'src/shared/logic/result/result'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError, UserNotFoundError } from 'src/modules/shared/logic/errors'
+import { unixEpochtoDate } from 'src/modules/shared/logic/helpers/unix-epoch'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 
 export type RefreshTokenInput = {
   refreshToken: string
@@ -33,7 +33,7 @@ export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshToken
       userId: user.id.toString(),
       username: user.username,
     })
-    user.setTokens(accessToken, input.refreshToken)
+    user.withTokens(accessToken, input.refreshToken)
 
     const jwtClaims = await this.authService.decodeJwt(accessToken)
     assert(jwtClaims !== null)

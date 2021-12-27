@@ -6,7 +6,7 @@ import { User } from 'src/modules/user/domain/models/user'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
-import { Location } from 'src/shared/domain/models/location'
+import { Location } from 'src/modules/shared/domain/models/location'
 import { connectDataSources, cleanUpDatasources, disconnectDatasources } from 'tests/helpers'
 
 describe('queries: get incidents inside boundary', () => {

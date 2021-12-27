@@ -1,7 +1,7 @@
-import { redisClient } from 'src/infra/db/redis/client'
-import { connectPrisma, disconnectPrisma } from 'src/infra/db/prisma/connection'
-import { connectRedis, disconnectRedis } from 'src/infra/db/redis/connection'
-import { prismaClient } from 'src/infra/db/prisma/client'
+import { redisClient } from 'src/api/db/redis/client'
+import { connectPrisma, disconnectPrisma } from 'src/api/db/prisma/connection'
+import { connectRedis, disconnectRedis } from 'src/api/db/redis/connection'
+import { prismaClient } from 'src/api/db/prisma/client'
 
 export const connectDataSources = async () => {
   await connectRedis()
