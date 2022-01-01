@@ -9,7 +9,7 @@ export const accessTokenState = atom<AccessToken | null>({
       // suspends all components under RecoilRoot while the promise is not resolved
       setSelf(
         SecureStoreProxy.getAccessToken()
-          .then((token) => (token != null ? token : new DefaultValue()))
+          .then((accessToken) => (accessToken != null ? accessToken : new DefaultValue()))
           .catch((e) => {
             console.error('Loading token failed', e)
             return new DefaultValue()

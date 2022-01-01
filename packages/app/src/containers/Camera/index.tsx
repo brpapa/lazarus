@@ -1,7 +1,7 @@
 import { Camera } from 'expo-camera'
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
-import { ENABLE_CAMERA_MOCK } from '~/shared/config'
+import { ENABLE_CAMERA_MOCK } from '~/config'
 import { mockedTakePictureAsync } from './mocks'
 
 export interface CameraProps {

@@ -7,7 +7,7 @@ import {
   Store,
   SubscribeFunction,
 } from 'relay-runtime'
-import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/shared/config'
+import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/config'
 import { SecureStoreProxy } from '../secure-store-proxy'
 import { CloseCode, createClient } from 'graphql-ws'
 

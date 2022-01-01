@@ -6,48 +6,48 @@ import { StatusBar, StatusBarStyle } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { RelayEnvironmentProvider } from 'react-relay'
 import { RecoilRoot } from 'recoil'
+import { THEME_NAME } from '~/config'
 import { environment } from '~/data/relay/environment'
 import Root from '~/Root'
-import { THEME_NAME } from '~/shared/config'
 import { darkTheme, theme } from '~/shared/theme'
 import Loading from './components/Loading'
-import { startLocationTracking } from './data/background-tasks/location-tracking'
-import { useLocationPermissions } from './hooks/use-location-permissions'
+import { startLocationTracking } from './data/background-tasks/background-location-tracking'
+import { useInitialPermissions as useInitialPermissions } from './hooks/use-initial-permissions'
 import { useNavigationStatePersistence } from './hooks/use-navigation-state-persistence'
-import LocationPermissionsScreen from './screens/LocationPermissionsScreen'
+import InitialPermissionsScreen from './screens/InitialPermissionsScreen'
 
 export type AppStackParams = {
-  LocationPermissions: undefined
+  InitialPermissions: undefined
   App: undefined
 }
 
 const AppStack = createStackNavigator<AppStackParams>()
 
 export default function App() {
-  const locationPermissions = useLocationPermissions()
+  const requiredPermissions = useInitialPermissions()
   const navigationState = useNavigationStatePersistence()
 
   useEffect(() => {
-    if (locationPermissions.allPermissionsIsGranted) startLocationTracking()
-  }, [locationPermissions.allPermissionsIsGranted])
+    if (requiredPermissions.allPermissionsIsGranted) startLocationTracking()
+  }, [requiredPermissions.allPermissionsIsGranted])
 
-  if (navigationState.isLoading || locationPermissions.isLoading) return <Loading />
+  if (navigationState.isLoading || requiredPermissions.isLoading) return <Loading />
 
   return (
     <ThemeProvider theme={THEME_NAME == 'default' ? theme : darkTheme}>
       <NavigationContainer {...navigationState.persistenceProps}>
         <AppStack.Navigator
           initialRouteName={
-            locationPermissions.allPermissionsIsGranted ? 'App' : 'LocationPermissions'
+            requiredPermissions.allPermissionsIsGranted ? 'App' : 'InitialPermissions'
           }
           screenOptions={{ headerShown: false }}
         >
-          <AppStack.Screen name="LocationPermissions" component={LocationPermissionsScreen} />
+          <AppStack.Screen name="InitialPermissions" component={InitialPermissionsScreen} />
           <AppStack.Screen name="App">
             {() => (
               <RelayEnvironmentProvider environment={environment}>
                 <RecoilRoot>
-                  {/* show a fallback while waiting for recoil load async values (those where setSelf receives a Promise) */}
+                  {/* render a fallback while waiting recoil load async initial values (those where setSelf receives a Promise) */}
                   <Suspense fallback={<Loading />}>
                     <SafeAreaProvider>
                       <StatusBar barStyle={statusBarStyle[THEME_NAME]} />

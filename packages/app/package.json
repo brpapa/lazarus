@@ -13,23 +13,27 @@
     "code:format": "prettier --config \"./../../.prettierrc\" --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "code:lint": "npx eslint 'src' --ext '.js,.ts' --config '.eslintrc'",
     "code:lint-and-fix": "npm run lint -- --fix",
-    "start": "npm run relay && expo start --host lan",
+    "start": "expo start",
     "start:ios": "npm run start -- --ios",
     "start:android": "npm run start -- --android",
     "expo:run:android": "npm run relay && expo run:android",
     "expo:run:ios": "npm run relay && expo run:ios --device \"iPhone 13\"",
+    "expo:prebuild:ios": "expo prebuild --npm --platform ios",
     "expo:eject": "expo eject",
     "run:android": "npm run relay && react-native run-android",
     "run:ios": "npm run relay && react-native run-ios",
     "relay": "npx relay-compiler --src ./src --schema ../api/graphql/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
     "relay:watch": "npm run relay -- --watch",
     "relay:clear": "find . -name '__generated__' -d -exec rm -rf '{}' +",
-    "relay:flush": "npm run relay:clear && npm run relay"
+    "relay:flush": "npm run relay:clear && npm run relay",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "scriptsComment": {
     "start": "starts a expo development server in your lan network",
     "expo:run:*": "build and run expo go in simulator, using expo-dev-client",
     "run:*": "build and run in simulator natively",
+    "expo:prebuild:ios": "generate the native ios project before building them",
     "relay": "based on the current graphql schema defined by api, compile and generate new artifacts in src/__generated__ folder"
   },
   "dependencies": {
@@ -45,6 +49,7 @@
     "expo-device": "~4.1.0",
     "expo-file-system": "~13.1.0",
     "expo-location": "~14.0.1",
+    "expo-notifications": "~0.14.0",
     "expo-secure-store": "~11.1.0",
     "expo-splash-screen": "^0.14.1",
     "expo-status-bar": "~1.2.0",

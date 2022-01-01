@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useRelayEnvironment } from 'react-relay'
 import { graphql, GraphQLSubscriptionConfig, requestSubscription } from 'relay-runtime'
-import type { OnIncidentCreatedSubscription as OnIncidentCreatedSubscriptionType } from '~/__generated__/OnIncidentCreatedSubscription.graphql'
 import { appendIncidentToConnection } from '~/data/relay/store-utils'
+import type { OnIncidentCreatedSubscription as OnIncidentCreatedSubscriptionType } from '~/__generated__/OnIncidentCreatedSubscription.graphql'
 
 const subscription = graphql`
   subscription OnNearbyIncidentCreatedSubscription {
@@ -18,7 +18,7 @@ const subscription = graphql`
   }
 `
 
-export const useOnNearbyIncidentCreatedSubscription = ({ isOn }: { isOn: boolean }) => {
+export const useOnNearbyIncidentCreatedSubscription = ({ when }: { when: boolean }) => {
   const environment = useRelayEnvironment()
 
   const subscriptionConfig = useMemo<GraphQLSubscriptionConfig<OnIncidentCreatedSubscriptionType>>(
@@ -43,11 +43,12 @@ export const useOnNearbyIncidentCreatedSubscription = ({ isOn }: { isOn: boolean
 
   // this will resubscribe every render if subscriptionConfig is not memoized
   useEffect(() => {
-    if (!isOn) return
+    if (!when) return
+
     const { dispose } = requestSubscription<OnIncidentCreatedSubscriptionType>(
       environment,
       subscriptionConfig,
     )
     return dispose
-  }, [environment, isOn, subscriptionConfig])
+  }, [environment, when, subscriptionConfig])
 }

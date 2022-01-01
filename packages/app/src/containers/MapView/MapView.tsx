@@ -1,12 +1,12 @@
 import { useTheme } from '@shopify/restyle'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type { StyleProp, ViewStyle } from 'react-native'
 import GoogleMapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { UserIcon } from '~/assets/icons'
 import Box from '~/components/atomics/Box'
 import MyButton from '~/components/MyButton'
-import { selectedIncidentIdInMap, userCoordinateState } from '~/data/recoil'
+import { selectedIncidentIdInMap, userLocationState } from '~/data/recoil'
 import type { Theme } from '~/shared/theme'
 import customMapStyles from './custom-map-styles'
 
@@ -22,7 +22,7 @@ export default function MapView(props: MapViewProps) {
   // https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md#methods
   const mapRef = useRef<GoogleMapView>(null)
   const theme = useTheme<Theme>()
-  const userCoordinate = useRecoilValue(userCoordinateState)
+  const userCoordinate = useRecoilValue(userLocationState)
 
   const [ne, setNe] = useState<LatLng | null>(null)
   const [sw, setSw] = useState<LatLng | null>(null)

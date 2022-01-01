@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { ENABLE_GOOGLE_MAPS } from '~/shared/config'
+import { ENABLE_GOOGLE_MAPS } from '~/config'
 
 import type { default as MapViewComponent } from './MapView'
 type MapViewType = typeof MapViewComponent

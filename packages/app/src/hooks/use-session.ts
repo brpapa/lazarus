@@ -4,11 +4,11 @@ import { accessTokenState } from '~/data/recoil'
 import { commitRefreshTokenMutation } from '~/data/relay/mutations/RefreshTokenMutation'
 import { SecureStoreProxy } from '~/data/secure-store-proxy'
 
-/** refresh the  current access token if it is expired */
+/** refresh the current access token if it is expired */
 export const useSession = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState)
 
-  const openSession = useCallback(
+  const startSession = useCallback(
     async (accessToken: AccessToken, refreshToken?: string) => {
       setAccessToken(accessToken)
       if (refreshToken) await SecureStoreProxy.setRefreshToken(refreshToken)
@@ -23,22 +23,25 @@ export const useSession = () => {
       if (refreshToken === null) return closeSession()
 
       const newAccessToken = await commitRefreshTokenMutation({ refreshToken })
-      openSession(newAccessToken)
-    } catch {
+      startSession(newAccessToken)
+    } catch (e) {
+      console.error(e)
       return closeSession()
     }
-  }, [closeSession, openSession])
+  }, [closeSession, startSession])
 
   useEffect(() => {
-    if (!accessToken) return
+    if (accessToken === null) return
 
-    const accessTokenIsExpired = accessToken.expiresIn <= new Date()
+    const now = new Date()
+    const accessTokenIsExpired = accessToken.expiresIn.getTime() <= now.getTime()
+
     if (accessTokenIsExpired) handleAcessTokenExpired()
   }, [accessToken, handleAcessTokenExpired])
 
   return {
-    isOpened: accessToken !== null,
-    openSession,
+    isSignedIn: accessToken !== null,
+    startSession,
     closeSession,
   }
 }

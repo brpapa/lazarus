@@ -1,6 +1,6 @@
 import { atom } from 'recoil'
 
-export { userCoordinateState } from './user-coordinate'
+export { userLocationState } from './user-location'
 export { accessTokenState } from './access-token'
 
 export const selectedIncidentIdInMap = atom<string | null>({

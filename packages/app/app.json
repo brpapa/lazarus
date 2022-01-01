@@ -29,11 +29,13 @@
         "googleMapsApiKey": "AIzaSyBaMynGjdodGZmYdySnyH1jB7hX5weFESU"
       },
       "infoPlist": {
-        "NSLocationAlwaysUsageDescription": "Please enable this permission to receive accurate notifications about new incidents around you",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Please enable this permission to receive accurate notifications about new incidents around you",
         "NSLocationWhenInUseUsageDescription": "Please enable this permission to view incidents nearby you",
         "NSCameraUsageDescription": "Please enable camera access so you can report incidents",
         "NSMicrophoneUsageDescription": "Please enable microphone access so you can report incidents",
-        "UIBackgroundModes": ["location"]
+        "UIBackgroundModes": [
+          "location"
+        ]
       }
     },
     "android": {
@@ -42,12 +44,18 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAoAczCgp-2xp12NGNwviMz4QLAmHJr_Zk"
+        }
+      },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "ACCESS_BACKGROUND_LOCATION",
         "CAMERA",
-        "RECORD_AUDIO"
+        "RECORD_AUDIO",
+        "NOTIFICATIONS"
       ]
     },
     "extra": {

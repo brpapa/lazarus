@@ -1,8 +1,9 @@
 import type { LocationObject } from 'expo-location'
+import * as Location from 'expo-location'
 import type { TaskManagerTaskBody } from 'expo-task-manager'
 import * as TaskManager from 'expo-task-manager'
-import * as Location from 'expo-location'
-import { commitUpdateUserLocationMutation } from '../../data/relay/mutations/UpdateUserLocationMutation'
+import { BACKGROUND_LOCATION_OPTIONS } from '~/config'
+import { commitUpdateUserLocationMutation } from '../relay/mutations/UpdateUserLocationMutation'
 
 export const TASK_NAME = 'background-location-tracking-task'
 
@@ -29,16 +30,14 @@ TaskManager.defineTask(TASK_NAME, async (body: any) => {
   }
 })
 
+/** register for location updates when app is in background or foreground, if the user has granted permission */
 export const startLocationTracking = async () => {
   try {
-    // register for location updates when app is in background or foreground
-    await Location.startLocationUpdatesAsync(TASK_NAME, {
-      accuracy: Location.Accuracy.Balanced,
-      timeInterval: 10_000,
-      distanceInterval: 100,
-      mayShowUserSettingsDialog: false,
-      pausesUpdatesAutomatically: true,
-    })
+    const status = await Location.getBackgroundPermissionsAsync()
+    if (!status.granted) return
+
+    await Location.startLocationUpdatesAsync(TASK_NAME, BACKGROUND_LOCATION_OPTIONS)
+
     const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
     if (started) console.log(`Background location tracking started`)
   } catch (e) {

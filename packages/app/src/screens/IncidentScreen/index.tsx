@@ -16,14 +16,14 @@ import { IncidentData } from './IncidentData'
 
 export default function IncidentScreen() {
   const insets = useSafeAreaInsets()
-  const homeNavigation = useNavigation<StackNavigationProp<RootStackParams, 'Home'>>()
-  const route = useRoute<RouteProp<RootStackParams, 'Incident'>>()
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'Home'>>()
+  const { params } = useRoute<RouteProp<RootStackParams, 'Incident'>>()
 
   const [preloadedQueryRef, loadQuery] = useQueryLoader<IncidentDataQueryType>(IncidentDataQuery)
 
   useEffect(() => {
-    loadQuery({ incidentId: route.params.incidentId })
-  }, [loadQuery, route.params.incidentId])
+    loadQuery({ incidentId: params.incidentId })
+  }, [loadQuery, params.incidentId])
 
   return (
     <Box flex={1} flexDirection="column" bg="background">
@@ -40,15 +40,10 @@ export default function IncidentScreen() {
             alignItems="center"
             icon={CloseIcon}
             onPress={() => {
-              homeNavigation.pop()
+              rootNavigation.pop()
             }}
           />
-          <MyButton
-            my={'sm'}
-            justifyContent="center"
-            alignItems="center"
-            icon={MaximizeIcon}
-          />
+          <MyButton my={'sm'} justifyContent="center" alignItems="center" icon={MaximizeIcon} />
         </Box>
       </ScrollView>
       <Box

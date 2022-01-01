@@ -1,7 +1,7 @@
 type ThemeName = 'default' | 'dark'
 type Language = 'pt-br' | 'en-us'
 
-type Coordinate = {
+type Location = {
   latitude: number
   longitude: number
 }
@@ -13,7 +13,7 @@ type TimelineUpdate = {
 
 type Incident = {
   id: string
-  coordinate: Coordinate
+  coordinate: Location
   elapsedTimeSinceLastUpdate: number
   reactionsCount: number
   notificationsAmount: number

@@ -3,7 +3,7 @@ import { graphql, useMutation } from 'react-relay'
 import type {
   SignInErrCodeType,
   SignInInput,
-  SignInMutation as SignInMutationType,
+  SignInMutation as SignInMutationType
 } from '~/__generated__/SignInMutation.graphql'
 
 const mutation = graphql`
@@ -38,7 +38,7 @@ export const useSignInMutation = () => {
   const [commit, isSending] = useMutation<SignInMutationType>(mutation)
 
   const wrappedCommit = useCallback(
-    (input: SignInInput, listeners?: Listeners) =>
+    async (input: SignInInput, listeners?: Listeners) =>
       commit({
         variables: { input },
         onCompleted: (response, errors) => {

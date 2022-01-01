@@ -1,4 +1,4 @@
-import { LANG } from './config'
+import { LANG } from '../config'
 
 const buildTranslatedMessages = (lang: Language) =>
   ({
@@ -14,7 +14,7 @@ const buildTranslatedMessages = (lang: Language) =>
       },
     },
     relativeDistanceToCurrentLocation: {
-      format: (_params?: { coordinate?: Coordinate; currentLocation?: Coordinate }) =>
+      format: (_params?: { coordinate?: Location; currentLocation?: Location }) =>
         ({
           // "en-us": "2 meters away from you",
           // "pt-br": "Há 2 metros de você"

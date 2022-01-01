@@ -7,7 +7,7 @@ import { CloseIcon, RotateIcon } from '~/assets/icons'
 import Box from '~/components/atomics/Box'
 import MyButton from '~/components/MyButton'
 import Camera, { CameraOrientation, CameraRef } from '~/containers/Camera'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/config'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
 import type { ReportStackParams } from '.'
 
 export default function CameraScreen() {
