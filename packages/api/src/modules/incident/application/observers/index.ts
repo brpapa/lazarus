@@ -1,3 +1,3 @@
-import { IncidentCreatedObserver } from './incident-created-observer'
+import { PropagateToSubscriptionObserver } from './propagate-to-subscription-observer'
 
-new IncidentCreatedObserver()
+new PropagateToSubscriptionObserver()

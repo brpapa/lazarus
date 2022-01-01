@@ -29,7 +29,7 @@ describe('services: auth', () => {
         username: user.username,
       })
       const refreshToken = authService.genRefreshToken()
-      user.withTokens(accessToken, refreshToken)
+      user.signIn(accessToken, refreshToken)
       await authService.authenticateUser(user)
       const tokens = await authService.getActiveTokens('my-user-name')
       expect(tokens.length).toBe(1)
@@ -43,7 +43,7 @@ describe('services: auth', () => {
         userId: user.id.toString(),
         username: user.username,
       })
-      user.withTokens(newAccessToken)
+      user.signIn(newAccessToken)
       await authService.authenticateUser(user)
       const newActiveTokens = await authService.getActiveTokens('my-user-name')
       expect(newActiveTokens.length).toBe(1)

@@ -187,6 +187,7 @@ enum SignInErrCodeType {
 input SignInInput {
   username: String!
   password: String!
+  pushToken: String
   clientMutationId: String
 }
 

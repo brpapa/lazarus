@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// OF USER MODULE BELOW
+// MODELS OF USER MODULE:
 
 model UserModel {
   id                  String          @id @default(uuid()) @db.VarChar(36)
@@ -19,11 +19,12 @@ model UserModel {
   incidents           IncidentModel[]
   comments            CommentModel[]
   reactions           ReactionModel[]
+  devices             DeviceModel[]
 
   @@map("users")
 }
 
-// OF INCIDENT MODULE BELOW
+// MODELS OF INCIDENT MODULE:
 
 model IncidentModel {
   id                  String             @id @default(uuid()) @db.VarChar(36)
@@ -109,4 +110,16 @@ enum ReactionType {
 enum MediaType {
   IMAGE
   VIDEO
+}
+
+// MODELS OF NOTIFICATION MODULE:
+
+model DeviceModel {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  userId    String    @map("user_id") @db.VarChar(36)
+  user      UserModel @relation(fields: [userId], references: [id])
+  pushToken String    @map("push_token") @db.VarChar(64)
+
+  @@unique([userId, pushToken])
+  @@map("device")
 }

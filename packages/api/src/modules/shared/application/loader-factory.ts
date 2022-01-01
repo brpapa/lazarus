@@ -19,10 +19,8 @@ export abstract class LoaderFactory<T extends Entity<any>> {
   private batch(): BatchLoadFn<string, T> {
     return async (ids) => {
       const entities = await this.repo.findByIdBatch(ids.map((id) => id))
-      return ids.map(
-        (id) =>
-          entities.find((entity) => entity.id.toString() === id) ??
-          new Error(`${this.entityName} not found: ${id}`),
+      return entities.map(
+        (entity, i) => entity || new Error(`${this.entityName} not found: ${ids[i]}`),
       )
     }
   }

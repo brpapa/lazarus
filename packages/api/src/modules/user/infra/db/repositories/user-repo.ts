@@ -40,8 +40,14 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     return this.augmentedWithRedis(user)
   }
 
-  async findByIdBatch(ids: string[]): Promise<User[]> {
+  async findByIdBatch(ids: string[]): Promise<(User | null)[]> {
     const users = await this.prismaClient.userModel.findMany({ where: { id: { in: ids } } })
+    const orderedUsers = ids.map((id) => users.find((v) => v.id === id) ?? null)
+    return this.augmentedWithRedisBatch(orderedUsers)
+  }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.prismaClient.userModel.findMany()
     return this.augmentedWithRedisBatch(users)
   }
 
@@ -57,12 +63,14 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       byRadius,
       [GeoReplyWith.COORDINATES, GeoReplyWith.DISTANCE],
     )
+    const usersId = locations.map((v) => v.member)
 
     const users = await this.prismaClient.userModel.findMany({
-      where: { id: { in: locations.map((i) => i.member) } },
+      where: { id: { in: usersId } },
     })
+    const orderedUsers = usersId.map((userId) => users.find((v) => v.id === userId) ?? null)
 
-    return zip(users, locations).map(([user, location]) => {
+    return zip(orderedUsers, locations).map(([user, location]) => {
       assert(!!user && !!location)
       assert(user.id.toString() === location.member)
       assert(location.coordinates !== undefined)
@@ -77,7 +85,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
   async commit(user: User): Promise<User> {
     const userModel = await UserMapper.fromDomainToPersistence(user)
 
-    if (user.location) {
+    if (user.location !== undefined) {
       const toAdd = {
         member: user.id.toString(), // member is unique in a redis geo set
         latitude: user.location.latitude,
@@ -106,12 +114,13 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     return this.augmentedWithRedisBatch([user]).then(([userWithLocation]) => userWithLocation)
   }
 
-  private async augmentedWithRedisBatch(users: UserPgModel[]): Promise<User[]> {
+  private async augmentedWithRedisBatch(users: (UserPgModel | null)[]): Promise<User[]> {
     if (users.length === 0) return []
 
+    // returns in the same order
     const usersLocations = await this.redisClient.geoPos(
       this.REDIS_GEO_SET_KEY,
-      users.map((user) => user.id),
+      users.map((user) => user?.id || ''),
     )
 
     return zip(users, usersLocations).map(([user, userLocation]) => {

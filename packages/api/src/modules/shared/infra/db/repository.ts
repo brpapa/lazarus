@@ -1,8 +1,8 @@
 import { Entity } from 'src/modules/shared/domain/entity'
 
 export interface IRepository<T extends Entity<any>> {
-  /** data loader requirement */
-  findByIdBatch(ids: string[]): Promise<T[]>
+  /** data loader requirement, should return entities in the same order which was received */
+  findByIdBatch(ids: string[]): Promise<(T | null)[]>
   /** 
     update if already exists or add entity into database 
     after commit, should dispatch domain events if T is an Aggregate Root

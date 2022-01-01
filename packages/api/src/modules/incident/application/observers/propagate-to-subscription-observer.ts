@@ -6,7 +6,7 @@ import { IObserver } from 'src/modules/shared/domain/events/observer'
 /**
  * propagate event to the graphql subscription so active users are updated with the new incident in real time
  */
-export class IncidentCreatedObserver implements IObserver<IncidentCreated> {
+export class PropagateToSubscriptionObserver implements IObserver<IncidentCreated> {
   constructor() {
     DomainEvents.subscribeObserver(this, IncidentCreated.eventName)
   }

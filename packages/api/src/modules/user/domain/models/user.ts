@@ -60,11 +60,7 @@ export class User extends AggregateRoot<UserProps> {
     return !!this.accessToken && !!this.refreshToken
   }
 
-  withTokens(
-    accessToken: JwtAccessToken,
-    refreshToken?: JwtRefreshToken,
-    pushToken?: string,
-  ): void {
+  signIn(accessToken: JwtAccessToken, refreshToken?: JwtRefreshToken, pushToken?: string): void {
     this.addDomainEvent(new UserSignedIn(this, pushToken))
     this.props.accessToken = accessToken
     this.props.refreshToken = refreshToken || this.props.refreshToken

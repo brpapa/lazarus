@@ -16,6 +16,8 @@ import {
   connectDataSources,
   disconnectDatasources,
 } from 'tests/helpers'
+import { deviceRepo } from 'src/modules/notifications/infra/db/repositories'
+import { Device } from 'src/modules/notifications/domain/Device'
 
 async function main() {
   await connectDataSources()
@@ -27,43 +29,50 @@ const populate = async () => {
   const user1 = await userRepo.commit(
     User.create(
       {
-        username: 'user1',
-        password: UserPassword.create({ value: 'user1-password' }).asOk(),
+        username: 'User1',
+        password: UserPassword.create({ value: '12345678' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         location: Location.create({
           latitude: -22.89,
           longitude: -48.45,
         }).asOk(),
       },
-      new UUID('user1'),
+      new UUID('User1'),
     ),
   )
+  await deviceRepo.commit(
+    Device.create({
+      userId: user1.id.toString(),
+      pushToken: 'ExponentPushToken[DF6cYjJOtKDh12NixCSznh]',
+    }),
+  )
+
   const user2 = await userRepo.commit(
     User.create(
       {
-        username: 'user2',
-        password: UserPassword.create({ value: 'user2-password' }).asOk(),
+        username: 'User2',
+        password: UserPassword.create({ value: '12345678' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         location: Location.create({
           latitude: -22.87,
           longitude: -48.43,
         }).asOk(),
       },
-      new UUID('user2'),
+      new UUID('User2'),
     ),
   )
   const user3 = await userRepo.commit(
     User.create(
       {
-        username: 'user3',
-        password: UserPassword.create({ value: 'user3-password' }).asOk(),
+        username: 'User3',
+        password: UserPassword.create({ value: '12345678' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
         location: Location.create({
           latitude: -22.27,
           longitude: -47.93,
         }).asOk(),
       },
-      new UUID('user3'),
+      new UUID('User3'),
     ),
   )
 

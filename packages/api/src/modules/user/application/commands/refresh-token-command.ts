@@ -33,7 +33,7 @@ export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshToken
       userId: user.id.toString(),
       username: user.username,
     })
-    user.withTokens(accessToken, input.refreshToken)
+    user.signIn(accessToken, input.refreshToken)
 
     const jwtClaims = await this.authService.decodeJwt(accessToken)
     assert(jwtClaims !== null)

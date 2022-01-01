@@ -45,8 +45,8 @@ export class DomainEvents {
     await Promise.all(
       observers.map(async (observer) => {
         const observerName = observer.constructor.name
+        log('%o observer handling the %o event', observerName, event.eventName)
         await Promise.resolve(observer.handle(event))
-        log('%o event handled by %o observer', event.eventName, observerName)
       }),
     )
   }

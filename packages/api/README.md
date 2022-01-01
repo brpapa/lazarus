@@ -35,8 +35,8 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/ddd-
 ## Module level
 
 - `domain` depends from anyone
-- `adapter` depends from `domain`
-- `application` depends from `adapter`, `domain`
+- `application` depends from `domain`
+- `adapter` depends from `domain`, `application`
 - `infra` depends from `domain`, `adapter`, `application`
 
 # Command-Query Segregation (CQS)

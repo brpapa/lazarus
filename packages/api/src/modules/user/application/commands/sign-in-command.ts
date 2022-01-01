@@ -21,7 +21,7 @@ export type SignInOkResult = {
 export type SignInErrResult = UserOrPasswordInvalidError
 export type SignInResult = Result<SignInOkResult, SignInErrResult>
 
-/** login user */
+/** login user and register device to receive push notifications */
 export class SignInCommand extends Command<SignInInput, SignInResult> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
@@ -39,7 +39,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
       username: user.username,
     })
     const refreshToken = this.authService.genRefreshToken()
-    user.withTokens(accessToken, refreshToken, input.pushToken)
+    user.signIn(accessToken, refreshToken, input.pushToken)
 
     await this.authService.authenticateUser(user)
 
@@ -47,7 +47,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
     assert(jwtClaims !== null)
     const accessTokenExpiresIn = unixEpochtoDate(jwtClaims.exp)
 
-    await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
+    DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
     return ok({ accessToken, accessTokenExpiresIn, refreshToken })
   }

@@ -1,6 +1,6 @@
 import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
 import assert from 'assert'
-import debug from 'debug'
+import { Debugger } from 'debug'
 import {
   GeoReplyWith,
   GeoReplyWithMember,
@@ -16,8 +16,6 @@ import { IncidentMapper } from '../../../adapter/mappers/incident-mapper'
 import { MediaMapper } from '../../../adapter/mappers/media-mapper'
 import { ICommentRepo } from '../../../adapter/repositories/comment-repo'
 import { IIncidentRepo } from '../../../adapter/repositories/incident-repo'
-
-const log = debug('app:incident:infra')
 
 export type IncidentPgModel = IncidentModel
 export type IncidentPgModelPopulated = IncidentPgModel & {
@@ -35,9 +33,10 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   private REDIS_GEO_SET_KEY = 'incidentLocations'
 
   constructor(
-    private readonly prismaClient: PrismaClient,
-    private readonly redisClient: RedisClient,
-    private readonly commentRepo: ICommentRepo,
+    private log: Debugger,
+    private prismaClient: PrismaClient,
+    private redisClient: RedisClient,
+    private commentRepo: ICommentRepo,
   ) {
     super('incidentModel')
   }
@@ -53,13 +52,11 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
   async findByIdBatch(ids: string[]): Promise<Incident[]> {
     const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
-      where: {
-        id: { in: ids },
-      },
+      where: { id: { in: ids } },
       include: { ...this.baseInclude },
     })
-
-    return this.augmentedWithRedisBatch(incidents)
+    const orderedIncidents = ids.map((id) => incidents.find((v) => v.id === id) ?? null)
+    return this.augmentedWithRedisBatch(orderedIncidents)
   }
 
   async findAll(): Promise<Incident[]> {
@@ -94,17 +91,17 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
       latitude: incident.location.latitude,
       longitude: incident.location.longitude,
     }
-    log('Persisting a new or updated (member, location) on Redis: %o', toAdd)
+    this.log('Persisting a new or updated (member, location) on Redis: %o', toAdd)
     await this.redisClient.geoAdd(this.REDIS_GEO_SET_KEY, toAdd)
 
     const isNew = !(await this.exists(incident))
     if (isNew) {
-      log('Persisting a new incident on Pg: %o', incident.id.toString())
+      this.log('Persisting a new incident on Pg: %o', incident.id.toString())
       await this.prismaClient.incidentModel.create({ data: incidentModel })
       await this.commentRepo.commitBatch(incident.comments)
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
     } else {
-      log('Persisting an updated incident on Pg: %o', incident.id.toString())
+      this.log('Persisting an updated incident on Pg: %o', incident.id.toString())
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
       await this.commentRepo.commitBatch(incident.comments)
       await this.prismaClient.incidentModel.update({
@@ -126,13 +123,14 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   }
 
   private async augmentedWithRedisBatch(
-    incidents: IncidentPgModelPopulated[],
+    incidents: (IncidentPgModelPopulated | null)[],
   ): Promise<Incident[]> {
     if (incidents.length === 0) return []
 
+    // returns in the same order
     const incidentsLocations = await this.redisClient.geoPos(
       this.REDIS_GEO_SET_KEY,
-      incidents.map((incident) => incident.id),
+      incidents.map((incident) => incident?.id || ''),
     )
 
     return zip(incidents, incidentsLocations).map(([incident, incidentLocation]) => {
@@ -142,14 +140,17 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   }
 
   private async augmentedWithPgBatch(locations: GeoReplyWithMember[]): Promise<Incident[]> {
-    const incidentsId = locations.map((i) => i.member)
+    const incidentsId = locations.map((v) => v.member)
 
     const incidents = await this.prismaClient.incidentModel.findMany({
       where: { id: { in: incidentsId } },
       include: { ...this.baseInclude },
     })
+    const orderedIncidents = incidentsId.map(
+      (incidentId) => incidents.find((v) => v.id === incidentId) ?? null,
+    )
 
-    return zip(incidents, locations).map(([incident, location]) => {
+    return zip(orderedIncidents, locations).map(([incident, location]) => {
       assert(!!incident && !!location)
       assert(incident.id.toString() === location.member)
       assert(location.coordinates !== undefined)

@@ -13,11 +13,11 @@ interface CommentProps {
 }
 
 export class Comment extends Entity<CommentProps> {
-  public get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
-  public get incidentId() { return this.props.incidentId } // prettier-ignore
-  public get parentCommentId() { return this.props.parentCommentId } // prettier-ignore
-  public get content() { return this.props.content } // prettier-ignore
-  public get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
+  get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
+  get incidentId() { return this.props.incidentId } // prettier-ignore
+  get parentCommentId() { return this.props.parentCommentId } // prettier-ignore
+  get content() { return this.props.content } // prettier-ignore
+  get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
 
   private constructor(props: CommentProps, id?: UUID) {
     super(
@@ -29,11 +29,11 @@ export class Comment extends Entity<CommentProps> {
     )
   }
 
-  public static create(props: CommentProps, id?: UUID): Result<Comment, DomainError> {
+  static create(props: CommentProps, id?: UUID): Result<Comment, DomainError> {
     return ok(new Comment(props, id))
   }
 
-  public isReplyToAnotherComment() {
+  isReplyToAnotherComment() {
     return this.parentCommentId !== undefined
   }
 }

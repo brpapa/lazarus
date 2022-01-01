@@ -23,6 +23,7 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
         'Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface',
     },
     me: UserQueries.MeQueryType,
+    users: UserQueries.UsersQueryType,
     incident: IncidentQueries.IncidentQueryType,
     incidents: IncidentQueries.IncidentsQueryType,
   }),

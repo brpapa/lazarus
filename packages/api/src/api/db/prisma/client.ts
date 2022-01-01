@@ -13,13 +13,13 @@ const prismaClient = new PrismaClient({
   },
 })
 
-/** dispatch domain events after an aggregate root change is persisted */
+/** dispatch domain events after an aggregate root change is persisted without blocking the execution */
 prismaClient.$use(async (params, next) => {
   const result = await next(params)
 
   if (mutatingActions.includes(params.action) && typeof result?.id === 'string') {
     const entityId = result.id as string
-    await DomainEvents.dispatchAllPendingEventsOfAggregate(new UUID(entityId))
+    DomainEvents.dispatchAllPendingEventsOfAggregate(new UUID(entityId))
   }
   return result
 })
