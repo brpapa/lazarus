@@ -3,10 +3,12 @@ import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import CloseIcon from '~/assets/icons/close'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
 import MyButton from '~/components/MyButton'
+import { userLocationState } from '~/data/recoil'
 import type { RootStackParams } from '~/RootNavigator'
 import intl from '~/shared/intl'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
@@ -22,6 +24,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
     throw new Error('Invalid props: component should be closeable to have the onClosed prop')
 
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'Home'>>()
+  const userLocation = useRecoilValue(userLocationState)
 
   const data = usePreloadedQuery<IncidentPreviewQueryType>(
     graphql`
@@ -29,6 +32,10 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         incident(incidentId: $id) {
           incidentId
           title
+          location {
+            latitude
+            longitude
+          }
           createdAt
         }
       }
@@ -57,12 +64,17 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         <Text variant="header">{data.incident?.title}</Text>
         <Box flex={1} flexDirection="row" mb="sm">
           <Text variant="body2">
-            {intl.relativeUpdatedTimeToNow.format({
-              timestamp: new Date(data?.incident?.createdAt as string),
+            {intl.relativeUpdatedTimeToNow.format(new Date(data!.incident!.createdAt as string))}
+          </Text>
+          <Text mx="sm" variant="body2">
+            {'·'}
+          </Text>
+          <Text variant="body2">
+            {intl.relativeDistanceToCurrentLocation.format({
+              point: data.incident!.location,
+              currentLocation: userLocation,
             })}
           </Text>
-          {/* <Text mx="sm" variant="body2">{'·'}</Text>
-          <Text variant="body2">{intl.relativeDistanceToCurrentLocation.format()}</Text> */}
         </Box>
 
         {/* <NotificationsAmount amount={incident.notificationsAmount} /> */}
