@@ -1,15 +1,14 @@
-import { Alert } from 'react-native'
 import * as Notifications from 'expo-notifications'
 import { __ANDROID__, __DEVICE_IS_SIMULATOR__ } from '../config'
 
-/** 
- * returns the expo push token of device 
- * or null if the user did not grant permission 
+/**
+ * returns the expo push token of device
+ * or null if the user did not grant permission
  * or null if the http request to expo's server fail
  */
 export const getPushToken = async (): Promise<string | null> => {
   if (__DEVICE_IS_SIMULATOR__) {
-    Alert.alert('Must use physical device for Push Notifications')
+    console.warn('Must use physical device to receive push notifications')
     return null
   }
 

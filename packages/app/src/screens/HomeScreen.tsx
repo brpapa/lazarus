@@ -6,6 +6,7 @@ import ExplorerScreen from '~/screens/ExplorerScreen'
 import NotificationsScreen from '~/screens/NotificationsScreen'
 import ProfileScreen from '~/screens/ProfileScreen'
 import { ReportStackScreen } from '~/screens/ReportScreen'
+import { t } from '~/shared/i18n'
 import intl from '~/shared/intl'
 
 export type HomeBottomTabParams = {
@@ -24,7 +25,7 @@ export function HomeScreen() {
         name="Explorer"
         component={ExplorerScreen}
         options={{
-          tabBarLabel: intl.explorer,
+          tabBarLabel: t('home.explorerTabLabel'),
           tabBarIcon: (props) => <MapIcon color={props.color} />,
         }}
       />
@@ -40,7 +41,7 @@ export function HomeScreen() {
         name="Report"
         component={ReportStackScreen}
         options={({ route }) => ({
-          tabBarLabel: intl.report,
+          tabBarLabel: t('home.reportTabLabel'),
           tabBarIcon: (props) => <CameraIcon color={props.color} />,
           tabBarVisible: false,
           // tabBarVisible: getReportTabBarVisibilityFromRoute(route),
@@ -51,7 +52,7 @@ export function HomeScreen() {
         component={NotificationsScreen}
         options={{
           tabBarBadge: 2,
-          tabBarLabel: intl.notifications,
+          tabBarLabel: t('home.notificationsTabLabel'),
           tabBarIcon: (props) => <BellIcon color={props.color} />,
         }}
       />
@@ -59,7 +60,7 @@ export function HomeScreen() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: intl.profile,
+          tabBarLabel: t('home.profileTabLabel'),
           tabBarIcon: (props) => <UserIcon color={props.color} />,
         }}
       />

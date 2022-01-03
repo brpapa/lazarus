@@ -6,10 +6,9 @@ export const __IOS__ = Platform.OS === 'ios'
 export const __ANDROID__ = Platform.OS === 'android'
 
 export const THEME_NAME: ThemeName = 'default'
-export const LOCALE: Locales = 'pt_BR'
+export const LANGUAGE: Language = 'en-US'
 
-// const SERVER_HOST = '192.168.0.25' // `ifconfig | grep inet`
-const SERVER_HOST = '172.20.10.4' // `ifconfig | grep inet`
+const SERVER_HOST = '192.168.0.25' // `ifconfig | grep inet`
 const SERVER_PORT = 5555
 export const HTTP_SERVER_BASE_URL = `http://${SERVER_HOST}:${SERVER_PORT}`
 export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}:${SERVER_PORT}`

@@ -2,7 +2,8 @@ import React from 'react'
 import { Image } from 'react-native'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import { Box, Text } from '~/components/atomics'
-import intl from '~/shared/intl'
+import NotificationsAmount from '~/components/NotificationsAmount'
+import { t } from '~/shared/i18n'
 import type { IncidentDataQuery as IncidentDataQueryType } from '~/__generated__/IncidentDataQuery.graphql'
 
 type IncidentDataProps = {
@@ -18,6 +19,7 @@ export function IncidentData(props: IncidentDataProps) {
           medias {
             url
           }
+          usersNotified
         }
       }
     `,
@@ -40,10 +42,10 @@ export function IncidentData(props: IncidentDataProps) {
         </Text>
         {/* <Text variant="subheader">{'Rua dos bobos, número 0'}</Text> */}
 
-        {/* <NotificationsAmount my="xs" amount={data.incident?.notificationsAmount} /> */}
+        <NotificationsAmount my="xs" amount={data.incident?.usersNotified} />
 
         <Text variant="title" mt="lg">
-          {intl.updates}
+          {t('incident.updatesSectionTitle')}
         </Text>
 
         {/* <Box mb="md">

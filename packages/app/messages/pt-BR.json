@@ -1,0 +1,17 @@
+{
+  "incident.amountOfPeopleNotified_zero": "Nenhum usuário notificado",
+  "incident.amountOfPeopleNotified_one": "{count} usuário notificado",
+  "incident.amountOfPeopleNotified_other": "{count} usuários notificados",
+  "incident.updatesSectionTitle": "Atualizações",
+  "incident.reactButton": "Reagir",
+  "incident.commentButton": "Comentar",
+  "incident.createdAt": "Reportado {createdAt, relativetimetonow}",
+  "incident.distanceToUser": "{segment, distance} de você",
+  "home.explorerTabLabel": "Explorar",
+  "home.reportTabLabel": "Reportar",
+  "home.notificationsTabLabel": "Notificações",
+  "home.profileTabLabel": "Perfil",
+  "report.title": "Reportar alerta",
+  "report.reportButton": "Reportar",
+  "profile.title": "Meu perfil"
+}

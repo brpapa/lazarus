@@ -4,14 +4,16 @@ import { getDistance } from 'geolib'
 export class DistanceFormatter {
   private static DIST_ACCURACY = 1 // meters accuracy
 
-  static formatGivenPoints(p1: Location, p2: Location): string {
-    const dist = getDistance(p1, p2, this.DIST_ACCURACY)
-    return this.format(dist)
+  static formatGivenSegment(segment: [Location, Location], lang: Language): string {
+    const dist = getDistance(segment[0], segment[1], this.DIST_ACCURACY)
+    return this.format(dist, lang)
   }
 
   /** receives the distance in meters */
-  static format(dist: number) {
-    if (dist < 1e3) return `${Math.round(dist)} m`
-    return `${Math.round(dist / 1e3)} km`
+  static format(dist: number, lang: Language) {
+    const numberFormatter = new Intl.NumberFormat(lang, { maximumFractionDigits: 1 })
+
+    if (dist < 1e3) return `${numberFormatter.format(dist)} m`
+    return `${numberFormatter.format(dist / 1e3)} km`
   }
 }

@@ -10,6 +10,7 @@ import Text from '~/components/atomics/Text'
 import MyButton from '~/components/MyButton'
 import { useReportIncidentMutation } from '~/data/relay/mutations/ReportIncidentMutation'
 import { useSession } from '~/hooks/use-session'
+import { t } from '~/shared/i18n'
 import intl from '~/shared/intl'
 import type { ReportStackParams } from '.'
 
@@ -64,7 +65,7 @@ export default function MediasScreen() {
         </Text>
 
         <Text variant="header" m="md">
-          {intl.publishIncident}
+          {t('report.title')}
         </Text>
 
         <TextInput
@@ -94,7 +95,7 @@ export default function MediasScreen() {
           p="sm"
           mx="sm"
           my="md"
-          label={intl.report}
+          label={t('report.reportButton')}
           onPress={onReportButtonPressed}
           isLoading={isSending}
         />

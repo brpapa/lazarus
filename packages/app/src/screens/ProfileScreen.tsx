@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
 import { useSession } from '~/hooks/use-session'
-import intl from '~/shared/intl'
+import { t } from '~/shared/i18n'
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets()
@@ -15,7 +15,7 @@ export default function ProfileScreen() {
     <Box flex={1} flexDirection="column" bg="background">
       <ScrollView style={{ flex: 1, flexGrow: 9, marginTop: insets.top }}>
         <Text variant="header" m="md">
-          {intl.myProfile}
+          {t('profile.title')}
         </Text>
         <Button title="Sair" onPress={closeSession} />
       </ScrollView>

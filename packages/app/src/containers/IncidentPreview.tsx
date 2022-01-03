@@ -3,13 +3,15 @@ import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import CloseIcon from '~/assets/icons/close'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
 import MyButton from '~/components/MyButton'
+import NotificationsAmount from '~/components/NotificationsAmount'
 import { userLocationState } from '~/data/recoil'
 import type { RootStackParams } from '~/RootNavigator'
+import { t } from '~/shared/i18n'
 import intl from '~/shared/intl'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
 
@@ -36,6 +38,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
             latitude
             longitude
           }
+          usersNotified
           createdAt
         }
       }
@@ -64,20 +67,19 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         <Text variant="header">{data.incident?.title}</Text>
         <Box flex={1} flexDirection="row" mb="sm">
           <Text variant="body2">
-            {intl.relativeUpdatedTimeToNow.format(new Date(data!.incident!.createdAt as string))}
+            {t('incident.createdAt', {
+              createdAt: new Date(data!.incident!.createdAt as string),
+            })}
           </Text>
           <Text mx="sm" variant="body2">
             {'·'}
           </Text>
           <Text variant="body2">
-            {intl.relativeDistanceToCurrentLocation.format({
-              point: data.incident!.location,
-              currentLocation: userLocation,
-            })}
+            {t('incident.distanceToUser', { segment: [data.incident!.location, userLocation] })}
           </Text>
         </Box>
 
-        {/* <NotificationsAmount amount={incident.notificationsAmount} /> */}
+        <NotificationsAmount amount={data!.incident!.usersNotified} />
 
         {props.closeable && (
           <MyButton

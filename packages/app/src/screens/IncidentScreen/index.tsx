@@ -9,6 +9,7 @@ import { Box } from '~/components/atomics'
 import Loading from '~/components/Loading'
 import MyButton from '~/components/MyButton'
 import type { RootStackParams } from '~/RootNavigator'
+import { t } from '~/shared/i18n'
 import intl from '~/shared/intl'
 import type { IncidentDataQuery as IncidentDataQueryType } from '~/__generated__/IncidentDataQuery.graphql'
 import IncidentDataQuery from '~/__generated__/IncidentDataQuery.graphql'
@@ -55,8 +56,8 @@ export default function IncidentScreen() {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <MyButton p="sm" mx="sm" my="md" label={intl.react} icon={HeartIcon} />
-        <MyButton p="sm" mx="sm" my="md" label={intl.comment} icon={MessageCircleIcon} />
+        <MyButton p="sm" mx="sm" my="md" label={t('incident.reactButton')} icon={HeartIcon} />
+        <MyButton p="sm" mx="sm" my="md" label={t('incident.commentButton')} icon={MessageCircleIcon} />
       </Box>
     </Box>
   )
