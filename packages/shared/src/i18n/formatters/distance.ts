@@ -1,5 +1,5 @@
-/** CODE DUPLICADED WITH API */
 import { getDistance } from 'geolib'
+import { Language, Location } from './../../types'
 
 export class DistanceFormatter {
   private static DIST_ACCURACY = 1 // meters accuracy

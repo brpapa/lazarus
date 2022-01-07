@@ -1,9 +1,10 @@
 import i18n from 'i18next'
-import enUS from '../../messages/en-US.json'
-import ptBR from '../../messages/pt-BR.json'
-import { LANGUAGE } from './../config/index'
+import enUS from './../../messages/en-US.json'
+import ptBR from './../../messages/pt-BR.json'
+import { LANGUAGE } from '../config'
 import { DistanceFormatter } from './formatters/distance'
 import { RelativeToNowTimeFormatter as RelativeTimeToNowFormatter } from './formatters/relative-time'
+import { Language } from '../types'
 
 const supportedLanguages: string[] = ['pt-BR', 'en-US']
 
@@ -51,7 +52,6 @@ i18n.services.formatter!.add('distance', (segment: any, lang?: string) => {
 
   return DistanceFormatter.formatGivenSegment(segment, lang as Language)
 })
-
 const { t } = i18n
 
 export { i18n, t }

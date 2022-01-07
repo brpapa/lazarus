@@ -6,7 +6,6 @@ export const __IOS__ = Platform.OS === 'ios'
 export const __ANDROID__ = Platform.OS === 'android'
 
 export const THEME_NAME: ThemeName = 'default'
-export const LANGUAGE: Language = 'en-US'
 
 const SERVER_HOST = '192.168.0.25' // `ifconfig | grep inet`
 const SERVER_PORT = 5555

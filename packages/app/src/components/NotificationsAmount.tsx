@@ -2,7 +2,7 @@ import { useTheme } from '@shopify/restyle'
 import React from 'react'
 import { BellIcon } from '~/assets/icons'
 import { Box, Text } from '~/components/atomics'
-import { t } from '~/shared/i18n'
+import { t } from '@metis/shared'
 import type { Theme } from '~/shared/theme'
 
 type NotificationAmountProps = Omit<React.ComponentPropsWithoutRef<typeof Box>, 'children'> & {

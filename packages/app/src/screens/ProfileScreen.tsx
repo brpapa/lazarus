@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
 import { useSession } from '~/hooks/use-session'
-import { t } from '~/shared/i18n'
+import { t } from '@metis/shared'
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets()

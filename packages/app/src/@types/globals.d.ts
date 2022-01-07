@@ -1,5 +1,4 @@
 type ThemeName = 'default' | 'dark'
-type Language = 'pt-BR' | 'en-US'
 
 type Location = {
   latitude: number

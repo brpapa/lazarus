@@ -1,3 +1,4 @@
+import { t } from '@metis/shared'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core'
 import React from 'react'
@@ -6,8 +7,6 @@ import ExplorerScreen from '~/screens/ExplorerScreen'
 import NotificationsScreen from '~/screens/NotificationsScreen'
 import ProfileScreen from '~/screens/ProfileScreen'
 import { ReportStackScreen } from '~/screens/ReportScreen'
-import { t } from '~/shared/i18n'
-import intl from '~/shared/intl'
 
 export type HomeBottomTabParams = {
   Explorer: undefined

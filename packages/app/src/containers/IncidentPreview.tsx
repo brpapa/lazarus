@@ -1,3 +1,4 @@
+import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
@@ -11,8 +12,6 @@ import MyButton from '~/components/MyButton'
 import NotificationsAmount from '~/components/NotificationsAmount'
 import { userLocationState } from '~/data/recoil'
 import type { RootStackParams } from '~/RootNavigator'
-import { t } from '~/shared/i18n'
-import intl from '~/shared/intl'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
 
 type IncidentPreviewProps = {

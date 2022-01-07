@@ -1,0 +1,35 @@
+{
+  "name": "@metis/shared",
+  "version": "1.0.0",
+  "description": "Code shared beetween @metis/api and @metis/app packages",
+  "main": "src/index.ts",
+  "author": "Bruno Papa <bruno.papa@hotmail.com>",
+  "license": "ISC",
+  "private": true,
+  "typings": "src/index",
+  "files": [
+    "src",
+    "messages"
+  ],
+  "engines": {
+    "node": "16"
+  },
+  "scripts": {
+    "deps:sync-types": "npx typesync && npm install",
+    "clear": "npx rimraf ./dist",
+    "build": "tsc --project tsconfig.json",
+    "rebuild": "npm run clear && npm run build"
+  },
+  "dependencies": {
+    "geolib": "^3.3.3",
+    "i18next": "^21.6.4",
+    "timeago.js": "^4.0.2",
+    "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/node": "^16.11.7",
+    "rimraf": "^3.0.2",
+    "typesync": "^0.8.0"
+  }
+}

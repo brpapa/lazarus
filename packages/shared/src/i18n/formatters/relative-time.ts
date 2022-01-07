@@ -1,3 +1,4 @@
+import { Language } from './../../types'
 import * as timeAgo from 'timeago.js'
 
 timeAgo.register('en-US', (_diff: number, index: number, _totalSec?: number) => {

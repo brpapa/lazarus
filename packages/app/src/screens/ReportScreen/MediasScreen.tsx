@@ -10,7 +10,7 @@ import Text from '~/components/atomics/Text'
 import MyButton from '~/components/MyButton'
 import { useReportIncidentMutation } from '~/data/relay/mutations/ReportIncidentMutation'
 import { useSession } from '~/hooks/use-session'
-import { t } from '~/shared/i18n'
+import { t } from '@metis/shared'
 import intl from '~/shared/intl'
 import type { ReportStackParams } from '.'
 

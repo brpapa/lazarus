@@ -1,5 +1,5 @@
 {
-  "incident.amountOfPeopleNotified_zero": "no user notified",
+  "incident.amountOfPeopleNotified_zero": "No user notified",
   "incident.amountOfPeopleNotified_one": "{count} user notified",
   "incident.amountOfPeopleNotified_other": "{count} users notified",
   "incident.updatesSectionTitle": "Updates",

@@ -3,7 +3,7 @@ import { Image } from 'react-native'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import { Box, Text } from '~/components/atomics'
 import NotificationsAmount from '~/components/NotificationsAmount'
-import { t } from '~/shared/i18n'
+import { t } from '@metis/shared'
 import type { IncidentDataQuery as IncidentDataQueryType } from '~/__generated__/IncidentDataQuery.graphql'
 
 type IncidentDataProps = {

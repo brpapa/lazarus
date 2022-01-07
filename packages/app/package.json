@@ -1,13 +1,14 @@
 {
   "name": "@metis/app",
   "description": "Mobile client",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "main": "index.js",
   "engines": {
     "node": "16"
   },
   "scripts": {
+    "postinstall": "mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules && npm install --prefix ./node_modules/@metis/shared",
     "debug": "METRO_SERVER_PORT=19000 open -a Flipper.app",
     "deps:sync-types": "npx typesync && npm install",
     "code:format": "prettier --config \"./../../.prettierrc\" --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
@@ -30,6 +31,7 @@
     "ios": "expo run:ios"
   },
   "scriptsComment": {
+    "postinstall": "copy shared package to node_modules folder because reac native seems to not support local dependencies with symlink"
     "start": "starts a expo development server in your lan network",
     "expo:run:*": "build and run expo go in simulator, using expo-dev-client",
     "run:*": "build and run in simulator natively",
@@ -45,7 +47,7 @@
     "expo": "^43.0.3",
     "expo-camera": "~12.1.0",
     "expo-constants": "~13.0.0",
-    "expo-dev-client": "~0.7.2",
+    "expo-dev-client": "~0.8.0",
     "expo-device": "~4.1.0",
     "expo-file-system": "~13.1.0",
     "expo-location": "~14.0.1",
@@ -59,7 +61,6 @@
     "geolib": "^3.3.3",
     "graphql": "^15.7.2",
     "graphql-ws": "^5.5.5",
-    "i18next": "^21.6.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^7.21.2",
@@ -73,8 +74,7 @@
     "react-native-web": "0.17.1",
     "react-relay": "^11.0.2",
     "recoil": "^0.4.0",
-    "relay-runtime": "^12.0.0",
-    "timeago.js": "^4.0.2"
+    "relay-runtime": "^12.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
