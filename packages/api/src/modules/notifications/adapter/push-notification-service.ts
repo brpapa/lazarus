@@ -1,6 +1,6 @@
-import { ExpoPushTicket, ExpoPushMessage } from 'expo-server-sdk'
+import { ExpoPushTicket } from 'expo-server-sdk'
+import { PushMessage } from '../domain/models/push-message'
 
-export type PushMessage = ExpoPushMessage
 export type PushTicket = ExpoPushTicket
 
 export interface IPushNotificationService {

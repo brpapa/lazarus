@@ -9,7 +9,6 @@ import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { AppContext } from 'src/modules/shared/logic/app-context'
 import { Command } from 'src/modules/shared/logic/command'
 import { ApplicationError, UnauthenticatedError } from 'src/modules/shared/logic/errors'
-import { Guard } from 'src/modules/shared/logic/guard'
 import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
@@ -41,7 +40,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
     })
 
     const [min, max] = Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT
-    if (incident.medias.length < min || incident.medias.length > max)
+    if (input.medias.length < min || input.medias.length > max)
       return err(new InvalidMediaQuantityError({ min, max }))
 
     const medias = input.medias.map((m) =>

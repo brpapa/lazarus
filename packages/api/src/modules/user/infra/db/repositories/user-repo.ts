@@ -77,7 +77,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       assert(location.distance !== undefined)
       return {
         user: UserMapper.fromPersistenceToDomain(user, location.coordinates),
-        distanteToCenterInMeters: location.distance,
+        distanteToCenterInMeters: Number(location.distance),
       }
     })
   }

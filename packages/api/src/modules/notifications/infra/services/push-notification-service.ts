@@ -2,9 +2,9 @@ import { Debugger } from 'debug'
 import Expo from 'expo-server-sdk'
 import {
   IPushNotificationService,
-  PushMessage,
   PushTicket,
 } from 'src/modules/notifications/adapter/push-notification-service'
+import { PushMessage } from '../../domain/models/push-message'
 
 export class PushNotificationService implements IPushNotificationService {
   constructor(private log: Debugger, private expoClient: Expo) {}

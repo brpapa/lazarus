@@ -2,7 +2,7 @@ import { t } from '@metis/shared'
 
 /** the name of leaft class is the error code and also the key for i18n messages */
 export abstract class BaseError {
-  /** error message visible to user */
+  /** translated error message that will be displayed to the app user */
   public reason: string
   public code: string
 
@@ -14,8 +14,8 @@ export abstract class BaseError {
 
   private getLeafClassName() {
     const name = Reflect.getPrototypeOf(this)?.constructor.name
-    if (!name) throw new Error('Unreachable')
-    return name
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return name!
   }
 }
 

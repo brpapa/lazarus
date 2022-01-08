@@ -2,9 +2,9 @@ import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
 import { IObserver } from 'src/modules/shared/domain/events/observer'
 import { UserSignedIn } from '../../../user/domain/events/user-signed-in'
 import { IDeviceRepo } from '../../adapter/device-repo'
-import { Device } from '../../domain/Device'
+import { Device } from '../../domain/models/device'
 
-/** register device to receive push notifications */
+/** register user device to receive push notifications */
 export class RegisterDeviceObserver implements IObserver<UserSignedIn> {
   constructor(private deviceRepo: IDeviceRepo) {
     DomainEvents.subscribeObserver(this, UserSignedIn.eventName)

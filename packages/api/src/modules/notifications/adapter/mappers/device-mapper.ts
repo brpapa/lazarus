@@ -1,5 +1,5 @@
 import { DeviceModel } from '@prisma/client'
-import { Device } from 'src/modules/notifications/domain/Device'
+import { Device } from 'src/modules/notifications/domain/models/device'
 import { UUID } from 'src/modules/shared/domain/models/uuid'
 
 export class DeviceMapper {

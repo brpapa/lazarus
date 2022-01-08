@@ -21,6 +21,7 @@ model UserModel {
   reactions           ReactionModel[]
   devices             DeviceModel[]
 
+  NotificationModel NotificationModel[]
   @@map("users")
 }
 
@@ -122,4 +123,29 @@ model DeviceModel {
 
   @@unique([userId, pushToken])
   @@map("device")
+}
+
+model NotificationModel {
+  id           String           @id @default(uuid()) @db.VarChar(36)
+  targetUserId String           @map("target_user_id") @db.VarChar(36)
+  targetUser   UserModel        @relation(fields: [targetUserId], references: [id])
+  type         NotificationType
+  title        String           @db.Text
+  subtitle     String           @db.Text
+  body         String           @db.Text
+  linkEntity   LinkedEntity     @map("link_entity")
+  linkEntityId String           @map("link_entity_id") @db.VarChar(36)
+  seen         Boolean
+  createdAt    DateTime         @default(now()) @map("created_at")
+
+  @@map("notification")
+}
+
+enum NotificationType {
+  NEARBY_INCIDENT_CREATED
+}
+
+enum LinkedEntity {
+  INCIDENT
+  USER
 }

@@ -4,12 +4,12 @@ import { Comment } from 'src/modules/incident/domain/models/comment'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 
 export class CommentPostedOnIncident extends DomainEvent {
-  static get eventName() {
-    return 'CommentPostedOnIncident'
-  }
-
   constructor(public incident: Incident, public comment: Comment) {
     super()
+  }
+
+  static get eventName() {
+    return CommentPostedOnIncident.name
   }
 
   get eventName() {

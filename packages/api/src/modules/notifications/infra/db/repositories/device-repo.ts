@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { Debugger } from 'debug'
 import { IDeviceRepo } from 'src/modules/notifications/adapter/device-repo'
 import { DeviceMapper } from 'src/modules/notifications/adapter/mappers/device-mapper'
-import { Device } from 'src/modules/notifications/domain/Device'
+import { Device } from 'src/modules/notifications/domain/models/device'
 import { PrismaRepo } from 'src/modules/shared/infra/db/prisma-repo'
 
 export class DeviceRepo extends PrismaRepo<Device> implements IDeviceRepo {

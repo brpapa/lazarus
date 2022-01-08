@@ -2,12 +2,8 @@ import i18n from 'i18next'
 import { LANGUAGE, SUPPORTED_LANGUAGES } from '../config'
 import enUS from './../../messages/en-US.json'
 import ptBR from './../../messages/pt-BR.json'
-import {
-  distanceFormatter, distanceFromSegmentFormatter
-} from './formatters/distance'
-import {
-  relativeTimeToNowFormatter
-} from './formatters/relative-time'
+import { distanceFormatter, distanceFromSegmentFormatter } from './formatters/distance'
+import { relativeTimeToNowFormatter } from './formatters/relative-time'
 
 i18n.init({
   lng: LANGUAGE, // not pass this if you are using a language detector
@@ -37,6 +33,5 @@ i18n.services.formatter!.add('relativetimetonow', relativeTimeToNowFormatter)
 i18n.services.formatter!.add('distanceFromSegment', distanceFromSegmentFormatter)
 i18n.services.formatter!.add('distance', distanceFormatter)
 
-const { t } = i18n
-
-export { i18n, t }
+export const { t } = i18n
+export { i18n }

@@ -12,5 +12,5 @@ export abstract class DomainEvent {
   }
 
   public abstract get eventName(): string
-  public abstract get aggregatorId(): UUID
+  // public abstract get aggregatorId(): UUID
 }

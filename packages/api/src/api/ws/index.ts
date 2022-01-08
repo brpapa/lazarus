@@ -3,7 +3,6 @@ import { ExecutionArgs, getOperationAST, GraphQLError, parse, subscribe, validat
 import { CloseCode } from 'graphql-ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import http from 'http'
-import { activeClientsRepo } from 'src/modules/notifications/infra/db/repositories'
 import { authService } from 'src/modules/user/application/services'
 import { WS_GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/config'
 import { WebSocketServer } from 'ws'
@@ -30,8 +29,6 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
         // validate jwt token only on connection
         const userId = await getUserId(ctx.connectionParams?.Authorization as string | undefined)
         if (!userId) return ctx.extra.socket.close(CloseCode.Forbidden, 'Forbidden')
-
-        activeClientsRepo.add(userId)
 
         log('User %o connected', userId)
         return true
@@ -83,7 +80,6 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
         const token = extractToken(ctx.connectionParams?.Authorization as string)
         const { userId } = await authService.decodeJwtIgnoringExpiration(token)
 
-        activeClientsRepo.remove(userId)
         log('User %o connection closed: %O', userId, { code, reason })
       },
     },

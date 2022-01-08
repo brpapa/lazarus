@@ -39,7 +39,7 @@ export class DomainEvents {
     }
   }
 
-  private static async dispatchEvent(event: DomainEvent) {
+  static async dispatchEvent(event: DomainEvent) {
     const observers = DomainEvents.observers.get(event.eventName) || []
     if (observers.length === 0) log('%o event has no any observer subscribed yet', event.eventName)
     await Promise.all(

@@ -1,4 +1,5 @@
 {
+  "---FRONTEND---": "",
   "incident.amountOfPeopleNotified_zero": "No user notified",
   "incident.amountOfPeopleNotified_one": "{count} user notified",
   "incident.amountOfPeopleNotified_other": "{count} users notified",
@@ -14,7 +15,7 @@
   "report.title": "Report incident",
   "report.reportButton": "Report",
   "profile.title": "My profile",
-  "---------------------------------------------------": "BACKEND:",
+  "---BACKEND---": "",
   "notifications.nearbyIncidentCreated.title": "New incident",
   "notifications.nearbyIncidentCreated.subtitle": "{incidentTitle}",
   "notifications.nearbyIncidentCreated.body": "An user reported one incident {distInMeters, distance} away from you",
