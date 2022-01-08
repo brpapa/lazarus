@@ -1,23 +1,23 @@
 // @ts-ignore
 import { randomCirclePoint } from 'random-location'
+import { AWS_S3_BUCKET_NAME } from 'src/config'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
+import { Device } from 'src/modules/notifications/domain/Device'
+import { deviceRepo } from 'src/modules/notifications/infra/db/repositories'
+import { Location } from 'src/modules/shared/domain/models/location'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { User } from 'src/modules/user/domain/models/user'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
-import { AWS_S3_BUCKET_NAME } from 'src/config'
-import { Location } from 'src/modules/shared/domain/models/location'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
 import {
   cleanUpDatasources as cleanUpDataSources,
   connectDataSources,
   disconnectDatasources,
 } from 'tests/helpers'
-import { deviceRepo } from 'src/modules/notifications/infra/db/repositories'
-import { Device } from 'src/modules/notifications/domain/Device'
 
 async function main() {
   await connectDataSources()
@@ -35,7 +35,7 @@ const populate = async () => {
         location: Location.create({
           latitude: -22.89,
           longitude: -48.45,
-        }).asOk(),
+        }),
       },
       new UUID('User1'),
     ),
@@ -56,7 +56,7 @@ const populate = async () => {
         location: Location.create({
           latitude: -22.87,
           longitude: -48.43,
-        }).asOk(),
+        }),
       },
       new UUID('User2'),
     ),
@@ -70,7 +70,7 @@ const populate = async () => {
         location: Location.create({
           latitude: -22.27,
           longitude: -47.93,
-        }).asOk(),
+        }),
       },
       new UUID('User3'),
     ),
@@ -86,7 +86,7 @@ const populate = async () => {
       const incident = Incident.create({
         ownerUserId: user1.id,
         title: `incident ${i}`,
-        location: Location.create(randomPoint).asOk(),
+        location: Location.create(randomPoint),
       })
 
       incident.addMedias([

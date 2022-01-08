@@ -38,9 +38,7 @@ export const ReportIncidentMutationType = createMutationType<
           name: 'ReportIncidentErrCodeType',
           values: {
             UnauthenticatedError: { value: 'UnauthenticatedError' },
-            MediaQuantityError: { value: 'MediaQuantityError' },
-            InvalidLocationError: { value: 'InvalidLocationError' },
-            UserWithoutLocationError: { value: 'UserWithoutLocationError' },
+            InvalidMediaQuantityError: { value: 'InvalidMediaQuantityError' },
           },
         }),
       ),

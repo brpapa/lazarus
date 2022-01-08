@@ -1,8 +1,6 @@
 import { ValueObject } from 'src/modules/shared/domain/value-object'
-import { err, ok, Result } from 'src/modules/shared/logic/result/result'
-import { DomainError } from 'src/modules/shared/logic/errors'
-import { combine } from 'src/modules/shared/logic/result'
 import { Guard, Range } from 'src/modules/shared/logic/guard'
+import { combine } from 'src/modules/shared/logic/result'
 
 export interface LocationProps {
   latitude: number
@@ -21,18 +19,16 @@ export class Location extends ValueObject<LocationProps> {
     super(props)
   }
 
-  public static create(props: LocationProps): Result<Location, InvalidLocationError> {
+  public static create(props: LocationProps): Location {
     const result = combine([
       Guard.inRange(props.latitude, this.LAT_RANGE, 'latitude', 'degrees'),
       Guard.inRange(props.longitude, this.LNG_RANGE, 'longitude', 'degrees'),
     ])
-    if (result.isErr()) return err(new InvalidLocationError(result.error))
-    return ok(new Location(props))
+    if (result.isErr()) throw new Error(result.error)
+    return new Location(props)
   }
 
   public toString() {
     return `(${this.latitude}, ${this.longitude})`
   }
 }
-
-export class InvalidLocationError extends DomainError {}

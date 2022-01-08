@@ -14,6 +14,6 @@ export class LocationMapper {
     return Location.create({
       latitude: Number(locationModel.latitude),
       longitude: Number(locationModel.longitude),
-    }).asOk()
+    })
   }
 }

@@ -1,11 +1,15 @@
-export abstract class AppError {
-  /** error message visible to the end user */
+import { t } from '@metis/shared'
+
+/** the name of leaft class is the error code and also the key for i18n messages */
+export abstract class BaseError {
+  /** error message visible to user */
   public reason: string
   public code: string
 
-  constructor(reason: string) {
-    this.reason = reason
-    this.code = this.getLeafClassName()
+  constructor(errorReasonParams?: any) {
+    const errorCode = this.getLeafClassName()
+    this.reason = t(`errors.${errorCode}`, errorReasonParams)
+    this.code = errorCode
   }
 
   private getLeafClassName() {
@@ -15,18 +19,9 @@ export abstract class AppError {
   }
 }
 
-export class DomainError extends AppError {}
+export abstract class DomainError extends BaseError {}
 /** use case error, business error */
-export class ApplicationError extends AppError {}
+export abstract class ApplicationError extends BaseError {}
 
-export class UnauthenticatedError extends ApplicationError {
-  constructor() {
-    super('User authentication required')
-  }
-}
-
-export class UserNotFoundError extends ApplicationError {
-  constructor(userIdOrUsername: string) {
-    super(`User ${userIdOrUsername} not found`)
-  }
-}
+export class UnauthenticatedError extends ApplicationError {}
+export class UserNotFoundError extends ApplicationError {}

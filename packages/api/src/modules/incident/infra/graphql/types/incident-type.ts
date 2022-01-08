@@ -1,5 +1,5 @@
 import { GraphQLContext } from 'src/api/graphql/context'
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList, GraphQLInt } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
@@ -34,6 +34,10 @@ export const IncidentType = GraphQLTypes.register(
       medias: {
         type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
         resolve: (incident) => incident.medias,
+      },
+      usersNotified: {
+        type: GraphQLNonNull(GraphQLInt),
+        resolve: (incident) => incident.usersNotified,
       },
       createdAt: {
         type: GraphQLNonNull(DateType),

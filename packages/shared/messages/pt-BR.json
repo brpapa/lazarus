@@ -13,5 +13,17 @@
   "home.profileTabLabel": "Perfil",
   "report.title": "Reportar alerta",
   "report.reportButton": "Reportar",
-  "profile.title": "Meu perfil"
+  "profile.title": "Meu perfil",
+  "---------------------------------------------------": "BACKEND:",
+  "notifications.nearbyIncidentCreated.title": "Novo alerta",
+  "notifications.nearbyIncidentCreated.subtitle": "{incidentTitle}",
+  "notifications.nearbyIncidentCreated.body": "Um usuário reportou um alerta há {distInMeters, distance} de você",
+  "errors.UnauthenticatedError": "Usuário não autenticado",
+  "errors.UserNotFoundError": "Usuário não encontrado",
+  "errors.UserOrPasswordInvalidError": "Usuário ou senha inválida",
+  "errors.InvalidEmailAddressError": "Endereço de email inválido",
+  "errors.ShortPasswordError": "Sua senha não tem pelo menos {min} caracteres",
+  "errors.InvalidPhoneNumberError": "O número de telefone é inválido",
+  "errors.RefreshTokenExpiredError": "Refresh token expirado",
+  "errors.InvalidMediaQuantityError": "A quantidade de mídias de um incidente deveria ser pelo menos {min} e no máximo {max}"
 }

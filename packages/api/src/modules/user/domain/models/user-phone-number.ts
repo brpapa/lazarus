@@ -16,8 +16,7 @@ export class UserPhoneNumber extends ValueObject<UserPhoneNumberProps> {
   public static create(
     props: UserPhoneNumberProps,
   ): Result<UserPhoneNumber, InvalidPhoneNumberError> {
-    if (!this.isValid(props.value))
-      return err(new InvalidPhoneNumberError(`The phone number ${props.value} is invalid`))
+    if (!this.isValid(props.value)) return err(new InvalidPhoneNumberError())
     return ok(new UserPhoneNumber({ value: this.format(props.value) }))
   }
 

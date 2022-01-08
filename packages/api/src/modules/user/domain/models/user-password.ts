@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt'
-import { DomainError } from 'src/modules/shared/logic/errors'
-import { Guard } from 'src/modules/shared/logic/guard'
-import { Result, err, ok } from 'src/modules/shared/logic/result/result'
 import { ValueObject } from 'src/modules/shared/domain/value-object'
+import { DomainError } from 'src/modules/shared/logic/errors'
+import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 
 interface UserPasswordProps {
   value: string
@@ -21,10 +20,10 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     this.generatedHashes = []
   }
 
-  static create(props: UserPasswordProps): Result<UserPassword, PasswordSizeError> {
+  static create(props: UserPasswordProps): Result<UserPassword, ShortPasswordError> {
     if (!props.isAlreadyHashed) {
-      const lengthOrErr = Guard.againstAtLeast(this.MIN_LENGTH, props.value, 'password')
-      if (lengthOrErr.isErr()) return err(new PasswordSizeError(lengthOrErr.error))
+      if (props.value.length < this.MIN_LENGTH)
+        return err(new ShortPasswordError({ min: this.MIN_LENGTH }))
     }
 
     return ok(new UserPassword({ ...props }))
@@ -59,4 +58,4 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   }
 }
 
-export class PasswordSizeError extends DomainError {}
+export class ShortPasswordError extends DomainError {}

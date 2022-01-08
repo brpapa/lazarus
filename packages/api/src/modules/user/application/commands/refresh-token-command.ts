@@ -4,7 +4,7 @@ import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { Command } from 'src/modules/shared/logic/command'
 import { ApplicationError, UserNotFoundError } from 'src/modules/shared/logic/errors'
-import { unixEpochtoDate } from 'src/modules/shared/logic/helpers/unix-epoch'
+import { unixEpochToDate } from 'src/modules/shared/logic/helpers/unix-epoch'
 import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 
 export type RefreshTokenInput = {
@@ -27,7 +27,7 @@ export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshToken
     if (!username) return err(new RefreshTokenExpiredError())
 
     const user = await this.userRepo.findByUsername(username)
-    if (!user) return err(new UserNotFoundError(username))
+    if (!user) return err(new UserNotFoundError())
 
     const accessToken = this.authService.encodeJwt({
       userId: user.id.toString(),
@@ -37,15 +37,11 @@ export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshToken
 
     const jwtClaims = await this.authService.decodeJwt(accessToken)
     assert(jwtClaims !== null)
-    const accessTokenExpiresIn = unixEpochtoDate(jwtClaims.exp)
+    const accessTokenExpiresIn = unixEpochToDate(jwtClaims.exp)
 
     await this.authService.authenticateUser(user)
     return ok({ accessToken, accessTokenExpiresIn })
   }
 }
 
-class RefreshTokenExpiredError extends ApplicationError {
-  constructor() {
-    super('Refresh token expired')
-  }
-}
+class RefreshTokenExpiredError extends ApplicationError {}

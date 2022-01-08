@@ -55,6 +55,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.31.0",
     "@aws-sdk/lib-storage": "^3.36.0",
+    "@metis/shared": "file:../shared",
     "@prisma/client": "^3.7.0",
     "bcrypt": "^5.0.1",
     "busboy": "^0.3.1",

@@ -16,6 +16,9 @@ dotenvSafe.config({
   sample: fromRoot('.env.example'),
 })
 
+export type Language = 'en-US' | 'pt-BR'
+export const LANGUAGE: Language = 'en-US'
+
 export const API_PORT = env.API_PORT ? Number(env.API_PORT) : 5000
 export const WS_GRAPHQL_SUBSCRIPTIONS_PATH = '/graphql/subscriptions'
 export const HTTP_GRAPHQL_FORCED_MIN_LATENCY_IN_MS = 1000

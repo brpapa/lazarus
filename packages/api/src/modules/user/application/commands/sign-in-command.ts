@@ -5,7 +5,7 @@ import { ApplicationError } from 'src/modules/shared/logic/errors'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { Debugger } from 'debug'
-import { unixEpochtoDate } from 'src/modules/shared/logic/helpers/unix-epoch'
+import { unixEpochToDate } from 'src/modules/shared/logic/helpers/unix-epoch'
 import assert from 'assert'
 
 export type SignInInput = {
@@ -45,7 +45,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
 
     const jwtClaims = await this.authService.decodeJwt(accessToken)
     assert(jwtClaims !== null)
-    const accessTokenExpiresIn = unixEpochtoDate(jwtClaims.exp)
+    const accessTokenExpiresIn = unixEpochToDate(jwtClaims.exp)
 
     DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
@@ -53,8 +53,4 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
   }
 }
 
-export class UserOrPasswordInvalidError extends ApplicationError {
-  constructor() {
-    super('User or password invalid')
-  }
-}
+export class UserOrPasswordInvalidError extends ApplicationError {}

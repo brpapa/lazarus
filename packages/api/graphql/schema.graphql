@@ -11,6 +11,19 @@ type Query {
     id: ID!
   ): Node
   me: User
+  users(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): UserConnection!
   incident(
     """The incident id"""
     incidentId: String!
@@ -51,6 +64,39 @@ type Location {
   longitude: Float!
 }
 
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type Incident implements Node {
   """The opaque identifier of GraphQL node, based on relay specs"""
   id: ID!
@@ -58,6 +104,7 @@ type Incident implements Node {
   title: String!
   location: Location!
   medias: [Media!]!
+  usersNotified: Int!
   createdAt: Date!
 }
 
@@ -75,21 +122,6 @@ type IncidentConnection {
 
   """A list of edges."""
   edges: [IncidentEdge]
-}
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
 }
 
 """An edge in a connection."""
@@ -291,13 +323,4 @@ type Subscription {
 
 type UserAddedOutput {
   userEdge: UserEdge
-}
-
-"""An edge in a connection."""
-type UserEdge {
-  """The item at the end of the edge"""
-  node: User!
-
-  """A cursor for use in pagination"""
-  cursor: String!
 }

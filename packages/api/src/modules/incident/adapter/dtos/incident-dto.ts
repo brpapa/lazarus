@@ -6,5 +6,6 @@ export interface IncidentDTO {
   title: string
   location: LocationDTO
   medias: MediaDTO[]
+  usersNotified: number
   createdAt: Date
 }

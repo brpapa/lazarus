@@ -13,8 +13,8 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     super(props)
   }
 
-  public static create(props: UserEmailProps): Result<UserEmail, DomainError> {
-    if (!this.isValid(props.value)) return err(new DomainError('Invalid email address'))
+  public static create(props: UserEmailProps): Result<UserEmail, InvalidEmailAddressError> {
+    if (!this.isValid(props.value)) return err(new InvalidEmailAddressError())
     return ok(new UserEmail({ value: this.format(props.value) }))
   }
 
@@ -28,3 +28,5 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     return email.trim().toLowerCase()
   }
 }
+
+export class InvalidEmailAddressError extends DomainError {}

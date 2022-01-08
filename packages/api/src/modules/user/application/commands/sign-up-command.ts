@@ -1,7 +1,7 @@
 import { Debugger } from 'debug'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { User } from 'src/modules/user/domain/models/user'
-import { PasswordSizeError, UserPassword } from 'src/modules/user/domain/models/user-password'
+import { ShortPasswordError, UserPassword } from 'src/modules/user/domain/models/user-password'
 import {
   InvalidPhoneNumberError,
   UserPhoneNumber,
@@ -17,7 +17,7 @@ export type SignUpInput = {
   password: string
 }
 export type SignUpOkResult = UserDTO
-export type SignUpErrResult = PasswordSizeError | InvalidPhoneNumberError
+export type SignUpErrResult = ShortPasswordError | InvalidPhoneNumberError
 export type SignUpResult = Result<SignUpOkResult, SignUpErrResult>
 
 /** register a new user */

@@ -6,13 +6,12 @@ import { Incident } from 'src/modules/incident/domain/models/incident'
 import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
 import { Media } from 'src/modules/incident/domain/models/media'
 import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
-import { InvalidLocationError, Location } from 'src/modules/shared/domain/models/location'
 import { AppContext } from 'src/modules/shared/logic/app-context'
 import { Command } from 'src/modules/shared/logic/command'
 import { ApplicationError, UnauthenticatedError } from 'src/modules/shared/logic/errors'
 import { Guard } from 'src/modules/shared/logic/guard'
 import { err, ok, Result } from 'src/modules/shared/logic/result/result'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
 
 export type ReportIncidentInput = {
@@ -20,11 +19,7 @@ export type ReportIncidentInput = {
   medias: MediaDTO[]
 }
 export type ReportIncidentOkResult = IncidentDTO
-export type ReportIncidentErrResult =
-  | InvalidLocationError
-  | MediaQuantityError
-  | UnauthenticatedError
-  | UserWithoutLocationError
+export type ReportIncidentErrResult = InvalidMediaQuantityError | UnauthenticatedError
 export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
 
 export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIncidentResult> {
@@ -36,8 +31,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
     if (!ctx.userId) return err(new UnauthenticatedError())
 
     const user = await this.userRepo.findById(ctx.userId)
-    if (!user?.location)
-      return err(new UserWithoutLocationError(`User ${ctx.userId} has not location saved yet`))
+    if (!user?.location) throw new Error(`User ${ctx.userId} has not location saved yet`)
 
     const incident = Incident.create({
       ownerUserId: user.id,
@@ -46,32 +40,24 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
       status: IncidentStatus.ACTIVE,
     })
 
-    const incidentWithMediasOrErr = Guard.inRange(
-      input.medias.length,
-      Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT,
-      'media quantity',
-    ).map(
-      () => {
-        const medias = input.medias.map((m) =>
-          Media.create({
-            ...m,
-            incidentId: incident.id,
-            type: MediaType.IMAGE, // TODO
-            recordedAt: new Date(), // TODO
-          }),
-        )
-        return incident.addMedias(medias)
-      },
-      (r) => new MediaQuantityError(r),
+    const [min, max] = Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT
+    if (incident.medias.length < min || incident.medias.length > max)
+      return err(new InvalidMediaQuantityError({ min, max }))
+
+    const medias = input.medias.map((m) =>
+      Media.create({
+        ...m,
+        incidentId: incident.id,
+        type: MediaType.IMAGE, // TODO
+        recordedAt: new Date(), // TODO
+      }),
     )
+    incident.addMedias(medias)
 
-    if (incidentWithMediasOrErr.isErr()) return err(incidentWithMediasOrErr.error)
+    await this.incidentRepo.commit(incident)
 
-    await this.incidentRepo.commit(incidentWithMediasOrErr.value)
-
-    return ok(IncidentMapper.fromDomainToDTO(incidentWithMediasOrErr.value))
+    return ok(IncidentMapper.fromDomainToDTO(incident))
   }
 }
 
-class MediaQuantityError extends ApplicationError {}
-class UserWithoutLocationError extends ApplicationError {}
+class InvalidMediaQuantityError extends ApplicationError {}

@@ -18,7 +18,8 @@
     "deps:sync-types": "npx typesync && npm install",
     "clear": "npx rimraf ./dist",
     "build": "tsc --project tsconfig.json",
-    "rebuild": "npm run clear && npm run build"
+    "rebuild": "npm run clear && npm run build",
+    "start:dev": "npx ts-node ./src/index.ts -P ./tsconfig.json"
   },
   "dependencies": {
     "geolib": "^3.3.3",
@@ -30,6 +31,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^16.11.7",
     "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
     "typesync": "^0.8.0"
   }
 }

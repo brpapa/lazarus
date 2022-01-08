@@ -6,7 +6,7 @@ import { IUserRepo } from '../../adapter/repositories/user-repo'
 const log = debug('app:user:services:location')
 
 export class LocationService {
-  private DIST_ACCURACY = 1e-2 // centimeter accuracy
+  private DIST_ACCURACY = 1 // meters accuracy
   private MAX_DIST_IN_METERS = 5000
 
   constructor(private userRepo: IUserRepo) {}

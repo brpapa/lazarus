@@ -1,4 +1,4 @@
-import { Language } from './../../types'
+import { SUPPORTED_LANGUAGES } from './../../config'
 import * as timeAgo from 'timeago.js'
 
 timeAgo.register('en-US', (_diff: number, index: number, _totalSec?: number) => {
@@ -42,8 +42,10 @@ timeAgo.register('pt-BR', (_diff: number, index: number, _totalSec?: number) => 
   ][index] as [string, string]
 })
 
-export class RelativeToNowTimeFormatter {
-  static format(timestamp: Date, lang: Language) {
-    return timeAgo.format(timestamp.getTime(), lang)
-  }
+export const relativeTimeToNowFormatter = (date: any, lang?: string) => {
+  if (!lang || !SUPPORTED_LANGUAGES.includes(lang)) throw new Error(`Unexpected language: ${lang}`)
+  if (!(date instanceof Date))
+    throw new Error(`Value should be an instance of Date, received: ${date.constructor.name}`)
+
+  return timeAgo.format(date.getTime(), lang)
 }

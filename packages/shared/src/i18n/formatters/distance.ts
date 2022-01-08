@@ -1,19 +1,32 @@
 import { getDistance } from 'geolib'
-import { Language, Location } from './../../types'
+import { SUPPORTED_LANGUAGES } from './../../config'
+import { Language } from './../../types'
 
-export class DistanceFormatter {
-  private static DIST_ACCURACY = 1 // meters accuracy
+const DIST_ACCURACY = 1 // meters accuracy
 
-  static formatGivenSegment(segment: [Location, Location], lang: Language): string {
-    const dist = getDistance(segment[0], segment[1], this.DIST_ACCURACY)
-    return this.format(dist, lang)
-  }
+/** receives the distance in meters */
+export const distanceFormatter = (dist: any, lang?: string) => {
+  if (!lang || !SUPPORTED_LANGUAGES.includes(lang)) throw new Error(`Unexpected language: ${lang}`)
 
-  /** receives the distance in meters */
-  static format(dist: number, lang: Language) {
-    const numberFormatter = new Intl.NumberFormat(lang, { maximumFractionDigits: 1 })
+  if (typeof dist !== 'number')
+    throw new Error(`Invalid value object, received: ${JSON.stringify(dist)}`)
 
-    if (dist < 1e3) return `${numberFormatter.format(dist)} m`
-    return `${numberFormatter.format(dist / 1e3)} km`
-  }
+  const numberFormatter = new Intl.NumberFormat(lang, { maximumFractionDigits: 1 })
+
+  if (dist < 1e3) return `${numberFormatter.format(dist)} m`
+  return `${numberFormatter.format(dist / 1e3)} km`
+}
+
+export const distanceFromSegmentFormatter = (segment: any, lang?: string) => {
+  if (!lang || !SUPPORTED_LANGUAGES.includes(lang)) throw new Error(`Unexpected language: ${lang}`)
+
+  if (
+    segment.constructor.name !== 'Array' &&
+    Object.keys(segment) !== ['latitude', 'longitude'] &&
+    !Object.values(segment).every((v) => typeof v === 'number')
+  )
+    throw new Error(`Invalid value object, received: ${JSON.stringify(segment)}`)
+
+  const dist = getDistance(segment[0], segment[1], DIST_ACCURACY)
+  return distanceFormatter(dist, lang as Language)
 }

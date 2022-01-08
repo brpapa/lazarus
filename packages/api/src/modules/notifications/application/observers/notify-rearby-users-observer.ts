@@ -1,3 +1,4 @@
+import { t } from '@metis/shared'
 import assert from 'assert'
 import { Debugger } from 'debug'
 import { IncidentCreated } from 'src/modules/incident/domain/events/incident-created'
@@ -43,7 +44,9 @@ export class NotifyNearbyUsersObserver implements IObserver<IncidentCreated> {
     const pushMessages = this.createPushMessages(nearbyUsers, incident)
     const pushTickets = await this.pushNotificationService.sendPushNotifications(pushMessages)
     this.log(`Messages sent to Expo server: %o`, pushTickets)
+    // TODO: atualiza no incident a quantidade de usuarios notificatos
 
+    // TODO:
     // const notification = Notification.create({ userId, incidentId: event.incident.id.toString() })
     // await this.notificationRepo.commit(notification)
   }
@@ -73,15 +76,17 @@ export class NotifyNearbyUsersObserver implements IObserver<IncidentCreated> {
       })
 
       if (validPushTokens.length === 0)
-        this.log('User %o has not any push token saved', user.userId)
-
-      const prettyDistance = `${Math.round(user.distanceIncidentToUserInMeters)} meters` // TODO
+        this.log('[warn] User %o has not any push token saved', user.userId)
 
       return {
         to: validPushTokens,
-        title: 'New incident',
-        subtitle: `${incident.title}`,
-        body: `An user reported one incident ${prettyDistance} away from you`,
+        title: t('notifications.nearbyIncidentCreated.title'),
+        subtitle: t('notifications.nearbyIncidentCreated.subtitle', {
+          incidentTitle: incident.title,
+        }),
+        body: t('notifications.nearbyIncidentCreated.body', {
+          distInMeters: user.distanceIncidentToUserInMeters,
+        }),
         data: { incidentId: incident.id.toString() },
         sound: 'default',
       }
