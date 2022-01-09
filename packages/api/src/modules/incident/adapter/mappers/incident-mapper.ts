@@ -18,6 +18,7 @@ export class IncidentMapper {
       incidentId: domain.id.toString(),
       title: domain.title,
       location: LocationMapper.fromDomainToDTO(domain.location),
+      formattedAddress: domain.formattedAddress,
       medias: domain.medias.map(MediaMapper.fromDomainToDTO),
       usersNotified: domain.statistics.usersNotified,
       createdAt: domain.createdAt,
@@ -33,6 +34,7 @@ export class IncidentMapper {
         ownerUserId: new UUID(incidentModel.creatorUserId),
         title: incidentModel.title,
         location: LocationMapper.fromPersistenceToDomain(incidentLocationModel),
+        formattedAddress: incidentModel.formattedAddress ?? undefined,
         status: IncidentStatus[incidentModel.status],
         createdAt: incidentModel.createdAt,
         comments: WatchedList.create<Comment>(
@@ -54,6 +56,7 @@ export class IncidentMapper {
       id: domain.id.toString(),
       title: domain.title,
       status: domain.status,
+      formattedAddress: domain.formattedAddress ?? null,
       statsCommentsCount: domain.statistics.commentsCount,
       statsReactionsCount: domain.statistics.reactionsCount,
       statsViewsCount: domain.statistics.viewsCount,

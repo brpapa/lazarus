@@ -12,6 +12,7 @@ import { ApplicationError, UnauthenticatedError } from 'src/modules/shared/logic
 import { err, ok, Result } from 'src/modules/shared/logic/result/result'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
+import { IGeocodingService } from '../../adapter/geocoding-service'
 
 export type ReportIncidentInput = {
   title: string
@@ -22,7 +23,12 @@ export type ReportIncidentErrResult = InvalidMediaQuantityError | Unauthenticate
 export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
 
 export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIncidentResult> {
-  constructor(log: Debugger, private incidentRepo: IIncidentRepo, private userRepo: IUserRepo) {
+  constructor(
+    log: Debugger,
+    private incidentRepo: IIncidentRepo,
+    private userRepo: IUserRepo,
+    private geocodingService: IGeocodingService,
+  ) {
     super(log)
   }
 
@@ -52,6 +58,9 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
       }),
     )
     incident.addMedias(medias)
+
+    const address = await this.geocodingService.fetchFormattedAddress(incident.location)
+    if (address != null) incident.setFormattedAddress(address)
 
     await this.incidentRepo.commit(incident)
 

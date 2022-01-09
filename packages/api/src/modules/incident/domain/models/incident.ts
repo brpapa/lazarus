@@ -17,6 +17,7 @@ interface IncidentProps {
   ownerUserId: UUID
   title: string
   location: Location
+  formattedAddress?: string
   medias?: Media[]
   status?: IncidentStatus
   comments?: WatchedList<Comment>
@@ -29,19 +30,20 @@ interface IncidentProps {
 }
 
 export class Incident extends AggregateRoot<IncidentProps> {
-  public static ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT: Range = [1, 10]
+  static ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT: Range = [1, 10]
 
-  public get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
-  public get title() { return this.props.title } // prettier-ignore
-  public get location() { return this.props.location } // prettier-ignore
-  public get medias() { assert(this.props.medias); return this.props.medias } // prettier-ignore
-  public get status() { assert(this.props.status); return this.props.status } // prettier-ignore
-  public get comments() { assert(this.props.comments); return this.props.comments } // prettier-ignore
-  public get reactions() { assert(this.props.reactions); return this.props.reactions } // prettier-ignore
-  public get activityLogs() { assert(this.props.activityLogs); return this.props.activityLogs } // prettier-ignore
-  public get statistics() { assert(this.props.statistics); return this.props.statistics } // prettier-ignore
-  public get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
-  public get lastUpdateAt() { return this.props.lastUpdateAt } // prettier-ignore
+  get ownerUserId() { return this.props.ownerUserId } // prettier-ignore
+  get title() { return this.props.title } // prettier-ignore
+  get location() { return this.props.location } // prettier-ignore
+  get formattedAddress() { return this.props.formattedAddress } // prettier-ignore
+  get medias() { assert(this.props.medias); return this.props.medias } // prettier-ignore
+  get status() { assert(this.props.status); return this.props.status } // prettier-ignore
+  get comments() { assert(this.props.comments); return this.props.comments } // prettier-ignore
+  get reactions() { assert(this.props.reactions); return this.props.reactions } // prettier-ignore
+  get activityLogs() { assert(this.props.activityLogs); return this.props.activityLogs } // prettier-ignore
+  get statistics() { assert(this.props.statistics); return this.props.statistics } // prettier-ignore
+  get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
+  get lastUpdateAt() { return this.props.lastUpdateAt } // prettier-ignore
 
   private constructor(props: IncidentProps, id?: UUID) {
     super(
@@ -66,7 +68,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
     )
   }
 
-  public static create(props: IncidentProps, id?: UUID): Incident {
+  static create(props: IncidentProps, id?: UUID): Incident {
     const incident = new Incident(props, id)
 
     const isNew = id === undefined
@@ -75,7 +77,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
     return incident
   }
 
-  public addMedias(medias: Media[]) {
+  addMedias(medias: Media[]) {
     medias.forEach((media) => this.addMedia(media))
     return this
   }
@@ -87,15 +89,19 @@ export class Incident extends AggregateRoot<IncidentProps> {
     return this
   }
 
-  public removeMedia(media: Media) {
+  removeMedia(media: Media) {
     this.props.medias = this.medias.filter((m) => !m.equals(media))
     return this
   }
 
-  public addComments(comments: Comment[]) {
+  addComments(comments: Comment[]) {
     this.props.comments?.addBatch(comments)
     this.statistics.props.commentsCount += 1
     comments.forEach((comment) => this.addDomainEvent(new CommentPostedOnIncident(this, comment)))
     return this
+  }
+
+  setFormattedAddress(formattedAddress: string) {
+    this.props.formattedAddress = formattedAddress
   }
 }

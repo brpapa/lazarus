@@ -31,6 +31,10 @@ export const IncidentType = GraphQLTypes.register(
         type: GraphQLNonNull(LocationType),
         resolve: (incident) => incident.location,
       },
+      formattedAddress: {
+        type: GraphQLString,
+        resolve: (incident) => incident.formattedAddress,
+      },
       medias: {
         type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
         resolve: (incident) => incident.medias,

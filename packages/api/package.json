@@ -57,6 +57,7 @@
     "@aws-sdk/lib-storage": "^3.36.0",
     "@metis/shared": "file:../shared",
     "@prisma/client": "^3.7.0",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "busboy": "^0.3.1",
     "core-js": "^3.6.5",

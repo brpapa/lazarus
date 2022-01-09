@@ -35,6 +35,7 @@ model IncidentModel {
   comments            CommentModel[]
   reactions           ReactionModel[]
   activityLogs        ActivityLogModel[]
+  formattedAddress   String?            @map("formatted_address") @db.Text
   statsCommentsCount  Int                @map("stats_comments_count")
   statsReactionsCount Int                @map("stats_reactions_count")
   statsViewsCount     Int                @map("stats_views_count")
