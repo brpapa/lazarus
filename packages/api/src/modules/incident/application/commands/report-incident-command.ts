@@ -68,4 +68,4 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
   }
 }
 
-class InvalidMediaQuantityError extends ApplicationError {}
+export class InvalidMediaQuantityError extends ApplicationError {}

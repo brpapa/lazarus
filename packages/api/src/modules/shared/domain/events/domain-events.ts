@@ -29,23 +29,30 @@ export class DomainEvents {
     const agg = this.aggregateRoots.find((r) => r.id.equals(aggRootId))
     if (agg) {
       log(
-        'Dispatching %o pending event(s) of %o aggregate root',
+        'Dispatching %o pending event(s) of %o aggregate root: %o',
         agg.pendingEvents.length,
         agg.aggregateRootName,
+        agg.pendingEvents.map((e) => e.eventName),
       )
-      await Promise.all(agg.pendingEvents.map(this.dispatchEvent))
+      // unregister and clear before execute any observer
+      const dispatchPromises = agg.pendingEvents.map(this.dispatchEvent)
       agg.clearEvents()
       DomainEvents.unregisterAggregate(agg)
+
+      // execute observers
+      await Promise.all(dispatchPromises)
     }
   }
 
   static async dispatchEvent(event: DomainEvent) {
     const observers = DomainEvents.observers.get(event.eventName) || []
-    if (observers.length === 0) log('%o event has no any observer subscribed yet', event.eventName)
+    if (observers.length === 0)
+      log('[warn] %o event has no any observer subscribed yet', event.eventName)
+
     await Promise.all(
       observers.map(async (observer) => {
         const observerName = observer.constructor.name
-        log('%o observer handling the %o event', observerName, event.eventName)
+        log('%o observer starts to handle the %o event', observerName, event.eventName)
         await Promise.resolve(observer.handle(event))
       }),
     )

@@ -47,7 +47,7 @@ export class SignInCommand extends Command<SignInInput, SignInResult> {
     assert(jwtClaims !== null)
     const accessTokenExpiresIn = unixEpochToDate(jwtClaims.exp)
 
-    DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
+    await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
     return ok({ accessToken, accessTokenExpiresIn, refreshToken })
   }

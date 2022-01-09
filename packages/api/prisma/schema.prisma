@@ -28,22 +28,22 @@ model UserModel {
 // MODELS OF INCIDENT MODULE:
 
 model IncidentModel {
-  id                  String             @id @default(uuid()) @db.VarChar(36)
-  title               String             @db.VarChar(256)
-  status              IncidentStatus
-  medias              MediaModel[]
-  comments            CommentModel[]
-  reactions           ReactionModel[]
-  activityLogs        ActivityLogModel[]
-  formattedAddress   String?            @map("formatted_address") @db.Text
-  statsCommentsCount  Int                @map("stats_comments_count")
-  statsReactionsCount Int                @map("stats_reactions_count")
-  statsViewsCount     Int                @map("stats_views_count")
-  statsUsersNotifiedCount  Int                @map("stats_users_notified_count")
-  creatorUserId       String             @map("creator_user_id") @db.VarChar(36)
-  creatorUser         UserModel          @relation(fields: [creatorUserId], references: [id])
-  createdAt           DateTime           @default(now()) @map("created_at")
-  updatedAt           DateTime?          @map("updated_at")
+  id                      String             @id @default(uuid()) @db.VarChar(36)
+  title                   String             @db.VarChar(256)
+  status                  IncidentStatusEnum
+  medias                  MediaModel[]
+  comments                CommentModel[]
+  reactions               ReactionModel[]
+  activityLogs            ActivityLogModel[]
+  formattedAddress        String?            @map("formatted_address") @db.Text
+  statsCommentsCount      Int                @map("stats_comments_count")
+  statsReactionsCount     Int                @map("stats_reactions_count")
+  statsViewsCount         Int                @map("stats_views_count")
+  statsUsersNotifiedCount Int                @map("stats_users_notified_count")
+  creatorUserId           String             @map("creator_user_id") @db.VarChar(36)
+  creatorUser             UserModel          @relation(fields: [creatorUserId], references: [id])
+  createdAt               DateTime           @default(now()) @map("created_at")
+  updatedAt               DateTime?          @map("updated_at")
 
   @@map("incidents")
 }
@@ -51,7 +51,7 @@ model IncidentModel {
 model MediaModel {
   id         String        @id @default(uuid()) @db.VarChar(36)
   url        String        @db.VarChar(256)
-  type       MediaType
+  type       MediaTypeEnum
   recordedAt DateTime
   incidentId String        @map("incident_id") @db.VarChar(36)
   incident   IncidentModel @relation(fields: [incidentId], references: [id])
@@ -75,13 +75,13 @@ model CommentModel {
 }
 
 model ReactionModel {
-  id         String        @id @default(uuid()) @db.VarChar(36)
-  type       ReactionType
-  userId     String        @map("user_id") @db.VarChar(36)
-  user       UserModel     @relation(fields: [userId], references: [id])
-  incidentId String        @map("incident_id") @db.VarChar(36)
-  incident   IncidentModel @relation(fields: [incidentId], references: [id])
-  createdAt  DateTime      @default(now()) @map("created_at")
+  id         String           @id @default(uuid()) @db.VarChar(36)
+  type       ReactionTypeEnum
+  userId     String           @map("user_id") @db.VarChar(36)
+  user       UserModel        @relation(fields: [userId], references: [id])
+  incidentId String           @map("incident_id") @db.VarChar(36)
+  incident   IncidentModel    @relation(fields: [incidentId], references: [id])
+  createdAt  DateTime         @default(now()) @map("created_at")
 
   @@unique([userId, incidentId])
   @@map("reactions")
@@ -97,19 +97,19 @@ model ActivityLogModel {
   @@map("activity_logs")
 }
 
-enum IncidentStatus {
+enum IncidentStatusEnum {
   PENDING
   ACTIVE
   CLOSED
 }
 
-enum ReactionType {
+enum ReactionTypeEnum {
   PRAY
   ANGRY
   UOW
 }
 
-enum MediaType {
+enum MediaTypeEnum {
   IMAGE
   VIDEO
 }
@@ -127,26 +127,26 @@ model DeviceModel {
 }
 
 model NotificationModel {
-  id           String           @id @default(uuid()) @db.VarChar(36)
-  targetUserId String           @map("target_user_id") @db.VarChar(36)
-  targetUser   UserModel        @relation(fields: [targetUserId], references: [id])
-  type         NotificationType
-  title        String           @db.Text
-  subtitle     String           @db.Text
-  body         String           @db.Text
-  linkEntity   LinkedEntity     @map("link_entity")
-  linkEntityId String           @map("link_entity_id") @db.VarChar(36)
-  seen         Boolean
-  createdAt    DateTime         @default(now()) @map("created_at")
+  id               String               @id @default(uuid()) @db.VarChar(36)
+  targetUserId     String               @map("target_user_id") @db.VarChar(36)
+  targetUser       UserModel            @relation(fields: [targetUserId], references: [id])
+  code             NotificationCodeEnum
+  title            String               @db.Text
+  subtitle         String               @db.Text
+  body             String               @db.Text
+  linkEntity       LinkedEntityEnum     @map("link_entity")
+  linkEntityId     String               @map("link_entity_id") @db.VarChar(36)
+  seenByTargetUser Boolean
+  createdAt        DateTime             @default(now()) @map("created_at")
 
   @@map("notification")
 }
 
-enum NotificationType {
+enum NotificationCodeEnum {
   NEARBY_INCIDENT_CREATED
 }
 
-enum LinkedEntity {
+enum LinkedEntityEnum {
   INCIDENT
   USER
 }

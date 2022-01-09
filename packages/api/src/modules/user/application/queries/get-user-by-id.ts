@@ -5,7 +5,7 @@ import { UserMapper } from '../../adapter/mappers/user-mapper'
 export class GetUserById {
   static async gen(args: { userId: string }, ctx: GraphQLContext): Promise<UserDTO | null> {
     const user = await ctx.loaders.user.load(args.userId)
-    return this.canSee(ctx.userId) ? UserMapper.fromDomainToDTO(user) : null
+    return this.canSee(ctx.userId) && user !== null ? UserMapper.fromDomainToDTO(user) : null
   }
 
   // permissions and authorizations lives here

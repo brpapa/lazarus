@@ -20,7 +20,7 @@ export class CommentRepo extends PrismaRepo<Comment> implements ICommentRepo {
   }
 
   async commit(comment: Comment): Promise<Comment> {
-    const commentModel = CommentMapper.fromDomainToPersistence(comment)
+    const commentModel = CommentMapper.fromDomainToModel(comment)
 
     this.log('Persisting a new comment or comment update: %o', comment.id.toString())
     await this.prismaClient.commentModel.upsert({

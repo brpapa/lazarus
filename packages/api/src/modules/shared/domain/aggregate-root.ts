@@ -18,7 +18,7 @@ const log = debug('app:domain:aggregate-root')
 export abstract class AggregateRoot<T> extends Entity<T> {
   private _pendingEvents: DomainEvent[] = []
 
-  /** domain events that need to be dispatched later */
+  /** domain events that was not dispatched yet */
   get pendingEvents() {
     return this._pendingEvents
   }

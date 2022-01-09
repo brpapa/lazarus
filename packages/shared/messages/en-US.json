@@ -25,6 +25,5 @@
   "errors.InvalidEmailAddressError": "Invalid email address",
   "errors.ShortPasswordError": "Your password has not at least {min} chars",
   "errors.InvalidPhoneNumberError": "The phone number is invalid",
-  "errors.RefreshTokenExpiredError": "Refresh token expired",
   "errors.InvalidMediaQuantityError": "The quantity of medias should be between {min} and {max}"
 }

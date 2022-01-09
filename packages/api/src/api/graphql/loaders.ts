@@ -1,4 +1,5 @@
 import { incidentLoaderFactory } from '@incident/application/loaders'
+import { notificationLoaderFactory } from '@notification/application/loaders'
 import { userLoaderFactory } from '@user/application/loaders'
 
 /**
@@ -35,6 +36,7 @@ import { userLoaderFactory } from '@user/application/loaders'
 export const createDataLoaders = () => ({
   incident: incidentLoaderFactory.create(),
   user: userLoaderFactory.create(),
+  notification: notificationLoaderFactory.create(),
 })
 
 export type DataLoaders = ReturnType<typeof createDataLoaders>

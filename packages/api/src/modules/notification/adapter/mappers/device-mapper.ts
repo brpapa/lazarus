@@ -3,7 +3,7 @@ import { Device } from '@notification/domain/models/device'
 import { UUID } from '@shared/domain/models/uuid'
 
 export class DeviceMapper {
-  static fromPersistenceToDomain(deviceModel: DeviceModel): Device {
+  static fromModelToDomain(deviceModel: DeviceModel): Device {
     const domain = Device.create(
       { userId: deviceModel.userId, pushToken: deviceModel.pushToken },
       new UUID(deviceModel.id),
@@ -11,7 +11,7 @@ export class DeviceMapper {
     return domain
   }
 
-  static fromDomainToPersistence(domain: Device): DeviceModel {
+  static fromDomainToModel(domain: Device): DeviceModel {
     return {
       id: domain.id.toString(),
       userId: domain.userId,

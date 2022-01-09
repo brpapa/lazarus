@@ -1,12 +1,13 @@
 import { ValueObject } from '@shared/domain/value-object'
 
-export const LinkedEntity = {
+export const LinkedEntityEnum = {
   INCIDENT: 'INCIDENT',
   USER: 'USER',
 } as const
+export type LinkedEntityEnum = typeof LinkedEntityEnum[keyof typeof LinkedEntityEnum]
 
 interface NotificationLinkProps {
-  entity: typeof LinkedEntity[keyof typeof LinkedEntity]
+  entity: LinkedEntityEnum
   entityId: string
 }
 

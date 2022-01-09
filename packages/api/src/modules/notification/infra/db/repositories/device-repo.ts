@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { Debugger } from 'debug'
-import { IDeviceRepo } from '@notification/adapter/device-repo'
+import { IDeviceRepo } from '@notification/adapter/repositories/device-repo'
 import { DeviceMapper } from '@notification/adapter/mappers/device-mapper'
 import { Device } from '@notification/domain/models/device'
 import { PrismaRepo } from '@shared/infra/db/prisma-repo'
@@ -12,7 +12,7 @@ export class DeviceRepo extends PrismaRepo<Device> implements IDeviceRepo {
 
   async findAllOfUser(userId: string): Promise<Device[]> {
     const devices = await this.prismaClient.deviceModel.findMany({ where: { userId } })
-    return devices.map(DeviceMapper.fromPersistenceToDomain)
+    return devices.map(DeviceMapper.fromModelToDomain)
   }
 
   async findAllOfUserBatch(userIds: string[]): Promise<Device[][]> {
@@ -20,13 +20,13 @@ export class DeviceRepo extends PrismaRepo<Device> implements IDeviceRepo {
       where: { userId: { in: userIds } },
     })
     const usersDevices = userIds.map((userId) =>
-      devices.filter((d) => d.userId === userId).map(DeviceMapper.fromPersistenceToDomain),
+      devices.filter((d) => d.userId === userId).map(DeviceMapper.fromModelToDomain),
     )
     return usersDevices
   }
 
   async commit(device: Device) {
-    const deviceModel = DeviceMapper.fromDomainToPersistence(device)
+    const deviceModel = DeviceMapper.fromDomainToModel(device)
 
     const previousDevicesOfUser = await this.findAllOfUser(device.userId.toString())
     if (previousDevicesOfUser.some(({ pushToken }) => pushToken === device.pushToken)) {

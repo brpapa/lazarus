@@ -1,3 +1,4 @@
+import debug from 'debug'
 import { GraphQLError } from 'graphql'
 import graphqlHttp from 'koa-graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
@@ -5,6 +6,8 @@ import { createDataLoaders } from 'src/api/graphql/loaders'
 import { schema } from 'src/api/graphql/schema'
 import { getUserId } from 'src/api/utils'
 import { HTTP_GRAPHQL_FORCED_MIN_LATENCY_IN_MS, IS_PRODUCTION } from 'src/config'
+
+const log = debug('app:infra:http')
 
 // build the graphql middleware, given a function that it'll be executed per request
 export const graphqlHttpServer = graphqlHttp(async (koaReq) => {
@@ -28,6 +31,7 @@ export const graphqlHttpServer = graphqlHttp(async (koaReq) => {
 
 // graphql query mal-formated errors, etc
 const formatError = (error: GraphQLError) => {
+  log('[error] GraphQL resolver throws the error: %O', error)
   return {
     message: error.message,
     locations: error.locations,

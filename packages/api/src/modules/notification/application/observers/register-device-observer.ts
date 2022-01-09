@@ -1,7 +1,7 @@
 import { DomainEvents } from '@shared/domain/events/domain-events'
 import { IObserver } from '@shared/domain/events/observer'
 import { UserSignedIn } from '../../../user/domain/events/user-signed-in'
-import { IDeviceRepo } from '../../adapter/device-repo'
+import { IDeviceRepo } from '../../adapter/repositories/device-repo'
 import { Device } from '../../domain/models/device'
 
 /** register user device to receive push notifications */

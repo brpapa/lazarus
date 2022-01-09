@@ -25,6 +25,5 @@
   "errors.InvalidEmailAddressError": "Endereço de email inválido",
   "errors.ShortPasswordError": "Sua senha não tem pelo menos {min} caracteres",
   "errors.InvalidPhoneNumberError": "O número de telefone é inválido",
-  "errors.RefreshTokenExpiredError": "Refresh token expirado",
   "errors.InvalidMediaQuantityError": "A quantidade de mídias de um incidente deveria ser pelo menos {min} e no máximo {max}"
 }

@@ -10,7 +10,7 @@ export class MediaMapper {
       url: media.url,
     }
   }
-  static fromPersistenceToDomain(model: MediaModel): Media {
+  static fromModelToDomain(model: MediaModel): Media {
     return Media.create(
       {
         url: model.url,
@@ -22,7 +22,7 @@ export class MediaMapper {
     )
   }
 
-  static fromDomainToPersistence(domain: Media): MediaModel {
+  static fromDomainToModel(domain: Media): MediaModel {
     return {
       id: domain.id.toString(),
       url: domain.url,

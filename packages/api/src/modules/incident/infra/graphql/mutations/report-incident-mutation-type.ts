@@ -1,12 +1,20 @@
-import { GraphQLEnumType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/api/graphql/context'
 import { reportIncidentCommand } from '@incident/application/commands'
 import {
+  InvalidMediaQuantityError,
   ReportIncidentInput,
-  ReportIncidentResult,
+  ReportIncidentResult
 } from '@incident/application/commands/report-incident-command'
 import { GetIncidentById } from '@incident/application/queries'
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
+import {
+  GraphQLBoolean,
+  GraphQLEnumType,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString
+} from 'graphql'
+import { GraphQLContext } from 'src/api/graphql/context'
+import { UnauthenticatedError } from 'src/modules/shared/logic/errors'
 import { IncidentType } from '../types/incident-type'
 import { MediaInputType } from '../types/media-type'
 
@@ -32,13 +40,17 @@ export const ReportIncidentMutationType = createMutationType<
       type: GraphQLNonNull(GraphQLString),
       resolve: (result) => result.asErr().reason,
     },
+    reasonIsTranslated: {
+      type: GraphQLNonNull(GraphQLBoolean),
+      resolve: (result) => result.asErr().reasonIsTranslated,
+    },
     code: {
       type: GraphQLNonNull(
         new GraphQLEnumType({
           name: 'ReportIncidentErrCodeType',
           values: {
-            UnauthenticatedError: { value: 'UnauthenticatedError' },
-            InvalidMediaQuantityError: { value: 'InvalidMediaQuantityError' },
+            [UnauthenticatedError.name]: { value: UnauthenticatedError.name },
+            [InvalidMediaQuantityError.name]: { value: InvalidMediaQuantityError.name },
           },
         }),
       ),

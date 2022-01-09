@@ -3,7 +3,7 @@ import { UUID } from '@shared/domain/models/uuid'
 import { Comment } from '@incident/domain/models/comment'
 
 export class CommentMapper {
-  static fromPersistenceToDomain(model: CommentModel): Comment {
+  static fromModelToDomain(model: CommentModel): Comment {
     const comment = Comment.create(
       {
         ownerUserId: new UUID(model.userId),
@@ -17,7 +17,7 @@ export class CommentMapper {
     return comment
   }
 
-  static fromDomainToPersistence(domain: Comment): CommentModel {
+  static fromDomainToModel(domain: Comment): CommentModel {
     return {
       id: domain.id.toString(),
       content: domain.content,

@@ -1,8 +1,8 @@
 Server
 
 <!--
-reference graphql+dataloader architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/rbaf-graphql-api
-reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/ddd-forum
+reference graphql+dataloader architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/rbaf-graphql-api
+reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-forum
   - quebrando em projetos/deploys diferentes: code ~/dev/metis/packages/_node-microservices-ddd
 -->
 
@@ -22,8 +22,6 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/_clones/ddd-
 │   │   │   ├── /shared        # Shared code between all modules, like a global module
 ├── /test                      # Test helpers
 ```
-
-- Repositories tem que ser burro, sem regra de negocio (sem voltar erros not found, etc, deixar isso a camada service)
 
 # Dependency rules
 
@@ -59,29 +57,6 @@ A `query` should only make reads without generate side effects
 Responsible by users, identity & access management, authentication, authorization
 
 ## `incident`
-
-Dispatch the following domain events
-
-- `incident:submitted`
-
-  - handlers should:
-    - review
-    - publicar midias no s3
-    - notificar usuarios proximos
-
-- `incident:opened`
-
-  - handlers should:
-    - atualizar quad tree
-    - notificar usuarios que ouvem locais das proximidades
-    - notificar usuarios que estao nas proximidades
-    - atualizar o mapa em tempo real de todos os usuarios logados no app, mas que estao nas proximidades
-
-- `incident:closed`
-
-- `incident:timelineUpdated`
-
-- `incident:newReaction`
 
 ## `notifications`
 

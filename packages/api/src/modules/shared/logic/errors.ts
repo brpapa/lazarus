@@ -1,15 +1,24 @@
 import { t } from '@metis/shared'
 
-/** the name of leaft class is the error code and also the key for i18n messages */
+/** the name of leaft class is the error code and also the key to search for i18n messages */
 export abstract class BaseError {
-  /** translated error message that will be displayed to the app user */
-  public reason: string
   public code: string
+  /** if reasonIsTranslated is true, is the translated error message that can be displayed to the app user */
+  public reason: string
+  /** reason can be displayed to user app safely? */
+  public reasonIsTranslated: boolean
 
-  constructor(errorReasonParams?: any) {
+  constructor(displayableToUserReasonParams?: any, notTranslatedReason?: string) {
     const errorCode = this.getLeafClassName()
-    this.reason = t(`errors.${errorCode}`, errorReasonParams)
     this.code = errorCode
+
+    if (notTranslatedReason !== undefined) {
+      this.reason = notTranslatedReason
+      this.reasonIsTranslated = false
+    } else {
+      this.reason = t(`errors.${errorCode}`, displayableToUserReasonParams)
+      this.reasonIsTranslated = true
+    }
   }
 
   private getLeafClassName() {

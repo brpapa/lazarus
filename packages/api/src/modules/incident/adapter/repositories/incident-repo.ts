@@ -5,7 +5,7 @@ import { IRepository } from '../../../shared/infra/db/repository'
 /** the incident loaded from database comes only with the last 25 comments */
 export interface IIncidentRepo extends IRepository<Incident> {
   findById(id: string): Promise<Incident | null>
-  findByIdBatch(ids: string[]): Promise<Incident[]>
+  findByIdBatch(ids: string[]): Promise<(Incident | null)[]>
   findAll(): Promise<Incident[]>
   findAllLocatedWithinBox(
     centerPoint: LocationProps,

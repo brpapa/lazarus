@@ -10,7 +10,7 @@ export class LocationMapper {
       longitude: domain.longitude,
     }
   }
-  static fromPersistenceToDomain(locationModel: LocationRedisModel): Location {
+  static fromModelToDomain(locationModel: LocationRedisModel): Location {
     return Location.create({
       latitude: Number(locationModel.latitude),
       longitude: Number(locationModel.longitude),

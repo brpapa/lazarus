@@ -1,12 +1,14 @@
-import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
-import { GraphQLContext } from 'src/api/graphql/context'
+import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
+import { DateType } from '@shared/infra/graphql/types/date-type'
 import { refreshTokenCommand } from '@user/application/commands'
 import {
+  RefreshTokenExpiredError,
   RefreshTokenInput,
   RefreshTokenResult,
 } from '@user/application/commands/refresh-token-command'
-import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
-import { DateType } from '@shared/infra/graphql/types/date-type'
+import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
+import { GraphQLContext } from 'src/api/graphql/context'
+import { UserNotFoundError } from 'src/modules/shared/logic/errors'
 
 export const RefreshTokenMutationType = createMutationType<
   GraphQLContext,
@@ -35,13 +37,17 @@ export const RefreshTokenMutationType = createMutationType<
       type: GraphQLNonNull(GraphQLString),
       resolve: (result) => result.asErr().reason,
     },
+    reasonIsTranslated: {
+      type: GraphQLNonNull(GraphQLBoolean),
+      resolve: (result) => result.asErr().reasonIsTranslated,
+    },
     code: {
       type: GraphQLNonNull(
         new GraphQLEnumType({
           name: 'RefreshTokenErrCodeType',
           values: {
-            RefreshTokenExpiredError: { value: 'RefreshTokenExpiredError' },
-            UserNotFoundError: { value: 'UserNotFoundError' },
+            [RefreshTokenExpiredError.name]: { value: RefreshTokenExpiredError.name },
+            [UserNotFoundError.name]: { value: UserNotFoundError.name },
           },
         }),
       ),

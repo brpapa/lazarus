@@ -32,23 +32,23 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
   async findById(id: string): Promise<User | null> {
     const user = await this.prismaClient.userModel.findUnique({ where: { id } })
-    return this.augmentedWithRedis(user)
+    return this.enrichedWithRedis(user)
   }
 
   async findByUsername(username: string): Promise<User | null> {
     const user = await this.prismaClient.userModel.findUnique({ where: { username } })
-    return this.augmentedWithRedis(user)
+    return this.enrichedWithRedis(user)
   }
 
   async findByIdBatch(ids: string[]): Promise<(User | null)[]> {
     const users = await this.prismaClient.userModel.findMany({ where: { id: { in: ids } } })
     const orderedUsers = ids.map((id) => users.find((v) => v.id === id) ?? null)
-    return this.augmentedWithRedisBatch(orderedUsers)
+    return this.enrichedWithRedisBatch(orderedUsers)
   }
 
   async findAll(): Promise<User[]> {
     const users = await this.prismaClient.userModel.findMany()
-    return this.augmentedWithRedisBatch(users)
+    return this.enrichedWithRedisBatch(users)
   }
 
   async findAllLocatedWithinCircle(
@@ -76,14 +76,14 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       assert(location.coordinates !== undefined)
       assert(location.distance !== undefined)
       return {
-        user: UserMapper.fromPersistenceToDomain(user, location.coordinates),
+        user: UserMapper.fromModelToDomain(user, location.coordinates),
         distanteToCenterInMeters: Number(location.distance),
       }
     })
   }
 
   async commit(user: User): Promise<User> {
-    const userModel = await UserMapper.fromDomainToPersistence(user)
+    const userModel = await UserMapper.fromDomainToModel(user)
 
     if (user.location !== undefined) {
       const toAdd = {
@@ -109,12 +109,12 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     return user
   }
 
-  private async augmentedWithRedis(user: UserPgModel | null): Promise<User | null> {
+  private async enrichedWithRedis(user: UserPgModel | null): Promise<User | null> {
     if (user === null) return null
-    return this.augmentedWithRedisBatch([user]).then(([userWithLocation]) => userWithLocation)
+    return this.enrichedWithRedisBatch([user]).then(([userWithLocation]) => userWithLocation)
   }
 
-  private async augmentedWithRedisBatch(users: (UserPgModel | null)[]): Promise<User[]> {
+  private async enrichedWithRedisBatch(users: (UserPgModel | null)[]): Promise<User[]> {
     if (users.length === 0) return []
 
     // returns in the same order
@@ -125,7 +125,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
     return zip(users, usersLocations).map(([user, userLocation]) => {
       assert(!!user)
-      return UserMapper.fromPersistenceToDomain(user, userLocation ?? null)
+      return UserMapper.fromModelToDomain(user, userLocation ?? null)
     })
   }
 }

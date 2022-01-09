@@ -17,7 +17,7 @@ export class UserMapper {
     }
   }
 
-  static fromPersistenceToDomain(
+  static fromModelToDomain(
     userModel: UserPgModel,
     userLocationModel: LocationRedisModel | null,
   ): User {
@@ -30,7 +30,7 @@ export class UserMapper {
         }).asOk(),
         location:
           userLocationModel !== null
-            ? LocationMapper.fromPersistenceToDomain(userLocationModel)
+            ? LocationMapper.fromModelToDomain(userLocationModel)
             : undefined,
         phoneNumber: UserPhoneNumber.create({ value: userModel.phoneNumber }).asOk(),
         isPhoneNumberVerified: userModel.phoneNumberVerified,
@@ -43,7 +43,7 @@ export class UserMapper {
   }
 
   /** to pg model only */
-  static async fromDomainToPersistence(domain: User): Promise<UserPgModel> {
+  static async fromDomainToModel(domain: User): Promise<UserPgModel> {
     const hashedPassword = await domain.password.getHashedValue()
     return {
       id: domain.id.toString(),

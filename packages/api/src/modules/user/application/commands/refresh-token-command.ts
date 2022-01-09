@@ -44,4 +44,8 @@ export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshToken
   }
 }
 
-class RefreshTokenExpiredError extends ApplicationError {}
+export class RefreshTokenExpiredError extends ApplicationError {
+  constructor() {
+    super(undefined, 'Refresh token expired')
+  }
+}

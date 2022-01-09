@@ -42,6 +42,23 @@ type Query {
     last: Int
     filter: IncidentsFilterInputType
   ): IncidentConnection!
+  notification(
+    """The notification id"""
+    notificationId: String!
+  ): Notification
+  myNotifications(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): NotificationConnection!
 }
 
 """An object with an ID"""
@@ -103,8 +120,9 @@ type Incident implements Node {
   incidentId: String!
   title: String!
   location: Location!
+  formattedAddress: String
   medias: [Media!]!
-  usersNotified: Int!
+  usersNotifiedCount: Int!
   createdAt: Date!
 }
 
@@ -148,6 +166,52 @@ input LocationInput {
   longitude: Float!
 }
 
+type Notification implements Node {
+  """The opaque identifier of GraphQL node, based on relay specs"""
+  id: ID!
+  notificationId: String!
+  targetUserId: String!
+  code: NotificationCodeEnum!
+  title: String!
+  subtitle: String!
+  body: String!
+  link: NotificationLink!
+  seenByTargetUser: Boolean
+  createdAt: Date!
+}
+
+enum NotificationCodeEnum {
+  NEARBY_INCIDENT_CREATED
+}
+
+type NotificationLink {
+  entity: LinkedEntityEnum!
+  entityId: String!
+}
+
+enum LinkedEntityEnum {
+  INCIDENT
+  USER
+}
+
+"""A connection to a list of items."""
+type NotificationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NotificationEdge]
+}
+
+"""An edge in a connection."""
+type NotificationEdge {
+  """The item at the end of the edge"""
+  node: Notification!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 """The mutation root type"""
 type Mutation {
   """Register a new user"""
@@ -162,6 +226,9 @@ type Mutation {
   """Login"""
   refreshToken(input: RefreshTokenInput!): RefreshTokenOutput!
   reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
+
+  """Mark notification as seen by target user"""
+  seeNotification(input: SeeNotificationInput!): SeeNotificationOutput!
 }
 
 type SignUpOutput {
@@ -177,11 +244,12 @@ type SignUpOkResult {
 
 type SignUpErrResult {
   reason: String!
+  reasonIsTranslated: Boolean!
   code: SignUpErrCodeType!
 }
 
 enum SignUpErrCodeType {
-  PasswordSizeError
+  ShortPasswordError
   InvalidPhoneNumberError
 }
 
@@ -209,6 +277,7 @@ type SignInOkResult {
 
 type SignInErrResult {
   reason: String!
+  reasonIsTranslated: Boolean!
   code: SignInErrCodeType!
 }
 
@@ -236,12 +305,12 @@ type UpdateUserLocationOkResult {
 
 type UpdateUserLocationErrResult {
   reason: String!
+  reasonIsTranslated: Boolean!
   code: UpdateUserLocationErrCodeType!
 }
 
 enum UpdateUserLocationErrCodeType {
   UnauthenticatedError
-  InvalidLocationError
   UserNotFoundError
 }
 
@@ -266,6 +335,7 @@ type RefreshTokenOkResult {
 
 type RefreshTokenErrResult {
   reason: String!
+  reasonIsTranslated: Boolean!
   code: RefreshTokenErrCodeType!
 }
 
@@ -292,14 +362,13 @@ type ReportIncidentOkResult {
 
 type ReportIncidentErrResult {
   reason: String!
+  reasonIsTranslated: Boolean!
   code: ReportIncidentErrCodeType!
 }
 
 enum ReportIncidentErrCodeType {
   UnauthenticatedError
-  MediaQuantityError
-  InvalidLocationError
-  UserWithoutLocationError
+  InvalidMediaQuantityError
 }
 
 input ReportIncidentInput {
@@ -311,6 +380,32 @@ input ReportIncidentInput {
 input MediaInput {
   """S3 url"""
   url: String!
+}
+
+type SeeNotificationOutput {
+  result: SeeNotificationResult!
+  clientMutationId: String
+}
+
+union SeeNotificationResult = SeeNotificationOkResult | SeeNotificationErrResult
+
+type SeeNotificationOkResult {
+  notification: Notification!
+}
+
+type SeeNotificationErrResult {
+  reason: String!
+  reasonIsTranslated: Boolean!
+  code: SeeNotificationErrCodeType!
+}
+
+enum SeeNotificationErrCodeType {
+  NotificationNotFound
+}
+
+input SeeNotificationInput {
+  notificationId: String!
+  clientMutationId: String
 }
 
 """The subscription root type"""

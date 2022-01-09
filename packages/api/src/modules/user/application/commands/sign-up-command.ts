@@ -1,15 +1,12 @@
-import { Debugger } from 'debug'
+import { Command } from '@shared/logic/command'
+import { err, ok, Result } from '@shared/logic/result/result'
+import { UserDTO } from '@user/adapter/dtos/user-dto'
+import { UserMapper } from '@user/adapter/mappers/user-mapper'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'
 import { User } from '@user/domain/models/user'
 import { ShortPasswordError, UserPassword } from '@user/domain/models/user-password'
-import {
-  InvalidPhoneNumberError,
-  UserPhoneNumber,
-} from '@user/domain/models/user-phone-number'
-import { Command } from '@shared/logic/command'
-import { err, ok, Result } from '@shared/logic/result/result'
-import { UserDTO } from '../../adapter/dtos/user-dto'
-import { UserMapper } from '../../adapter/mappers/user-mapper'
+import { InvalidPhoneNumberError, UserPhoneNumber } from '@user/domain/models/user-phone-number'
+import { Debugger } from 'debug'
 
 export type SignUpInput = {
   username: string

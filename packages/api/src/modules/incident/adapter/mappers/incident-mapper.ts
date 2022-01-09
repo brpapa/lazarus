@@ -25,7 +25,7 @@ export class IncidentMapper {
     }
   }
 
-  static fromPersistenceToDomain(
+  static fromModelToDomain(
     incidentModel: IncidentPgModelPopulated,
     incidentLocationModel: LocationRedisModel,
   ): Incident {
@@ -33,25 +33,25 @@ export class IncidentMapper {
       {
         ownerUserId: new UUID(incidentModel.creatorUserId),
         title: incidentModel.title,
-        location: LocationMapper.fromPersistenceToDomain(incidentLocationModel),
+        location: LocationMapper.fromModelToDomain(incidentLocationModel),
         formattedAddress: incidentModel.formattedAddress ?? undefined,
         status: IncidentStatus[incidentModel.status],
         createdAt: incidentModel.createdAt,
         comments: WatchedList.create<Comment>(
-          incidentModel.comments.map(CommentMapper.fromPersistenceToDomain),
+          incidentModel.comments.map(CommentMapper.fromModelToDomain),
         ),
       },
       new UUID(incidentModel.id),
     )
 
-    const medias = incidentModel.medias.map((m) => MediaMapper.fromPersistenceToDomain(m))
+    const medias = incidentModel.medias.map((m) => MediaMapper.fromModelToDomain(m))
     incident.addMedias(medias)
 
     return incident
   }
 
   /** to pg model only */
-  static fromDomainToPersistence(domain: Incident): IncidentPgModel {
+  static fromDomainToModel(domain: Incident): IncidentPgModel {
     return {
       id: domain.id.toString(),
       title: domain.title,

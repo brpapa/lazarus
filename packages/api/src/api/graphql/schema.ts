@@ -7,6 +7,8 @@ import * as IncidentSubscriptions from '@incident/infra/graphql/subscriptions'
 import * as UserQueries from '@user/infra/graphql/queries'
 import * as UserMutations from '@user/infra/graphql/mutations'
 import * as UserSubscriptions from '@user/infra/graphql/subscriptions'
+import * as NotificationQueries from '@notification/infra/graphql/queries'
+import * as NotificationMutations from '@notification/infra/graphql/mutations'
 
 const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Query',
@@ -26,6 +28,8 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
     users: UserQueries.UsersQueryType,
     incident: IncidentQueries.IncidentQueryType,
     incidents: IncidentQueries.IncidentsQueryType,
+    notification: NotificationQueries.NotificationQueryType,
+    myNotifications: NotificationQueries.MyNotificationsQueryType,
   }),
 })
 
@@ -39,6 +43,7 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
     updateUserLocation: UserMutations.UpdateUserLocationMutationType,
     refreshToken: UserMutations.RefreshTokenMutationType,
     reportIncident: IncidentMutations.ReportIncidentMutationType,
+    seeNotification: NotificationMutations.SeeNotificationMutationType,
   }),
 })
 

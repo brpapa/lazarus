@@ -6,7 +6,7 @@ import {
   GraphQLObjectType,
   GraphQLResolveInfo,
   GraphQLString,
-  GraphQLUnionType
+  GraphQLUnionType,
 } from 'graphql'
 import { Result } from '@shared/logic/result'
 
@@ -58,11 +58,11 @@ export function createMutationType<Ctx, Input, Res extends Result<any, any>>(con
     fields: {
       result: {
         type: GraphQLNonNull(ResultType),
-        resolve: (augmentedResult) => augmentedResult.result,
+        resolve: (enrichedResult) => enrichedResult.result,
       },
       clientMutationId: {
         type: GraphQLString,
-        resolve: (augmentedResult) => augmentedResult.clientMutationId,
+        resolve: (enrichedResult) => enrichedResult.clientMutationId,
       },
     },
   })

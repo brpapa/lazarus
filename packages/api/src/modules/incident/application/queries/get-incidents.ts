@@ -1,12 +1,11 @@
-import assert from 'assert'
-import { Debugger } from 'debug'
-import { getCenter, getDistance } from 'geolib'
 import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
 import { IncidentMapper } from '@incident/adapter/mappers/incident-mapper'
 import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
 import { LocationDTO } from '@shared/adapter/dtos/location-dto'
 import { Query } from '@shared/logic/query'
-import { ok, Result } from '@shared/logic/result'
+import assert from 'assert'
+import { Debugger } from 'debug'
+import { getCenter, getDistance } from 'geolib'
 import { Incident } from '../../domain/models/incident'
 
 type WithinBoundaryFilter = {
@@ -24,8 +23,7 @@ export type GetIncidentsInput = {
   // first?: number
 }
 export type GetIncidentsOkResult = IncidentDTO[]
-export type GetIncidentsErrResult = void
-export type GetIncidentsResult = Result<GetIncidentsOkResult, GetIncidentsErrResult>
+export type GetIncidentsResult = GetIncidentsOkResult
 
 /** requested on each map view resize */
 export class GetIncidents extends Query<GetIncidentsInput, GetIncidentsResult> {
@@ -40,7 +38,7 @@ export class GetIncidents extends Query<GetIncidentsInput, GetIncidentsResult> {
       ? this.findManyWithinBoundary(req.filter?.withinBoundary)
       : this.incidentRepo.findAll())
 
-    return ok(incidents.map((incident) => IncidentMapper.fromDomainToDTO(incident)))
+    return incidents.map((incident) => IncidentMapper.fromDomainToDTO(incident))
   }
 
   private findManyWithinBoundary(boundary: WithinBoundaryFilter): Promise<Incident[]> {

@@ -1,17 +1,17 @@
 import { t } from '@metis/shared'
-import assert from 'assert'
-import { Debugger } from 'debug'
-import { INotificationRepo } from '@notification/adapter/notification-repo'
 import { IPushNotificationService } from '@notification/adapter/push-notification-service'
-import { Notification, NotificationType } from '@notification/domain/models/notification'
-import { LinkedEntity, NotificationLink } from '@notification/domain/models/notification-link'
+import { Notification, NotificationCodeEnum } from '@notification/domain/models/notification'
+import { LinkedEntityEnum, NotificationLink } from '@notification/domain/models/notification-link'
 import { DomainEvents } from '@shared/domain/events/domain-events'
 import { IObserver } from '@shared/domain/events/observer'
 import { zip } from '@shared/logic/helpers/zip'
 import { IncidentCreatedEnrichedWithNearbyUsers } from '@user/domain/events/incident-created-enriched-with-nearby-users'
-import { IDeviceRepo } from '../../adapter/device-repo'
-import { PushMessage } from '../../domain/models/push-message'
+import assert from 'assert'
+import { Debugger } from 'debug'
+import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
+import { IDeviceRepo } from '../../adapter/repositories/device-repo'
 import { UsersNotified } from '../../domain/events/users-notified'
+import { PushMessage } from '../../domain/models/push-message'
 
 /**
  * create a new notification entity to be displayed on notifications tab
@@ -36,7 +36,7 @@ export class NotifyNearbyUsersObserver
     const notifications = event.nearbyUsers.map((nearbyUser) =>
       Notification.create({
         targetUserId: nearbyUser.userId,
-        type: NotificationType.NEARBY_INCIDENT_CREATED,
+        code: NotificationCodeEnum.NEARBY_INCIDENT_CREATED,
         title: t('notifications.nearbyIncidentCreated.title'),
         subtitle: t('notifications.nearbyIncidentCreated.subtitle', {
           incidentTitle: event.incident.title,
@@ -45,7 +45,7 @@ export class NotifyNearbyUsersObserver
           distInMeters: nearbyUser.distanceIncidentToUserInMeters,
         }),
         link: NotificationLink.create({
-          entity: LinkedEntity.INCIDENT,
+          entity: LinkedEntityEnum.INCIDENT,
           entityId: event.incident.id.toString(),
         }),
       }),

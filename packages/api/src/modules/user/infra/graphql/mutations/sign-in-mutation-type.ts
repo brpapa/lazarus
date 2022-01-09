@@ -1,7 +1,11 @@
-import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
+import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { signInCommand } from '@user/application/commands'
-import { SignInInput, SignInResult } from '@user/application/commands/sign-in-command'
+import {
+  SignInInput,
+  SignInResult,
+  UserOrPasswordInvalidError,
+} from '@user/application/commands/sign-in-command'
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
 import { DateType } from '@shared/infra/graphql/types/date-type'
 
@@ -34,12 +38,16 @@ export const SignInMutationType = createMutationType<GraphQLContext, SignInInput
       type: GraphQLNonNull(GraphQLString),
       resolve: (result) => result.asErr().reason,
     },
+    reasonIsTranslated: {
+      type: GraphQLNonNull(GraphQLBoolean),
+      resolve: (result) => result.asErr().reasonIsTranslated,
+    },
     code: {
       type: GraphQLNonNull(
         new GraphQLEnumType({
           name: 'SignInErrCodeType',
           values: {
-            UserOrPasswordInvalidError: { value: 'UserOrPasswordInvalidError' },
+            [UserOrPasswordInvalidError.name]: { value: UserOrPasswordInvalidError.name },
           },
         }),
       ),

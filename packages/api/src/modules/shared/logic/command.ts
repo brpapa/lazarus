@@ -3,9 +3,9 @@ import { AppContext } from './app-context'
 import { Result } from './result'
 
 export abstract class Command<Input, Res extends Result<any, any>> {
-  constructor(private readonly log: Debugger) {}
+  constructor(protected log: Debugger) {}
 
-  async exec(input: Input, ctx?: AppContext): Promise<Res> {
+  async exec(input: Input, ctx: AppContext): Promise<Res> {
     const commandName = Reflect.getPrototypeOf(this)?.constructor.name
 
     this.log(`Running %o by user %o with the given input: %O`, commandName, ctx?.userId, input)
@@ -26,5 +26,5 @@ export abstract class Command<Input, Res extends Result<any, any>> {
     }
   }
 
-  abstract execImpl(input: Input, ctx?: AppContext): Res | Promise<Res>
+  abstract execImpl(input: Input, ctx: AppContext): Res | Promise<Res>
 }

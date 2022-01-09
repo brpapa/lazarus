@@ -4,36 +4,37 @@ import { UUID } from '@shared/domain/models/uuid'
 import { NotificationLink } from './notification-link'
 import { PushMessage } from './push-message'
 
-export const NotificationType = {
+export const NotificationCodeEnum = {
   NEARBY_INCIDENT_CREATED: 'NEARBY_INCIDENT_CREATED',
 } as const
+export type NotificationCodeEnum = typeof NotificationCodeEnum[keyof typeof NotificationCodeEnum]
 
 interface NotificationProps {
   targetUserId: string
-  type: typeof NotificationType[keyof typeof NotificationType]
+  code: NotificationCodeEnum
   title: string
   subtitle: string
   body: string
   link: NotificationLink
-  seen?: boolean
+  seenByTargetUser?: boolean
   createdAt?: Date
 }
 
 export class Notification extends Entity<NotificationProps> {
   get targetUserId() { return this.props.targetUserId } // prettier-ignore
-  get type() { return this.props.type } // prettier-ignore
+  get code() { return this.props.code } // prettier-ignore
   get title() { return this.props.title } // prettier-ignore
   get subtitle() { return this.props.subtitle } // prettier-ignore
   get body() { return this.props.body } // prettier-ignore
   get link() { return this.props.link } // prettier-ignore
-  get seen() { assert(this.props.seen !== undefined); return this.props.seen } // prettier-ignore
+  get seenByTargetUser() { assert(this.props.seenByTargetUser !== undefined); return this.props.seenByTargetUser } // prettier-ignore
   get createdAt() { assert(this.props.createdAt !== undefined); return this.props.createdAt } // prettier-ignore
 
   private constructor(props: NotificationProps, id?: UUID) {
     super(
       {
         ...props,
-        seen: props.seen || false,
+        seenByTargetUser: props.seenByTargetUser || false,
         createdAt: props.createdAt || new Date(),
       },
       id,
@@ -57,5 +58,9 @@ export class Notification extends Entity<NotificationProps> {
       },
       sound: 'default',
     }
+  }
+
+  see() {
+    this.props.seenByTargetUser = true
   }
 }
