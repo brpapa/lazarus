@@ -15,8 +15,6 @@ yarn-error.log
 graphql.*.json
 .gqlconfig
 
-.env
-
 # Relay modern
 __generated__/
 
@@ -38,6 +36,10 @@ hard-source-cache/
 # Cypress
 cypress/videos
 cypress/screenshots
+
+# env variables
+.env
+.env.dev
 
 # Local-only files
 _*
