@@ -1,5 +1,5 @@
-import { incidentLoaderFactory } from 'src/modules/incident/application/loaders'
-import { userLoaderFactory } from 'src/modules/user/application/loaders'
+import { incidentLoaderFactory } from '@incident/application/loaders'
+import { userLoaderFactory } from '@user/application/loaders'
 
 /**
  * DataLoader is a pattern to optimize graphql requests, like these that contains a circular reference and require the same data multiple times, for example (user -> article -> comments -> writtenByUser (can be the same that wrote the article)). The idea is that resolver calls are batched and thus the data source (database or external APIs) only has to be hit once, avoiding round-trips.

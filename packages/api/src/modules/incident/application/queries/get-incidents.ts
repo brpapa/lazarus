@@ -1,12 +1,12 @@
 import assert from 'assert'
 import { Debugger } from 'debug'
 import { getCenter, getDistance } from 'geolib'
-import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
-import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
-import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
-import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
-import { Query } from 'src/modules/shared/logic/query'
-import { ok, Result } from 'src/modules/shared/logic/result'
+import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
+import { IncidentMapper } from '@incident/adapter/mappers/incident-mapper'
+import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
+import { LocationDTO } from '@shared/adapter/dtos/location-dto'
+import { Query } from '@shared/logic/query'
+import { ok, Result } from '@shared/logic/result'
 import { Incident } from '../../domain/models/incident'
 
 type WithinBoundaryFilter = {

@@ -1,7 +1,7 @@
-import { UUID } from 'src/modules/shared/domain/models/uuid'
-import { Entity } from 'src/modules/shared/domain/entity'
-import { ok, Result } from 'src/modules/shared/logic/result/result'
-import { User } from 'src/modules/user/domain/models/user'
+import { UUID } from '@shared/domain/models/uuid'
+import { Entity } from '@shared/domain/entity'
+import { ok, Result } from '@shared/logic/result/result'
+import { User } from '@user/domain/models/user'
 
 interface ActivityLogProps {
   log: string

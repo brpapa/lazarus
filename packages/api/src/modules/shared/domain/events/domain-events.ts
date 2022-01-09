@@ -1,5 +1,5 @@
 import debug from 'debug'
-import { AggregateRoot } from 'src/modules/shared/domain/aggregate-root'
+import { AggregateRoot } from '@shared/domain/aggregate-root'
 import { UUID } from '../models/uuid'
 import { DomainEvent } from './domain-event'
 import { IObserver } from './observer'

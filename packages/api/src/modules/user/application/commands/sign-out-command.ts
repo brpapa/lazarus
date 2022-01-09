@@ -1,9 +1,9 @@
 import { Debugger } from 'debug'
-import { Command } from 'src/modules/shared/logic/command'
-import { UserNotFoundError } from 'src/modules/shared/logic/errors'
-import { err, okVoid, Result } from 'src/modules/shared/logic/result/result'
-import { IAuthService } from 'src/modules/user/adapter/auth-service'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { Command } from '@shared/logic/command'
+import { UserNotFoundError } from '@shared/logic/errors'
+import { err, okVoid, Result } from '@shared/logic/result/result'
+import { IAuthService } from '@user/adapter/auth-service'
+import { IUserRepo } from '@user/adapter/repositories/user-repo'
 
 export type SignOutInput = {
   userId: string

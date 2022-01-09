@@ -1,5 +1,5 @@
 import debug from 'debug'
-import { authService } from 'src/modules/user/application/services'
+import { authService } from '@user/application/services'
 
 const log = debug('app:infra:utils')
 

@@ -8,7 +8,7 @@ import {
   GraphQLString,
   GraphQLUnionType
 } from 'graphql'
-import { Result } from 'src/modules/shared/logic/result'
+import { Result } from '@shared/logic/result'
 
 /** create mutation with clientMutationId field based on relay specs */
 export function createMutationType<Ctx, Input, Res extends Result<any, any>>(config: {

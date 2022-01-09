@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { getDistance } from 'geolib'
-import { Incident } from 'src/modules/incident/domain/models/incident'
+import { Incident } from '@incident/domain/models/incident'
 import { IUserRepo } from '../../adapter/repositories/user-repo'
 
 const log = debug('app:user:services:location')

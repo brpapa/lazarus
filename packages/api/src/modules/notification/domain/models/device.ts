@@ -1,5 +1,5 @@
-import { Entity } from 'src/modules/shared/domain/entity'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { Entity } from '@shared/domain/entity'
+import { UUID } from '@shared/domain/models/uuid'
 
 interface DeviceProps {
   userId: string

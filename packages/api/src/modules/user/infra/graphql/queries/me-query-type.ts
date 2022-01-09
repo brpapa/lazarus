@@ -1,7 +1,7 @@
 import { GraphQLFieldConfig } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
-import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
+import { UserDTO } from '@user/adapter/dtos/user-dto'
+import { GetUserById } from '@user/application/queries/get-user-by-id'
 import { UserType } from '../types/user-type'
 
 export const MeQueryType: GraphQLFieldConfig<void, GraphQLContext, any> = {

@@ -1,13 +1,13 @@
 import { Debugger } from 'debug'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
-import { User } from 'src/modules/user/domain/models/user'
-import { ShortPasswordError, UserPassword } from 'src/modules/user/domain/models/user-password'
+import { IUserRepo } from '@user/adapter/repositories/user-repo'
+import { User } from '@user/domain/models/user'
+import { ShortPasswordError, UserPassword } from '@user/domain/models/user-password'
 import {
   InvalidPhoneNumberError,
   UserPhoneNumber,
-} from 'src/modules/user/domain/models/user-phone-number'
-import { Command } from 'src/modules/shared/logic/command'
-import { err, ok, Result } from 'src/modules/shared/logic/result/result'
+} from '@user/domain/models/user-phone-number'
+import { Command } from '@shared/logic/command'
+import { err, ok, Result } from '@shared/logic/result/result'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
 

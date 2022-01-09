@@ -1,8 +1,8 @@
 import { GraphQLFieldConfig, GraphQLNonNull } from 'graphql'
 import { Connection, connectionArgs, ConnectionArguments, connectionFromArray } from 'graphql-relay'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
-import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
+import { UserDTO } from '@user/adapter/dtos/user-dto'
+import { UserMapper } from '@user/adapter/mappers/user-mapper'
 import { userRepo } from '../../db/repositories'
 import { UserConnectionType } from '../types/user-type'
 

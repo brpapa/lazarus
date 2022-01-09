@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { Debugger } from 'debug'
-import { INotificationRepo } from 'src/modules/notifications/adapter/notification-repo'
-import { NotificationMapper } from 'src/modules/notifications/adapter/mappers/notification-mapper'
-import { Notification } from 'src/modules/notifications/domain/models/notification'
-import { PrismaRepo } from 'src/modules/shared/infra/db/prisma-repo'
+import { INotificationRepo } from '@notification/adapter/notification-repo'
+import { NotificationMapper } from '@notification/adapter/mappers/notification-mapper'
+import { Notification } from '@notification/domain/models/notification'
+import { PrismaRepo } from '@shared/infra/db/prisma-repo'
 
 export class NotificationRepo extends PrismaRepo<Notification> implements INotificationRepo {
   constructor(private log: Debugger, private prismaClient: PrismaClient) {

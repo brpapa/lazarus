@@ -3,7 +3,7 @@ import Expo from 'expo-server-sdk'
 import {
   IPushNotificationService,
   PushTicket,
-} from 'src/modules/notifications/adapter/push-notification-service'
+} from '@notification/adapter/push-notification-service'
 import { PushMessage } from '../../domain/models/push-message'
 
 export class PushNotificationService implements IPushNotificationService {

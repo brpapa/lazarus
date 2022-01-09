@@ -3,7 +3,7 @@ import { ExecutionArgs, getOperationAST, GraphQLError, parse, subscribe, validat
 import { CloseCode } from 'graphql-ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import http from 'http'
-import { authService } from 'src/modules/user/application/services'
+import { authService } from '@user/application/services'
 import { WS_GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/config'
 import { WebSocketServer } from 'ws'
 import { GraphQLContext } from '../graphql/context'

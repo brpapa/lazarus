@@ -1,5 +1,5 @@
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
-import { MediaDTO } from 'src/modules/incident/adapter/dtos/media-dto'
+import { MediaDTO } from '@incident/adapter/dtos/media-dto'
 
 export const MediaType = new GraphQLObjectType<MediaDTO>({
   name: 'Media',

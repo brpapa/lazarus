@@ -1,5 +1,5 @@
 import { GraphQLFloat, GraphQLInputObjectType, GraphQLNonNull, GraphQLObjectType } from 'graphql'
-import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
+import { LocationDTO } from '@shared/adapter/dtos/location-dto'
 
 export const LocationType = new GraphQLObjectType<LocationDTO>({
   name: 'Location',

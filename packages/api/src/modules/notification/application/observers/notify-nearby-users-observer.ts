@@ -1,20 +1,20 @@
 import { t } from '@metis/shared'
 import assert from 'assert'
 import { Debugger } from 'debug'
-import { INotificationRepo } from 'src/modules/notifications/adapter/notification-repo'
-import { IPushNotificationService } from 'src/modules/notifications/adapter/push-notification-service'
+import { INotificationRepo } from '@notification/adapter/notification-repo'
+import { IPushNotificationService } from '@notification/adapter/push-notification-service'
 import {
   Notification,
   NotificationType,
-} from 'src/modules/notifications/domain/models/notification'
+} from '@notification/domain/models/notification'
 import {
   LinkedEntity,
   NotificationLink,
-} from 'src/modules/notifications/domain/models/notification-link'
-import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
-import { IObserver } from 'src/modules/shared/domain/events/observer'
-import { zip } from 'src/modules/shared/logic/helpers/zip'
-import { IncidentCreatedEnrichedWithNearbyUsers } from 'src/modules/user/domain/events/incident-created-enriched-with-nearby-users'
+} from '@notification/domain/models/notification-link'
+import { DomainEvents } from '@shared/domain/events/domain-events'
+import { IObserver } from '@shared/domain/events/observer'
+import { zip } from '@shared/logic/helpers/zip'
+import { IncidentCreatedEnrichedWithNearbyUsers } from '@user/domain/events/incident-created-enriched-with-nearby-users'
 import { IDeviceRepo } from '../../adapter/device-repo'
 import { PushMessage } from '../../domain/models/push-message'
 

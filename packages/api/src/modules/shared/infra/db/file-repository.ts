@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { Entity } from 'src/modules/shared/domain/entity'
+import { Entity } from '@shared/domain/entity'
 import { IRepository } from './repository'
 
 export abstract class FileRepository<T extends Entity<any>> implements IRepository<T> {

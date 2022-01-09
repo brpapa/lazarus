@@ -1,6 +1,6 @@
 import { Debugger } from 'debug'
 import { PrismaClient } from 'src/api/db/prisma/client'
-import { WatchedList } from 'src/modules/shared/domain/watched-list'
+import { WatchedList } from '@shared/domain/watched-list'
 import { PrismaRepo } from '../../../../shared/infra/db/prisma-repo'
 import { CommentMapper } from '../../../adapter/mappers/comment-mapper'
 import { ICommentRepo } from '../../../adapter/repositories/comment-repo'

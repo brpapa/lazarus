@@ -1,6 +1,6 @@
-import { UUID } from 'src/modules/shared/domain/models/uuid'
-import { Entity } from 'src/modules/shared/domain/entity'
-import { ok, Result } from 'src/modules/shared/logic/result/result'
+import { UUID } from '@shared/domain/models/uuid'
+import { Entity } from '@shared/domain/entity'
+import { ok, Result } from '@shared/logic/result/result'
 
 type ReactionType = 'pray' | 'angry' | 'uow'
 

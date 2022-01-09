@@ -1,9 +1,9 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { signUpCommand } from 'src/modules/user/application/commands'
-import { SignUpInput, SignUpResult } from 'src/modules/user/application/commands/sign-up-command'
-import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
-import { createMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
+import { signUpCommand } from '@user/application/commands'
+import { SignUpInput, SignUpResult } from '@user/application/commands/sign-up-command'
+import { GetUserById } from '@user/application/queries/get-user-by-id'
+import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
 import { UserType } from '../types/user-type'
 
 export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput, SignUpResult>({

@@ -1,6 +1,6 @@
 import debug from 'debug'
-import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
-import { userRepo } from 'src/modules/user/infra/db/repositories'
+import { incidentRepo } from '@incident/infra/db/repositories'
+import { userRepo } from '@user/infra/db/repositories'
 import { geocodingService } from '../../infra/services'
 import { ReportIncidentCommand } from './report-incident-command'
 

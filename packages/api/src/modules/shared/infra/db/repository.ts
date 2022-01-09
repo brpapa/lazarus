@@ -1,4 +1,4 @@
-import { Entity } from 'src/modules/shared/domain/entity'
+import { Entity } from '@shared/domain/entity'
 
 export interface IRepository<T extends Entity<any>> {
   /** data loader requirement, should return entities in the same order which was received */

@@ -4,7 +4,7 @@ import debug from 'debug'
 import prettyBytes from 'pretty-bytes'
 import { hrtime } from 'process'
 import { AWS_SERVICE_ENDPOINT, AWS_REGION, AWS_S3_BUCKET_NAME } from 'src/config'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { UUID } from '@shared/domain/models/uuid'
 import { Readable } from 'stream'
 import { FileMetadata } from './form-data-parser'
 

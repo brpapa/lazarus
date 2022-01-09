@@ -1,5 +1,5 @@
-import { Incident } from 'src/modules/incident/domain/models/incident'
-import { LocationProps } from 'src/modules/shared/domain/models/location'
+import { Incident } from '@incident/domain/models/incident'
+import { LocationProps } from '@shared/domain/models/location'
 import { IRepository } from '../../../shared/infra/db/repository'
 
 /** the incident loaded from database comes only with the last 25 comments */

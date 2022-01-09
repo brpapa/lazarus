@@ -1,11 +1,8 @@
-import {
-  LocationMapper,
-  LocationRedisModel,
-} from 'src/modules/shared/adapter/mappers/location-mapper'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
-import { User } from 'src/modules/user/domain/models/user'
-import { UserPassword } from 'src/modules/user/domain/models/user-password'
-import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
+import { LocationMapper, LocationRedisModel } from '@shared/adapter/mappers/location-mapper'
+import { UUID } from '@shared/domain/models/uuid'
+import { User } from '@user/domain/models/user'
+import { UserPassword } from '@user/domain/models/user-password'
+import { UserPhoneNumber } from '@user/domain/models/user-phone-number'
 import { UserPgModel } from '../../infra/db/repositories/user-repo'
 import { UserDTO } from '../dtos/user-dto'
 

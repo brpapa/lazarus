@@ -8,10 +8,10 @@ import {
 } from 'redis/dist/lib/commands/generic-transformers'
 import { PrismaClient } from 'src/api/db/prisma/client'
 import { RedisClient } from 'src/api/db/redis/client'
-import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
-import { User } from 'src/modules/user/domain/models/user'
-import { PrismaRepo } from 'src/modules/shared/infra/db/prisma-repo'
-import { zip } from 'src/modules/shared/logic/helpers/zip'
+import { UserMapper } from '@user/adapter/mappers/user-mapper'
+import { User } from '@user/domain/models/user'
+import { PrismaRepo } from '@shared/infra/db/prisma-repo'
+import { zip } from '@shared/logic/helpers/zip'
 import { IUserRepo, UserWithinCircle } from '../../../adapter/repositories/user-repo'
 
 const log = debug('app:user:infra')

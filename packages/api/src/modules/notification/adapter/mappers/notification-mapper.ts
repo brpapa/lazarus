@@ -1,6 +1,6 @@
 import { NotificationModel } from '@prisma/client'
-import { Notification } from 'src/modules/notifications/domain/models/notification'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { Notification } from '@notification/domain/models/notification'
+import { UUID } from '@shared/domain/models/uuid'
 import { NotificationLink } from '../../domain/models/notification-link'
 
 export class NotificationMapper {

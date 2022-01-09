@@ -1,12 +1,12 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { nodeField } from 'src/api/graphql/node'
-import * as IncidentQueries from 'src/modules/incident/infra/graphql/queries'
-import * as IncidentMutations from 'src/modules/incident/infra/graphql/mutations'
-import * as IncidentSubscriptions from 'src/modules/incident/infra/graphql/subscriptions'
-import * as UserQueries from 'src/modules/user/infra/graphql/queries'
-import * as UserMutations from 'src/modules/user/infra/graphql/mutations'
-import * as UserSubscriptions from 'src/modules/user/infra/graphql/subscriptions'
+import * as IncidentQueries from '@incident/infra/graphql/queries'
+import * as IncidentMutations from '@incident/infra/graphql/mutations'
+import * as IncidentSubscriptions from '@incident/infra/graphql/subscriptions'
+import * as UserQueries from '@user/infra/graphql/queries'
+import * as UserMutations from '@user/infra/graphql/mutations'
+import * as UserSubscriptions from '@user/infra/graphql/subscriptions'
 
 const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Query',

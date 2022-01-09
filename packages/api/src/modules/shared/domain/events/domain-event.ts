@@ -1,4 +1,4 @@
-import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { UUID } from '@shared/domain/models/uuid'
 
 /** The implementation must define a static getter `eventName` */
 export abstract class DomainEvent {

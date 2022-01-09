@@ -1,7 +1,7 @@
-import { DomainEvent } from 'src/modules/shared/domain/events/domain-event'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
-import { Comment } from 'src/modules/incident/domain/models/comment'
-import { Incident } from 'src/modules/incident/domain/models/incident'
+import { DomainEvent } from '@shared/domain/events/domain-event'
+import { UUID } from '@shared/domain/models/uuid'
+import { Comment } from '@incident/domain/models/comment'
+import { Incident } from '@incident/domain/models/incident'
 
 export class CommentPostedOnIncident extends DomainEvent {
   constructor(public incident: Incident, public comment: Comment) {

@@ -1,13 +1,13 @@
 import { GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { updateUserLocationCommand } from 'src/modules/user/application/commands'
+import { updateUserLocationCommand } from '@user/application/commands'
 import {
   UpdateUserLocationInput,
   UpdateUserLocationResult,
-} from 'src/modules/user/application/commands/update-user-location-command'
-import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
-import { createMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
-import { LocationInputType } from 'src/modules/shared/infra/graphql/types/location-type'
+} from '@user/application/commands/update-user-location-command'
+import { GetUserById } from '@user/application/queries/get-user-by-id'
+import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
+import { LocationInputType } from '@shared/infra/graphql/types/location-type'
 import { UserType } from '../types/user-type'
 
 export const UpdateUserLocationMutationType = createMutationType<

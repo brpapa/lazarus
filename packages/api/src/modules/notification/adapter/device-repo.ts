@@ -1,4 +1,4 @@
-import { Device } from 'src/modules/notifications/domain/models/device'
+import { Device } from '@notification/domain/models/device'
 
 export interface IDeviceRepo {
   findAllOfUser(userId: string): Promise<Device[]>
