@@ -39,7 +39,7 @@ model IncidentModel {
   statsCommentsCount  Int                @map("stats_comments_count")
   statsReactionsCount Int                @map("stats_reactions_count")
   statsViewsCount     Int                @map("stats_views_count")
-  statsUsersNotified  Int                @map("stats_users_notified")
+  statsUsersNotifiedCount  Int                @map("stats_users_notified_count")
   creatorUserId       String             @map("creator_user_id") @db.VarChar(36)
   creatorUser         UserModel          @relation(fields: [creatorUserId], references: [id])
   createdAt           DateTime           @default(now()) @map("created_at")

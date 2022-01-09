@@ -39,9 +39,9 @@ export const IncidentType = GraphQLTypes.register(
         type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
         resolve: (incident) => incident.medias,
       },
-      usersNotified: {
+      usersNotifiedCount: {
         type: GraphQLNonNull(GraphQLInt),
-        resolve: (incident) => incident.usersNotified,
+        resolve: (incident) => incident.usersNotifiedCount,
       },
       createdAt: {
         type: GraphQLNonNull(DateType),

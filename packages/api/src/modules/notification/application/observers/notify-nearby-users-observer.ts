@@ -3,20 +3,15 @@ import assert from 'assert'
 import { Debugger } from 'debug'
 import { INotificationRepo } from '@notification/adapter/notification-repo'
 import { IPushNotificationService } from '@notification/adapter/push-notification-service'
-import {
-  Notification,
-  NotificationType,
-} from '@notification/domain/models/notification'
-import {
-  LinkedEntity,
-  NotificationLink,
-} from '@notification/domain/models/notification-link'
+import { Notification, NotificationType } from '@notification/domain/models/notification'
+import { LinkedEntity, NotificationLink } from '@notification/domain/models/notification-link'
 import { DomainEvents } from '@shared/domain/events/domain-events'
 import { IObserver } from '@shared/domain/events/observer'
 import { zip } from '@shared/logic/helpers/zip'
 import { IncidentCreatedEnrichedWithNearbyUsers } from '@user/domain/events/incident-created-enriched-with-nearby-users'
 import { IDeviceRepo } from '../../adapter/device-repo'
 import { PushMessage } from '../../domain/models/push-message'
+import { UsersNotified } from '../../domain/events/users-notified'
 
 /**
  * create a new notification entity to be displayed on notifications tab
@@ -60,8 +55,15 @@ export class NotifyNearbyUsersObserver
     // fetch push tokens of users and send push notifications for each one
     const pushMessages = await this.toPushMessages(notifications)
     const pushTickets = await this.pushNotificationService.sendPushNotifications(pushMessages)
-
     this.log(`Messages sent to Expo server: %o`, pushTickets)
+
+    // dispatch UserNotified event
+    const probabilyNotifiedCount = pushTickets.filter(({ status }) => status === 'ok').length
+    const usersNotifiedEvent = new UsersNotified(
+      probabilyNotifiedCount,
+      event.incident.id.toString(),
+    )
+    await DomainEvents.dispatchEvent(usersNotifiedEvent)
   }
 
   private async toPushMessages(notifications: Notification[]): Promise<PushMessage[]> {

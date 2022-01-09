@@ -7,6 +7,6 @@ export interface IncidentDTO {
   location: LocationDTO
   formattedAddress?: string
   medias: MediaDTO[]
-  usersNotified: number
+  usersNotifiedCount: number
   createdAt: Date
 }

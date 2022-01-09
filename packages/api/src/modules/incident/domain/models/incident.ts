@@ -60,7 +60,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
             commentsCount: 0,
             reactionsCount: 0,
             viewsCount: 0,
-            usersNotified: 0,
+            usersNotifiedCount: 0,
           }),
         createdAt: props.createdAt || new Date(),
       },

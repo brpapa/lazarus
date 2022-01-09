@@ -1,8 +1,8 @@
 import { DomainEvent } from '@shared/domain/events/domain-event'
 
-/** users that received push notification */
+/** count of users that received push notification */
 export class UsersNotified extends DomainEvent {
-  constructor(public usersIds: string[]) {
+  constructor(public count: number, public incidentId: string) {
     super()
   }
 

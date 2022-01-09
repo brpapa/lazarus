@@ -102,7 +102,15 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
       await this.prismaClient.mediaModel.createMany({ data: mediasModel })
     } else {
       this.log('Persisting an updated incident on Pg: %o', incident.id.toString())
-      await this.prismaClient.mediaModel.createMany({ data: mediasModel })
+      await Promise.all(
+        mediasModel.map((mediaModel) =>
+          this.prismaClient.mediaModel.upsert({
+            where: { id: mediaModel.id },
+            create: mediaModel,
+            update: mediaModel,
+          }),
+        ),
+      )
       await this.commentRepo.commitBatch(incident.comments)
       await this.prismaClient.incidentModel.update({
         where: { id: incident.id.toString() },

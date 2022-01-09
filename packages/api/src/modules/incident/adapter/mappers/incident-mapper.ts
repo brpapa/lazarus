@@ -20,7 +20,7 @@ export class IncidentMapper {
       location: LocationMapper.fromDomainToDTO(domain.location),
       formattedAddress: domain.formattedAddress,
       medias: domain.medias.map(MediaMapper.fromDomainToDTO),
-      usersNotified: domain.statistics.usersNotified,
+      usersNotifiedCount: domain.statistics.usersNotifiedCount,
       createdAt: domain.createdAt,
     }
   }
@@ -60,7 +60,7 @@ export class IncidentMapper {
       statsCommentsCount: domain.statistics.commentsCount,
       statsReactionsCount: domain.statistics.reactionsCount,
       statsViewsCount: domain.statistics.viewsCount,
-      statsUsersNotified: domain.statistics.usersNotified,
+      statsUsersNotifiedCount: domain.statistics.usersNotifiedCount,
       creatorUserId: domain.ownerUserId.toString(),
       createdAt: domain.createdAt,
       updatedAt: domain.lastUpdateAt || null,
