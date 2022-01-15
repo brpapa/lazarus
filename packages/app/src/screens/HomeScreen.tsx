@@ -2,37 +2,56 @@ import { t } from '@metis/shared'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core'
 import React from 'react'
+import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import { ActivityIcon, BellIcon, CameraIcon, MapIcon, UserIcon } from '~/assets/icons'
-import ExplorerScreen from '~/screens/ExplorerScreen'
-import NotificationsScreen from '~/screens/NotificationsScreen'
-import ProfileScreen from '~/screens/ProfileScreen'
+import { ExplorerScreen } from '~/screens/ExplorerScreen'
+import { NotificationsScreen } from '~/screens/NotificationsScreen'
+import { ProfileScreen } from '~/screens/ProfileScreen'
 import { ReportStackScreen } from '~/screens/ReportScreen'
+import type { HomeScreenQuery as HomeScreenQueryType } from '~/__generated__/HomeScreenQuery.graphql'
 
 export type HomeBottomTabParams = {
   Explorer: undefined
-  Feed: undefined
+  Todo: undefined
   Report: undefined
   Notifications: undefined
   Profile: undefined
 }
 const HomeBottomTab = createBottomTabNavigator<HomeBottomTabParams>()
 
-export function HomeScreen() {
+type HomeScreenProps = {
+  preloadedQuery: PreloadedQuery<HomeScreenQueryType>
+}
+
+const query = graphql`
+  query HomeScreenQuery {
+    notificationsInfo: myNotifications {
+      notSeenCount
+    }
+    ...ExplorerScreen_query
+    ...NotificationsScreen_query
+  }
+`
+
+export function HomeScreen(props: HomeScreenProps) {
+  const data = usePreloadedQuery<HomeScreenQueryType>(query, props.preloadedQuery)
+
   return (
     <HomeBottomTab.Navigator initialRouteName="Explorer">
       <HomeBottomTab.Screen
         name="Explorer"
-        component={ExplorerScreen}
         options={{
           tabBarLabel: t('home.explorerTabLabel'),
           tabBarIcon: (props) => <MapIcon color={props.color} />,
         }}
-      />
+      >
+        {() => <ExplorerScreen query={data} />}
+      </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
-        name="Feed"
+        name="Todo"
         component={ProfileScreen}
         options={{
-          tabBarLabel: 'Feed',
+          tabBarLabel: 'Todo',
           tabBarIcon: (props) => <ActivityIcon color={props.color} />,
         }}
       />
@@ -48,13 +67,14 @@ export function HomeScreen() {
       />
       <HomeBottomTab.Screen
         name="Notifications"
-        component={NotificationsScreen}
         options={{
-          tabBarBadge: 2,
+          tabBarBadge: data?.notificationsInfo?.notSeenCount ?? undefined,
           tabBarLabel: t('home.notificationsTabLabel'),
           tabBarIcon: (props) => <BellIcon color={props.color} />,
         }}
-      />
+      >
+        {() => <NotificationsScreen query={data} />}
+      </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
         name="Profile"
         component={ProfileScreen}

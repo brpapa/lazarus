@@ -1,4 +1,4 @@
-import { SecureStoreProxy } from '~/data/secure-store-proxy'
+import { AuthTokensManager } from '~/data/auth-tokens-manager'
 import { atom, DefaultValue } from 'recoil'
 
 export const accessTokenState = atom<AccessToken | null>({
@@ -8,7 +8,7 @@ export const accessTokenState = atom<AccessToken | null>({
     ({ setSelf, onSet }) => {
       // suspends all components under RecoilRoot while the promise is not resolved
       setSelf(
-        SecureStoreProxy.getAccessToken()
+        AuthTokensManager.getAccessToken()
           .then((accessToken) => (accessToken != null ? accessToken : new DefaultValue()))
           .catch((e) => {
             console.error('Loading token failed', e)
@@ -18,7 +18,7 @@ export const accessTokenState = atom<AccessToken | null>({
 
       // update secure store if recoil state changes
       onSet((newAccessToken) => {
-        SecureStoreProxy.setAccessToken(newAccessToken)
+        AuthTokensManager.setAccessToken(newAccessToken)
       })
     },
   ],

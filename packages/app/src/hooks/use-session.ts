@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { accessTokenState } from '~/data/recoil'
 import { commitRefreshTokenMutation } from '~/data/relay/mutations/RefreshTokenMutation'
-import { SecureStoreProxy } from '~/data/secure-store-proxy'
+import { AuthTokensManager } from '~/data/auth-tokens-manager'
 
 /** refresh the current access token if it is expired */
 export const useSession = () => {
@@ -11,7 +11,7 @@ export const useSession = () => {
   const startSession = useCallback(
     async (accessToken: AccessToken, refreshToken?: string) => {
       setAccessToken(accessToken)
-      if (refreshToken) await SecureStoreProxy.setRefreshToken(refreshToken)
+      if (refreshToken) await AuthTokensManager.setRefreshToken(refreshToken)
     },
     [setAccessToken],
   )
@@ -19,7 +19,7 @@ export const useSession = () => {
 
   const handleAcessTokenExpired = useCallback(async () => {
     try {
-      const refreshToken = await SecureStoreProxy.getRefreshToken()
+      const refreshToken = await AuthTokensManager.getRefreshToken()
       if (refreshToken === null) return closeSession()
 
       const newAccessToken = await commitRefreshTokenMutation({ refreshToken })
@@ -32,15 +32,11 @@ export const useSession = () => {
 
   useEffect(() => {
     if (accessToken === null) return
-
-    const now = new Date()
-    const accessTokenIsExpired = accessToken.expiresIn.getTime() <= now.getTime()
-
-    if (accessTokenIsExpired) handleAcessTokenExpired()
+    if (AuthTokensManager.isExpiredNow(accessToken)) handleAcessTokenExpired()
   }, [accessToken, handleAcessTokenExpired])
 
   return {
-    isSignedIn: accessToken !== null,
+    isSignedIn: accessToken !== null && !AuthTokensManager.isExpiredNow(accessToken),
     startSession,
     closeSession,
   }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useRelayEnvironment } from 'react-relay'
 import { graphql, GraphQLSubscriptionConfig, requestSubscription } from 'relay-runtime'
-import { appendIncidentToConnection } from '~/data/relay/store-utils'
+import { appendIncidentToConnection } from '~/data/relay/utils/store'
 import type { OnIncidentCreatedSubscription as OnIncidentCreatedSubscriptionType } from '~/__generated__/OnIncidentCreatedSubscription.graphql'
 
 const subscription = graphql`

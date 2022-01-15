@@ -2,7 +2,7 @@ import { createTheme } from '@shopify/restyle'
 import palette from './palette'
 
 export const theme = createTheme({
-  name: 'light' as ThemeName,
+  name: 'default' as ThemeName,
   colors: {
     background: '#FFF',
     'accents-1': '#FAFAFA',

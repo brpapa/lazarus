@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store'
 
-export class SecureStoreProxy {
+export class AuthTokensManager {
   private static accessTokenKey = 'USER_ACCESS_TOKEN'
   private static refreshTokenKey = 'USER_REFRESH_TOKEN'
 
@@ -35,5 +35,15 @@ export class SecureStoreProxy {
 
   private static async deleteAccessToken() {
     return SecureStore.deleteItemAsync(this.accessTokenKey)
+  }
+
+  static isExpiredNow(accessToken: AccessToken) {
+    return accessToken.expiresIn.getTime() <= new Date().getTime()
+  }
+
+  static async isSignedIn() {
+    const accessToken = await AuthTokensManager.getAccessToken()
+    if (!accessToken || AuthTokensManager.isExpiredNow(accessToken)) false
+    return true
   }
 }

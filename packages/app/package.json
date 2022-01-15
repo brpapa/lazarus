@@ -8,7 +8,7 @@
     "node": "16"
   },
   "scripts": {
-    "postinstall": "mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules && npm install --prefix ./node_modules/@metis/shared",
+    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules && npm install --prefix ./node_modules/@metis/shared",
     "debug": "METRO_SERVER_PORT=19000 open -a Flipper.app",
     "deps:sync-types": "npx typesync && npm install",
     "code:format": "prettier --config \"./../../.prettierrc\" --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
@@ -23,7 +23,7 @@
     "expo:eject": "expo eject",
     "run:android": "npm run relay && react-native run-android",
     "run:ios": "npm run relay && react-native run-ios",
-    "relay": "npx relay-compiler --src ./src --schema ../api/graphql/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
+    "relay": "npx relay-compiler --src ./src --schema ../api/graphql/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --customScalars.Date=String",
     "relay:watch": "npm run relay -- --watch",
     "relay:clear": "find . -name '__generated__' -d -exec rm -rf '{}' +",
     "relay:flush": "npm run relay:clear && npm run relay",
@@ -31,7 +31,7 @@
     "ios": "expo run:ios"
   },
   "scriptsComment": {
-    "postinstall": "copy shared package to node_modules folder because reac native seems to not support local dependencies with symlink"
+    "postinstall": "copy shared package to node_modules folder because reac native seems to not support local dependencies with symlink",
     "start": "starts a expo development server in your lan network",
     "expo:run:*": "build and run expo go in simulator, using expo-dev-client",
     "run:*": "build and run in simulator natively",
@@ -39,6 +39,7 @@
     "relay": "based on the current graphql schema defined by api, compile and generate new artifacts in src/__generated__ folder"
   },
   "dependencies": {
+    "@metis/shared": "file:../shared",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
@@ -56,7 +57,7 @@
     "expo-splash-screen": "^0.14.1",
     "expo-status-bar": "~1.2.0",
     "expo-task-manager": "~10.1.0",
-    "expo-updates": "^0.11.3",
+    "expo-updates": "~0.11.4",
     "form-data": "^4.0.0",
     "geolib": "^3.3.3",
     "graphql": "^15.7.2",

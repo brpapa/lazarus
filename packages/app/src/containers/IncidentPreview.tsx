@@ -37,7 +37,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
             latitude
             longitude
           }
-          usersNotified
+          usersNotifiedCount
           createdAt
         }
       }
@@ -78,7 +78,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
           </Text>
         </Box>
 
-        <NotificationsAmount amount={data!.incident!.usersNotified} />
+        <NotificationsAmount amount={data!.incident!.usersNotifiedCount} />
 
         {props.closeable && (
           <MyButton

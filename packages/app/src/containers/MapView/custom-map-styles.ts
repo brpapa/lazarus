@@ -1,5 +1,5 @@
 const customMapStyles: Record<ThemeName, any> = {
-  light: [
+  default: [
     {
       elementType: 'geometry',
       stylers: [

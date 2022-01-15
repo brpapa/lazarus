@@ -6,7 +6,7 @@ export const appendIncidentToConnection = (
 ) => {
   // get the connection record
   const rootRecord = store.getRoot() // relative to all store
-  const connectionKey = 'IncidentMarkers_incidents'
+  const connectionKey = 'IncidentMarkerList_incidents'
   const connectionRecord = ConnectionHandler.getConnection(rootRecord, connectionKey)
   if (!connectionRecord)
     throw new Error(`Not found connection record in root with key: ${connectionKey}`)

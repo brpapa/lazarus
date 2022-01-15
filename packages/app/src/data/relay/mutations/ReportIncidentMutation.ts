@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { graphql, useMutation } from 'react-relay'
 import type { CapturedPicture } from '~/containers/Camera'
-import { appendIncidentToConnection } from '~/data/relay/store-utils'
+import { appendIncidentToConnection } from '~/data/relay/utils/store'
 import { uploadPictures } from '~/screens/ReportScreen/upload-pictures'
 import type {
   ReportIncidentErrCodeType,

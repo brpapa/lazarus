@@ -8,17 +8,35 @@ import {
   SubscribeFunction,
 } from 'relay-runtime'
 import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/config'
-import { SecureStoreProxy } from '../secure-store-proxy'
+import { AuthTokensManager } from '../auth-tokens-manager'
 import { CloseCode, createClient } from 'graphql-ws'
 
+async function createRequestHeaders() {
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  }
+
+  const accessToken = await AuthTokensManager.getAccessToken()
+  if (accessToken !== null)
+    return {
+      ...headers,
+      Authorization: `Bearer ${accessToken.value}`,
+    }
+
+  return headers
+}
+
 const fetchFn: FetchFunction = async (operation, variables) => {
-  console.log(`Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`)
+  console.debug(
+    `Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`,
+  )
 
   let json = {} as any
   try {
-    const headers = await getRequestHeaders()
+    const headers = await createRequestHeaders()
     const response = await fetch(`${HTTP_SERVER_BASE_URL}/graphql`, {
-      method: 'POST',
+    method: 'POST',
       headers,
       body: JSON.stringify({
         query: operation.text,
@@ -40,28 +58,12 @@ const fetchFn: FetchFunction = async (operation, variables) => {
     )
 
   return json
-
-  async function getRequestHeaders() {
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }
-
-    const accessToken = await SecureStoreProxy.getAccessToken()
-    if (accessToken !== null)
-      return {
-        ...headers,
-        Authorization: `Bearer ${accessToken.value}`,
-      }
-
-    return headers
-  }
 }
 
 const subscriptionsClient = createClient({
   url: `${WS_SERVER_BASE_URL}/graphql/subscriptions`,
   connectionParams: async () => {
-    const accessToken = await SecureStoreProxy.getAccessToken()
+    const accessToken = await AuthTokensManager.getAccessToken()
     if (accessToken === null) return {}
     return { Authorization: `Bearer ${accessToken.value}` }
   },

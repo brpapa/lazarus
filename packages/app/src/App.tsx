@@ -1,70 +1,78 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { t } from '@metis/shared'
 import { createStackNavigator } from '@react-navigation/stack'
-import { ThemeProvider } from '@shopify/restyle'
 import React, { Suspense, useEffect } from 'react'
-import { StatusBar, StatusBarStyle } from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { RelayEnvironmentProvider } from 'react-relay'
-import { RecoilRoot } from 'recoil'
-import { THEME_NAME } from '~/config'
-import { environment } from '~/data/relay/environment'
-import Root from '~/Root'
-import { darkTheme, theme } from '~/shared/theme'
+import { useQueryLoader } from 'react-relay'
+import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
+import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
+import { useSession } from '~/hooks/use-session'
+import { HomeScreen } from '~/screens/HomeScreen'
+import IncidentScreen from '~/screens/IncidentScreen'
+import SignInScreen from '~/screens/SignInScreen'
+import SignUpScreen from '~/screens/SignUpScreen'
+import type { HomeScreenQuery as HomeScreenQueryType } from '~/__generated__/HomeScreenQuery.graphql'
+import HomeScreenQuery from '~/__generated__/HomeScreenQuery.graphql'
 import Loading from './components/Loading'
-import { startLocationTracking } from './data/background-tasks/background-location-tracking'
-import { useInitialPermissions as useInitialPermissions } from './hooks/use-initial-permissions'
-import { useNavigationStatePersistence } from './hooks/use-navigation-state-persistence'
-import InitialPermissionsScreen from './screens/InitialPermissionsScreen'
+import { startBackgroundLocationTracking } from './data/background-tasks/background-location-tracking'
 
-export type AppStackParams = {
-  InitialPermissions: undefined
-  App: undefined
+export type RootStackParams = {
+  Home: undefined
+  Incident: {
+    incidentId: string
+  }
+  SignIn: undefined
+  SignUp: undefined
 }
 
-const AppStack = createStackNavigator<AppStackParams>()
+const RootStack = createStackNavigator<RootStackParams>()
 
-export default function App() {
-  const requiredPermissions = useInitialPermissions()
-  const navigationState = useNavigationStatePersistence()
+export function App() {
+  const { isSignedIn } = useSession()
+
+  useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
+  usePushNotificationsListener({ when: isSignedIn })
+
+  const [homeScreenQueryRef, loadHomeScreenQuery] =
+    useQueryLoader<HomeScreenQueryType>(HomeScreenQuery)
 
   useEffect(() => {
-    if (requiredPermissions.allPermissionsIsGranted) startLocationTracking()
-  }, [requiredPermissions.allPermissionsIsGranted])
-
-  if (navigationState.isLoading || requiredPermissions.isLoading) return <Loading />
+    if (isSignedIn) {
+      loadHomeScreenQuery({}) // load initial query
+      startBackgroundLocationTracking()
+    }
+  }, [isSignedIn])
 
   return (
-    <ThemeProvider theme={THEME_NAME == 'default' ? theme : darkTheme}>
-      <NavigationContainer {...navigationState.persistenceProps}>
-        <AppStack.Navigator
-          initialRouteName={
-            requiredPermissions.allPermissionsIsGranted ? 'App' : 'InitialPermissions'
-          }
-          screenOptions={{ headerShown: false }}
-        >
-          <AppStack.Screen name="InitialPermissions" component={InitialPermissionsScreen} />
-          <AppStack.Screen name="App">
-            {() => (
-              <RelayEnvironmentProvider environment={environment}>
-                <RecoilRoot>
-                  {/* render a fallback while waiting recoil load async initial values (those where setSelf receives a Promise) */}
-                  <Suspense fallback={<Loading />}>
-                    <SafeAreaProvider>
-                      <StatusBar barStyle={statusBarStyle[THEME_NAME]} />
-                      <Root />
-                    </SafeAreaProvider>
-                  </Suspense>
-                </RecoilRoot>
-              </RelayEnvironmentProvider>
-            )}
-          </AppStack.Screen>
-        </AppStack.Navigator>
-      </NavigationContainer>
-    </ThemeProvider>
+    <RootStack.Navigator
+      initialRouteName={isSignedIn ? 'Home' : 'SignIn'}
+      screenOptions={{ headerShown: false }}
+    >
+      {isSignedIn ? (
+        <>
+          <RootStack.Screen name="Home">
+            {() =>
+              homeScreenQueryRef && (
+                <Suspense fallback={<Loading />}>
+                  <HomeScreen preloadedQuery={homeScreenQueryRef} />
+                </Suspense>
+              )
+            }
+          </RootStack.Screen>
+          <RootStack.Screen name="Incident" component={IncidentScreen} />
+        </>
+      ) : (
+        <>
+          <RootStack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{ title: t('signIn'), animationTypeForReplace: 'pop' }}
+          />
+          <RootStack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{ title: t('signUp') }}
+          />
+        </>
+      )}
+    </RootStack.Navigator>
   )
-}
-
-const statusBarStyle: Record<ThemeName, StatusBarStyle> = {
-  default: 'dark-content',
-  dark: 'light-content',
 }

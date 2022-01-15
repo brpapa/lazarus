@@ -1,13 +1,16 @@
 import * as Location from 'expo-location'
 import { atom } from 'recoil'
 import { FOREGROUND_LOCATION_OPTIONS } from '~/config'
+import { AuthTokensManager } from '../auth-tokens-manager'
 import { commitUpdateUserLocationMutation } from '../relay/mutations/UpdateUserLocationMutation'
 
 const getInitialUserLocation = async () => {
   const status = await Location.getForegroundPermissionsAsync()
   if (!status.granted)
-    throw new Error('The initial permissions screen must make the foreground permission required to use app')
-  
+    throw new Error(
+      'The initial permissions screen must make the foreground permission required to use app',
+    )
+
   const { coords } = await Location.getCurrentPositionAsync(FOREGROUND_LOCATION_OPTIONS)
   const location = {
     latitude: coords.latitude,
@@ -15,7 +18,10 @@ const getInitialUserLocation = async () => {
   }
   console.log(`[recoil] Initial user location: (${location.latitude}, ${location.longitude})`)
 
-  commitUpdateUserLocationMutation(location) // update server with the first initial location value when app is foregound because the user can not have granted background location permission
+  if (await AuthTokensManager.isSignedIn()) {
+    // update server with the first initial location value when app is foregound because the user can not have granted background location permission
+    commitUpdateUserLocationMutation(location)
+  }
 
   return location
 }

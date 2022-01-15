@@ -1,31 +1,40 @@
 import React, { Suspense, useEffect } from 'react'
-import { useQueryLoader } from 'react-relay'
+import { graphql, useQueryLoader, useRefetchableFragment } from 'react-relay'
 import { useRecoilState } from 'recoil'
 import Box from '~/components/atomics/Box'
 import Loading from '~/components/Loading'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
 import IncidentPreview from '~/containers/IncidentPreview'
 import MapView from '~/containers/MapView'
-import { IncidentMarkers } from '~/containers/MapView/IncidentMarkers'
+import { IncidentMarkerList } from '~/containers/MapView/IncidentMarkerList'
 import { selectedIncidentIdInMap } from '~/data/recoil'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
-import type { IncidentMarkersQuery as IncidentMarkersQueryType } from '~/__generated__/IncidentMarkersQuery.graphql'
-import IncidentMarkersQuery from '~/__generated__/IncidentMarkersQuery.graphql'
+import type { ExplorerScreenRefreshQuery as ExplorerScreenRefreshQueryType } from '~/__generated__/ExplorerScreenRefreshQuery.graphql'
+import type { ExplorerScreen_query$key } from '~/__generated__/ExplorerScreen_query.graphql'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
 import IncidentPreviewQuery from '~/__generated__/IncidentPreviewQuery.graphql'
 
-export default function ExplorerScreen() {
-  const [incidentMarkersQueryRef, loadIncidentMarkersQuery] =
-    useQueryLoader<IncidentMarkersQueryType>(IncidentMarkersQuery)
-  const [incidentPreviewQueryRef, loadIncidentPreviewQuery] =
-    useQueryLoader<IncidentPreviewQueryType>(IncidentPreviewQuery)
+type ExplorerScreenProps = {
+  query: ExplorerScreen_query$key
+}
+
+const frag = graphql`
+  fragment ExplorerScreen_query on Query @refetchable(queryName: "ExplorerScreenRefreshQuery") {
+    ...IncidentMarkerList_query
+  }
+`
+
+export function ExplorerScreen(props: ExplorerScreenProps) {
+  // later the incidents will be refetched for each map resize later (move this down to re-render IncidentMarkerList only)
+  const [data, _refetch] = useRefetchableFragment<
+    ExplorerScreenRefreshQueryType,
+    ExplorerScreen_query$key
+  >(frag, props.query)
 
   const [selectedIncidentId, setSelectedIncidentId] = useRecoilState(selectedIncidentIdInMap)
   const someIncidentIsSelected = selectedIncidentId !== null
 
-  useEffect(() => {
-    // this will need to be refreshed/reloaded here for each map resize later
-    loadIncidentMarkersQuery({})
-  }, [loadIncidentMarkersQuery])
+  const [incidentPreviewQueryRef, loadIncidentPreviewQuery] =
+    useQueryLoader<IncidentPreviewQueryType>(IncidentPreviewQuery)
 
   useEffect(() => {
     if (selectedIncidentId === null) return
@@ -35,11 +44,7 @@ export default function ExplorerScreen() {
   return (
     <Box flex={1} bg="background" width={SCREEN_WIDTH} height={SCREEN_HEIGHT}>
       <MapView>
-        {incidentMarkersQueryRef && (
-          <Suspense fallback={null}>
-            <IncidentMarkers preloadedQuery={incidentMarkersQueryRef} />
-          </Suspense>
-        )}
+        <IncidentMarkerList query={data} />
       </MapView>
       <Box position="absolute" bottom={0} width={'100%'}>
         {someIncidentIsSelected && incidentPreviewQueryRef && (

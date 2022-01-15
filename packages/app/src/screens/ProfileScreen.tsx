@@ -1,3 +1,4 @@
+import { t } from '@metis/shared'
 import React from 'react'
 import { Button } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -5,9 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Box from '~/components/atomics/Box'
 import Text from '~/components/atomics/Text'
 import { useSession } from '~/hooks/use-session'
-import { t } from '@metis/shared'
 
-export default function ProfileScreen() {
+export function ProfileScreen() {
   const insets = useSafeAreaInsets()
   const { closeSession } = useSession()
 
@@ -17,7 +17,7 @@ export default function ProfileScreen() {
         <Text variant="header" m="md">
           {t('profile.title')}
         </Text>
-        <Button title="Sair" onPress={closeSession} />
+        <Button title={t('logout')} onPress={closeSession} />
       </ScrollView>
     </Box>
   )

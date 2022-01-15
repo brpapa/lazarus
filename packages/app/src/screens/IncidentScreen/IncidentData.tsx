@@ -19,7 +19,7 @@ export function IncidentData(props: IncidentDataProps) {
           medias {
             url
           }
-          usersNotified
+          usersNotifiedCount
         }
       }
     `,
@@ -30,8 +30,8 @@ export function IncidentData(props: IncidentDataProps) {
     <>
       <Box>
         {/* TODO: image swiper com scroll view: https://www.youtube.com/watch?v=otr_x0wKgvU&t=679s */}
-        {data.incident?.medias
-          .filter((m) => m !== null)
+        {data
+          .incident!.medias.filter((m) => m !== null)
           .map((media, idx) => (
             <Image key={idx} source={{ uri: media.url }} style={{ width: '100%', height: 400 }} />
           ))}
@@ -42,7 +42,7 @@ export function IncidentData(props: IncidentDataProps) {
         </Text>
         {/* <Text variant="subheader">{'Rua dos bobos, número 0'}</Text> */}
 
-        <NotificationsAmount my="xs" amount={data.incident?.usersNotified} />
+        <NotificationsAmount my="xs" amount={data.incident!.usersNotifiedCount} />
 
         <Text variant="title" mt="lg">
           {t('incident.updatesSectionTitle')}

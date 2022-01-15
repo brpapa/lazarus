@@ -10,19 +10,18 @@ type IncidentMarkerProps = {
   onPressed: () => void
 }
 
-function IncidentMarker(props: IncidentMarkerProps) {
-  const data = useFragment<IncidentMarker_incident$key>(
-    graphql`
-      fragment IncidentMarker_incident on Incident {
-        incidentId
-        location {
-          latitude
-          longitude
-        }
-      }
-    `,
-    props.incident,
-  )
+const frag = graphql`
+  fragment IncidentMarker_incident on Incident {
+    incidentId
+    location {
+      latitude
+      longitude
+    }
+  }
+`
+
+export function IncidentMarker(props: IncidentMarkerProps) {
+  const data = useFragment<IncidentMarker_incident$key>(frag, props.incident)
 
   return (
     <Marker
@@ -44,5 +43,3 @@ function IncidentMarker(props: IncidentMarkerProps) {
     </Marker>
   )
 }
-
-export default IncidentMarker

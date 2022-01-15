@@ -1,10 +1,10 @@
+import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
 import { Button } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { Box, Text } from '~/components/atomics'
-import Loading from '~/components/Loading'
 import MyButton from '~/components/MyButton'
 import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
 import type { RootStackParams } from '~/RootNavigator'
@@ -33,15 +33,15 @@ export default function SignUpScreen() {
 
   return (
     <Box flex={1} alignItems="center" justifyContent="center">
-      <TextInput placeholder="Username" value={username} onChangeText={setUsername} />
+      <TextInput placeholder={t('username')} value={username} onChangeText={setUsername} />
       <TextInput
-        placeholder="Password"
+        placeholder={t('password')}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
-        placeholder="Confirm password"
+        placeholder={t('passwordConfirm')}
         value={passwordConfirm}
         onChangeText={setPasswordConfirm}
         secureTextEntry
@@ -50,14 +50,14 @@ export default function SignUpScreen() {
         p="sm"
         mx="sm"
         my="md"
-        label={'SignUp'}
+        label={t('signUp')}
         onPress={onSignUpPressed}
         isLoading={isSending}
       />
       {errorMsg && <Text>{errorMsg}</Text>}
       <Box style={{ height: 100 }} />
-      <Text>{'Or already have an account?'}</Text>
-      <Button title="SignIn" onPress={() => rootNavigation.navigate('SignIn')} />
+      <Text>{t('callToSignIn')}</Text>
+      <Button title={t('signIn')} onPress={() => rootNavigation.navigate('SignIn')} />
     </Box>
   )
 }

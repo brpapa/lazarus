@@ -1,3 +1,4 @@
+import { commitSeeNotificationMutation } from './../data/relay/mutations/SeeNotificationMutation'
 import { useNavigation } from '@react-navigation/native'
 import * as Notifications from 'expo-notifications'
 import { useEffect } from 'react'
@@ -23,13 +24,20 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
     })
 
     // fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      const { data } = response.notification.request.content
-      if (typeof data?.incidentId !== 'string')
-        throw new Error(`It was expected an incidentId field in data, received data object: ${JSON.stringify(data)}`)
-      
-      navigation.navigate('Incident', { incidentId: data.incidentId })
-    })
+    const responseListener = Notifications.addNotificationResponseReceivedListener(
+      async (response) => {
+        const { data } = response.notification.request.content
+        if (typeof data?.incidentId !== 'string' || typeof data?.notificationId !== 'string')
+          throw new Error(
+            `It was expected an incidentId field in data, received data object: ${JSON.stringify(
+              data,
+            )}`,
+          )
+
+        await commitSeeNotificationMutation(data.notificationId)
+        navigation.navigate('Incident', { incidentId: data.incidentId })
+      },
+    )
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener)

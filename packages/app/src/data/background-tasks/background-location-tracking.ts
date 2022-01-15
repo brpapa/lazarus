@@ -20,10 +20,12 @@ TaskManager.defineTask(TASK_NAME, async (body: any) => {
 
   if (data) {
     const { coords } = data.locations[data.locations.length - 1]
+
     await commitUpdateUserLocationMutation({
       latitude: coords.latitude,
       longitude: coords.longitude,
     })
+
     console.log(
       `[task] Server updated with the new user location: (${coords.latitude}, ${coords.longitude})`,
     )
@@ -31,7 +33,7 @@ TaskManager.defineTask(TASK_NAME, async (body: any) => {
 })
 
 /** register for location updates when app is in background or foreground, if the user has granted permission */
-export const startLocationTracking = async () => {
+export const startBackgroundLocationTracking = async () => {
   try {
     const status = await Location.getBackgroundPermissionsAsync()
     if (!status.granted) return
