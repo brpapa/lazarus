@@ -123,7 +123,7 @@ model DeviceModel {
   pushToken String    @map("push_token") @db.VarChar(64)
 
   @@unique([userId, pushToken])
-  @@map("device")
+  @@map("devices")
 }
 
 model NotificationModel {
@@ -139,7 +139,7 @@ model NotificationModel {
   seenByTargetUser Boolean
   createdAt        DateTime             @default(now()) @map("created_at")
 
-  @@map("notification")
+  @@map("notifications")
 }
 
 enum NotificationCodeEnum {

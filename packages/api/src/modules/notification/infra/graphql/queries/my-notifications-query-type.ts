@@ -5,11 +5,18 @@ import { Connection, connectionArgs, ConnectionArguments, connectionFromArray } 
 import { GraphQLContext } from 'src/api/graphql/context'
 import { NotificationConnectionType } from '../types/notification-type'
 
+type NotificationConnectionDTO = Connection<NotificationDTO> & {
+  totalCount: number
+  notSeenCount: number
+}
+
 export const MyNotificationsQueryType: GraphQLFieldConfig<void, GraphQLContext, any> = {
   type: GraphQLNonNull(NotificationConnectionType),
+  description: 'Get notifications of current user ordered by most recent',
   args: connectionArgs,
-  resolve: async (_, args: ConnectionArguments, ctx): Promise<Connection<NotificationDTO>> => {
-    const notifications = await getMyNotifications.exec({}, ctx)
-    return connectionFromArray(notifications, args)
+  resolve: async (_, args: ConnectionArguments, ctx): Promise<NotificationConnectionDTO> => {
+    const res = await getMyNotifications.exec({}, ctx)
+    const connection = connectionFromArray(res.notifications, args)
+    return { ...connection, totalCount: res.totalCount, notSeenCount: res.notSeenCount }
   },
 }

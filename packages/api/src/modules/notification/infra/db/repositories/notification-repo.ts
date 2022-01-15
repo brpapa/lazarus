@@ -31,6 +31,7 @@ export class NotificationRepo extends PrismaRepo<Notification> implements INotif
   async findAllOfTargetUserId(targetUserId: string): Promise<Notification[]> {
     const notifications = await this.prismaClient.notificationModel.findMany({
       where: { targetUserId },
+      orderBy: [{ createdAt: 'desc' }],
     })
     return notifications.map(NotificationMapper.fromModelToDomain)
   }

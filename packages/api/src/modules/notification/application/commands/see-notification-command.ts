@@ -32,8 +32,8 @@ export class SeeNotificationCommand extends Command<SeeNotificationInput, SeeNot
       )
 
     notification.see()
-
     await this.notificationRepo.commit(notification)
+
     return ok(NotificationMapper.fromDomainToDTO(notification))
   }
 }

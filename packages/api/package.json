@@ -26,7 +26,7 @@
     "db:migrate": "dotenv -e .env.dev -- npx prisma migrate dev",
     "db:push": "dotenv -e .env.dev -- npx prisma db push",
     "db:push:test": "dotenv -e .env.test -- npx prisma db push",
-    "db:seed": "dotenv -e .env.dev -- npx ts-node --require tsconfig-paths/register scripts/seed-databases.ts",
+    "db:flush": "dotenv -e .env.dev -- npx ts-node --require tsconfig-paths/register scripts/flush-databases.ts",
     "db:generate-client": "npx prisma generate --schema 'prisma/schema.prisma'"
   },
   "scriptsComment": {
@@ -38,7 +38,7 @@
     "db:generate-client": "based on the current prisma schema, regenerate the prisma client library for type-safety queries",
     "db:migrate": "based on the current prisma schema, creates a new SQL migration file and run it against the database",
     "db:push": "push the current prisma schema to the database, ignoring data loss and without migration history",
-    "db:seed": "delete all data and seed databases again with initial state",
+    "db:flush": "delete all data and seed databases again with initial state",
     "graphql:generate-schema": "based on the current schema defined ./src/infra/http/graphql/schema.ts, generate ./graphql/schema.graphql"
   },
   "author": "Bruno Papa <bruno.papa@hotmail.com>",

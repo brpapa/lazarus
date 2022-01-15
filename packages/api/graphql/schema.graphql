@@ -201,6 +201,12 @@ type NotificationConnection {
 
   """A list of edges."""
   edges: [NotificationEdge]
+
+  """Total count of notifications of user"""
+  totalCount: Int!
+
+  """Count of notifications not seen by user yet"""
+  notSeenCount: Int!
 }
 
 """An edge in a connection."""

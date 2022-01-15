@@ -12,6 +12,6 @@ export interface NotificationDTO {
     entity: LinkedEntityEnum
     entityId: string
   }
-  seenByTargetUser?: boolean
+  seenByTargetUser: boolean
   createdAt?: Date
 }

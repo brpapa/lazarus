@@ -3,13 +3,12 @@ import { ExecutionArgs, getOperationAST, GraphQLError, parse, subscribe, validat
 import { CloseCode } from 'graphql-ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import http from 'http'
-import { authService } from '@user/application/services'
 import { WS_GRAPHQL_SUBSCRIPTIONS_PATH } from 'src/config'
 import { WebSocketServer } from 'ws'
 import { GraphQLContext } from '../graphql/context'
 import { createDataLoaders } from '../graphql/loaders'
 import { schema } from '../graphql/schema'
-import { extractToken, getUserId } from '../utils'
+import { getUserId, getUserIdIgnoringExpiration } from '../utils'
 
 const log = debug('app:infra:ws')
 
@@ -35,8 +34,8 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
       },
       // client 1 <-> n subscription
       onSubscribe: async (ctx, msg) => {
-        const token = extractToken(ctx.connectionParams?.Authorization as string)
-        const { userId } = await authService.decodeJwtIgnoringExpiration(token)
+        const authorization = ctx.connectionParams?.Authorization as string | undefined
+        const userId = await getUserIdIgnoringExpiration(authorization)
 
         const context: GraphQLContext = {
           userId,
@@ -77,9 +76,8 @@ export const initializeWebSocketServer = (httpServer: http.Server) => {
         log('Error: %O', { msg, errors })
       },
       onClose: async (ctx, code, reason) => {
-        const token = extractToken(ctx.connectionParams?.Authorization as string)
-        const { userId } = await authService.decodeJwtIgnoringExpiration(token)
-
+        const authorization = ctx.connectionParams?.Authorization as string | undefined
+        const userId = await getUserIdIgnoringExpiration(authorization)
         log('User %o connection closed: %O', userId, { code, reason })
       },
     },

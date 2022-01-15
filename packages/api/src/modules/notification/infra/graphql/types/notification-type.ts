@@ -4,6 +4,7 @@ import { DateType } from '@shared/infra/graphql/types/date-type'
 import {
   GraphQLBoolean,
   GraphQLEnumType,
+  GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -42,16 +43,16 @@ export const NotificationType = GraphQLTypes.register(
     interfaces: [NodeInterfaceType], // this type implements the Node GraphQL interface
     fields: () => ({
       id: {
-        ...globalIdField(NOTIFICATION_TYPE_NAME, (notification) => notification.notificationId),
+        ...globalIdField(NOTIFICATION_TYPE_NAME, (n) => n.notificationId),
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       notificationId: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (notification) => notification.notificationId,
+        resolve: (n) => n.notificationId,
       },
       targetUserId: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (notification) => notification.targetUserId,
+        resolve: (n) => n.targetUserId,
       },
       code: {
         type: GraphQLNonNull(
@@ -60,31 +61,31 @@ export const NotificationType = GraphQLTypes.register(
             values: mapObjectValues(NotificationCodeEnum, (v) => ({ value: v })),
           }),
         ),
-        resolve: (notification) => notification.code,
+        resolve: (n) => n.code,
       },
       title: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (notification) => notification.title,
+        resolve: (n) => n.title,
       },
       subtitle: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (notification) => notification.subtitle,
+        resolve: (n) => n.subtitle,
       },
       body: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (notification) => notification.body,
+        resolve: (n) => n.body,
       },
       link: {
         type: GraphQLNonNull(NotificationLinkType),
-        resolve: (notification) => notification.link,
+        resolve: (n) => n.link,
       },
       seenByTargetUser: {
-        type: GraphQLBoolean,
-        resolve: (notification) => notification.seenByTargetUser,
+        type: GraphQLNonNull(GraphQLBoolean),
+        resolve: (n) => n.seenByTargetUser,
       },
       createdAt: {
         type: GraphQLNonNull(DateType),
-        resolve: (notification) => notification.createdAt,
+        resolve: (n) => n.createdAt,
       },
     }),
   }),
@@ -96,4 +97,16 @@ export const { connectionType: NotificationConnectionType, edgeType: Notificatio
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nodeType: GraphQLNonNull(NotificationType),
+    connectionFields: () => ({
+      totalCount: {
+        type: GraphQLNonNull(GraphQLInt),
+        description: 'Total count of notifications of user',
+        resolve: (c) => c.totalCount,
+      },
+      notSeenCount: {
+        type: GraphQLNonNull(GraphQLInt),
+        description: 'Count of notifications not seen by user yet',
+        resolve: (c) => c.notSeenCount,
+      },
+    }),
   })
