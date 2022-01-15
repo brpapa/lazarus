@@ -90,7 +90,7 @@ export const useReportIncidentMutation = () => {
           // get the incident record created by mutation
           const incidentRecord = resultRecord.getLinkedRecord('incident')
           if (!incidentRecord)
-            throw new Error('Not found reportIncident.incident record in mutation payload')
+            throw new Error('Not found reportIncident.incident record')
           
           appendIncidentToConnection(store, incidentRecord)
         },

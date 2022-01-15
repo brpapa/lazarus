@@ -37,7 +37,7 @@ export const commitRefreshTokenMutation = (input: RefreshTokenInput) => {
           case 'RefreshTokenOkResult':
             res({
               value: result.accessToken,
-              expiresIn: new Date(result.accessTokenExpiresIn as string),
+              expiresIn: new Date(result.accessTokenExpiresIn),
             })
             break
           case 'RefreshTokenErrResult':

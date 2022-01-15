@@ -67,7 +67,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
         <Box flex={1} flexDirection="row" mb="sm">
           <Text variant="body2">
             {t('incident.createdAt', {
-              createdAt: new Date(data!.incident!.createdAt as string),
+              createdAt: new Date(data!.incident!.createdAt),
             })}
           </Text>
           <Text mx="sm" variant="body2">

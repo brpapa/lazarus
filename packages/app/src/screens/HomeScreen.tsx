@@ -45,26 +45,28 @@ export function HomeScreen(props: HomeScreenProps) {
           tabBarIcon: (props) => <MapIcon color={props.color} />,
         }}
       >
-        {() => <ExplorerScreen query={data} />}
+        {() => <ExplorerScreen queryRef={data} />}
       </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
         name="Todo"
-        component={ProfileScreen}
         options={{
           tabBarLabel: 'Todo',
           tabBarIcon: (props) => <ActivityIcon color={props.color} />,
         }}
-      />
+      >
+        {() => <ProfileScreen />}
+      </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
         name="Report"
-        component={ReportStackScreen}
         options={({ route }) => ({
           tabBarLabel: t('home.reportTabLabel'),
           tabBarIcon: (props) => <CameraIcon color={props.color} />,
           tabBarVisible: false,
           // tabBarVisible: getReportTabBarVisibilityFromRoute(route),
         })}
-      />
+      >
+        {() => <ReportStackScreen />}
+      </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
         name="Notifications"
         options={{
@@ -73,16 +75,17 @@ export function HomeScreen(props: HomeScreenProps) {
           tabBarIcon: (props) => <BellIcon color={props.color} />,
         }}
       >
-        {() => <NotificationsScreen query={data} />}
+        {() => <NotificationsScreen queryRef={data} />}
       </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
         name="Profile"
-        component={ProfileScreen}
         options={{
           tabBarLabel: t('home.profileTabLabel'),
           tabBarIcon: (props) => <UserIcon color={props.color} />,
         }}
-      />
+      >
+        {() => <ProfileScreen />}
+      </HomeBottomTab.Screen>
     </HomeBottomTab.Navigator>
   )
 }

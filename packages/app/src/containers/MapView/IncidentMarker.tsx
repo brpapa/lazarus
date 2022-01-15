@@ -5,7 +5,7 @@ import { Box } from '~/components/atomics'
 import type { IncidentMarker_incident$key } from '~/__generated__/IncidentMarker_incident.graphql'
 
 type IncidentMarkerProps = {
-  incident: IncidentMarker_incident$key
+  incidentRef: IncidentMarker_incident$key
   selected: boolean
   onPressed: () => void
 }
@@ -21,7 +21,7 @@ const frag = graphql`
 `
 
 export function IncidentMarker(props: IncidentMarkerProps) {
-  const data = useFragment<IncidentMarker_incident$key>(frag, props.incident)
+  const data = useFragment<IncidentMarker_incident$key>(frag, props.incidentRef)
 
   return (
     <Marker

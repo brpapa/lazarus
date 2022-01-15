@@ -36,7 +36,7 @@ export function App() {
 
   useEffect(() => {
     if (isSignedIn) {
-      loadHomeScreenQuery({}) // load initial query
+      loadHomeScreenQuery({}, { fetchPolicy: 'network-only' })
       startBackgroundLocationTracking()
     }
   }, [isSignedIn])

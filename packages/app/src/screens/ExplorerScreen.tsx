@@ -14,7 +14,7 @@ import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__gener
 import IncidentPreviewQuery from '~/__generated__/IncidentPreviewQuery.graphql'
 
 type ExplorerScreenProps = {
-  query: ExplorerScreen_query$key
+  queryRef: ExplorerScreen_query$key
 }
 
 const frag = graphql`
@@ -28,7 +28,7 @@ export function ExplorerScreen(props: ExplorerScreenProps) {
   const [data, _refetch] = useRefetchableFragment<
     ExplorerScreenRefreshQueryType,
     ExplorerScreen_query$key
-  >(frag, props.query)
+  >(frag, props.queryRef)
 
   const [selectedIncidentId, setSelectedIncidentId] = useRecoilState(selectedIncidentIdInMap)
   const someIncidentIsSelected = selectedIncidentId !== null
@@ -44,7 +44,7 @@ export function ExplorerScreen(props: ExplorerScreenProps) {
   return (
     <Box flex={1} bg="background" width={SCREEN_WIDTH} height={SCREEN_HEIGHT}>
       <MapView>
-        <IncidentMarkerList query={data} />
+        <IncidentMarkerList queryRef={data} />
       </MapView>
       <Box position="absolute" bottom={0} width={'100%'}>
         {someIncidentIsSelected && incidentPreviewQueryRef && (

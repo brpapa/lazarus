@@ -6,7 +6,7 @@ import type { IncidentMarkerList_query$key } from '~/__generated__/IncidentMarke
 import { IncidentMarker } from './IncidentMarker'
 
 type IncidentMarkersProps = {
-  query: IncidentMarkerList_query$key
+  queryRef: IncidentMarkerList_query$key
 }
 
 const frag = graphql`
@@ -25,7 +25,7 @@ const frag = graphql`
 `
 
 export function IncidentMarkerList(props: IncidentMarkersProps) {
-  const data = useFragment<IncidentMarkerList_query$key>(frag, props.query)
+  const data = useFragment<IncidentMarkerList_query$key>(frag, props.queryRef)
 
   const [selectedIncidentId, setSelectedIncidentIdInMap] = useRecoilState(selectedIncidentIdInMap)
 
@@ -38,7 +38,7 @@ export function IncidentMarkerList(props: IncidentMarkersProps) {
       {nodes.map((node, i) => (
         <IncidentMarker
           key={i}
-          incident={node}
+          incidentRef={node}
           selected={selectedIncidentId === node.incidentId}
           onPressed={() => setSelectedIncidentIdInMap(node.incidentId)}
         />

@@ -5,21 +5,21 @@ import type { NotificationsScreen_query$key } from '~/__generated__/Notification
 import { NotificationList } from './NotificationList'
 
 type NotificationsScreenProps = {
-  query: NotificationsScreen_query$key
+  queryRef: NotificationsScreen_query$key
 }
 
 const frag = graphql`
   fragment NotificationsScreen_query on Query {
-    ...NotificationList_query
+    ...NotificationList_query @arguments(count: 10, cursor: null)
   }
 `
 
 export function NotificationsScreen(props: NotificationsScreenProps) {
-  const data = useFragment<NotificationsScreen_query$key>(frag, props.query)
+  const data = useFragment<NotificationsScreen_query$key>(frag, props.queryRef)
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <NotificationList query={data} />
+      <NotificationList queryRef={data} />
     </SafeAreaView>
   )
 }

@@ -6,6 +6,7 @@ import type {
   SeeNotificationMutation as SeeNotificationMutationType,
 } from '~/__generated__/SeeNotificationMutation.graphql'
 
+// is good return all data that are changed by backend so the relay store is automatically updated based on node id
 const mutation = graphql`
   mutation SeeNotificationMutation($input: SeeNotificationInput!) {
     seeNotification(input: $input) {
@@ -14,7 +15,6 @@ const mutation = graphql`
         ... on SeeNotificationOkResult {
           notification {
             id
-            notificationId
             seenByTargetUser
           }
         }
@@ -78,6 +78,18 @@ export const useSeeNotificationMutation = () => {
             default:
               throw new Error(`Unexpected result typename: ${result.__typename}`)
           }
+        },
+        updater: (store) => {
+          // define how update the relay store after a successfull response
+
+          const myNotificationsRecord = store.getRoot().getLinkedRecord('myNotifications')
+          if (!myNotificationsRecord) throw new Error('Not found root.myNotifications record')
+
+          const notSeenCount = myNotificationsRecord.getValue('notSeenCount')
+          if (typeof notSeenCount !== 'number')
+            throw new Error('Value of root.myNotifications.notSeenCount scalar is not a number')
+
+          myNotificationsRecord.setValue(notSeenCount - 1, 'notSeenCount')
         },
         onError: (error) => {
           throw error

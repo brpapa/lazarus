@@ -10,21 +10,20 @@ type IncidentDataProps = {
   preloadedQueryRef: PreloadedQuery<IncidentDataQueryType>
 }
 
-export function IncidentData(props: IncidentDataProps) {
-  const data = usePreloadedQuery<IncidentDataQueryType>(
-    graphql`
-      query IncidentDataQuery($incidentId: String!) {
-        incident(incidentId: $incidentId) {
-          title
-          medias {
-            url
-          }
-          usersNotifiedCount
-        }
+const query = graphql`
+  query IncidentDataQuery($incidentId: String!) {
+    incident(incidentId: $incidentId) {
+      title
+      medias {
+        url
       }
-    `,
-    props.preloadedQueryRef,
-  )
+      usersNotifiedCount
+    }
+  }
+`
+
+export function IncidentData(props: IncidentDataProps) {
+  const data = usePreloadedQuery<IncidentDataQueryType>(query, props.preloadedQueryRef)
 
   return (
     <>

@@ -30,7 +30,7 @@ export const useOnNearbyIncidentCreatedSubscription = ({ when }: { when: boolean
 
         // get the incident record returned
         const incidentRecord = store.getRootField('onNearbyIncidentCreated') // relative to this subscription only
-        if (!incidentRecord) throw new Error('Not found incident record in subscription payload')
+        if (!incidentRecord) throw new Error('Not found onNearbyIncidentCreated.incident record')
 
         appendIncidentToConnection(store, incidentRecord)
       },
