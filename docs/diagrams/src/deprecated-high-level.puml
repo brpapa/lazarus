@@ -71,8 +71,6 @@ api_gtw --> incidents_service
 api_gtw --> users_service
 api_gtw <--> static_content_service : "upload image/video"
 
-
-
 static_content_service <--> event_bus : "pub/sub"
 notifications_service <--> event_bus : "pub/sub"
 chat_service <--> event_bus : "pub/sub"

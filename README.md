@@ -1,26 +1,75 @@
-Metis
+# Schedule
+
+- planning:
+
+  - at least:
+    - signup & signin, incident publishing
+    - background and foreground user location tracking
+    - push notifications about new incidents for relevant users
+    - i18n support
+    - notification as entity
+    - redesign of all screens
+      - git commit -m '[app] initial setup of tamagui'
+        - gradually and testing each component at time!
+      - individual incident view 
+      - report screen (with video upload)
+      - notifications view
+      - nearby incidents map view
+    - user interacting with another incidents
+      - user react, user comment, user upvote/downvote comments
+
+  - would be nice:
+    - 08/01 - 09/01: user friendships, friends map view with (with real-time updates?)
+    - 15/01 - 16/01: user-user chat
+    - 22/01 - 23/01: incidents fetching filtering within screen
+    - 29/01 - 30/01: reputation system, user editing your owned incidents
+
+- maybe:
+  - git commit -m '[api/app] add logout mutation (when user logout remove user devices that are listening for push notifications)'
+  - git commit -m '[api] add pino logger'
+  - git commit -m '[shared] add common types'
+  - git commit -m '[app] bump relay to v13.0.0.0 (with rust compiler)'
+  - git commit -m '[api] bump graphql-js to v16.0.0'
+  - git commit -m '[api/app] refactor to graphql upload'
+    - https://github.com/jaydenseric/graphql-upload
+    - multipart request over graphql (use busboy under the hood)
+
+- goal:
+  - 01/02: frontend+backend 100% pronto localmente (3a apresentacao pro remo)
+  - 15/02: monografia escrita (4a apresentacao pro remo)
+  - 01/03: apresentacao criada (apresentacao na banca final)
+
+- deploy
+  - backend
+    - heroky (git push e ja ta no ar)
+  - app
+    - set up Expo Android app to get push notifications using your own Firebase Cloud Messagign (FCM) credentials: https://docs.expo.dev/push-notifications/using-fcm 
+    - expo: read the [permissions on iOS](https://docs.expo.dev/guides/permissions/#ios) and [permissions on Android](https://docs.expo.dev/guides/permissions/#android) sections carefully before deploying your app to stores
 
 # Requirements
 
 ## Functional requirements (e os use cases que ele contem)
 
-- 1. usuários devem ser capazes de publicar alertas  
+- 1. usuários devem ser capazes de publicar alertas
 
   - upload de fotos e vídeos:
+
     - é obrigatório o upload de pelo menos uma mídia
     - vídeos devem ser de curta duração
     - toda mídia deve ter sido gravada no momento atual, dentro de uma margem de 1 hora
     - toda mídia deve ter sido gravada no local em que o usuário está, dentro de uma margem de 2 km
 
   - não deve ser criado se:
+
     - houverem outros alertas ativos muito próximos ao do novo alerta
       <!-- tentativa de evitar duplicações de alertas -->
-  
+
   - o alerta criado deve assumir a localização atual de quem o criou
 
 - 2. usuários e anônimos devem visualizar um mapa de alertas
 
-  - visão geral dos alertas: 
+  - visão geral dos alertas:
+
     - default view: alertas mais recentes (criados nas últimas 24 horas) e nas proximidades
     - trend view: alertas ativos mais populares (com mais interações) de qualquer lugar
     - stats:
@@ -37,6 +86,7 @@ Metis
 
 - 4. usuários podem interagir em qualquer alerta ativo publicado por outro usuário
   <!-- sem chat real-time, pois teria muitos usuários conectados -->
+
   - usuário qualquer pode reagir ao alerta
   - usuário qualquer pode adicionar um comentário ao alerta
   - usuário qualquer pode responder comentários de outros usuários
@@ -47,10 +97,10 @@ Metis
     <!-- todo: usuários reportam/denunciam outros usuários? -->
     <!-- todo: usuários se auto moderam? avaliam e são avaliados? main moderators avaliam usuarios, e ai seu peso vale mais? -->
 
-- 5. usuários podem colaborar com o contéudo de alertas reativos publicados por outros usuários e que estão nas suas proximidades
+- 5. usuários podem colaborar com o contéudo de alertas publicados por outros usuários e que estão nas suas proximidades
 
   - usuário colaborante pode adicionar novas fotos/vídeos
-  
+
 - 6. usuários podem modificar seus próprios alertas
 
   - usuário criador pode "encerrar" o alerta
@@ -104,18 +154,19 @@ Metis
   - para atender isso:
     - otimizar para leitura
 
+# Some definitions
 
-# Features checklist
+Active user: when user is with app opened (websocket connection stablished)
+Relevant users: users that are located nearby to one incident
+User session: an auth token life cycle (access token & refresh token)
 
-
-- media (images/records)
-
-  - [x] upload on-demand to file storage
-  - [x] download on-demand
+# See it later
 
 - real-time updates
 
-  - all active/logged app users keep a connection open with the server (websocket with GraphQL Subscription) to receive updates about
+  - https://mattkrick.medium.com/graphql-after-4-years-scaling-subscriptions-d6ea1a8987be
+
+  - all active app users keep a connection open with the server (websocket with GraphQL Subscription) to receive updates about
 
     - [ ] progresso de upload de arquivos
     - [ ] novo alerta criado na proximidade
@@ -125,13 +176,6 @@ Metis
       <!-- https://www.youtube.com/watch?v=E3NHd-PkLrQ -->
       <!-- https://dev.to/dsckiitdev/build-a-chat-app-with-graphql-subscriptions-typescript-part-2-3k35 -->
 
-    - servidor envia atualizacoes somente para os `relevant users` (que estao nos arredos) logados
-      - todo: como o servidor envia apenas pros usuários relevantes?
-      - todo: como conectar usuarios proximos no mesmo websocket handler? group message?
-      - híbrido?
-        - divide o mapa em chunks
-        - o usuario pode estar em mais de uma ainda, e ai filtra no app se está no raio
-
   - user location tracking
     - [ ] near real-time user location updates, only between a friendship group of users
       <!-- https://www.infoworld.com/article/3128306/build-geospatial-apps-with-redis.html -->
@@ -140,14 +184,13 @@ Metis
 
 # Tech stack
 
+
 - javascript (language)
 - typescript (type system)
 - node (backend runtime)
 - koa (server framework)
 - graphql (API)
 - vscode (IDE)
-- react (declarative UI)
-- react-native (native apps)
 - recoil ("global" state management)
 - ws + graphql-ws (for websockets)
 - relay (declarative data fetching)
@@ -155,8 +198,20 @@ Metis
 - jest (test framework)
 - supertest (HTTP tests)
 - prettier (code formatting)
-- prisma (ORM)
+- prisma (database ORM)
 - github actions (CI/CD)
+- eslint (lint rules)
+- internationalization: [i18next](https://www.i18next.com)
+
+- react (declarative UI)
+- react native (native apps)
+- expo
+
+- React Native framework for building native apps with React
+- Expo library for better development experience
+- Relay framework for using GraphQL with React
+- TypeScript language for type checking and better code quality
+- React Navigation library for navigation
 
 <!-- - mongoose (mongo schema) -->
 <!-- - bulljs (event driven distributed jobs) -->
@@ -166,7 +221,6 @@ Metis
 <!-- - jscodeshift (codemod) -->
 <!-- - openapi (API REST documentation) -->
 <!-- - docusuarus (documentation) -->
-<!-- - eslint (lint rules) -->
 <!-- - hygen (codegen) -->
 <!-- - styled-components (css in js) -->
 <!-- - storybook (design system and email builder) -->
@@ -183,5 +237,3 @@ Metis
 # Project structure visualization
 
 ![Visualization of this repository structure](./diagram.svg)
-
-

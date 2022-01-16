@@ -1,0 +1,51 @@
+@startuml backend-high-level-graph
+
+digraph g {
+  graph [ rankdir = "TB" ]
+  node [ fontsize = "14" shape = "record" ]
+
+  subgraph cluster_0 {
+    label = "Incident\n(module)"
+
+    incident_command_ReportIncident [ label = "ReportIncident\n(command)" ]
+
+    incident_event_IncidentCreated [ label = "IncidentCreated\n(event)" ]
+    incident_event_CommentPostedOnIncident [ label = "CommentPostedOnIncident\n(event)" ]
+    
+    incident_observer_UpdateIncidentStatistics [ label = "UpdateIncidentStatistics\n(observer)" ]
+  }
+
+  subgraph cluster_1 {
+    label = "User\n(module)"
+    
+    user_event_IncidentCreatedEnrichedWithNearbyUsers [ label = "IncidentCreatedEnrichedWithNearbyUsers\n(event)" ]
+    user_event_UserSignedIn [ label = "UserSignedIn\n(event)" ]
+    user_event_UserSignedOut [ label = "UserSignedOut\n(event)" ]
+
+    ' it could be implemented in a Location module?
+    user_observer_EnrichIncidentWithNearbyUsers [ label = "EnrichIncidentWithNearbyUsers\n(observer)" ]
+  }
+
+  subgraph cluster_2 {
+    label = "Notification\n(module)"
+    
+    notification_event_UsersNotified [ label = "UsersNotified\n(event)" ]
+    
+    notification_observer_NotifyNearbyUsers [ label = "NotifyNearbyUsers\n(observer)" ]
+    notification_observer_RegisterDevice [ label = "RegisterDevice\n(observer)" ]
+    notification_observer_UnregisterDevice [ label = "UnregisterDevice\n(observer)" ]
+  }
+
+  incident_command_ReportIncident -> incident_event_IncidentCreated [ label = "dispatch" ]
+  incident_event_IncidentCreated -> user_observer_EnrichIncidentWithNearbyUsers [ label = "is handled by" ]
+  user_observer_EnrichIncidentWithNearbyUsers -> user_event_IncidentCreatedEnrichedWithNearbyUsers [ label = "dispatch"]
+  user_event_IncidentCreatedEnrichedWithNearbyUsers -> notification_observer_NotifyNearbyUsers [ label = "is handled by"]
+  notification_observer_NotifyNearbyUsers -> notification_event_UsersNotified [ label = "dispatch" ]
+  notification_event_UsersNotified -> incident_observer_UpdateIncidentStatistics [ label = "is handled by "]
+
+  user_event_UserSignedIn -> notification_observer_RegisterDevice [ label = "is handled by"]
+  user_event_UserSignedOut -> notification_observer_UnregisterDevice [ label = "is handled by"]
+}
+
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml frontend-high-level-graph
+
+digraph g {
+  graph [ rankdir = "TB" ]
+  node [ fontsize = "14" shape = "record" ]  
+}
+
+
+@enduml
