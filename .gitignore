@@ -39,7 +39,8 @@ cypress/screenshots
 
 # env variables
 .env
-.env.dev
+.env.*
+!.env.example
 
 # Local-only files
 _*

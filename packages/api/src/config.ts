@@ -4,13 +4,13 @@ import dotenvSafe from 'dotenv-safe'
 
 const { env } = process
 
-type NodeEnv = 'test' | 'dev' | 'prod'
+type NodeEnv = 'local' | 'test' | 'dev' | 'prod'
 export const NODE_ENV = (env.NODE_ENV || 'prod') as NodeEnv
 export const IS_PRODUCTION = NODE_ENV === 'prod'
 
 const trimQuotes = (val?: string) => val?.replace(/^"+|'+|"+|'+$/g, '')
 const fromRoot = path.join.bind(this, __dirname, '..')
-const envFileSuffix = NODE_ENV === 'prod' ? '' : `.${env}`
+const envFileSuffix = NODE_ENV === 'prod' ? '' : `.${NODE_ENV}`
 
 dotenvSafe.config({
   path: fromRoot(`.env${envFileSuffix}`),
