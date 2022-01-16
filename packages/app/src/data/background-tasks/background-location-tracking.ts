@@ -21,10 +21,13 @@ TaskManager.defineTask(TASK_NAME, async (body: any) => {
   if (data) {
     const { coords } = data.locations[data.locations.length - 1]
 
-    await commitUpdateUserLocationMutation({
-      latitude: coords.latitude,
-      longitude: coords.longitude,
+    const result = await commitUpdateUserLocationMutation({
+      location: {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      },
     })
+    result.mapErr(console.error)
 
     console.log(
       `[task] Server updated with the new user location: (${coords.latitude}, ${coords.longitude})`,

@@ -22,8 +22,8 @@ export const useSession = () => {
       const refreshToken = await AuthTokensManager.getRefreshToken()
       if (refreshToken === null) return closeSession()
 
-      const newAccessToken = await commitRefreshTokenMutation({ refreshToken })
-      startSession(newAccessToken)
+      const result = await commitRefreshTokenMutation({ refreshToken })
+      result.map((accessToken) => startSession(accessToken), console.error)
     } catch (e) {
       console.error(e)
       return closeSession()

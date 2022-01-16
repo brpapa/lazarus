@@ -17,17 +17,15 @@ export default function SignUpScreen() {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [errorMsg, setErrorMsg] = useState<string>()
 
-  const onSignUpPressed = useCallback(() => {
+  const onSignUpPressed = useCallback(async () => {
     if (password !== passwordConfirm) {
       setErrorMsg('Passwords mismatch')
       return
     }
-    signUp(
-      { username, password },
-      {
-        onOkResult: () => rootNavigation.navigate('SignIn'),
-        onErrResult: (res) => setErrorMsg(res.reason),
-      },
+    const result = await signUp({ username, password })
+    result.map(
+      () => rootNavigation.navigate('SignIn'),
+      (err) => setErrorMsg(err.reason),
     )
   }, [password, passwordConfirm, rootNavigation, signUp, username])
 

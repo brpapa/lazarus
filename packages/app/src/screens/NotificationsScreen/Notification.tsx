@@ -35,16 +35,16 @@ export function Notification(props: NotificationProps) {
   const [seeNotification] = useSeeNotificationMutation()
 
   const onPressed = useCallback(async () => {
-    if (!data.seenByTargetUser) seeNotification({ notificationId: data.notificationId })
-
     switch (data.link.entity) {
       case 'INCIDENT':
         navigation.navigate('Incident', { incidentId: data.link.entityId })
-        return
+        break
       default:
         console.warn(`Link to entity ${data.link.entity} is not implemented yet`)
-        return
+        break
     }
+
+    if (!data.seenByTargetUser) await seeNotification({ notificationId: data.notificationId })
   }, [
     data.link.entity,
     data.link.entityId,

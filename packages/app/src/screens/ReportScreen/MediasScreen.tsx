@@ -1,3 +1,4 @@
+import { t } from '@metis/shared'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
@@ -10,8 +11,6 @@ import Text from '~/components/atomics/Text'
 import MyButton from '~/components/MyButton'
 import { useReportIncidentMutation } from '~/data/relay/mutations/ReportIncidentMutation'
 import { useSession } from '~/hooks/use-session'
-import { t } from '@metis/shared'
-import intl from '~/shared/intl'
 import type { ReportStackParams } from '.'
 
 export default function MediasScreen() {
@@ -33,17 +32,16 @@ export default function MediasScreen() {
   const [reportIncident, isSending] = useReportIncidentMutation()
   const { closeSession } = useSession()
 
-  const onReportButtonPressed = useCallback(() => {
-    reportIncident(
-      {
-        title: title,
-        pictures: params.capturedPictures,
-      },
-      {
-        onOkResult: closeReport,
-        onErrResult: (res) => {
-          if (res.code === 'UnauthenticatedError') closeSession()
-        },
+  const onReportButtonPressed = useCallback(async () => {
+    const result = await reportIncident({
+      title: title,
+      pictures: params.capturedPictures,
+    })
+
+    result.map(
+      () => closeReport(),
+      (err) => {
+        if (err.code === 'UnauthenticatedError') closeSession()
       },
     )
   }, [closeReport, closeSession, params.capturedPictures, reportIncident, title])

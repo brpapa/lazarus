@@ -34,7 +34,9 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
             )}`,
           )
 
-        await commitSeeNotificationMutation(data.notificationId)
+        const result = await commitSeeNotificationMutation({ notificationId: data.notificationId })
+        result.mapErr(console.error)
+
         navigation.navigate('Incident', { incidentId: data.incidentId })
       },
     )

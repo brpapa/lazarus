@@ -20,7 +20,8 @@ const getInitialUserLocation = async () => {
 
   if (await AuthTokensManager.isSignedIn()) {
     // update server with the first initial location value when app is foregound because the user can not have granted background location permission
-    commitUpdateUserLocationMutation(location)
+    const result = await commitUpdateUserLocationMutation({ location })
+    result.mapErr(console.error)
   }
 
   return location

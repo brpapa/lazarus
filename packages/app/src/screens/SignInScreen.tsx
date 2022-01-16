@@ -22,16 +22,15 @@ export default function SignInScreen() {
 
   const onSignInPressed = useCallback(async () => {
     const pushToken = (await getPushToken()) ?? undefined
-    signIn(
-      { username, password, pushToken },
-      {
-        onOkResult: (res) =>
-          startSession(
-            { value: res.accessToken, expiresIn: new Date(res.accessTokenExpiresIn) },
-            res.refreshToken,
-          ),
-        onErrResult: (res) => setErrorMsg(res.reason),
+    const result = await signIn({ username, password, pushToken })
+    result.map(
+      (res) => {
+        startSession(
+          { value: res.accessToken, expiresIn: new Date(res.accessTokenExpiresIn) },
+          res.refreshToken,
+        )
       },
+      (err) => setErrorMsg(err.reason),
     )
   }, [password, signIn, startSession, username])
 
