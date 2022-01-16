@@ -1,5 +1,5 @@
 import { DomainEvents } from '@shared/domain/events/domain-events'
-import { err, ok, Result } from '@shared/logic/result/result'
+import { err, ok, Result } from '@metis/shared'
 import { Command } from '@shared/logic/command'
 import { ApplicationError } from '@shared/logic/errors'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'

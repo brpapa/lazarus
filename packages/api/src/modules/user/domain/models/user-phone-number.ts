@@ -1,5 +1,5 @@
 import { DomainError } from '@shared/logic/errors'
-import { err, ok, Result } from '@shared/logic/result/result'
+import { err, ok, Result } from '@metis/shared'
 import { ValueObject } from '@shared/domain/value-object'
 
 interface UserPhoneNumberProps {

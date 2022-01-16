@@ -1,6 +1,6 @@
 import { UUID } from '@shared/domain/models/uuid'
 import { Entity } from '@shared/domain/entity'
-import { ok, Result } from '@shared/logic/result/result'
+import { ok, Result } from '@metis/shared'
 import { DomainError } from '@shared/logic/errors'
 import assert from 'assert'
 

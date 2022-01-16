@@ -5,7 +5,7 @@ import { IUserRepo } from '@user/adapter/repositories/user-repo'
 import { Command } from '@shared/logic/command'
 import { ApplicationError, UserNotFoundError } from '@shared/logic/errors'
 import { unixEpochToDate } from '@shared/logic/helpers/unix-epoch'
-import { err, ok, Result } from '@shared/logic/result/result'
+import { err, ok, Result } from '@metis/shared'
 
 export type RefreshTokenInput = {
   refreshToken: string

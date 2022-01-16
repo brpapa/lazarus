@@ -1,5 +1,5 @@
 import { Command } from '@shared/logic/command'
-import { err, ok, Result } from '@shared/logic/result/result'
+import { err, ok, Result } from '@metis/shared'
 import { UserDTO } from '@user/adapter/dtos/user-dto'
 import { UserMapper } from '@user/adapter/mappers/user-mapper'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'

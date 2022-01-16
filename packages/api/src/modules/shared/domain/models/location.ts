@@ -1,6 +1,6 @@
+import { combine } from '@metis/shared'
 import { ValueObject } from '@shared/domain/value-object'
 import { Guard, Range } from '@shared/logic/guard'
-import { combine } from '@shared/logic/result'
 
 export interface LocationProps {
   latitude: number
@@ -24,7 +24,7 @@ export class Location extends ValueObject<LocationProps> {
       Guard.inRange(props.latitude, this.LAT_RANGE, 'latitude', 'degrees'),
       Guard.inRange(props.longitude, this.LNG_RANGE, 'longitude', 'degrees'),
     ])
-    if (result.isErr()) throw new Error(result.error)
+    if (result.isErr()) throw new Error(result.error as string)
     return new Location(props)
   }
 

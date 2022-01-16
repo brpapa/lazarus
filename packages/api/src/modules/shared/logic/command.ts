@@ -1,6 +1,6 @@
+import { Result } from '@metis/shared'
 import { Debugger } from 'debug'
 import { AppContext } from './app-context'
-import { Result } from './result'
 
 export abstract class Command<Input, Res extends Result<any, any>> {
   constructor(protected log: Debugger) {}
