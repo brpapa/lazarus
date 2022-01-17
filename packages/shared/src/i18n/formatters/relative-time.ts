@@ -42,10 +42,11 @@ timeAgo.register('pt-BR', (_diff: number, index: number, _totalSec?: number) => 
   ][index] as [string, string]
 })
 
-export const relativeTimeToNowFormatter = (date: any, lang?: string) => {
+export const relativeTimeToNowFormatter = (value: any, lang?: string) => {
   if (!lang || !SUPPORTED_LANGUAGES.includes(lang)) throw new Error(`Unexpected language: ${lang}`)
-  if (!(date instanceof Date))
-    throw new Error(`Value should be an instance of Date, received: ${date.constructor.name}`)
+  if (!(value instanceof Date))
+    throw new Error(`Value should be an instance of Date, received: ${value.constructor.name}`)
 
+  const date = value as Date
   return timeAgo.format(date.getTime(), lang)
 }

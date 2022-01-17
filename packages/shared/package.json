@@ -19,7 +19,8 @@
     "clear": "npx rimraf ./dist",
     "build": "tsc --project tsconfig.json",
     "rebuild": "npm run clear && npm run build",
-    "start:dev": "npx ts-node ./src/index.ts -P ./tsconfig.json"
+    "start:local": "npx ts-node ./src/index.ts -P ./tsconfig.json",
+    "start:local:watch": "npx nodemon --watch 'src, messages' --ext '.js,.ts' --exec 'npm run start:local'"
   },
   "dependencies": {
     "geolib": "^3.3.3",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/node": "^16.11.7",
+    "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
     "typesync": "^0.8.0"
