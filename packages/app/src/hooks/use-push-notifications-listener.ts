@@ -37,7 +37,10 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
         const result = await commitSeeNotificationMutation({ notificationId: data.notificationId })
         result.mapErr(console.error)
 
-        navigation.navigate('Incident', { incidentId: data.incidentId })
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Incident', params: { incidentId: data.incidentId } }],
+        })
       },
     )
 

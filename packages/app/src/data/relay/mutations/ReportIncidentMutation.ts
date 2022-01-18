@@ -1,11 +1,11 @@
 import { graphql } from 'react-relay'
-import type { CapturedPicture } from '~/containers/Camera'
+import type { CapturedPicture } from '~/containers/CameraView'
+import { uploadPictures } from '~/data/upload-pictures'
 import { appendIncidentToConnection } from '~/data/relay/utils/store'
-import { uploadPictures } from '~/screens/ReportScreen/upload-pictures'
 import type {
   ReportIncidentErrCodeType,
   ReportIncidentInput as RawReportIncidentInput,
-  ReportIncidentMutation as ReportIncidentMutationType
+  ReportIncidentMutation as ReportIncidentMutationType,
 } from '~/__generated__/ReportIncidentMutation.graphql'
 import { createResultMutationHook } from '../utils/create-result-mutation-hook'
 

@@ -1,4 +1,4 @@
-const customMapStyles: Record<ThemeName, any> = {
+const customMapStyles: Record<ThemeName_V0_LEGACY, any> = {
   default: [
     {
       elementType: 'geometry',

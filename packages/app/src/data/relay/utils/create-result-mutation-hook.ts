@@ -42,7 +42,10 @@ export function createResultMutationHook<
               if (!output) throw new Error(`Mutation ${config.mutationName} not exists`)
 
               const result = output.result
-              if (!result) throw new Error(`Output of mutation ${config.mutationName} not contains 'result' field`)
+              if (!result)
+                throw new Error(
+                  `Output of mutation ${config.mutationName} not contains 'result' field`,
+                )
 
               if (result.__typename === `${config.resultTypenamePreffix}OkResult`) {
                 resolve(ok(result as TOkResult))

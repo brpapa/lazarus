@@ -1,7 +1,7 @@
 import React from 'react'
 import { Marker } from 'react-native-maps'
 import { graphql, useFragment } from 'react-relay'
-import { Box } from '~/components/atomics'
+import { Box } from '~/components/v0-legacy/atoms'
 import type { IncidentMarker_incident$key } from '~/__generated__/IncidentMarker_incident.graphql'
 
 type IncidentMarkerProps = {

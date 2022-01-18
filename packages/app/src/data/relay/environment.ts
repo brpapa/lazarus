@@ -36,7 +36,7 @@ const fetchFn: FetchFunction = async (operation, variables) => {
   try {
     const headers = await createRequestHeaders()
     const response = await fetch(`${HTTP_SERVER_BASE_URL}/graphql`, {
-    method: 'POST',
+      method: 'POST',
       headers,
       body: JSON.stringify({
         query: operation.text,

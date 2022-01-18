@@ -1,7 +1,12 @@
 import { err, ok, Result } from '@metis/shared'
 import { useCallback } from 'react'
 import { useMutation } from 'react-relay'
-import { commitMutation, GraphQLTaggedNode, MutationParameters, SelectorStoreUpdater } from 'relay-runtime'
+import {
+  commitMutation,
+  GraphQLTaggedNode,
+  MutationParameters,
+  SelectorStoreUpdater,
+} from 'relay-runtime'
 import { environment } from '~/data/relay/environment'
 
 type Config<TMutation extends MutationParameters, TInput> = {

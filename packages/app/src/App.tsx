@@ -1,78 +1,74 @@
-import { t } from '@metis/shared'
+// import { DEFAULT_THEME_V2_BETA_TAMAGUI } from '~/config'
+// import Tamagui from '../tamagui.config'
+import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { Suspense, useEffect } from 'react'
-import { useQueryLoader } from 'react-relay'
-import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
-import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
-import { useSession } from '~/hooks/use-session'
-import { HomeScreen } from '~/screens/HomeScreen'
-import IncidentScreen from '~/screens/IncidentScreen'
-import SignInScreen from '~/screens/SignInScreen'
-import SignUpScreen from '~/screens/SignUpScreen'
-import type { HomeScreenQuery as HomeScreenQueryType } from '~/__generated__/HomeScreenQuery.graphql'
-import HomeScreenQuery from '~/__generated__/HomeScreenQuery.graphql'
-import Loading from './components/Loading'
-import { startBackgroundLocationTracking } from './data/background-tasks/background-location-tracking'
+import { ThemeProvider_LEGACY } from '~/theme/v0-legacy/theme'
+import React, { Suspense } from 'react'
+import { StatusBar, StatusBarStyle } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { RelayEnvironmentProvider } from 'react-relay'
+import { RecoilRoot } from 'recoil'
+import { DEFAULT_THEME_V0_LEGACY, ThemeName_V0_LEGACY } from '~/config'
+import { environment } from '~/data/relay/environment'
+import { RootStackNavigator } from '~/navigation/RootStackNavigator'
+import { darkTheme, theme } from '~/theme/v0-legacy'
+import Loading from './components/v0-legacy/Loading'
+import { useNavigationStatePersistence } from './hooks/use-navigation-state-persistence'
+import { useRequiredPermissions } from './hooks/use-required-permissions'
+import { RequiredPermissions } from './screens'
+import { AppearanceProvider, ThemeProvider } from '~/theme/v1'
 
-export type RootStackParams = {
-  Home: undefined
-  Incident: {
-    incidentId: string
-  }
-  SignIn: undefined
-  SignUp: undefined
+export type AppStackParams = {
+  RequiredPermissions: undefined
+  App: undefined
 }
 
-const RootStack = createStackNavigator<RootStackParams>()
+const AppStack = createStackNavigator<AppStackParams>()
 
 export function App() {
-  const { isSignedIn } = useSession()
+  const requiredPermissions = useRequiredPermissions()
+  const navigationState = useNavigationStatePersistence()
 
-  useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
-  usePushNotificationsListener({ when: isSignedIn })
-
-  const [homeScreenQueryRef, loadHomeScreenQuery] =
-    useQueryLoader<HomeScreenQueryType>(HomeScreenQuery)
-
-  useEffect(() => {
-    if (isSignedIn) {
-      loadHomeScreenQuery({}, { fetchPolicy: 'network-only' })
-      startBackgroundLocationTracking()
-    }
-  }, [isSignedIn])
+  if (navigationState.isLoading || requiredPermissions.isLoading) return <Loading />
 
   return (
-    <RootStack.Navigator
-      initialRouteName={isSignedIn ? 'Home' : 'SignIn'}
-      screenOptions={{ headerShown: false }}
-    >
-      {isSignedIn ? (
-        <>
-          <RootStack.Screen name="Home">
-            {() =>
-              homeScreenQueryRef && (
-                <Suspense fallback={<Loading />}>
-                  <HomeScreen preloadedQuery={homeScreenQueryRef} />
-                </Suspense>
-              )
-            }
-          </RootStack.Screen>
-          <RootStack.Screen name="Incident" component={IncidentScreen} />
-        </>
-      ) : (
-        <>
-          <RootStack.Screen
-            name="SignIn"
-            component={SignInScreen}
-            options={{ title: t('signIn'), animationTypeForReplace: 'pop' }}
-          />
-          <RootStack.Screen
-            name="SignUp"
-            component={SignUpScreen}
-            options={{ title: t('signUp') }}
-          />
-        </>
-      )}
-    </RootStack.Navigator>
+    <SafeAreaProvider>
+      <AppearanceProvider>
+        <ThemeProvider>
+          <ThemeProvider_LEGACY theme={DEFAULT_THEME_V0_LEGACY == 'default' ? theme : darkTheme}>
+            {/* <Tamagui.Provider defaultTheme={DEFAULT_THEME_V2_BETA_TAMAGUI}> */}
+            <StatusBar barStyle={statusBarStyle[DEFAULT_THEME_V0_LEGACY]} />
+            <NavigationContainer {...navigationState.persistenceProps}>
+              <AppStack.Navigator
+                initialRouteName={
+                  requiredPermissions.allPermissionsIsGranted ? 'App' : 'RequiredPermissions'
+                }
+                screenOptions={{ headerShown: false }}
+              >
+                <AppStack.Screen name="RequiredPermissions" component={RequiredPermissions} />
+                <AppStack.Screen name="App">
+                  {() => (
+                    <RelayEnvironmentProvider environment={environment}>
+                      <RecoilRoot>
+                        {/* render a fallback while waiting recoil load async initial values (those where setSelf receives a Promise) */}
+                        <Suspense fallback={<Loading />}>
+                          <RootStackNavigator />
+                        </Suspense>
+                      </RecoilRoot>
+                    </RelayEnvironmentProvider>
+                  )}
+                </AppStack.Screen>
+              </AppStack.Navigator>
+            </NavigationContainer>
+            {/* </Tamagui.Provider> */}
+          </ThemeProvider_LEGACY>
+        </ThemeProvider>
+      </AppearanceProvider>
+    </SafeAreaProvider>
   )
+}
+
+const statusBarStyle: Record<ThemeName_V0_LEGACY, StatusBarStyle> = {
+  default: 'dark-content',
+  dark: 'light-content',
 }

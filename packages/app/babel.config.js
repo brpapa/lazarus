@@ -12,6 +12,13 @@ module.exports = function (api) {
         },
       ], // babel-plugin-relay
       [
+        '@tamagui/babel-plugin',
+        {
+          components: ['tamagui'],
+          config: './tamagui.config.ts',
+        },
+      ],
+      [
         'module-resolver',
         {
           extensions: ['.js', '.ts', '.tsx', '.json'],

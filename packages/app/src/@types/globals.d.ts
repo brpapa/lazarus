@@ -1,5 +1,3 @@
-type ThemeName = 'default' | 'dark'
-
 type Location = {
   latitude: number
   longitude: number

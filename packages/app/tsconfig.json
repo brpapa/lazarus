@@ -1,8 +1,9 @@
 {
   "extends": "expo/tsconfig.base",
   "include": [
-    "src"
-  ],
+    "src",
+    "tamagui.config.ts"
+, "assets/icons/icons"  ],
   "exclude": [
     "node_modules",
     "babel.config.js",

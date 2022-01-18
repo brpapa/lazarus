@@ -1,10 +1,13 @@
+import { getDevicePushToken } from '~/data/push-token'
 import { graphql } from 'react-relay'
 import type {
   SignInErrCodeType,
-  SignInInput,
+  SignInInput as RawSignInInput,
   SignInMutation as SignInMutationType,
 } from '~/__generated__/SignInMutation.graphql'
 import { createResultMutationHook } from '../utils/create-result-mutation-hook'
+
+type SignInInput = Omit<RawSignInInput, 'pushToken'>
 
 type SignInOkResult = {
   accessToken: string
@@ -43,4 +46,14 @@ export const useSignInMutation = createResultMutationHook<
       }
     }
   `,
+  inputMapper: async (input): Promise<RawSignInInput> => {
+    const pushToken = (await getDevicePushToken()) ?? undefined
+
+    const mutationInput = {
+      ...input,
+      pushToken,
+    }
+
+    return mutationInput
+  },
 })
