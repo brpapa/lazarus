@@ -1,3 +1,4 @@
+import { countFormatter } from './formatters/count'
 import i18n from 'i18next'
 import { LANGUAGE, SUPPORTED_LANGUAGES } from '../config'
 import enUS from './../../messages/en-US.json'
@@ -40,18 +41,20 @@ i18n.init({
   },
 })
 
-if (i18n.services.formatter === undefined)
-  throw new Error('Formatter is undefined')
+if (i18n.services.formatter === undefined) throw new Error('Formatter is undefined')
 
 // formatter name must be totally lower!
 i18n.services.formatter.add('relativetimetonow', withExceptionLog(relativeTimeToNowFormatter))
 i18n.services.formatter.add('distancefromsegment', withExceptionLog(distanceFromSegmentFormatter))
 i18n.services.formatter.add('distance', withExceptionLog(distanceFormatter))
+i18n.services.formatter.add('bignumber', withExceptionLog(countFormatter))
 
 export const { t } = i18n
 export { i18n }
 
 /*
+console.log(t('incident.amountOfPeopleNotified', { count: 1231 }))
+
 console.log(
   t('incident.distanceToUser', {
     segment: [
