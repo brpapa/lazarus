@@ -6,6 +6,7 @@ import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptio
 import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
 import { useSession } from '~/hooks/use-session'
 import { Incident, SignIn, SignUp } from '~/screens'
+import { useTheme } from '~/theme/v1'
 import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'
 import HomeTabNavigatorQuery from '~/__generated__/HomeTabNavigatorQuery.graphql'
 import Loading from '../components/v0-legacy/Loading'
@@ -13,7 +14,7 @@ import { startBackgroundLocationTracking } from '../data/background-tasks/backgr
 import { HomeTabNavigator } from './HomeTabNavigator'
 
 export type RootStackParams = {
-  Home: undefined
+  HomeTabNavigator: undefined
   Incident: {
     incidentId: string
   }
@@ -24,6 +25,7 @@ export type RootStackParams = {
 const RootStack = createStackNavigator<RootStackParams>()
 
 export function RootStackNavigator() {
+  const { navHeader } = useTheme()
   const { isSignedIn } = useSession()
 
   useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
@@ -40,10 +42,10 @@ export function RootStackNavigator() {
   }, [isSignedIn])
 
   return (
-    <RootStack.Navigator initialRouteName={isSignedIn ? 'Home' : 'SignIn'}>
+    <RootStack.Navigator initialRouteName={isSignedIn ? 'HomeTabNavigator' : 'SignIn'}>
       {isSignedIn ? (
         <>
-          <RootStack.Screen name="Home" options={{ headerShown: false }}>
+          <RootStack.Screen name="HomeTabNavigator" options={{ headerShown: false }}>
             {() =>
               homeScreenQueryRef && (
                 <Suspense fallback={<Loading />}>
@@ -59,12 +61,12 @@ export function RootStackNavigator() {
           <RootStack.Screen
             name="SignIn"
             component={SignIn}
-            options={{ title: t('auth.signIn'), animationTypeForReplace: 'pop', headerShown: true }}
+            options={{ title: t('auth.signIn'), animationTypeForReplace: 'pop', ...navHeader }}
           />
           <RootStack.Screen
             name="SignUp"
             component={SignUp}
-            options={{ title: t('auth.signUp'), headerShown: true }}
+            options={{ title: t('auth.signUp'), ...navHeader }}
           />
         </>
       )}

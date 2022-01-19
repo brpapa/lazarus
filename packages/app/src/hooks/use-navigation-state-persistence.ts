@@ -4,7 +4,7 @@ import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { InitialState, NavigationState } from '@react-navigation/native'
 import { ENABLE_NAVIGATION_STATE_PERSISTENCE } from '~/config'
-import { isDeserializable, isSerializable } from '~/shared/utils'
+import { isDeserializable, isSerializable } from '~/shared/json'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 

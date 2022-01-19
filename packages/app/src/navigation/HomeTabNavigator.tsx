@@ -11,7 +11,7 @@ import { ReportStackNavigator } from './ReportStackNavigator'
 export type HomeBottomTabParams = {
   Explorer: undefined
   Todo: undefined
-  Report: undefined
+  ReportStackNavigator: undefined
   Notifications: undefined
   Profile: undefined
 }
@@ -55,7 +55,7 @@ export function HomeTabNavigator(props: HomeProps) {
         {() => <Profile />}
       </HomeBottomTab.Screen>
       <HomeBottomTab.Screen
-        name="Report"
+        name="ReportStackNavigator"
         options={({ route }) => ({
           tabBarLabel: t('home.reportTabLabel'),
           tabBarIcon: (props) => <CameraIcon color={props.color} />,
@@ -68,7 +68,7 @@ export function HomeTabNavigator(props: HomeProps) {
       <HomeBottomTab.Screen
         name="Notifications"
         options={{
-          tabBarBadge: data?.notificationsInfo?.notSeenCount ?? undefined,
+          tabBarBadge: getBadge(data?.notificationsInfo?.notSeenCount),
           tabBarLabel: t('home.notificationsTabLabel'),
           tabBarIcon: (props) => <BellIcon color={props.color} />,
         }}
@@ -88,7 +88,9 @@ export function HomeTabNavigator(props: HomeProps) {
   )
 }
 
-const getReportTabBarVisibilityFromRoute = (route: RouteProp<HomeBottomTabParams, 'Report'>) => {
+const getBadge = (count?: number) => (count && count > 0 ? count : undefined)
+
+const getReportTabBarVisibilityFromRoute = (route: RouteProp<HomeBottomTabParams, 'ReportStackNavigator'>) => {
   // get the currently active route name from this child navigator
   const routeName = getFocusedRouteNameFromRoute(route)
   return !(routeName === 'Camera')

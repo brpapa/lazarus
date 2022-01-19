@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { makeUseStyles } from '~/theme/v1'
 import type { AvatarProps } from '.'
-import { automaticFontColor } from '~/helpers/automatic-font-color'
+import { automaticFontColor } from '~/shared/automatic-font-color'
 import { Text } from '../Text'
 
 type Props = Pick<AvatarProps, 'style'> & {

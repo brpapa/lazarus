@@ -24,7 +24,7 @@ export function SignIn() {
 
   const [hidePassword, setHidePassword] = useState(true)
   const { colorScheme } = useColorScheme()
-  const styles = useStyles()
+  const s = useStyles()
   const passwordInputRef = useRef<TextInputType>(null)
   const [signIn, isSending] = useSignInMutation()
   const { startSession } = useSession()
@@ -67,7 +67,7 @@ export function SignIn() {
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
       scrollEventThrottle={0}
-      style={styles.container}
+      style={s.container}
     >
       <CustomHeader
         title={t('auth.signIn')}
@@ -77,12 +77,12 @@ export function SignIn() {
       />
       <Image
         source={colorScheme === 'dark' ? DarkLogo : LightLogo}
-        style={styles.logo}
+        style={s.logo}
         resizeMode="contain"
       />
-      <View style={styles.formContainer}>
+      <View style={s.formContainer}>
         {errorMsg && (
-          <Text color="error" style={styles.spacingBottom}>
+          <Text color="error" style={s.spacingBottom}>
             {errorMsg}
           </Text>
         )}
@@ -102,7 +102,7 @@ export function SignIn() {
               returnKeyType="next"
               onSubmitEditing={() => passwordInputRef.current?.focus()}
               autoCapitalize="none"
-              style={styles.spacingBottom}
+              style={s.spacingBottom}
             />
           )}
         />
@@ -123,14 +123,14 @@ export function SignIn() {
               autoCapitalize={'none'}
               textContentType="password"
               secureTextEntry={hidePassword}
-              style={styles.spacingBottom}
+              style={s.spacingBottom}
               rightIcon={'Views'}
-              onPressIcon={() => setHidePassword(!hidePassword)}
+              onPressIcon={() => setHidePassword((prev) => !prev)}
             />
           )}
         />
         <Button
-          content={t('auth.signIn')}
+          content={t('auth.signIn.submitButton')}
           large
           onPress={onSubmit}
           loading={isSending}

@@ -8,6 +8,7 @@ import { AuthTokensManager } from '~/data/auth-tokens-manager'
 export const useSession = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState)
 
+  /** start a sessions will redirect the user to auth screens */
   const startSession = useCallback(
     async (accessToken: AccessToken, refreshToken?: string) => {
       setAccessToken(accessToken)

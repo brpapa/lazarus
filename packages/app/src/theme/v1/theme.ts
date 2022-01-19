@@ -61,6 +61,7 @@ export const getTheme = ({ colorScheme, aesthetic }: Config) => {
     headingFontSizes: HEADING_FONT_SIZES,
     shadow: shadowStyle(isDarkMode),
     navHeader: {
+      headerShow: true,
       headerStyle: {
         backgroundColor: colors.background,
       },
