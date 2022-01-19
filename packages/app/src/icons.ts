@@ -3,6 +3,7 @@ import AddCircle from '../assets/icons/AddCircle.svg'
 import Admin from '../assets/icons/AdminPanel.svg'
 import AlternateEmail from '../assets/icons/AlternateEmail.svg'
 import ArrowUpward from '../assets/icons/ArrowUpward.svg'
+import Camera from '../assets/icons/Camera.svg'
 import Cancel from '../assets/icons/Cancel.svg'
 import Chart from '../assets/icons/Chart.svg'
 import CheckCircle from '../assets/icons/CheckCircle.svg'
@@ -18,6 +19,7 @@ import Likes from '../assets/icons/Likes.svg'
 import Link from '../assets/icons/Link.svg'
 import Lock from '../assets/icons/Lock.svg'
 import Mail from '../assets/icons/Mail.svg'
+import Map from '../assets/icons/Map.svg'
 import More from '../assets/icons/More.svg'
 import MoreVert from '../assets/icons/MoreVert.svg'
 import Notifications from '../assets/icons/Notifications.svg'
@@ -31,6 +33,8 @@ import Send from '../assets/icons/Send.svg'
 import Settings from '../assets/icons/Settings.svg'
 import Triangle from '../assets/icons/Triangle.svg'
 import Views from '../assets/icons/Views.svg'
+import User from '../assets/icons/User.svg'
+import Bell from '../assets/icons/Bell.svg'
 
 export const Icons = {
   Add,
@@ -66,6 +70,10 @@ export const Icons = {
   Settings,
   Triangle,
   Views,
+  Map,
+  Camera,
+  User,
+  Bell,
 }
 
 export type IconName = keyof typeof Icons

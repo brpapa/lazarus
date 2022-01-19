@@ -1,25 +1,34 @@
 import { t } from '@metis/shared'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core'
+import {
+  BottomTabBarOptions,
+  BottomTabBarProps,
+  createBottomTabNavigator
+} from '@react-navigation/bottom-tabs'
 import React from 'react'
-import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
-import { ActivityIcon, BellIcon, CameraIcon, MapIcon, UserIcon } from '~/icons_LEGACY'
+import { TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { graphql, usePreloadedQuery } from 'react-relay'
+import { useRecoilValue } from 'recoil'
+import { Badge, Icon, Text } from '~/components/v1/atoms'
+import { __IOS__ } from '~/config'
+import { initialQueryRefState } from '~/data/recoil/initial-query-ref'
+import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
+import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
+import { useSession } from '~/hooks/use-session'
+import type { IconName } from '~/icons'
 import { Explorer, Notifications, Profile } from '~/screens'
+import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'
 import { ReportStackNavigator } from './ReportStackNavigator'
 
-export type HomeBottomTabParams = {
+export type HomeTabParams = {
   Explorer: undefined
-  Todo: undefined
   ReportStackNavigator: undefined
   Notifications: undefined
   Profile: undefined
 }
-const HomeBottomTab = createBottomTabNavigator<HomeBottomTabParams>()
 
-type HomeProps = {
-  preloadedQuery: PreloadedQuery<HomeTabNavigatorQueryType>
-}
+const HomeTab = createBottomTabNavigator<HomeTabParams>()
 
 const query = graphql`
   query HomeTabNavigatorQuery {
@@ -31,67 +40,140 @@ const query = graphql`
   }
 `
 
-export function HomeTabNavigator(props: HomeProps) {
-  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, props.preloadedQuery)
+export function HomeTabNavigator() {
+  const homeTabNavitorQueryRef = useRecoilValue(initialQueryRefState)
+  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavitorQueryRef)
+
+  const { isSignedIn } = useSession()
+  useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
+  usePushNotificationsListener({ when: isSignedIn })
 
   return (
-    <HomeBottomTab.Navigator initialRouteName="Explorer">
-      <HomeBottomTab.Screen
+    <HomeTab.Navigator initialRouteName="Explorer" tabBar={(props) => <TabBar {...props} />}>
+      <HomeTab.Screen
         name="Explorer"
         options={{
-          tabBarLabel: t('home.explorerTabLabel'),
-          tabBarIcon: (props) => <MapIcon color={props.color} />,
+          title: t('home.explorerTabLabel'),
         }}
       >
-        {() => <Explorer queryRef={data} />}
-      </HomeBottomTab.Screen>
-      <HomeBottomTab.Screen
-        name="Todo"
-        options={{
-          tabBarLabel: 'Todo',
-          tabBarIcon: (props) => <ActivityIcon color={props.color} />,
-        }}
-      >
-        {() => <Profile />}
-      </HomeBottomTab.Screen>
-      <HomeBottomTab.Screen
+        {(props) => <Explorer queryRef={data} {...props} />}
+      </HomeTab.Screen>
+      <HomeTab.Screen
         name="ReportStackNavigator"
-        options={({ route }) => ({
-          tabBarLabel: t('home.reportTabLabel'),
-          tabBarIcon: (props) => <CameraIcon color={props.color} />,
+        component={ReportStackNavigator}
+        options={{
+          title: t('home.reportTabLabel'),
           tabBarVisible: false,
-          // tabBarVisible: getReportTabBarVisibilityFromRoute(route),
-        })}
-      >
-        {() => <ReportStackNavigator />}
-      </HomeBottomTab.Screen>
-      <HomeBottomTab.Screen
+        }}
+      />
+      <HomeTab.Screen
         name="Notifications"
         options={{
           tabBarBadge: getBadge(data?.notificationsInfo?.notSeenCount),
-          tabBarLabel: t('home.notificationsTabLabel'),
-          tabBarIcon: (props) => <BellIcon color={props.color} />,
+          title: t('home.notificationsTabLabel'),
         }}
       >
-        {() => <Notifications queryRef={data} />}
-      </HomeBottomTab.Screen>
-      <HomeBottomTab.Screen
+        {(props) => <Notifications queryRef={data} {...props} />}
+      </HomeTab.Screen>
+      <HomeTab.Screen
         name="Profile"
+        component={Profile}
         options={{
-          tabBarLabel: t('home.profileTabLabel'),
-          tabBarIcon: (props) => <UserIcon color={props.color} />,
+          title: t('home.profileTabLabel'),
         }}
-      >
-        {() => <Profile />}
-      </HomeBottomTab.Screen>
-    </HomeBottomTab.Navigator>
+      />
+    </HomeTab.Navigator>
   )
 }
 
 const getBadge = (count?: number) => (count && count > 0 ? count : undefined)
 
-const getReportTabBarVisibilityFromRoute = (route: RouteProp<HomeBottomTabParams, 'ReportStackNavigator'>) => {
-  // get the currently active route name from this child navigator
-  const routeName = getFocusedRouteNameFromRoute(route)
-  return !(routeName === 'Camera')
+function TabBar({ state, navigation, descriptors }: BottomTabBarProps<BottomTabBarOptions>) {
+  const insets = useSafeAreaInsets()
+  const s = useStyles()
+  const { colors } = useTheme()
+
+  const focusedRoute = state.routes[state.index]
+  const tabBarNotVisible = descriptors[focusedRoute.key]?.options.tabBarVisible === false
+  if (tabBarNotVisible) return null
+
+  return (
+    <View style={s.tabContainer}>
+      {state.routes.map((route, index) => {
+        // for each tab
+
+        const { options } = descriptors[route.key]
+        const label = options.title !== undefined ? options.title : route.name
+        const badge = options.tabBarBadge
+
+        const onPress = async () => {
+          if (state.index === 0 && state.index === index) {
+            navigation.navigate(route.name, { backToTop: true })
+          } else {
+            navigation.navigate(route.name, { backToTop: false })
+          }
+        }
+
+        return (
+          <TouchableOpacity
+            key={state.routes[index].key}
+            onPress={onPress}
+            style={s.tab}
+            activeOpacity={state.index === index ? 1 : 0.2}
+          >
+            <View style={[{ paddingBottom: insets.bottom }, s.tabItemContainer]}>
+              <Icon
+                name={routeToIcon(route.name as keyof HomeTabParams)}
+                size="xl"
+                color={state.index === index ? colors.activeTab : colors.inactiveTab}
+              />
+              <Badge visible={badge != null} style={s.badge} size={(25 * 3) / 4}>
+                {badge}
+              </Badge>
+              <Text color={state.index === index ? 'activeTab' : 'inactiveTab'} size="xs">
+                {label}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )
+      })}
+    </View>
+  )
 }
+
+const routeToIcon = (route: keyof HomeTabParams): IconName => {
+  switch (route) {
+    case 'Explorer':
+      return 'Map'
+    case 'ReportStackNavigator':
+      return 'Camera'
+    case 'Notifications':
+      return 'Bell'
+    case 'Profile':
+      return 'User'
+    default:
+      throw new Error(`Unexpected route, received: ${route}`)
+  }
+}
+
+const useStyles = makeUseStyles(({ colors }) => ({
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: colors.background,
+    borderWidth: 0.2,
+    borderColor: colors.border,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: __IOS__ ? 15 : '3%',
+  },
+  tabItemContainer: {
+    alignItems: 'center',
+  },
+  badge: {
+    position: 'absolute',
+    right: 15,
+    top: -7,
+  },
+}))

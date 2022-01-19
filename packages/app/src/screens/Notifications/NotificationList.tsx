@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useEffect } from 'react'
 import { RefreshControl } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { graphql, usePaginationFragment } from 'react-relay'
@@ -43,6 +44,18 @@ export function NotificationList(props: NotificationsListProps) {
     refetch,
     NotificationListRefreshQuery,
   )
+
+  // const navigation = useNavigation()
+  // useEffect(() => {
+  //   // when the current screen is focused
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     refetchWithoutSuspend({
+  //       count: PAGE_SIZE,
+  //       cursor: null,
+  //     })
+  //   })
+  //   return unsubscribe
+  // }, [navigation, refetchWithoutSuspend])
 
   const onRefresh = useCallback(() => {
     refetchWithoutSuspend({

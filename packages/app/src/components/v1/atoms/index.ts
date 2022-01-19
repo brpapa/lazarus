@@ -12,3 +12,6 @@ export * from './MentionedText'
 export * from './RadioButton'
 export * from './Text'
 export * from './TextInput'
+export * from './Badge'
+export * from './Loading'
+

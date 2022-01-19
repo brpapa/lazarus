@@ -22,7 +22,7 @@ export function Notifications(props: NotificationsProps) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Text variant="header" m="md">
-        {t('notifications.title')}
+        {t('notification.title')}
       </Text>
       <NotificationList queryRef={data} />
     </SafeAreaView>

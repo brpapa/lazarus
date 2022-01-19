@@ -5,13 +5,13 @@ import React, { useCallback } from 'react'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import { useRecoilValue } from 'recoil'
-import CloseIcon from '~/icons_LEGACY/close'
 import Box from '~/components/v0-legacy/atoms/Box'
 import Text from '~/components/v0-legacy/atoms/Text'
 import MyButton from '~/components/v0-legacy/MyButton'
 import NotificationsAmount from '~/components/v0-legacy/NotificationsAmount'
 import { userLocationState } from '~/data/recoil'
-import type { RootStackParams } from '~/navigation/RootStackNavigator'
+import CloseIcon from '~/icons_LEGACY/close'
+import type { MainStackParams } from '~/navigation/MainStackNavigator'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
 
 type IncidentPreviewProps = {
@@ -39,7 +39,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
   if (!props.closeable && props.onClosed)
     throw new Error('Invalid props: component should be closeable to have the onClosed prop')
 
-  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams, 'Home'>>()
+  const rootNavigation = useNavigation<StackNavigationProp<MainStackParams, 'HomeTabNavigator'>>()
   const userLocation = useRecoilValue(userLocationState)
 
   const data = usePreloadedQuery<IncidentPreviewQueryType>(query, props.preloadedQuery)

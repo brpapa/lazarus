@@ -2,7 +2,6 @@
 // import Tamagui from '../tamagui.config'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { ThemeProvider_LEGACY } from '~/theme/v0-legacy/theme'
 import React, { Suspense } from 'react'
 import { StatusBar, StatusBarStyle } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -12,11 +11,12 @@ import { DEFAULT_THEME_V0_LEGACY, ThemeName_V0_LEGACY } from '~/config'
 import { environment } from '~/data/relay/environment'
 import { RootStackNavigator } from '~/navigation/RootStackNavigator'
 import { darkTheme, theme } from '~/theme/v0-legacy'
-import Loading from './components/v0-legacy/Loading'
+import { ThemeProvider_LEGACY } from '~/theme/v0-legacy/theme'
+import { AppearanceProvider, ThemeProvider } from '~/theme/v1'
+import { Loading } from './components/v1/atoms'
 import { useNavigationStatePersistence } from './hooks/use-navigation-state-persistence'
 import { useRequiredPermissions } from './hooks/use-required-permissions'
 import { RequiredPermissions } from './screens'
-import { AppearanceProvider, ThemeProvider } from '~/theme/v1'
 
 export type AppStackParams = {
   RequiredPermissions: undefined
@@ -29,14 +29,20 @@ export function App() {
   const requiredPermissions = useRequiredPermissions()
   const navigationState = useNavigationStatePersistence()
 
-  if (navigationState.isLoading || requiredPermissions.isLoading) return <Loading />
+  if (navigationState.isLoading || requiredPermissions.isLoading)
+    return (
+      <AppearanceProvider>
+        <ThemeProvider>
+          <Loading />
+        </ThemeProvider>
+      </AppearanceProvider>
+    )
 
   return (
     <SafeAreaProvider>
       <AppearanceProvider>
         <ThemeProvider>
           <ThemeProvider_LEGACY theme={DEFAULT_THEME_V0_LEGACY == 'default' ? theme : darkTheme}>
-            {/* <Tamagui.Provider defaultTheme={DEFAULT_THEME_V2_BETA_TAMAGUI}> */}
             <StatusBar barStyle={statusBarStyle[DEFAULT_THEME_V0_LEGACY]} />
             <NavigationContainer {...navigationState.persistenceProps}>
               <AppStack.Navigator
@@ -50,7 +56,7 @@ export function App() {
                   {() => (
                     <RelayEnvironmentProvider environment={environment}>
                       <RecoilRoot>
-                        {/* render a fallback while waiting recoil load async initial values (those where setSelf receives a Promise) */}
+                        {/* render a fallback while waiting recoil load async initial values (those atoms where setSelf receives a Promise) */}
                         <Suspense fallback={<Loading />}>
                           <RootStackNavigator />
                         </Suspense>
@@ -60,7 +66,6 @@ export function App() {
                 </AppStack.Screen>
               </AppStack.Navigator>
             </NavigationContainer>
-            {/* </Tamagui.Provider> */}
           </ThemeProvider_LEGACY>
         </ThemeProvider>
       </AppearanceProvider>
