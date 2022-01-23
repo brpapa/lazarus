@@ -20,9 +20,9 @@ export const fontVariants = (isDarkMode: boolean) => {
     } as TextStyle,
     title: {
       fontFamily: fontFamilies.body,
-      fontWeight: '400',
+      fontWeight: 'bold',
       fontSize: 20,
-      lineHeight: 20,
+      lineHeight: 30,
       color: colors.accent8,
     } as TextStyle,
     body: {

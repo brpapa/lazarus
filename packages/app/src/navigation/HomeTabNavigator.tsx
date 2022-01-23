@@ -160,7 +160,7 @@ const useStyles = makeUseStyles(({ colors }) => ({
   },
   badge: {
     position: 'absolute',
-    right: 15,
+    right: 10,
     top: -7,
   },
 }))

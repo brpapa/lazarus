@@ -53,12 +53,12 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
   return (
     <TouchableWithoutFeedback onPress={onTouched}>
       <View style={s.container}>
-        <Text variant="header">{data.incident?.title}</Text>
-        <View style={s.lowerContainer}>
+        <Text variant="title">{data.incident?.title}</Text>
+        <View style={s.row}>
           <Text variant="body2">
             {
-              t('incident.createdAt', {
-                createdAt: new Date(data!.incident!.createdAt),
+              t('formatters.relativeTimeToNow', {
+                time: new Date(data!.incident!.createdAt),
               }) as string
             }
           </Text>
@@ -70,15 +70,6 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
             }
           </Text>
         </View>
-
-        <IconWithLabel
-          icon="Bell"
-          label={
-            t('incident.amountOfPeopleNotified', {
-              count: data.incident!.usersNotifiedCount,
-            }) as string
-          }
-        />
 
         {props.closeable && (
           <FloatingButton
@@ -97,17 +88,17 @@ const useStyles = makeUseStyles(({ colors, spacing }) => ({
     flex: 1,
     backgroundColor: colors.background,
     margin: spacing.m,
-    paddingRight: spacing.xl,
-    paddingLeft: spacing.xl,
     paddingTop: spacing.m,
-    paddingBottom: spacing.m,
+    paddingRight: spacing.l,
+    paddingLeft: spacing.l,
     borderRadius: 5,
     borderColor: colors.accent2,
     borderWidth: 1,
   },
-  lowerContainer: {
+  row: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: spacing.m,
   },
 }))
