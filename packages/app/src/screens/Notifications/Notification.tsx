@@ -1,10 +1,12 @@
 import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
+import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { graphql, useFragment } from 'react-relay'
-import { Box, Text } from '~/components/v0-legacy/atoms'
+import { Text } from '~/components/v1/atoms'
 import { useSeeNotificationMutation } from '~/data/relay/mutations/SeeNotificationMutation'
+import { makeUseStyles } from '~/theme/v1'
 import type { Notification_notification$key } from '~/__generated__/Notification_notification.graphql'
 
 type NotificationProps = {
@@ -29,6 +31,7 @@ const frag = graphql`
 `
 
 export function Notification(props: NotificationProps) {
+  const s = useStyles()
   const data = useFragment<Notification_notification$key>(frag, props.notificationRef)
 
   const navigation = useNavigation()
@@ -56,13 +59,21 @@ export function Notification(props: NotificationProps) {
 
   return (
     <TouchableOpacity onPress={onPressed}>
-      <Box flex={1} backgroundColor={'accents-1'} marginVertical={'sm'}>
+      <View style={s.container}>
         <Text>{data.title}</Text>
         <Text>{data.subtitle}</Text>
         <Text>{data.body}</Text>
         <Text>{data.seenByTargetUser ? 'seen' : 'not seen'}</Text>
-        <Text>{t('notification.createdAt', { createdAt: new Date(data.createdAt) })}</Text>
-      </Box>
+        <Text>{t('formatters.relativeTimeToNow', { time: new Date(data.createdAt) }) as string}</Text>
+      </View>
     </TouchableOpacity>
   )
 }
+
+const useStyles = makeUseStyles(({ colors, spacing }) => ({
+  container: {
+    flex: 1,
+    backgroundColor: colors.accent1,
+    marginVertical: spacing.m,
+  },
+}))

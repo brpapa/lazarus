@@ -1,8 +1,8 @@
 import React, { createContext, ReactElement, useContext, useMemo } from 'react'
 import { __IOS__ } from '~/config'
 
-import { useColorScheme } from './AppearanceProvider'
-import { getTheme, Theme } from './theme'
+import { useColorScheme } from './ColorScheme'
+import { getTheme, Theme } from '../theme'
 
 const Context = createContext<Theme | undefined>(undefined)
 

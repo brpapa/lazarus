@@ -14,7 +14,7 @@ type Props = TouchableOpacityProps & {
 }
 
 export function Button(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
 
   const {
     content,
@@ -30,14 +30,14 @@ export function Button(props: Props) {
     <TouchableOpacity
       disabled={loading || disabled}
       style={[
-        styles.container,
-        (loading || disabled) && styles.opacityReduced,
-        large && styles.largeButton,
+        s.container,
+        (loading || disabled) && s.opacityReduced,
+        large && s.largeButton,
         style,
       ]}
       {...otherProps}
     >
-      {loading && <ActivityIndicator color="pureWhite" style={styles.spacingRight} />}
+      {loading && <ActivityIndicator color="pureWhite" style={s.spacingRight} />}
       <Text variant="semiBold" color={textColor}>
         {content}
       </Text>

@@ -2,6 +2,7 @@ import { Camera } from 'expo-camera'
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { ENABLE_CAMERA_MOCK } from '~/config'
+import type { CapturedPicture } from '~/navigation/types'
 import { mockedTakePictureAsync } from './mocks'
 
 export interface CameraProps {
@@ -16,19 +17,6 @@ export interface CameraRef {
   resumePreview: () => void
 }
 export type CameraOrientation = 'back' | 'front'
-export type CapturedPicture = {
-  /** path in device file system where the picture was saved */
-  uri: string
-  width: number
-  height: number
-  mimeType?: string
-  extension?: string
-}
-
-export enum MediaType {
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
 
 /** A wrapper around the Camera component which it will be mocked when {@link ENABLE_CAMERA_MOCK} is true */
 const CameraWrapper = forwardRef<CameraRef, CameraProps>((props, ref) => {

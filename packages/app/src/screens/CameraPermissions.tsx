@@ -1,18 +1,15 @@
 import { useNavigation } from '@react-navigation/core'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { CloseIcon } from '~/icons_LEGACY'
-import Box from '~/components/v0-legacy/atoms/Box'
-import Text from '~/components/v0-legacy/atoms/Text'
-import MyButton from '~/components/v0-legacy/MyButton'
+import { FloatingButton, Text } from '~/components/v1/atoms'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
-import type { ReportStackParams } from '../navigation/ReportStackNavigator'
+import type { ReportStackNavProp } from '~/navigation/types'
 
 export function CameraPermissions() {
   const insets = useSafeAreaInsets()
-  const reportNavigation =
-    useNavigation<StackNavigationProp<ReportStackParams, 'CameraPermissions'>>()
+  const nav = useNavigation<ReportStackNavProp<'CameraPermissions'>>()
+
   const {
     isLoading,
     cameraPermissionIsGranted,
@@ -20,16 +17,15 @@ export function CameraPermissions() {
     requestCameraPermission,
     requestMicrophonePermission,
   } = useCameraPermissions({
-    onAllPermissionsGranted: () =>
-      reportNavigation.reset({ index: 0, routes: [{ name: 'Camera' }] }),
+    onAllPermissionsGranted: () => nav.reset({ index: 0, routes: [{ name: 'Camera' }] }),
   })
 
   if (isLoading) return null
 
   return (
-    <Box flex={1} bg="background" alignItems="center" justifyContent="center">
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Please, you need provides the following permissions before report an incident</Text>
-      <Box>
+      <View>
         {!cameraPermissionIsGranted && (
           <Text>
             Camera permission
@@ -46,10 +42,10 @@ export function CameraPermissions() {
             </Text>
           </Text>
         )}
-      </Box>
-      <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-        <MyButton my={'sm'} icon={CloseIcon} onPress={reportNavigation.goBack} />
-      </Box>
-    </Box>
+      </View>
+      <View style={{ position: 'absolute', right: insets.right + 10, top: insets.top + 10 }}>
+        <FloatingButton icon={'Close'} onPress={nav.goBack} />
+      </View>
+    </View>
   )
 }

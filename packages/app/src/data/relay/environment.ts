@@ -29,7 +29,7 @@ async function createRequestHeaders() {
 
 const fetchFn: FetchFunction = async (operation, variables) => {
   console.debug(
-    `Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`,
+    `[graphql] Fetching operation '${operation.name}' with variables: ${JSON.stringify(variables)}`,
   )
 
   let json = {} as any
@@ -69,13 +69,13 @@ const subscriptionsClient = createClient({
   },
   on: {
     connected: () => {
-      console.log('Connection established')
+      console.log('[graphql] Connection established')
     },
     closed: (event: any) => {
-      console.log('Connection closed', event)
+      console.log('[graphql] Connection closed', event)
 
       if (event.code == CloseCode.Forbidden) {
-        console.log('The access token expired') // in the next connection try it should be already refreshed (by useSession hook)
+        console.log('[graphql] The access token expired') // in the next connection try it should be already refreshed (by useSession hook)
       }
     },
   },

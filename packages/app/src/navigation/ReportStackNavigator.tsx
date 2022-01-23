@@ -1,19 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import Loading from '~/components/v0-legacy/Loading'
-import type { CapturedPicture } from '~/containers/Camera'
+import { Loading } from '~/components/v1/atoms'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import { Camera, CameraPermissions, Medias } from '~/screens'
+import type { ReportStackParams } from './types'
 
-export type ReportStackParams = {
-  CameraPermissions: undefined
-  Camera?: {
-    previousCapturedPictures?: CapturedPicture[]
-  }
-  Medias: {
-    capturedPictures: CapturedPicture[]
-  }
-}
 const ReportStack = createStackNavigator<ReportStackParams>()
 
 export function ReportStackNavigator() {

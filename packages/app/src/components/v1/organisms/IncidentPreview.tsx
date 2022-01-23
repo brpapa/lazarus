@@ -1,18 +1,16 @@
 import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
+import { View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
 import { useRecoilValue } from 'recoil'
-import Box from '~/components/v0-legacy/atoms/Box'
-import Text from '~/components/v0-legacy/atoms/Text'
-import MyButton from '~/components/v0-legacy/MyButton'
-import NotificationsAmount from '~/components/v0-legacy/NotificationsAmount'
+import { FloatingButton, Text } from '~/components/v1/atoms'
 import { userLocationState } from '~/data/recoil'
-import CloseIcon from '~/icons_LEGACY/close'
-import type { MainStackParams } from '~/navigation/MainStackNavigator'
+import type { HomeTabNavProp } from '~/navigation/types'
+import { makeUseStyles } from '~/theme/v1'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
+import { IconWithLabel } from '../atoms'
 
 type IncidentPreviewProps = {
   preloadedQuery: PreloadedQuery<IncidentPreviewQueryType>
@@ -39,58 +37,77 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
   if (!props.closeable && props.onClosed)
     throw new Error('Invalid props: component should be closeable to have the onClosed prop')
 
-  const rootNavigation = useNavigation<StackNavigationProp<MainStackParams, 'HomeTabNavigator'>>()
+  const s = useStyles()
+
+  const nav = useNavigation<HomeTabNavProp<'Explorer'>>()
   const userLocation = useRecoilValue(userLocationState)
 
   const data = usePreloadedQuery<IncidentPreviewQueryType>(query, props.preloadedQuery)
 
   const onTouched = useCallback(() => {
-    rootNavigation.push('Incident', {
+    nav.push('IncidentDetail', {
       incidentId: data.incident?.incidentId!,
     })
   }, [])
 
   return (
     <TouchableWithoutFeedback onPress={onTouched}>
-      <Box
-        flex={1}
-        bg="background"
-        m="sm"
-        px="md"
-        py="sm"
-        borderRadius={5}
-        borderColor="accents-2"
-        borderWidth={1}
-      >
+      <View style={s.container}>
         <Text variant="header">{data.incident?.title}</Text>
-        <Box flex={1} flexDirection="row" mb="sm">
+        <View style={s.lowerContainer}>
           <Text variant="body2">
-            {t('incident.createdAt', {
-              createdAt: new Date(data!.incident!.createdAt),
-            })}
-          </Text>
-          <Text mx="sm" variant="body2">
-            {'·'}
+            {
+              t('incident.createdAt', {
+                createdAt: new Date(data!.incident!.createdAt),
+              }) as string
+            }
           </Text>
           <Text variant="body2">
-            {t('incident.distanceToUser', { segment: [data.incident!.location, userLocation] })}
+            {
+              t('incident.distanceToUser', {
+                segment: [data.incident!.location, userLocation],
+              }) as string
+            }
           </Text>
-        </Box>
+        </View>
 
-        <NotificationsAmount amount={data!.incident!.usersNotifiedCount} />
+        <IconWithLabel
+          icon="Bell"
+          label={
+            t('incident.amountOfPeopleNotified', {
+              count: data.incident!.usersNotifiedCount,
+            }) as string
+          }
+        />
 
         {props.closeable && (
-          <MyButton
-            position="absolute"
-            width={40}
-            height={40}
-            top={-40 - 5}
-            right={0}
-            icon={CloseIcon}
+          <FloatingButton
+            icon="Close"
+            style={{ position: 'absolute', top: -45, right: 0 }}
             onPress={props.onClosed}
           />
         )}
-      </Box>
+      </View>
     </TouchableWithoutFeedback>
   )
 }
+
+const useStyles = makeUseStyles(({ colors, spacing }) => ({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    margin: spacing.m,
+    paddingRight: spacing.xl,
+    paddingLeft: spacing.xl,
+    paddingTop: spacing.m,
+    paddingBottom: spacing.m,
+    borderRadius: 5,
+    borderColor: colors.accent2,
+    borderWidth: 1,
+  },
+  lowerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: spacing.m,
+  },
+}))

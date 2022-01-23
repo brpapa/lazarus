@@ -1,6 +1,5 @@
 import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Image, Keyboard, View } from 'react-native'
@@ -9,7 +8,7 @@ import { DarkLogo, LightLogo } from '~/../assets/images'
 import { Button, Text, TextInput, TextInputType } from '~/components/v1/atoms'
 import { CustomHeader } from '~/components/v1/molecules/Header'
 import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
-import type { RootStackParams } from '~/navigation/RootStackNavigator'
+import type { MainStackNavProp } from '~/navigation/types'
 import { getTextInputRules } from '~/shared/form/get-text-input-rules'
 import { makeUseStyles, useColorScheme } from '~/theme/v1'
 
@@ -25,7 +24,7 @@ type Form = {
 }
 
 export function SignUp() {
-  const { navigate } = useNavigation<StackNavigationProp<RootStackParams, 'SignUp'>>()
+  const nav = useNavigation<MainStackNavProp<'SignUp'>>()
   const { colorScheme } = useColorScheme()
   const s = useStyles()
   const [signUp, isSending] = useSignUpMutation()
@@ -53,7 +52,7 @@ export function SignUp() {
 
     const result = await signUp({ email, name, username, password }) // TODO: also send email and name to sign up
     result.map(
-      () => navigate('SignIn'),
+      () => nav.navigate('SignIn'),
       (err) => setErrorMsg(err.reason),
     )
   })

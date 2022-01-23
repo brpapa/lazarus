@@ -1,7 +1,6 @@
 import React from 'react'
 import { Insets, StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native'
-
-import { Icons, IconName } from '~/icons'
+import { IconName, Icons } from '~/icons'
 import { IconSize, useTheme } from '~/theme/v1'
 
 type Props = {

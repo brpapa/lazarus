@@ -1,19 +1,20 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
-import type { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useRef, useState } from 'react'
-import { Alert, StatusBar, StyleSheet } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Alert, StatusBar, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { CloseIcon, RotateIcon } from '~/icons_LEGACY'
-import Box from '~/components/v0-legacy/atoms/Box'
 import MyButton from '~/components/v0-legacy/MyButton'
-import CameraView, { CameraOrientation, CameraRef } from '~/containers/CameraView'
+import { FloatingButton } from '~/components/v1/atoms'
+import CameraView, { CameraOrientation, CameraRef } from '~/components/v1/organisms/CameraView'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
-import type { ReportStackParams } from '../../navigation/ReportStackNavigator'
+import { CloseIcon, RotateIcon } from '~/icons_LEGACY'
+import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
+import { makeUseStyles } from '~/theme/v1'
 
 export function Camera() {
+  const s = useStyles()
   const insets = useSafeAreaInsets()
-  const reportNavigation = useNavigation<StackNavigationProp<ReportStackParams, 'Camera'>>()
-  const { params } = useRoute<RouteProp<ReportStackParams, 'Camera'>>()
+  const nav = useNavigation<ReportStackNavProp<'Camera'>>()
+  const { params } = useRoute<ReportStackRouteProp<'Camera'>>()
 
   const cameraViewRef = useRef<CameraRef | null>(null)
   const [cameraIsReady, setCameraIsReady] = useState(false)
@@ -24,45 +25,44 @@ export function Camera() {
     try {
       const newCapturedPicture = await cameraViewRef.current.takePictureAsync()
       const previousCapturedMedias = params?.previousCapturedPictures || []
-      reportNavigation.navigate('Medias', {
+      nav.navigate('Medias', {
         capturedPictures: [...previousCapturedMedias, newCapturedPicture],
       })
     } catch (e) {
       console.error(e)
       Alert.alert('Unexpect error to take picture')
     }
-  }, [params, reportNavigation])
+  }, [params, nav])
 
   const closeCamera = useCallback(() => {
-    reportNavigation.goBack()
-  }, [reportNavigation])
+    nav.goBack()
+  }, [nav])
 
   const flipCameraOrientation = useCallback(() => {
     setCameraOrientation((prev) => (prev === 'back' ? 'front' : 'back'))
   }, [])
 
   return (
-    <Box flex={1}>
+    <View style={{ flex: 1 }}>
       <StatusBar barStyle={'light-content'} />
       <CameraView
         ref={cameraViewRef}
-        style={styles.camera}
+        style={s.camera}
         orientation={cameraOrientation}
         onCameraReady={() => setCameraIsReady(true)}
       />
-      <Box position="absolute" right={insets.right + 10} top={insets.top + 10}>
-        <MyButton my={'sm'} icon={CloseIcon} onPress={closeCamera} />
-        <MyButton my={'sm'} icon={RotateIcon} onPress={flipCameraOrientation} />
-      </Box>
+      <View style={{ position: 'absolute', right: insets.right + 10, top: insets.top + 10 }}>
+        <FloatingButton icon={'Close'} onPress={closeCamera} style={s.button} />
+        <FloatingButton icon={'Rotate'} onPress={flipCameraOrientation} style={s.button} />
+      </View>
       {cameraIsReady && (
-        <MyButton
-          position="absolute"
-          right="45%"
-          bottom={insets.bottom + 30}
+        <FloatingButton
+          icon="Camera"
           onPress={takePicture}
+          style={{ position: 'absolute', right: '45%', bottom: insets.bottom + 30 }}
         />
       )}
-    </Box>
+    </View>
   )
 }
 
@@ -79,11 +79,15 @@ export function Camera() {
 //   cameraRef.current.stopRecording()
 // }
 
-const styles = StyleSheet.create({
+const useStyles = makeUseStyles(({ spacing }) => ({
   camera: {
     backgroundColor: '#222',
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
     overflow: 'hidden',
   },
-})
+  button: {
+    marginTop: spacing.m,
+    marginBottom: spacing.m,
+  },
+}))

@@ -1,11 +1,19 @@
 import React from 'react'
-import { Box } from '~/components/v0-legacy/atoms'
-import Loading from '~/components/v0-legacy/Loading'
+import { View } from 'react-native'
+import { makeUseStyles } from '~/theme/v1'
 
-export function Splash() {
-  return (
-    <Box flex={1} alignItems="center" justifyContent="center">
-      <Loading />
-    </Box>
-  )
+type SpashProps = {}
+
+export function Spash(_props: SpashProps) {
+  const s = useStyles()
+
+  return <View style={s.container}></View>
 }
+
+const useStyles = makeUseStyles(() => ({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}))

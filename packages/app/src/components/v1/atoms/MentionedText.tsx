@@ -8,7 +8,7 @@ type Props = {
 }
 
 export function MentionedText(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
 
   const { textValue } = props
 
@@ -17,7 +17,7 @@ export function MentionedText(props: Props) {
       parse={[
         {
           pattern: /@[A-Za-z0-9._-]*/g,
-          style: styles.parsedText,
+          style: s.parsedText,
         },
       ]}
     >

@@ -13,14 +13,14 @@ type Props = Pick<AvatarProps, 'style'> & {
 }
 
 export function LetterAvatar(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
 
   const { size, fontSize, style, color, label } = props
 
   return (
     <View
       style={[
-        styles.container,
+        s.container,
         {
           width: size,
           height: size,
@@ -29,7 +29,7 @@ export function LetterAvatar(props: Props) {
         style,
       ]}
     >
-      <Text style={[styles.text, { fontSize, color: automaticFontColor(color) }]}>{label}</Text>
+      <Text style={[s.text, { fontSize, color: automaticFontColor(color) }]}>{label}</Text>
     </View>
   )
 }

@@ -1,23 +1,24 @@
 import React, { ReactChild } from 'react'
-import { Text as BaseText, TextProps } from 'react-native'
-
+import { Text as BaseText, TextProps as BaseTextProps } from 'react-native'
 import { Color, FontSize, FontVariant, useTheme } from '~/theme/v1'
 
-type Props = TextProps & {
+type TextProps = BaseTextProps & {
   variant?: FontVariant
   size?: FontSize
   color?: Color
-  children?: ReactChild
+  children?: ReactChild | ReactChild[]
 }
 
-export function Text(props: Props) {
+export function Text(props: TextProps) {
   const { colors, fontSizes, fontVariants } = useTheme()
 
-  const { variant = 'normal', size = 'm', color = 'textNormal', style, ...otherProps } = props
+  const { variant = 'body', size, color, style, ...restProps } = props
 
   const fontStyles = fontVariants[variant]
-  const fontSize = fontSizes[size]
-  const fontColor = colors[color]
+  const fontSizeStyle = size && { fontSize: fontSizes[size] }
+  const fontColorStyle = color && { color: colors[color] }
 
-  return <BaseText style={[fontStyles, { fontSize, color: fontColor }, style]} {...otherProps} />
+  const styles = [fontStyles, fontSizeStyle, fontColorStyle, style].filter((s) => s !== undefined)
+
+  return <BaseText style={styles} {...restProps} />
 }

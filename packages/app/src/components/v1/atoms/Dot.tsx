@@ -24,7 +24,7 @@ type Props = ViewProps & {
 }
 
 export function Dot(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
   const { colors } = useTheme()
 
   const { variant = 'normal', color = colors.primary, style, ...otherProps } = props
@@ -33,7 +33,7 @@ export function Dot(props: Props) {
     <View style={{ padding: dotVariant[variant].padding }}>
       <View
         style={[
-          styles.circle,
+          s.circle,
           {
             backgroundColor: color,
             width: dotVariant[variant].size,

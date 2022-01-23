@@ -1,7 +1,8 @@
 import React from 'react'
+import { View } from 'react-native'
 import { Marker } from 'react-native-maps'
 import { graphql, useFragment } from 'react-relay'
-import { Box } from '~/components/v0-legacy/atoms'
+import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { IncidentMarker_incident$key } from '~/__generated__/IncidentMarker_incident.graphql'
 
 type IncidentMarkerProps = {
@@ -21,6 +22,8 @@ const frag = graphql`
 `
 
 export function IncidentMarker(props: IncidentMarkerProps) {
+  const { colors } = useTheme()
+  const s = useStyles()
   const data = useFragment<IncidentMarker_incident$key>(frag, props.incidentRef)
 
   return (
@@ -32,14 +35,25 @@ export function IncidentMarker(props: IncidentMarkerProps) {
         props.onPressed()
       }}
     >
-      <Box flex={1}>
-        <Box
-          borderRadius={6}
-          bg={props.selected ? 'incident-selected' : 'accents-7'}
-          width={17}
-          height={17}
+      <View style={s.incidentSquareContainer}>
+        <View
+          style={[
+            s.incidentSquare,
+            { backgroundColor: props.selected ? colors.incidentSelected : colors.accent7 },
+          ]}
         />
-      </Box>
+      </View>
     </Marker>
   )
 }
+
+const useStyles = makeUseStyles(() => ({
+  incidentSquareContainer: {
+    flex: 1,
+  },
+  incidentSquare: {
+    borderRadius: 6,
+    width: 17,
+    height: 17,
+  },
+}))

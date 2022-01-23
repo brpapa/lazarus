@@ -1,13 +1,14 @@
+import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import type { AppStackParams } from '~/App'
-import Box from '~/components/v0-legacy/atoms/Box'
-import Text from '~/components/v0-legacy/atoms/Text'
+import { View } from 'react-native'
+import { Text } from '~/components/v1/atoms'
 import { useRequiredPermissions } from '~/hooks/use-required-permissions'
+import type { AppStackParams } from '~/navigation/types'
 
 export function RequiredPermissions() {
-  const appNavigation = useNavigation<StackNavigationProp<AppStackParams, 'RequiredPermissions'>>()
+  const nav = useNavigation<StackNavigationProp<AppStackParams, 'RequiredPermissions'>>()
 
   const {
     isLoading,
@@ -18,15 +19,16 @@ export function RequiredPermissions() {
     requestLocationBackgroundPermission,
     requestPushNotificationPermission,
   } = useRequiredPermissions({
-    onAllPermissionsWasGranted: () => appNavigation.reset({ index: 0, routes: [{ name: 'App' }] }),
+    onAllPermissionsWasGranted: () =>
+      nav.reset({ index: 0, routes: [{ name: 'RootStackNavigator' }] }),
   })
 
   if (isLoading) return null
 
   return (
-    <Box flex={1} bg="background" alignItems="center" justifyContent="center">
-      <Text>Please, provides the following permissions before use the app</Text>
-      <Box>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>{t('Please, provides the following permissions before use the app') as string}</Text>
+      <View>
         {[
           {
             isGranted: locationForegroundPermissionIsGranted,
@@ -53,7 +55,7 @@ export function RequiredPermissions() {
               </Text>
             </Text>
           ))}
-      </Box>
-    </Box>
+      </View>
+    </View>
   )
 }

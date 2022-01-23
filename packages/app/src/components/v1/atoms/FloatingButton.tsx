@@ -1,48 +1,52 @@
 import React from 'react'
-
+import type { StyleProp, ViewStyle } from 'react-native'
 import type { IconName } from '~/icons'
+import type { FloatingButtonSize } from '~/theme/v1'
 import { IconSize, makeUseStyles, useTheme } from '~/theme/v1'
+import { Icon } from './Icon'
 
-import { Icon, IconProps } from './Icon'
-
-type Props = Pick<IconProps, 'color' | 'style'> & {
-  size?: number
+type Props = {
+  icon: IconName
+  size?: FloatingButtonSize
   backgroundColor?: string
-  icon?: IconName
-  iconSize?: IconSize
-  onPress: () => void
+  onPress?: () => void
+  style?: StyleProp<ViewStyle>
 }
 
 export function FloatingButton(props: Props) {
-  const styles = useStyles()
-  const { colors } = useTheme()
+  const s = useStyles()
+  const { colors, floatingButtonSizes } = useTheme()
 
-  const {
-    size = 56,
-    backgroundColor = colors.primary,
-    icon = 'Add',
-    iconSize = 'xl',
-    color = colors.pureWhite,
-    onPress,
-    style,
-  } = props
+  const { size = 'm', icon, onPress, style } = props
+
+  const iconSizeByFloatingButtonSize: Record<FloatingButtonSize, IconSize> = {
+    s: 'xs',
+    m: 'l',
+    l: 'xl',
+  }
 
   return (
     <Icon
       name={icon}
-      color={color}
-      size={iconSize}
+      color={colors.foreground}
+      size={iconSizeByFloatingButtonSize[size]}
       onPress={onPress}
-      style={[styles.container, { width: size, height: size, backgroundColor }, style]}
+      style={[
+        s.container,
+        {
+          width: floatingButtonSizes[size],
+          height: floatingButtonSizes[size],
+        },
+        style,
+      ]}
     />
   )
 }
 
-const useStyles = makeUseStyles(({ shadow }) => ({
+const useStyles = makeUseStyles(({ colors }) => ({
   container: {
-    ...shadow,
-    shadowOpacity: 0.36,
-    borderRadius: 100,
+    backgroundColor: colors.accent2,
+    borderRadius: 999,
     justifyContent: 'center',
     alignItems: 'center',
   },

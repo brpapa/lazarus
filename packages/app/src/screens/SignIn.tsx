@@ -1,17 +1,16 @@
 import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Image, Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { DarkLogo, LightLogo } from '~/../assets/images'
-import { Text } from '~/components/v0-legacy/atoms'
+import { Text } from '~/components/v1/atoms'
 import { Button, TextInput, TextInputType } from '~/components/v1/atoms'
 import { CustomHeader } from '~/components/v1/molecules/Header'
 import { useSignInMutation } from '~/data/relay/mutations/SignInMutation'
 import { useSession } from '~/hooks/use-session'
-import type { RootStackParams } from '~/navigation/RootStackNavigator'
+import type { MainStackNavProp } from '~/navigation/types'
 import { makeUseStyles, useColorScheme } from '~/theme/v1'
 
 type Form = {
@@ -20,7 +19,7 @@ type Form = {
 }
 
 export function SignIn() {
-  const { navigate } = useNavigation<StackNavigationProp<RootStackParams, 'SignIn'>>()
+  const nav = useNavigation<MainStackNavProp<'SignIn'>>()
 
   const [hidePassword, setHidePassword] = useState(true)
   const { colorScheme } = useColorScheme()
@@ -60,7 +59,7 @@ export function SignIn() {
 
   const onSignUpPressed = () => {
     Keyboard.dismiss()
-    navigate('SignUp')
+    nav.navigate('SignUp')
   }
 
   return (

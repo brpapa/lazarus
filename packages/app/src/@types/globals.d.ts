@@ -23,3 +23,14 @@ type AccessToken = {
   value: string
   expiresIn: Date
 }
+
+type CapturedPicture = {
+  /** path in device file system where the picture was saved */
+  uri: string
+  width: number
+  height: number
+  mimeType?: string
+  extension?: string
+}
+
+type Media = { type: MediaType; uri: string }

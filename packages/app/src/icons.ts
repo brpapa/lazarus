@@ -35,6 +35,8 @@ import Triangle from '../assets/icons/Triangle.svg'
 import Views from '../assets/icons/Views.svg'
 import User from '../assets/icons/User.svg'
 import Bell from '../assets/icons/Bell.svg'
+import MessageCircle from '../assets/icons/MessageCircle.svg'
+import Rotate from '../assets/icons/Rotate.svg'
 
 export const Icons = {
   Add,
@@ -74,6 +76,8 @@ export const Icons = {
   Camera,
   User,
   Bell,
+  MessageCircle,
+  Rotate,
 }
 
 export type IconName = keyof typeof Icons

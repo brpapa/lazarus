@@ -7,8 +7,8 @@ import React, {
   useState,
 } from 'react'
 
-import { FIXED_COLOR_SCHEME } from './constants'
-import { ColorScheme, filterColorScheme, getSystemColorScheme } from './helpers/color-scheme'
+import { FIXED_COLOR_SCHEME } from '~/config'
+import { ColorScheme, filterColorScheme, getSystemColorScheme } from '../helpers/color-scheme'
 
 type ContextValue = {
   colorScheme: ColorScheme
@@ -21,7 +21,7 @@ type Props = {
   children: ReactElement
 }
 
-export function AppearanceProvider({ children }: Props) {
+export function ColorSchemeProvider({ children }: Props) {
   // TODO: use Recoil for this?
   const fixedColorScheme = filterColorScheme(FIXED_COLOR_SCHEME)
 

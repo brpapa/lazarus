@@ -1,5 +1,5 @@
 import { graphql } from 'react-relay'
-import type { CapturedPicture } from '~/containers/CameraView'
+import type { CapturedPicture } from '~/components/v1/organisms/CameraView'
 import { uploadPictures } from '~/data/upload-pictures'
 import { appendIncidentToConnection } from '~/data/relay/utils/store'
 import type {

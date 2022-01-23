@@ -1,5 +1,4 @@
-// TODO: shadows variants
-export default {
+export const shadowVariantes = {
   0: {
     shadowColor: '#000',
     shadowOffset: {

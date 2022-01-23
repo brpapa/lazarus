@@ -1,6 +1,4 @@
-import { TextProps, ThemeableProps, getTokens, themeable, useTheme } from '@tamagui/core'
-import React, { forwardRef, isValidElement } from 'react'
-
+import { TextProps, ThemeableProps, getTokens, themeable, useTheme, FontTokens, SizeTokens, Variable } from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
 import { SizableText } from './SizableText'

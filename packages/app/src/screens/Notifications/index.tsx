@@ -2,7 +2,7 @@ import { t } from '@metis/shared'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { graphql, useFragment } from 'react-relay'
-import { Text } from '~/components/v0-legacy/atoms'
+import { Text } from '~/components/v1/atoms'
 import type { Notifications_query$key } from '~/__generated__/Notifications_query.graphql'
 import { NotificationList } from './NotificationList'
 
@@ -21,8 +21,8 @@ export function Notifications(props: NotificationsProps) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text variant="header" m="md">
-        {t('notification.title')}
+      <Text variant="header">
+        {t('notification.title') as string}
       </Text>
       <NotificationList queryRef={data} />
     </SafeAreaView>

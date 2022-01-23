@@ -14,7 +14,7 @@ type Props = TouchableOpacityProps & {
 }
 
 export function Chip(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
   const { spacing } = useTheme()
 
   const { content, decorationColor, large, right, style, ...otherProps } = props
@@ -31,7 +31,7 @@ export function Chip(props: Props) {
     <TouchableOpacity delayPressIn={150} disabled={!interactable} {...otherProps}>
       <View
         style={[
-          styles.container,
+          s.container,
           large && { height: 40, paddingHorizontal: spacing.xl },
           right && { paddingRight: spacing.m },
           style,

@@ -1,4 +1,4 @@
-export const ICON_SIZES = {
+export const iconSizes = {
   xl: 28,
   l: 24,
   m: 20,

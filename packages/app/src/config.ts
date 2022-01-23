@@ -2,6 +2,7 @@ import { isDevice } from 'expo-device'
 import type { LocationTaskOptions } from 'expo-location'
 import * as Location from 'expo-location'
 import { Dimensions, Platform } from 'react-native'
+import type { ColorScheme } from './theme/v1/helpers/color-scheme'
 
 export const __DEVICE_IS_SIMULATOR__ = !isDevice
 export const __IOS__ = Platform.OS === 'ios'
@@ -19,8 +20,8 @@ export const ENABLE_GOOGLE_MAPS = ['ios', 'android'].includes(Platform.OS)
 /** if true the Camera component will be mocked */
 export const ENABLE_CAMERA_MOCK = true
 
-/** if true, every time that app is reloaded, the user will going to be in last screen visited */
-export const ENABLE_NAVIGATION_STATE_PERSISTENCE = false
+/** if true, the current navigation state is maintained between multiple app reloads */
+export const ENABLE_NAVIGATION_STATE_PERSISTENCE = true
 
 export const FOREGROUND_LOCATION_OPTIONS: Location.LocationOptions = {
   accuracy: Location.Accuracy.High,
@@ -37,7 +38,7 @@ export const BACKGROUND_LOCATION_OPTIONS: LocationTaskOptions = {
   pausesUpdatesAutomatically: true,
 }
 
-export type ThemeName_V0_LEGACY = 'default' | 'dark'
-export const DEFAULT_THEME_V0_LEGACY: ThemeName_V0_LEGACY = 'default'
+export const FIXED_COLOR_SCHEME: ColorScheme = 'light' // se no-preference é considerado preferencia sistema
+
 export type ThemeName_V2_BETA_TAMAGUI = 'light' | 'dark'
 export const DEFAULT_THEME_V2_BETA_TAMAGUI: ThemeName_V2_BETA_TAMAGUI = 'light'

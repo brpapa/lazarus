@@ -44,7 +44,7 @@ export function Badge({ visible = true, size = 18, children: content, style, ...
   // @ts-expect-error: backgroundColor definitely exists
   const { backgroundColor = theme.colors.primary, ...restStyle } =
     StyleSheet.flatten(style) || {}
-  const textColor = theme.colors.darkTextNormal
+  const textColor = theme.colors.background
 
   const borderRadius = size / 2
   const fontSize = Math.floor((size * 3) / 4)

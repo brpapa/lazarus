@@ -28,7 +28,7 @@ export function Divider({
   style,
   ...otherProps
 }: Props) {
-  const styles = useStyles()
+  const s = useStyles()
   const { spacing } = useTheme()
 
   const margin = {
@@ -44,7 +44,7 @@ export function Divider({
 
   return (
     <View
-      style={[vertical ? styles.vertical : styles.horizontal, { ...margin }, style]}
+      style={[vertical ? s.vertical : s.horizontal, { ...margin }, style]}
       {...otherProps}
     />
   )

@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { RefreshControl } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { graphql, usePaginationFragment } from 'react-relay'
+import { FooterLoadingIndicator } from '~/components/v1/molecules'
 import { useRefetchWithoutSuspense } from '~/data/relay/utils/use-refetch-without-suspense'
 import type { NotificationListRefreshQuery as NotificationListRefreshQueryType } from '~/__generated__/NotificationListRefreshQuery.graphql'
 import NotificationListRefreshQuery from '~/__generated__/NotificationListRefreshQuery.graphql'
@@ -45,18 +45,6 @@ export function NotificationList(props: NotificationsListProps) {
     NotificationListRefreshQuery,
   )
 
-  // const navigation = useNavigation()
-  // useEffect(() => {
-  //   // when the current screen is focused
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     refetchWithoutSuspend({
-  //       count: PAGE_SIZE,
-  //       cursor: null,
-  //     })
-  //   })
-  //   return unsubscribe
-  // }, [navigation, refetchWithoutSuspend])
-
   const onRefresh = useCallback(() => {
     refetchWithoutSuspend({
       count: PAGE_SIZE,
@@ -64,7 +52,7 @@ export function NotificationList(props: NotificationsListProps) {
     })
   }, [refetchWithoutSuspend])
 
-  const onEndReached = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (hasNext) loadNext(PAGE_SIZE)
   }, [hasNext, loadNext])
 
@@ -78,17 +66,30 @@ export function NotificationList(props: NotificationsListProps) {
       data={nodes}
       renderItem={({ item: node }) => <Notification notificationRef={node} />}
       keyExtractor={(_, i) => i.toString()}
-      onEndReachedThreshold={0}
-      onEndReached={onEndReached}
+      onEndReachedThreshold={0.1}
+      onEndReached={loadMore}
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={onRefresh} />}
+      initialScrollIndex={0}
+      ListFooterComponent={<FooterLoadingIndicator isHidden={!hasNext} />}
       // TODO
       // ItemSeparatorComponent={() => <View style={styles.separator} />}
-      // ListFooterComponent={this.renderFooter}
     />
   )
 }
 
 /*
+const navigation = useNavigation()
+useEffect(() => {
+  // when the current screen is focused
+  const unsubscribe = navigation.addListener('focus', () => {
+    refetchWithoutSuspend({
+      count: PAGE_SIZE,
+      cursor: null,
+    })
+  })
+  return unsubscribe
+}, [navigation, refetchWithoutSuspend])
+
 const onRefresh = useCallback(() => {
     refetchWithoutSuspend(
       {

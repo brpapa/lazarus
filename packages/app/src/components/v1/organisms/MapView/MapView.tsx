@@ -1,14 +1,11 @@
-import { useTheme } from '@shopify/restyle'
 import React, { useRef, useState } from 'react'
-import type { StyleProp, ViewStyle } from 'react-native'
+import { StyleProp, View, ViewStyle } from 'react-native'
 import GoogleMapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { UserIcon } from '~/icons_LEGACY'
-import Box from '~/components/v0-legacy/atoms/Box'
-import MyButton from '~/components/v0-legacy/MyButton'
 import { selectedIncidentIdInMap, userLocationState } from '~/data/recoil'
-import type { Theme } from '~/shared/theme/v0-legacy'
-import customMapStyles from './custom-map-styles'
+import { makeUseStyles, useColorScheme } from '~/theme/v1'
+import { FloatingButton } from '../../atoms'
+import { customMapStyles } from './custom-map-styles'
 
 type MapViewProps = {
   style?: StyleProp<ViewStyle>
@@ -19,9 +16,11 @@ type MapViewProps = {
 }
 
 export default function MapView(props: MapViewProps) {
+  const s = useStyles()
+  const { colorScheme } = useColorScheme()
+
   // https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md#methods
   const mapRef = useRef<GoogleMapView>(null)
-  const theme = useTheme<Theme>()
   const userCoordinate = useRecoilValue(userLocationState)
 
   const [ne, setNe] = useState<LatLng | null>(null)
@@ -38,7 +37,7 @@ export default function MapView(props: MapViewProps) {
   }
 
   return (
-    <Box flex={1}>
+    <View style={s.container}>
       <GoogleMapView
         ref={mapRef}
         style={{ alignSelf: 'stretch', height: '100%' }}
@@ -70,25 +69,49 @@ export default function MapView(props: MapViewProps) {
         pitchEnabled={true}
         scrollEnabled={true}
         zoomTapEnabled={true}
-        customMapStyle={customMapStyles[theme.name]}
+        customMapStyle={customMapStyles[colorScheme]}
       >
         {props.children}
         {userCoordinate && (
           <Marker coordinate={userCoordinate}>
-            <Box flex={1} justifyContent={'center'} alignContent={'center'}>
-              <Box bg={'success'} borderRadius={8} width={17} height={17} />
-            </Box>
+            <View style={s.userCircleContainer}>
+              <View style={s.userCircle} />
+            </View>
           </Marker>
         )}
         {ne && <Marker coordinate={ne} pinColor="blue"></Marker>}
         {sw && <Marker coordinate={sw} pinColor="red"></Marker>}
       </GoogleMapView>
-      <Box position={'absolute'} top={70} right={30}>
-        <MyButton my={'sm'} icon={UserIcon} onPress={flyToUserCoordinate} />
-      </Box>
-    </Box>
+      <View style={s.overlayed}>
+        <FloatingButton icon={'User'} onPress={flyToUserCoordinate} />
+      </View>
+    </View>
   )
 }
+
+const useStyles = makeUseStyles(({ colors }) => ({
+  container: {
+    flex: 1,
+  },
+  userCircleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  userCircle: {
+    backgroundColor: colors.success,
+    borderRadius: 1000,
+    width: 23,
+    height: 23,
+    borderColor: colors.background,
+    borderWidth: 3,
+  },
+  overlayed: {
+    position: 'absolute',
+    top: 70,
+    right: 30,
+  },
+}))
 
 // const fromRegionToBoundary = (region: {
 //   latitude: number

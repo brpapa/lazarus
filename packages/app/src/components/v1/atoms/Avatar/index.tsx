@@ -20,7 +20,7 @@ type Props = Omit<ImageBackgroundProps, 'source'> & {
 export type { Props as AvatarProps }
 
 export function Avatar(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
   const { colors } = useTheme()
 
   const {
@@ -54,7 +54,7 @@ export function Avatar(props: Props) {
         <ImageBackground
           source={imgSource}
           style={[{ width: finalSize, height: finalSize }, style]}
-          imageStyle={styles.circle}
+          imageStyle={s.circle}
           onError={() => setError(true)}
           // TODO: Decide what to display onLoading
           onLoadEnd={() => setLoading(false)}

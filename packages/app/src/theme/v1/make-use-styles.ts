@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import type { Theme } from './theme'
-import { useTheme } from './ThemeProvider'
+import { useTheme } from './contexts/Theme'
 
 type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle }
 

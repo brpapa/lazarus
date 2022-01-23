@@ -14,19 +14,19 @@ type Props = {
 }
 
 export function RadioButton(props: Props) {
-  const styles = useStyles()
+  const s = useStyles()
 
   const { children, selected, disabled, onPress } = props
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={s.container}
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.8}
     >
-      {selected ? <Icon name="CheckCircle" size="m" /> : <View style={styles.circle} />}
-      <View style={[styles.labelContainer, disabled && { opacity: 0.5 }]}>{children}</View>
+      {selected ? <Icon name="CheckCircle" size="m" /> : <View style={s.circle} />}
+      <View style={[s.labelContainer, disabled && { opacity: 0.5 }]}>{children}</View>
     </TouchableOpacity>
   )
 }

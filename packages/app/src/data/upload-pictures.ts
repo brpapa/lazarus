@@ -1,5 +1,5 @@
 import FormData from 'form-data'
-import { CapturedPicture, MediaType } from '~/containers/CameraView'
+import { MediaType } from '~/shared/constants'
 import { HTTP_SERVER_BASE_URL } from '~/config'
 
 type UploadResponseBody = {

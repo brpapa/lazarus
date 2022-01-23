@@ -1,4 +1,11 @@
-export * from './AppearanceProvider'
+export * from './contexts/ColorScheme'
+export * from './contexts/Theme'
 export * from './make-use-styles'
-export type { Config, Theme, FontSize, FontVariant, IconSize, Spacing, Color } from './theme'
-export * from './ThemeProvider'
+export type {
+  Color,
+  Config, FloatingButtonSize, FontSize,
+  FontVariant,
+  IconSize, Spacing,
+  Theme
+} from './theme'
+

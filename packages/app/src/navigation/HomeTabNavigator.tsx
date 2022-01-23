@@ -2,7 +2,7 @@ import { t } from '@metis/shared'
 import {
   BottomTabBarOptions,
   BottomTabBarProps,
-  createBottomTabNavigator
+  createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
@@ -12,21 +12,12 @@ import { useRecoilValue } from 'recoil'
 import { Badge, Icon, Text } from '~/components/v1/atoms'
 import { __IOS__ } from '~/config'
 import { initialQueryRefState } from '~/data/recoil/initial-query-ref'
-import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
-import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
-import { useSession } from '~/hooks/use-session'
 import type { IconName } from '~/icons'
 import { Explorer, Notifications, Profile } from '~/screens'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'
 import { ReportStackNavigator } from './ReportStackNavigator'
-
-export type HomeTabParams = {
-  Explorer: undefined
-  ReportStackNavigator: undefined
-  Notifications: undefined
-  Profile: undefined
-}
+import type { HomeTabParams } from './types'
 
 const HomeTab = createBottomTabNavigator<HomeTabParams>()
 
@@ -43,10 +34,6 @@ const query = graphql`
 export function HomeTabNavigator() {
   const homeTabNavitorQueryRef = useRecoilValue(initialQueryRefState)
   const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavitorQueryRef)
-
-  const { isSignedIn } = useSession()
-  useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
-  usePushNotificationsListener({ when: isSignedIn })
 
   return (
     <HomeTab.Navigator initialRouteName="Explorer" tabBar={(props) => <TabBar {...props} />}>
