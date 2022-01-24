@@ -2,9 +2,8 @@ import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Image, Keyboard, View } from 'react-native'
+import { Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { DarkLogo, LightLogo } from '~/../assets/images'
 import { Button, Text, TextInput, TextInputType } from '~/components/v1/atoms'
 import { CustomHeader } from '~/components/v1/molecules/Header'
 import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
@@ -64,11 +63,11 @@ export function SignUp() {
       style={s.container}
     >
       <CustomHeader title={t('auth.signUp')} noShadow />
-      <Image
+      {/* <Image
         source={colorScheme === 'dark' ? DarkLogo : LightLogo}
         style={s.logo}
         resizeMode="contain"
-      />
+      /> */}
       <View style={s.inputContainer}>
         {errorMsg && <Text style={s.errorMsg}>{errorMsg}</Text>}
         <Controller

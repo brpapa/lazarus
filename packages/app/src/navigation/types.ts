@@ -15,18 +15,17 @@ export type RootStackParams = {
   }
 }
 export type MainStackParams = {
-  Setup: undefined
   HomeTabNavigator: undefined
   IncidentDetail: {
     incidentId: string
   }
+  Notifications: undefined
   SignIn: undefined
   SignUp: undefined
 }
 export type HomeTabParams = {
   Explorer: undefined
   ReportStackNavigator: undefined
-  Notifications: undefined
   Profile: undefined
 }
 export type ReportStackParams = {

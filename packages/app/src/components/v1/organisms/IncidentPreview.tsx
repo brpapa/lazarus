@@ -45,10 +45,12 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
   const data = usePreloadedQuery<IncidentPreviewQueryType>(query, props.preloadedQuery)
 
   const onTouched = useCallback(() => {
-    nav.push('IncidentDetail', {
+    nav.navigate('IncidentDetail', {
       incidentId: data.incident?.incidentId!,
     })
   }, [])
+  
+  console.log('IncidentPreview', data.incident?.incidentId)
 
   return (
     <TouchableWithoutFeedback onPress={onTouched}>

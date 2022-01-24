@@ -55,7 +55,7 @@ export function AppStackNavigator() {
 }
 
 const statusBarStyle: Record<ColorScheme, StatusBarStyle> = {
-  'no-preference': 'light-content',
+  'no-preference': 'dark-content',
   light: 'dark-content',
   dark: 'light-content',
 }

@@ -1,19 +1,16 @@
+import { t } from '@metis/shared'
 import React, { useCallback } from 'react'
-import { RefreshControl } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { RefreshControl, VirtualizedList } from 'react-native'
 import { graphql, usePaginationFragment } from 'react-relay'
+import { Error } from '~/components/v1/atoms/Error'
 import { FooterLoadingIndicator } from '~/components/v1/molecules'
 import { useRefetchWithoutSuspense } from '~/data/relay/utils/use-refetch-without-suspense'
+import { NOTIFICATIONS_PAGE_SIZE } from '~/shared/constants'
+import { makeUseStyles } from '~/theme/v1'
 import type { NotificationListRefreshQuery as NotificationListRefreshQueryType } from '~/__generated__/NotificationListRefreshQuery.graphql'
 import NotificationListRefreshQuery from '~/__generated__/NotificationListRefreshQuery.graphql'
 import type { NotificationList_query$key } from '~/__generated__/NotificationList_query.graphql'
-import { Notification } from './Notification'
-
-const PAGE_SIZE = 10
-
-type NotificationsListProps = {
-  queryRef: NotificationList_query$key
-}
+import { NotificationItem } from './NotificationItem'
 
 // prettier-ignore
 const frag = graphql`
@@ -24,18 +21,23 @@ const frag = graphql`
     notifications: myNotifications(first: $count, after: $cursor)
       @connection(key: "NotificationList_notifications") {
       
-      notSeenCount
       edges {
         node {
-          ...Notification_notification
+          ...NotificationItem_notification
         }
       }
     }
   }
 `
 
-export function NotificationList(props: NotificationsListProps) {
-  const { data, hasNext, loadNext, refetch } = usePaginationFragment<
+type Props = {
+  queryRef: NotificationList_query$key
+}
+
+export function NotificationList(props: Props) {
+  const s = useStyles()
+
+  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment<
     NotificationListRefreshQueryType,
     NotificationList_query$key
   >(frag, props.queryRef)
@@ -47,49 +49,49 @@ export function NotificationList(props: NotificationsListProps) {
 
   const onRefresh = useCallback(() => {
     refetchWithoutSuspend({
-      count: PAGE_SIZE,
+      count: NOTIFICATIONS_PAGE_SIZE,
       cursor: null,
     })
   }, [refetchWithoutSuspend])
 
   const loadMore = useCallback(() => {
-    if (hasNext) loadNext(PAGE_SIZE)
+    if (hasNext) loadNext(NOTIFICATIONS_PAGE_SIZE)
   }, [hasNext, loadNext])
 
   const nodes = data.notifications.edges
     ? data.notifications.edges.flatMap((e) => (e ? [e.node] : []))
     : []
 
+  if (nodes.length === 0) {
+    return <Error message={t('No notifications available') as string} />
+  }
+
   return (
-    <FlatList
-      style={{ flex: 1 }}
+    <VirtualizedList
       data={nodes}
-      renderItem={({ item: node }) => <Notification notificationRef={node} />}
-      keyExtractor={(_, i) => i.toString()}
-      onEndReachedThreshold={0.1}
-      onEndReached={loadMore}
+      renderItem={({ item: node }) => <NotificationItem notificationRef={node} />}
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={onRefresh} />}
-      initialScrollIndex={0}
-      ListFooterComponent={<FooterLoadingIndicator isHidden={!hasNext} />}
-      // TODO
-      // ItemSeparatorComponent={() => <View style={styles.separator} />}
+      getItem={(nodes, idx) => nodes[idx]}
+      getItemCount={(nodes) => nodes.length}
+      getItemLayout={(_, idx) => ({ length: 78.7, offset: 78.7 * idx, index: idx })}
+      keyExtractor={(_, idx) => `notification-${idx}`}
+      onEndReached={loadMore}
+      // onEndReachedThreshold={0.1}
+      // initialScrollIndex={0}
+      ListFooterComponent={<FooterLoadingIndicator isHidden={!isLoadingNext} />}
+      style={s.notificationContainer}
     />
   )
 }
 
-/*
-const navigation = useNavigation()
-useEffect(() => {
-  // when the current screen is focused
-  const unsubscribe = navigation.addListener('focus', () => {
-    refetchWithoutSuspend({
-      count: PAGE_SIZE,
-      cursor: null,
-    })
-  })
-  return unsubscribe
-}, [navigation, refetchWithoutSuspend])
+const useStyles = makeUseStyles(() => ({
+  notificationContainer: {
+    flex: 1,
+    width: '100%',
+  },
+}))
 
+/*
 const onRefresh = useCallback(() => {
     refetchWithoutSuspend(
       {

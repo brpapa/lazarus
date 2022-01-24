@@ -14,4 +14,4 @@ export * from './Text'
 export * from './TextInput'
 export * from './Badge'
 export * from './Loading'
-
+export * from './Error'

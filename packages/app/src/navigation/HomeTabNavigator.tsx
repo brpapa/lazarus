@@ -27,7 +27,6 @@ const query = graphql`
       notSeenCount
     }
     ...Explorer_query
-    ...Notifications_query
   }
 `
 
@@ -54,19 +53,11 @@ export function HomeTabNavigator() {
         }}
       />
       <HomeTab.Screen
-        name="Notifications"
-        options={{
-          tabBarBadge: getBadge(data?.notificationsInfo?.notSeenCount),
-          title: t('home.notificationsTabLabel'),
-        }}
-      >
-        {(props) => <Notifications queryRef={data} {...props} />}
-      </HomeTab.Screen>
-      <HomeTab.Screen
         name="Profile"
         component={Profile}
         options={{
           title: t('home.profileTabLabel'),
+          tabBarBadge: getBadge(data?.notificationsInfo?.notSeenCount),
         }}
       />
     </HomeTab.Navigator>
@@ -134,8 +125,6 @@ const routeToIcon = (route: keyof HomeTabParams): IconName => {
       return 'Map'
     case 'ReportStackNavigator':
       return 'Camera'
-    case 'Notifications':
-      return 'Bell'
     case 'Profile':
       return 'User'
     default:
@@ -160,7 +149,7 @@ const useStyles = makeUseStyles(({ colors }) => ({
   },
   badge: {
     position: 'absolute',
-    right: 10,
+    right: -13,
     top: -7,
   },
 }))

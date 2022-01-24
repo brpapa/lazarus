@@ -33,6 +33,7 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
               data,
             )}`,
           )
+        // TODO: receber um objeto link nos mesmos moldes de notication.link usado por NotificationItem, pra que a logica de navegacao seja reaproveitada implementando um NotificationLinkHandler
 
         const result = await commitSeeNotificationMutation({ notificationId: data.notificationId })
         result.mapErr(console.error)

@@ -37,13 +37,10 @@ const MEDIAS: Media[] = [
   },
 ]
 
-type IncidentDetailProps = {
-  preloadedQueryRef: PreloadedQuery<IncidentDetailQueryType>
-}
-
 const query = graphql`
   query IncidentDetailQuery($incidentId: String!) {
     incident(incidentId: $incidentId) {
+      incidentId
       title
       medias {
         url
@@ -58,7 +55,11 @@ const query = graphql`
   }
 `
 
-function IncidentDetail(props: IncidentDetailProps) {
+type Props = {
+  preloadedQueryRef: PreloadedQuery<IncidentDetailQueryType>
+}
+
+function IncidentDetail(props: Props) {
   const nav = useNavigation<MainStackNavProp<'IncidentDetail'>>()
   const { params } = useRoute<MainStackRouteProp<'IncidentDetail'>>()
 
@@ -71,7 +72,9 @@ function IncidentDetail(props: IncidentDetailProps) {
   const onCommentsPressed = () => {
     nav.navigate('IncidentComments', { incidentId: params.incidentId })
   }
-  const onClosePressed = () => nav.pop()
+  const onClosePressed = () => {
+    nav.pop()
+  }
   const onUserOwnerClick = () => {
     // TODO: go to user screen passing INCIDENT_OWNER_USER_ID
   }
@@ -83,9 +86,11 @@ function IncidentDetail(props: IncidentDetailProps) {
         <View style={s.contentContainer}>
           <Text variant="header">{data.incident?.title}</Text>
           <Text variant="body2" style={s.mb}>
-            {t('incident.reportedBy', {
-              createdAt: new Date(data.incident!.createdAt),
-            }) as string}
+            {
+              t('incident.reportedBy', {
+                createdAt: new Date(data.incident!.createdAt),
+              }) as string
+            }
             <Text variant="link" onPress={onUserOwnerClick}>
               {INCIDENT_OWNER_USER_NAME}
             </Text>
@@ -173,6 +178,7 @@ function IncidentDetailContainer() {
     useQueryLoader<IncidentDetailQueryType>(IncidentDetailQuery)
 
   useEffect(() => {
+    console.log('IncidentDetail', params.incidentId)
     loadQuery({ incidentId: params.incidentId })
   }, [loadQuery, params.incidentId])
 

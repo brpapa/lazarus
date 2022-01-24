@@ -6,7 +6,7 @@ import { startBackgroundLocationTracking } from '~/data/background-tasks/backgro
 import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
 import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
 import { useSession } from '~/hooks/use-session'
-import { IncidentDetail, SignIn, SignUp } from '~/screens'
+import { IncidentDetail, Notifications, SignIn, SignUp } from '~/screens'
 import { useTheme } from '~/theme/v1'
 import { HomeTabNavigator } from './HomeTabNavigator'
 import type { MainStackParams } from './types'
@@ -15,8 +15,8 @@ const MainStack = createStackNavigator<MainStackParams>()
 
 export function MainStackNavigator() {
   const { navHeader } = useTheme()
-
   const { isSignedIn } = useSession()
+  
   useOnNearbyIncidentCreatedSubscription({ when: isSignedIn })
   usePushNotificationsListener({ when: isSignedIn })
 
@@ -43,7 +43,12 @@ export function MainStackNavigator() {
           <MainStack.Screen
             name="IncidentDetail"
             component={IncidentDetail}
-            options={{ title: '', headerShown: false }}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen
+            name="Notifications"
+            component={Notifications}
+            options={{ title: t('notification.title'), headerShown: true, ...navHeader }}
           />
         </>
       ) : (

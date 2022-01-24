@@ -34,3 +34,10 @@ type CapturedPicture = {
 }
 
 type Media = { type: MediaType; uri: string }
+
+type User = {
+  id: number
+  username: string
+  avatar: string
+  name?: string
+}
