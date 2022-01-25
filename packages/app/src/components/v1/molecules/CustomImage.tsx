@@ -5,12 +5,12 @@ import {
   StyleProp,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import { DEFAULT_IMAGE } from '~/../assets/images'
 import { makeUseStyles } from '~/theme/v1'
 import CachedImage from './CachedImage'
-import { ShowImageModal } from './ShowImageModal'
+import { ImageModal } from './ImageModal'
 
 const variantSize = {
   s: 84,
@@ -84,7 +84,7 @@ export function CustomImage(props: Props) {
       <TouchableOpacity delayPressIn={100} style={[styles.container, style]} onPress={onPress}>
         {content}
       </TouchableOpacity>
-      {show && <ShowImageModal show={show} userImage={imgSource} onPressCancel={onPressCancel} />}
+      {show && <ImageModal visible={show} userImage={imgSource} onPressCancel={onPressCancel} />}
     </>
   ) : (
     <View style={styles.noContent} />

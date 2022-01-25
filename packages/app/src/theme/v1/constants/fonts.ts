@@ -6,21 +6,21 @@ export const fontVariants = (isDarkMode: boolean) => {
   return {
     header: {
       fontFamily: fontFamilies.heading,
-      fontWeight: 'bold',
+      fontWeight: fontWeights.bold,
       fontSize: 30,
       lineHeight: 40.5,
       color: colors.foreground,
     } as TextStyle,
     subheader: {
       fontFamily: fontFamilies.heading,
-      fontWeight: '600',
+      fontWeight: fontWeights.semibold,
       fontSize: 20,
       lineHeight: 20,
       color: colors.accent5,
     } as TextStyle,
     title: {
       fontFamily: fontFamilies.body,
-      fontWeight: 'bold',
+      fontWeight: fontWeights.bold,
       fontSize: 20,
       lineHeight: 30,
       color: colors.accent8,
@@ -92,13 +92,13 @@ export const lineHeights = {
 }
 
 export const fontWeights = {
-  hairline: 100,
-  thin: 200,
-  light: 300,
-  normal: 400,
-  medium: 500,
-  semibold: 600,
-  bold: 700,
-  extrabold: 800,
-  black: 900,
+  hairline: '100',
+  thin: '200',
+  light: '300',
+  normal: '400',
+  medium: '500',
+  semibold: '600',
+  bold: '700',
+  extrabold: '800',
+  black: '900',
 }

@@ -3,7 +3,7 @@ type HexToRgbResult = {
   rgb: Array<number>
 }
 
-export function hexToRgb(color: string): HexToRgbResult {
+function hexToRgb(color: string): HexToRgbResult {
   const isHex = color.startsWith('#')
   const hex = color.slice(1)
 

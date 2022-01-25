@@ -42,5 +42,7 @@ const useStyles = makeUseStyles(() => ({
   },
   text: {
     textTransform: 'capitalize',
+    lineHeight: 0,
+    fontWeight: '600',
   },
 }))

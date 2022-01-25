@@ -8,6 +8,7 @@ import type { IconName } from '~/icons'
 import { Color, makeUseStyles, useColorScheme, useTheme } from '~/theme/v1'
 
 import { HeaderItem } from './HeaderItem'
+import { t } from '@metis/shared'
 
 type Props = {
   title?: string
@@ -60,6 +61,7 @@ export function CustomHeader(props: Props) {
   const headerLeft =
     routesLength > 1 ? (
       <HeaderBackButton
+        label={t('back')}
         tintColor={isLoading ? colors.grey : colors.primary}
         style={isLoading && { opacity: 0.5 }}
         labelStyle={[

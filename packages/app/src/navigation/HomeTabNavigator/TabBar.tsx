@@ -1,78 +1,34 @@
-import { t } from '@metis/shared'
-import {
-  BottomTabBarOptions,
-  BottomTabBarProps,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs'
+import type { BottomTabBarOptions, BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { graphql, usePreloadedQuery } from 'react-relay'
-import { useRecoilValue } from 'recoil'
 import { Badge, Icon, Text } from '~/components/v1/atoms'
 import { __IOS__ } from '~/config'
-import { initialQueryRefState } from '~/data/recoil/initial-query-ref'
 import type { IconName } from '~/icons'
-import { Explorer, Notifications, Profile } from '~/screens'
 import { makeUseStyles, useTheme } from '~/theme/v1'
-import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'
-import { ReportStackNavigator } from './ReportStackNavigator'
-import type { HomeTabParams } from './types'
+import type { HomeTabParams } from '../types'
 
-const HomeTab = createBottomTabNavigator<HomeTabParams>()
-
-const query = graphql`
-  query HomeTabNavigatorQuery {
-    notificationsInfo: myNotifications {
-      notSeenCount
-    }
-    ...Explorer_query
+const routeToIcon = (route: keyof HomeTabParams): IconName => {
+  switch (route) {
+    case 'Explorer':
+      return 'Map'
+    case 'ReportStackNavigator':
+      return 'Camera'
+    case 'Profile':
+      return 'User'
+    default:
+      throw new Error(`Unexpected route, received: ${route}`)
   }
-`
-
-export function HomeTabNavigator() {
-  const homeTabNavitorQueryRef = useRecoilValue(initialQueryRefState)
-  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavitorQueryRef)
-
-  return (
-    <HomeTab.Navigator initialRouteName="Explorer" tabBar={(props) => <TabBar {...props} />}>
-      <HomeTab.Screen
-        name="Explorer"
-        options={{
-          title: t('home.explorerTabLabel'),
-        }}
-      >
-        {(props) => <Explorer queryRef={data} {...props} />}
-      </HomeTab.Screen>
-      <HomeTab.Screen
-        name="ReportStackNavigator"
-        component={ReportStackNavigator}
-        options={{
-          title: t('home.reportTabLabel'),
-          tabBarVisible: false,
-        }}
-      />
-      <HomeTab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: t('home.profileTabLabel'),
-          tabBarBadge: getBadge(data?.notificationsInfo?.notSeenCount),
-        }}
-      />
-    </HomeTab.Navigator>
-  )
 }
 
-const getBadge = (count?: number) => (count && count > 0 ? count : undefined)
-
-function TabBar({ state, navigation, descriptors }: BottomTabBarProps<BottomTabBarOptions>) {
+export function TabBar({ state, navigation, descriptors }: BottomTabBarProps<BottomTabBarOptions>) {
   const insets = useSafeAreaInsets()
   const s = useStyles()
   const { colors } = useTheme()
 
   const focusedRoute = state.routes[state.index]
   const tabBarNotVisible = descriptors[focusedRoute.key]?.options.tabBarVisible === false
+
   if (tabBarNotVisible) return null
 
   return (
@@ -117,19 +73,6 @@ function TabBar({ state, navigation, descriptors }: BottomTabBarProps<BottomTabB
       })}
     </View>
   )
-}
-
-const routeToIcon = (route: keyof HomeTabParams): IconName => {
-  switch (route) {
-    case 'Explorer':
-      return 'Map'
-    case 'ReportStackNavigator':
-      return 'Camera'
-    case 'Profile':
-      return 'User'
-    default:
-      throw new Error(`Unexpected route, received: ${route}`)
-  }
 }
 
 const useStyles = makeUseStyles(({ colors }) => ({

@@ -22,7 +22,7 @@ export function ModalHeader(props: Props) {
       <View style={[styles.container, style]} {...otherProps}>
         <View style={styles.left}>{left}</View>
         {title && (
-          <Text variant="semiBold" size="l" style={[styles.title, titleStyle]}>
+          <Text variant="body" size="l" style={[styles.title, titleStyle]}>
             {title}
           </Text>
         )}

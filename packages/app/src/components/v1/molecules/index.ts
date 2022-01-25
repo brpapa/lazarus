@@ -4,5 +4,5 @@ export * from './CachedImage'
 export * from './CustomImage'
 export * from './FooterLoadingIndicator'
 export * from './Header'
-export * from './ShowImageModal'
+export * from './ImageModal'
 

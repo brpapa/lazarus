@@ -6,15 +6,15 @@ import CachedImage from './CachedImage'
 import { makeUseStyles } from '~/theme/v1'
 
 type Props = {
-  show: boolean
-  userImage: { uri: string }
+  visible: boolean
+  uri: string
   onPressCancel: () => void
 }
 
-export function ShowImageModal(props: Props) {
+export function ImageModal(props: Props) {
   const styles = useStyles()
 
-  const { show, userImage, onPressCancel } = props
+  const { visible: show, uri, onPressCancel } = props
 
   return (
     <Modal
@@ -28,7 +28,7 @@ export function ShowImageModal(props: Props) {
         <StatusBar style={'light'} />
         <CachedImage
           isBackground
-          source={userImage}
+          source={{ uri }}
           style={styles.imageDetail}
           visible={show}
           setVisible={onPressCancel}
