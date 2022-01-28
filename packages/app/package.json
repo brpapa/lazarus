@@ -8,7 +8,7 @@
     "node": "16"
   },
   "scripts": {
-    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules && npm install --prefix ./node_modules/@metis/shared",
+    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules --exclude dist && npm install --prefix ./node_modules/@metis/shared",
     "debug": "METRO_SERVER_PORT=19000 open -a Flipper.app",
     "deps:sync-types": "npx typesync && npm install",
     "code:format": "prettier --config \"./../../.prettierrc\" --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
@@ -30,13 +30,25 @@
     "android": "expo run:android",
     "ios": "expo run:ios"
   },
-  "scriptsComment": {
-    "postinstall": "copy shared package to node_modules folder because reac native seems to not support local dependencies with symlink",
-    "start": "starts a expo development server in your lan network",
-    "expo:run:*": "build and run expo go in simulator, using expo-dev-client",
-    "run:*": "build and run in simulator natively",
-    "expo:prebuild:ios": "generate the native ios project before building them",
-    "relay": "based on the current graphql schema defined by api, compile and generate new artifacts in src/__generated__ folder"
+  "fig": {
+    "postinstall": {
+      "description": "Copy shared package to node_modules folder because reac native seems to not support local dependencies with symlink"
+    },
+    "start": {
+      "description": "Starts a expo development server in your lan network"
+    },
+    "expo:run:*": {
+      "description": "Build and run expo go in simulator, using expo-dev-client"
+    },
+    "run:*": {
+      "description": "Build and run in simulator natively"
+    },
+    "expo:prebuild:ios": {
+      "description": "Generate the native ios project before building them"
+    },
+    "relay": {
+      "description": "Based on the current graphql schema defined by api, compile and generate new artifacts in src/__generated__ folder"
+    }
   },
   "dependencies": {
     "@metis/shared": "file:../shared",
@@ -51,7 +63,7 @@
     "expo-av": "~10.2.0",
     "expo-camera": "~12.1.0",
     "expo-crypto": "~10.1.1",
-    "expo-dev-client": "~0.8.0",
+    "expo-dev-client": "~0.8.2",
     "expo-device": "~4.1.0",
     "expo-file-system": "~13.1.2",
     "expo-location": "~14.0.1",
@@ -83,7 +95,8 @@
     "react-native-web": "0.17.1",
     "react-relay": "^11.0.2",
     "recoil": "^0.4.0",
-    "relay-runtime": "^12.0.0"
+    "relay-runtime": "^12.0.0",
+    "@react-native-community/slider": "4.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

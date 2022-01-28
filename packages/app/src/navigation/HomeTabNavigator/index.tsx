@@ -23,8 +23,8 @@ const query = graphql`
 `
 
 export function HomeTabNavigator() {
-  const homeTabNavitorQueryRef = useRecoilValue(initialQueryRefState)
-  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavitorQueryRef)
+  const homeTabNavigatorQueryRef = useRecoilValue(initialQueryRefState)
+  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavigatorQueryRef)
 
   return (
     <HomeTab.Navigator initialRouteName="Explorer" tabBar={(props) => <TabBar {...props} />}>

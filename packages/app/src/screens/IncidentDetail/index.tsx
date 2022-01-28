@@ -182,12 +182,11 @@ function IncidentDetailContainer() {
     loadQuery({ incidentId: params.incidentId })
   }, [loadQuery, params.incidentId])
 
+  if (!preloadedQueryRef) return null
   return (
-    preloadedQueryRef && (
-      <Suspense fallback={<Loading />}>
-        <IncidentDetail preloadedQueryRef={preloadedQueryRef} />
-      </Suspense>
-    )
+    <Suspense fallback={<Loading />}>
+      <IncidentDetail preloadedQueryRef={preloadedQueryRef} />
+    </Suspense>
   )
 }
 

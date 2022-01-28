@@ -8,7 +8,7 @@ import {
   SubscribeFunction,
 } from 'relay-runtime'
 import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/config'
-import { AuthTokensManager } from '../auth-tokens-manager'
+import { AuthTokensManager } from '../storage/auth-tokens-manager'
 import { CloseCode, createClient } from 'graphql-ws'
 
 async function createRequestHeaders() {

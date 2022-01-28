@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
-import { ActivityIndicator, Dot, Icon, IconWithLabel } from '~/components/v1/atoms'
+import { ActivityIndicator, Dot, Icon, IconWithLabel, Text } from '~/components/v1/atoms'
 import type { IconName } from '~/icons'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 
@@ -10,13 +10,15 @@ type Props = TouchableOpacityProps & {
   iconColor?: string
   indicator?: boolean
   loading?: boolean
+  rightText?: string
+  showRightIcon?: boolean
 }
 
 export function MenuItem(props: Props) {
   const s = useStyles()
   const { colors } = useTheme()
 
-  const { title, iconName, iconColor, indicator = false, loading, disabled, ...otherProps } = props
+  const { title, iconName, iconColor, indicator = false, loading, showRightIcon = true, disabled, ...otherProps } = props
 
   return (
     <TouchableOpacity
@@ -35,9 +37,12 @@ export function MenuItem(props: Props) {
       <View style={s.content}>
         {indicator && <Dot />}
         {loading && <ActivityIndicator />}
-        <TouchableOpacity activeOpacity={1}>
-          <Icon name="ChevronRight" color={colors.textLighter} />
-        </TouchableOpacity>
+        {props.rightText && <Text>{props.rightText}</Text>}
+        {props.showRightIcon && (
+          <TouchableOpacity activeOpacity={1}>
+            <Icon name="ChevronRight" color={colors.textLighter} />
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   )

@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { accessTokenState } from '~/data/recoil'
 import { commitRefreshTokenMutation } from '~/data/relay/mutations/RefreshTokenMutation'
-import { AuthTokensManager } from '~/data/auth-tokens-manager'
+import { AuthTokensManager } from '~/data/storage/auth-tokens-manager'
 
 /** refresh the current access token if it is expired */
 export const useSession = () => {

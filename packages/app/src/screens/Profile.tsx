@@ -10,12 +10,13 @@ import { useSession } from '~/hooks/use-session'
 import type { HomeTabNavProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { Profile_query$key } from '~/__generated__/Profile_query.graphql'
-import { MenuItem } from './MenuItem'
+import { MenuItem } from '~/components/v1/molecules'
 
 // TODO
 const NAME = 'Bruno Papa'
 const EMAIL = 'bruno.papa@hotmail.com'
-const USER_AVATAR = 'https://metis-public-static-content.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg'
+// const USER_AVATAR = 'https://metis-public-static-content.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg'
+const USER_AVATAR = undefined
 
 const frag = graphql`
   fragment Profile_query on Query {
@@ -81,7 +82,7 @@ export function Profile(props: Props) {
               content={t('Edit Profile')}
               style={s.button}
               disabled={false}
-              // onPress={() => nav.navigate('EditProfile', { user })}
+              // onPress={() => nav.navigate('EditProfile', { user })} // TODO
             />
           </View>
           <View style={s.bodyContainer}>
@@ -96,26 +97,26 @@ export function Profile(props: Props) {
               <MenuItem
                 title={t('Messages')}
                 iconName="Mail"
-                // onPress={() => nav.navigate('Messages')}
+                // onPress={() => nav.navigate('Messages')} // TODO
               />
               <Divider style={s.dividerList} />
               <MenuItem
                 title={t('Activity')}
                 iconName="Chart"
-                // onPress={() => nav.navigate('Activity')}
+                // onPress={() => nav.navigate('Activity')} // TODO
               />
             </View>
             <View style={s.menuContainer}>
               <MenuItem
-                title={t('Password & Security')}
+                title={t('Password')}
                 iconName="Lock"
-                // onPress={() => nav.navigate('ChangePassword')}
+                // onPress={() => nav.navigate('ChangePassword')} // TODO
               />
               <Divider style={s.dividerList} />
               <MenuItem
                 title={t('Preferences')}
                 iconName="Settings"
-                // onPress={() => nav.navigate('Preferences')}
+                onPress={() => nav.navigate('Preferences')}
               />
             </View>
             <View style={s.menuContainer}>

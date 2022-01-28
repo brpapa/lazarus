@@ -5,4 +5,5 @@ export * from './CustomImage'
 export * from './FooterLoadingIndicator'
 export * from './Header'
 export * from './ImageModal'
+export * from './MenuItem'
 

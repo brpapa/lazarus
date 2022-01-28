@@ -13,6 +13,10 @@ export type RootStackParams = {
   IncidentComments: {
     incidentId: string
   }
+  ColorSchemePreference: undefined
+  DistanceRadiusPreference: {
+    currentValue: number
+  }
 }
 export type MainStackParams = {
   HomeTabNavigator: undefined
@@ -20,6 +24,7 @@ export type MainStackParams = {
     incidentId: string
   }
   Notifications: undefined
+  Preferences: undefined
   SignIn: undefined
   SignUp: undefined
 }

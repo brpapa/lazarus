@@ -1,7 +1,7 @@
 import * as Location from 'expo-location'
 import { atom } from 'recoil'
 import { FOREGROUND_LOCATION_OPTIONS } from '~/config'
-import { AuthTokensManager } from '../auth-tokens-manager'
+import { AuthTokensManager } from '../storage/auth-tokens-manager'
 import { commitUpdateUserLocationMutation } from '../relay/mutations/UpdateUserLocationMutation'
 
 const getInitialUserLocation = async () => {

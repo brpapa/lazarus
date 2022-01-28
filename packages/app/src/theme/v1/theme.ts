@@ -1,11 +1,6 @@
 import { t } from '@metis/shared'
 import { TransitionPresets } from '@react-navigation/stack'
-import {
-  colorTheme,
-  fontSizes,
-  fontVariants, iconSizes,
-  spacing
-} from './constants'
+import { colorTheme, fontSizes, fontVariants, iconSizes, spacing } from './constants'
 import { floatingButtonSizes } from './constants/buttons'
 
 // This is information about the device or system, which the theme might depend on, such as light/dark mode.
@@ -49,6 +44,7 @@ export const getTheme = ({ colorScheme, aesthetic }: Config) => {
         fontSize: fontSizes.m,
       },
       headerBackTitle: t('back'),
+      headerShow: true,
     } as const,
     navModal:
       aesthetic === 'ios' &&

@@ -28,13 +28,11 @@ export const fontVariants = (isDarkMode: boolean) => {
     body: {
       fontFamily: fontFamilies.body,
       fontSize: 16,
-      lineHeight: 24,
       color: colors.foreground,
     } as TextStyle,
     body2: {
       fontFamily: fontFamilies.body,
       fontSize: 14,
-      lineHeight: 20,
       color: colors.accent6,
     } as TextStyle,
     link: {

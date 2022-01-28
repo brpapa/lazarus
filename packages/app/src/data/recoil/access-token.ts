@@ -1,4 +1,4 @@
-import { AuthTokensManager } from '~/data/auth-tokens-manager'
+import { AuthTokensManager } from '~/data/storage/auth-tokens-manager'
 import { atom, DefaultValue } from 'recoil'
 
 export const accessTokenState = atom<AccessToken | null>({
