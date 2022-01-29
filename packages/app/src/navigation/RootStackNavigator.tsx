@@ -1,7 +1,7 @@
 import { t } from '@metis/shared'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { IncidentComments } from '~/screens'
+import { IncidentComments, ReportIncident } from '~/screens'
 import { DistanceRadiusPreference, ColorSchemePreference } from '~/screens'
 import { useTheme } from '~/theme/v1'
 import { MainStackNavigator } from './MainStackNavigator'
@@ -18,6 +18,11 @@ export function RootStackNavigator() {
         name="Main"
         component={MainStackNavigator}
         options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="ReportIncident"
+        component={ReportIncident}
+        options={{ title: '', ...navModal }}
       />
       <RootStack.Screen
         name="IncidentComments"

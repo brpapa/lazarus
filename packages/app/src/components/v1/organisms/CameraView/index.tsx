@@ -6,7 +6,7 @@ import { mockedTakePictureAsync } from './mocks'
 
 export interface CameraViewRef {
   /** take a picture and saved it to app's cache directory */
-  takePictureAsync: () => Promise<CapturedPicture>
+  takePictureAsync: () => Promise<CapturedMedia>
   pausePreview: () => void
   resumePreview: () => void
 }
@@ -61,7 +61,7 @@ const cameraOrientationMap = {
 
 const emptyFn = () => {}
 
-function wrappedTakePictureAsync(camera: BaseCamera): () => Promise<CapturedPicture> {
+function wrappedTakePictureAsync(camera: BaseCamera): () => Promise<CapturedMedia> {
   return async () => {
     const pic = await camera.takePictureAsync({ exif: true, base64: true })
     const extension = pic.uri.split('.').pop()

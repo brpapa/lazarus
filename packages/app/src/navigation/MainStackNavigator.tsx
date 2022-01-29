@@ -33,13 +33,16 @@ export function MainStackNavigator() {
     >
       {isSignedIn ? (
         <>
-          <MainStack.Screen name="HomeTabNavigator" options={{ headerShown: false }}>
-            {(props) => (
+          <MainStack.Screen
+            name="HomeTabNavigator"
+            component={HomeTabNavigator}
+            options={{ headerShown: false }}
+          />
+          {/* {(props) => (
               <Suspense fallback={<Loading />}>
                 <HomeTabNavigator {...props} />
               </Suspense>
-            )}
-          </MainStack.Screen>
+            )} */}
           <MainStack.Screen
             name="IncidentDetail"
             component={IncidentDetail}
@@ -48,7 +51,7 @@ export function MainStackNavigator() {
           <MainStack.Screen
             name="Notifications"
             component={Notifications}
-            options={{ title: t('notification.title'), ...navHeader }}
+            options={{ title: t('notification.header'), ...navHeader }}
           />
           <MainStack.Screen
             name="Preferences"

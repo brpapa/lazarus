@@ -8,7 +8,7 @@ type UploadResponseBody = {
   }[]
 }
 
-export const uploadPictures = async (medias: CapturedPicture[]): Promise<{ s3Url: string }[]> => {
+export const uploadPictures = async (medias: CapturedMedia[]): Promise<{ s3Url: string }[]> => {
   const formData = medias.reduce<FormData>((acc, media, i) => {
     const fieldName = `${MediaType.IMAGE}-${i}`
     const fileName = media.extension ? `${fieldName}.${media.extension}` : fieldName

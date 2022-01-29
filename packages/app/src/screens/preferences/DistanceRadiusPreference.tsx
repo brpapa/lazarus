@@ -1,11 +1,11 @@
 import { t } from '@metis/shared'
 import Slider from '@react-native-community/slider'
 import { useNavigation, useRoute } from '@react-navigation/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Text } from '~/components/v1/atoms'
 import { HeaderItem, ModalHeader } from '~/components/v1/molecules'
-import { SCREEN_WIDTH } from '~/config'
+import { SCREEN_WIDTH } from '~/shared/constants'
 import type { RootStackNavProp, RootStackRouteProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 
@@ -15,7 +15,11 @@ export function DistanceRadiusPreference() {
   const nav = useNavigation<RootStackNavProp<'DistanceRadiusPreference'>>()
   const route = useRoute<RootStackRouteProp<'DistanceRadiusPreference'>>()
 
-  const [distRadius, setDistRadius] = useState(route.params.currentValue)
+  const [distRadius, setDistRadius] = useState<number>(0)
+
+  useEffect(() => {
+    setDistRadius(route?.params?.currentValue || 0)
+  }, [route])
 
   const onSubmit = () => {
     // TODO: send distRadius
@@ -38,7 +42,9 @@ export function DistanceRadiusPreference() {
             }
           </Text>
 
-          <Text style={s.value}>{t('formatters.distance', { distInMeters: distRadius }) as string}</Text>
+          <Text style={s.value}>
+            {t('formatters.distance', { distInMeters: distRadius }) as string}
+          </Text>
 
           <Slider
             style={s.slider}

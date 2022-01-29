@@ -10,6 +10,9 @@ export type AppStackParams = {
 }
 export type RootStackParams = {
   Main: undefined
+  ReportIncident: {
+    capturedMedias: CapturedMedia[]
+  }
   IncidentComments: {
     incidentId: string
   }
@@ -36,10 +39,10 @@ export type HomeTabParams = {
 export type ReportStackParams = {
   CameraPermissions: undefined
   Camera?: {
-    previousCapturedPictures?: CapturedPicture[]
+    previousCapturedMedias?: CapturedMedia[]
   }
-  Medias: {
-    capturedPictures: CapturedPicture[]
+  MediasReview: {
+    capturedMedias: CapturedMedia[]
   }
 }
 

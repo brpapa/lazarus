@@ -7,7 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from 'react-relay'
 import { useRecoilValue } from 'recoil'
 import { FloatingButton, IconWithLabel, Loading, Text } from '~/components/v1/atoms'
-import { MediasCarousel } from '~/components/v1/organisms/MediasCarousel'
+import { MediasCarousel } from '~/components/v1/organisms'
+import { SCREEN_HEIGHT } from '~/config'
 import { userLocationState } from '~/data/recoil'
 import type { MainStackNavProp, MainStackRouteProp } from '~/navigation/types'
 import { MediaType } from '~/shared/constants'
@@ -82,7 +83,7 @@ function IncidentDetail(props: Props) {
   return (
     <View style={s.container}>
       <ScrollView style={s.scrollableContainer}>
-        <MediasCarousel medias={MEDIAS} />
+        <MediasCarousel medias={MEDIAS} height={SCREEN_HEIGHT * 0.65} />
         <View style={s.contentContainer}>
           <Text variant="header">{data.incident?.title}</Text>
           <Text variant="body2" style={s.mb}>

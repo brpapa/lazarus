@@ -4,7 +4,7 @@ import { Alert, StatusBar, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { FloatingButton } from '~/components/v1/atoms'
 import { CameraView, CameraOrientation, CameraViewRef } from '~/components/v1/organisms/CameraView'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/constants'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
 
@@ -22,9 +22,9 @@ export function Camera() {
     if (cameraViewRef.current === null) return
     try {
       const newCapturedPicture = await cameraViewRef.current.takePictureAsync()
-      const previousCapturedMedias = params?.previousCapturedPictures || []
-      nav.navigate('Medias', {
-        capturedPictures: [...previousCapturedMedias, newCapturedPicture],
+      const previousCapturedMedias = params?.previousCapturedMedias || []
+      nav.navigate('MediasReview', {
+        capturedMedias: [...previousCapturedMedias, newCapturedPicture],
       })
     } catch (e) {
       console.error(e)

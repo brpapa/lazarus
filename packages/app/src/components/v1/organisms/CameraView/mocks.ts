@@ -7,7 +7,7 @@ const fakeJpgPicture = () => {
 }
 
 /** download a random file from internet and save to file system */
-export async function mockedTakePictureAsync(): Promise<CapturedPicture> {
+export async function mockedTakePictureAsync(): Promise<CapturedMedia> {
   const pic = fakeJpgPicture()
   const localUri = `${FileSystem.documentDirectory}/${Date.now().toString(16)}.jpg`
   const result = await FileSystem.downloadAsync(pic.remoteUri, localUri)

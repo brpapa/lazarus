@@ -61,7 +61,7 @@ export function Notifications() {
     <>
       <View style={[s.container, { marginBottom: insets.bottom }]}>
         <CustomHeader
-          title={t('notification.title')}
+          title={t('notification.header')}
           rightIcon="More"
           onPressRight={onPressMore}
           // isLoading={isSending} // TODO

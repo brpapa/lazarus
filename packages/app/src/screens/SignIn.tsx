@@ -9,7 +9,7 @@ import { CustomHeader } from '~/components/v1/molecules/Header'
 import { useSignInMutation } from '~/data/relay/mutations/SignInMutation'
 import { useSession } from '~/hooks/use-session'
 import type { MainStackNavProp } from '~/navigation/types'
-import { makeUseStyles, useColorScheme } from '~/theme/v1'
+import { makeUseStyles } from '~/theme/v1'
 
 type Form = {
   username: string
@@ -20,7 +20,7 @@ export function SignIn() {
   const nav = useNavigation<MainStackNavProp<'SignIn'>>()
 
   const [hidePassword, setHidePassword] = useState(true)
-  const { colorScheme } = useColorScheme()
+
   const s = useStyles()
   const passwordInputRef = useRef<TextInputType>(null)
   const [signIn, isSending] = useSignInMutation()
