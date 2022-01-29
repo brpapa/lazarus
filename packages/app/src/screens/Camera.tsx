@@ -3,7 +3,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import { Alert, StatusBar, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { FloatingButton } from '~/components/v1/atoms'
-import CameraView, { CameraOrientation, CameraRef } from '~/components/v1/organisms/CameraView'
+import { CameraView, CameraOrientation, CameraViewRef } from '~/components/v1/organisms/CameraView'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
@@ -14,7 +14,7 @@ export function Camera() {
   const nav = useNavigation<ReportStackNavProp<'Camera'>>()
   const { params } = useRoute<ReportStackRouteProp<'Camera'>>()
 
-  const cameraViewRef = useRef<CameraRef | null>(null)
+  const cameraViewRef = useRef<CameraViewRef | null>(null)
   const [cameraIsReady, setCameraIsReady] = useState(false)
   const [cameraOrientation, setCameraOrientation] = useState<CameraOrientation>('back')
 

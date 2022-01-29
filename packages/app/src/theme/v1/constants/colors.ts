@@ -37,7 +37,8 @@ export const palette = {
   },
   white: '#FFF',
   black: '#000',
-  //
+  fullTransparentWhite: 'rgba(255, 255, 255, 0)',
+  fullTransparentBlack: 'rgba(0, 0, 0, 0)',
   pureBlack: '#000000',
   black100: '#1A1A1A',
   black60: '#757575',
@@ -130,10 +131,13 @@ export function colorTheme(isDarkMode: boolean) {
 
   // prettier-ignore
   return {
-    foreground: isDarkMode ? palette.white : palette.black,
+    fullForeground: isDarkMode ? palette.white : palette.black,
+    fullBackground: isDarkMode ? palette.black : palette.white,
+    fullTransparent: isDarkMode ? palette.fullTransparentBlack : palette.fullTransparentWhite,
     ...accents,
     //
     ...functionalColors,
+    foreground:             isDarkMode ? palette.white : palette.black,
     textNormal:             isDarkMode ? darkTextNormal : lightTextNormal,
     textLight:              isDarkMode ? darkTextLighter : lightTextDarker,
     textLighter:            isDarkMode ? darkTextLightest : lightTextDarkest,

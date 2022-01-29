@@ -1,52 +1,56 @@
-import React, { useRef, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
-import GoogleMapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import BaseMap, { Circle, LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectedIncidentIdInMap, userLocationState } from '~/data/recoil'
 import { makeUseStyles, useColorScheme } from '~/theme/v1'
-import { FloatingButton } from '../../atoms'
+import {
+  INITIAL_ZOOM_LEVEL,
+  USER_CENTERED_ZOOM_LEVEL,
+  ZOOM_LEVEL_1,
+  ZOOM_LEVEL_2,
+} from './constants'
 import { customMapStyles } from './custom-map-styles'
 
-type MapViewProps = {
-  style?: StyleProp<ViewStyle>
-  /**
-   * Components that aren't declared by react-native-maps library (Ex: Markers, Polyline) must not be children of the MapView component due to MapView's unique rendering methodology.
-   */
-  children: React.ReactNode
+export interface MapViewRef {
+  flyToUser: () => void
 }
 
-export default function MapView(props: MapViewProps) {
+type Props = {
+  /** in meters */
+  radiusDistance: number
+  /** Components that aren't declared by react-native-maps library (Ex: Markers, Polyline) must not be children of the MapView component due to MapView's unique rendering methodology */
+  children: React.ReactNode
+  style?: StyleProp<ViewStyle>
+}
+
+export const MapView = forwardRef<MapViewRef, Props>((props, ref) => {
   const s = useStyles()
   const { colorScheme } = useColorScheme()
 
   // https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md#methods
-  const mapRef = useRef<GoogleMapView>(null)
+  const baseMapRef = useRef<BaseMap | null>(null)
   const userCoordinate = useRecoilValue(userLocationState)
+
+  const setSelectedIncidentId = useSetRecoilState(selectedIncidentIdInMap)
+
+  // customize the exposed ref
+  useImperativeHandle(ref, () => ({
+    flyToUser: () => {
+      baseMapRef?.current?.animateToRegion({ ...userCoordinate, ...USER_CENTERED_ZOOM_LEVEL })
+    },
+  }))
 
   const [ne, setNe] = useState<LatLng | null>(null)
   const [sw, setSw] = useState<LatLng | null>(null)
 
-  const setSelectedIncidentId = useSetRecoilState(selectedIncidentIdInMap)
-
-  const flyToUserCoordinate = () => {
-    mapRef?.current?.animateToRegion({
-      ...userCoordinate,
-      latitudeDelta: 0.0422,
-      longitudeDelta: 0.0221,
-    })
-  }
-
   return (
     <View style={s.container}>
-      <GoogleMapView
-        ref={mapRef}
+      <BaseMap
+        ref={baseMapRef}
         style={{ alignSelf: 'stretch', height: '100%' }}
         onPress={() => setSelectedIncidentId(null)}
-        initialRegion={{
-          ...userCoordinate,
-          latitudeDelta: 0.1322,
-          longitudeDelta: 0.0921,
-        }}
+        initialRegion={{ ...userCoordinate, ...INITIAL_ZOOM_LEVEL }}
         // onRegionChangeComplete={async () => {
         //   const boundary = await mapRef.current?.getMapBoundaries()
         //   if (boundary) {
@@ -73,21 +77,29 @@ export default function MapView(props: MapViewProps) {
       >
         {props.children}
         {userCoordinate && (
-          <Marker coordinate={userCoordinate}>
-            <View style={s.userCircleContainer}>
+          <>
+            <Marker
+              coordinate={userCoordinate}
+              anchor={{ x: 0.5, y: 0.5 }}
+              centerOffset={{ x: 0, y: 0 }}
+            >
               <View style={s.userCircle} />
-            </View>
-          </Marker>
+            </Marker>
+            <Circle
+              center={userCoordinate}
+              radius={props.radiusDistance}
+              fillColor="#rgba(200,200,200,0.42)"
+              strokeColor="#DDD"
+              strokeWidth={4}
+            />
+          </>
         )}
         {ne && <Marker coordinate={ne} pinColor="blue"></Marker>}
         {sw && <Marker coordinate={sw} pinColor="red"></Marker>}
-      </GoogleMapView>
-      <View style={s.overlayed}>
-        <FloatingButton icon={'User'} onPress={flyToUserCoordinate} />
-      </View>
+      </BaseMap>
     </View>
   )
-}
+})
 
 const useStyles = makeUseStyles(({ colors }) => ({
   container: {
@@ -105,11 +117,6 @@ const useStyles = makeUseStyles(({ colors }) => ({
     height: 23,
     borderColor: colors.background,
     borderWidth: 3,
-  },
-  overlayed: {
-    position: 'absolute',
-    top: 70,
-    right: 30,
   },
 }))
 

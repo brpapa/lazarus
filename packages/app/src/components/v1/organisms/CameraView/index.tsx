@@ -1,26 +1,26 @@
-import { Camera } from 'expo-camera'
+import { Camera as BaseCamera } from 'expo-camera'
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { ENABLE_CAMERA_MOCK } from '~/config'
-import type { CapturedPicture } from '~/navigation/types'
 import { mockedTakePictureAsync } from './mocks'
 
-export interface CameraProps {
-  style: StyleProp<ViewStyle>
-  onCameraReady: () => void
-  orientation: CameraOrientation
-}
-export interface CameraRef {
+export interface CameraViewRef {
   /** take a picture and saved it to app's cache directory */
   takePictureAsync: () => Promise<CapturedPicture>
   pausePreview: () => void
   resumePreview: () => void
 }
+
+export type CameraViewProps = {
+  style: StyleProp<ViewStyle>
+  onCameraReady: () => void
+  orientation: CameraOrientation
+}
 export type CameraOrientation = 'back' | 'front'
 
-/** A wrapper around the Camera component which it will be mocked when {@link ENABLE_CAMERA_MOCK} is true */
-const CameraWrapper = forwardRef<CameraRef, CameraProps>((props, ref) => {
-  const cameraRef = useRef<Camera | null>(null)
+/** A wrapper around the Camera component to mock Camera when {@link ENABLE_CAMERA_MOCK} is true */
+export const CameraView = forwardRef<CameraViewRef, CameraViewProps>((props, ref) => {
+  const baseCameraRef = useRef<BaseCamera | null>(null)
 
   useEffect(() => {
     if (ENABLE_CAMERA_MOCK) setTimeout(props.onCameraReady, 300)
@@ -29,18 +29,20 @@ const CameraWrapper = forwardRef<CameraRef, CameraProps>((props, ref) => {
   // customize the exposed ref
   useImperativeHandle(ref, () => ({
     takePictureAsync:
-      cameraRef?.current instanceof Camera
-        ? wrappedTakePictureAsync(cameraRef!.current)
+      baseCameraRef?.current instanceof BaseCamera
+        ? wrappedTakePictureAsync(baseCameraRef!.current)
         : mockedTakePictureAsync,
-    pausePreview: cameraRef?.current instanceof Camera ? cameraRef.current.pausePreview : emptyFn,
-    resumePreview: cameraRef?.current instanceof Camera ? cameraRef.current.resumePreview : emptyFn,
+    pausePreview:
+      baseCameraRef?.current instanceof BaseCamera ? baseCameraRef.current.pausePreview : emptyFn,
+    resumePreview:
+      baseCameraRef?.current instanceof BaseCamera ? baseCameraRef.current.resumePreview : emptyFn,
   }))
 
   return (
     <>
       {!ENABLE_CAMERA_MOCK ? (
-        <Camera
-          ref={cameraRef}
+        <BaseCamera
+          ref={baseCameraRef}
           onCameraReady={props.onCameraReady}
           style={props.style}
           type={cameraOrientationMap[props.orientation]}
@@ -52,16 +54,14 @@ const CameraWrapper = forwardRef<CameraRef, CameraProps>((props, ref) => {
   )
 })
 
-export default CameraWrapper
-
 const cameraOrientationMap = {
-  back: Camera.Constants.Type.back,
-  front: Camera.Constants.Type.front,
+  back: BaseCamera.Constants.Type.back,
+  front: BaseCamera.Constants.Type.front,
 }
 
 const emptyFn = () => {}
 
-function wrappedTakePictureAsync(camera: Camera): () => Promise<CapturedPicture> {
+function wrappedTakePictureAsync(camera: BaseCamera): () => Promise<CapturedPicture> {
   return async () => {
     const pic = await camera.takePictureAsync({ exif: true, base64: true })
     const extension = pic.uri.split('.').pop()

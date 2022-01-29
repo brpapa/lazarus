@@ -1,13 +1,14 @@
+import { t } from '@metis/shared'
 import React from 'react'
 import { Text, View } from 'react-native'
 import { ENABLE_GOOGLE_MAPS } from '~/config'
 
-import type { default as MapViewComponent } from './MapView'
+import type { MapView as MapViewComponent } from './MapView'
 type MapViewType = typeof MapViewComponent
 
 const createMapView: () => MapViewType = ENABLE_GOOGLE_MAPS
   ? () => {
-      const MapView = require('./MapView').default as MapViewType
+      const MapView = require('./MapView').MapView as MapViewType
       return MapView
     }
   : () => {
@@ -22,7 +23,7 @@ const createMapView: () => MapViewType = ENABLE_GOOGLE_MAPS
             justifyContent: 'center',
           }}
         >
-          <Text>🗺 Map is not available :/</Text>
+          <Text>{t('🗺 Map is not available :/') as string}</Text>
         </View>
       )
     }

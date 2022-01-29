@@ -17,10 +17,8 @@ export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('wi
 
 export const ENABLE_GOOGLE_MAPS = ['ios', 'android'].includes(Platform.OS)
 
-/** if true the Camera component will be mocked */
 export const ENABLE_CAMERA_MOCK = true
 
-/** if true, the current navigation state is maintained between multiple app reloads */
 export const ENABLE_NAVIGATION_STATE_PERSISTENCE = true
 
 export const FOREGROUND_LOCATION_OPTIONS: Location.LocationOptions = {

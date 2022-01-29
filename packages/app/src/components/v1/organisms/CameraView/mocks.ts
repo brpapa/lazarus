@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import type { CapturedPicture } from './index'
 
 const fakeJpgPicture = () => {
   const width = Math.ceil(Math.random() * 6) * 120

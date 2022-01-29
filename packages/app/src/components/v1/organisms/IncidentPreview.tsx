@@ -10,7 +10,6 @@ import { userLocationState } from '~/data/recoil'
 import type { HomeTabNavProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
-import { IconWithLabel } from '../atoms'
 
 type IncidentPreviewProps = {
   preloadedQuery: PreloadedQuery<IncidentPreviewQueryType>
@@ -33,7 +32,7 @@ const query = graphql`
   }
 `
 
-export default function IncidentPreview(props: IncidentPreviewProps) {
+export function IncidentPreview(props: IncidentPreviewProps) {
   if (!props.closeable && props.onClosed)
     throw new Error('Invalid props: component should be closeable to have the onClosed prop')
 
@@ -49,7 +48,7 @@ export default function IncidentPreview(props: IncidentPreviewProps) {
       incidentId: data.incident?.incidentId!,
     })
   }, [])
-  
+
   console.log('IncidentPreview', data.incident?.incidentId)
 
   return (

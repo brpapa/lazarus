@@ -11,11 +11,11 @@ import type { HomeTabParams } from '../types'
 const routeToIcon = (route: keyof HomeTabParams): IconName => {
   switch (route) {
     case 'Explorer':
-      return 'Map'
+      return 'Home'
     case 'ReportStackNavigator':
       return 'Camera'
     case 'Profile':
-      return 'User'
+      return 'Person'
     default:
       throw new Error(`Unexpected route, received: ${route}`)
   }
