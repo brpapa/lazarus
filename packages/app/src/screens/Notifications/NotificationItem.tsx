@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { graphql, useFragment } from 'react-relay'
 import { Divider, Dot, Icon, Text } from '~/components/v1/atoms'
-import { useSeeNotificationMutation } from '~/data/relay/mutations/SeeNotificationMutation'
+import { useMarkNotificationAsSeenMutation } from '~/data/relay/mutations/MarkNotificationAsSeenMutation'
 import type { MainStackNavProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { NotificationItem_notification$key } from '~/__generated__/NotificationItem_notification.graphql'
@@ -37,7 +37,7 @@ export function NotificationItem(props: Props) {
   const data = useFragment<NotificationItem_notification$key>(frag, props.notificationRef)
 
   const nav = useNavigation<MainStackNavProp<'Notifications'>>()
-  const [seeNotification] = useSeeNotificationMutation()
+  const [markAsSeen] = useMarkNotificationAsSeenMutation()
 
   const onPressed = useCallback(async () => {
     switch (data.link.entity) {
@@ -49,8 +49,8 @@ export function NotificationItem(props: Props) {
         break
     }
 
-    if (!data.seenByTargetUser) await seeNotification({ notificationId: data.notificationId })
-  }, [data, nav, seeNotification])
+    if (!data.seenByTargetUser) await markAsSeen({ notificationId: data.notificationId })
+  }, [data, nav, markAsSeen])
 
   const isMessage = false
 

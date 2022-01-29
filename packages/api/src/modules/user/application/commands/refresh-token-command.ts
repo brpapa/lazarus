@@ -7,22 +7,22 @@ import { ApplicationError, UserNotFoundError } from '@shared/logic/errors'
 import { unixEpochToDate } from '@shared/logic/helpers/unix-epoch'
 import { err, ok, Result } from '@metis/shared'
 
-export type RefreshTokenInput = {
+export type Input = {
   refreshToken: string
 }
-export type RefreshTokenOkResult = {
+export type OkRes = {
   accessToken: string
   accessTokenExpiresIn: Date
 }
-export type RefreshTokenErrResult = RefreshTokenExpiredError | UserNotFoundError
-export type RefreshTokenResult = Result<RefreshTokenOkResult, RefreshTokenErrResult>
+export type ErrRes = RefreshTokenExpiredError | UserNotFoundError
+export type Res = Result<OkRes, ErrRes>
 
-export class RefreshTokenCommand extends Command<RefreshTokenInput, RefreshTokenResult> {
+export class RefreshTokenCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(input: RefreshTokenInput): Promise<RefreshTokenResult> {
+  async execImpl(input: Input): Promise<Res> {
     const username = await this.authService.getUserNameFromRefreshToken(input.refreshToken)
     if (!username) return err(new RefreshTokenExpiredError())
 

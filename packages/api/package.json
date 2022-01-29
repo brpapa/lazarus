@@ -1,9 +1,18 @@
 {
   "name": "@metis/api",
   "description": "GraphQL API",
+  "author": "Bruno Papa <bruno.papa@hotmail.com>",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "16",
+    "npm": "8.x"
+  },
   "scripts": {
+    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules --exclude dist && npm install --prefix ./node_modules/@metis/shared && npm run build --prefix ./node_modules/@metis/shared",
     "deps:sync-types": "npx typesync && npm install",
-    "graphql:generate-schema": "dotenv -e .env.local --  npx ts-node --require tsconfig-paths/register ./scripts/generate-graphql-schema.ts --compiler-options 'tsconfig.json'",
+    "graphql:generate-schema": "dotenv -e .env.local -- npx ts-node --require tsconfig-paths/register ./scripts/generate-graphql-schema.ts --compiler-options 'tsconfig.json'",
     "code:format": "npx prettier --config './../../.prettierrc' --write '{src,test}/**/*.{js,ts}'",
     "code:lint": "npx eslint 'src' --ext '.js,.ts' --config '.eslintrc'",
     "code:lint-and-fix": "npm run lint -- --fix",
@@ -11,8 +20,8 @@
     "build": "tsc --project tsconfig.json",
     "rebuild": "npm run clear && npm run build",
     "start": "dotenv -e .env.prod -- npm run rebuild && node --require tsconfig-paths/register ./dist/src/index.js",
-    "start:local": "npm run docker:start && dotenv -e .env.local -- npx ts-node --require tsconfig-paths/register ./src/index.ts",
-    "start:local:watch": "npm run docker:start && dotenv -e .env.local -- npx nodemon --watch 'src' --ext '.js,.ts' --exec 'npx ts-node --require tsconfig-paths/register ./src/index.ts'",
+    "start:local": "dotenv -e .env.local -- npx ts-node --require tsconfig-paths/register ./src/index.ts",
+    "start:local:watch": "npm run docker:start && npx nodemon --watch 'src' --ext '.js,.ts' --exec 'npm run start:local'",
     "test": "dotenv -e .env.test -- npx jest --config 'jest.config.js' --runInBand --detectOpenHandles",
     "test:integration": "npm run docker:up:test && npm run db:push:test && npm run test && npm run docker:down:test",
     "test:cov": "npm run test -- --coverage --no-cache",
@@ -29,24 +38,37 @@
     "db:flush": "dotenv -e .env.local -- npx ts-node --require tsconfig-paths/register scripts/flush-databases.ts",
     "db:generate-client": "npx prisma generate --schema 'prisma/schema.prisma'"
   },
-  "scriptsComment": {
-    "start": "rebuild and run",
-    "docker:up": "create and start the containers, rebuilding image",
-    "docker:down": "stop and remove the containers, networks, images, volumes",
-    "docker:start": "start the already created containers",
-    "docker:stop": "stop the already started containers",
-    "db:generate-client": "based on the current prisma schema, regenerate the prisma client library for type-safety queries",
-    "db:migrate": "based on the current prisma schema, creates a new SQL migration file and run it against the database",
-    "db:push": "push the current prisma schema to the database, ignoring data loss and without migration history",
-    "db:flush": "delete all data and seed databases again with initial state",
-    "graphql:generate-schema": "based on the current schema defined ./src/infra/http/graphql/schema.ts, generate ./graphql/schema.graphql"
-  },
-  "author": "Bruno Papa <bruno.papa@hotmail.com>",
-  "version": "1.0.0",
-  "license": "MIT",
-  "private": true,
-  "engines": {
-    "node": "16"
+  "fig": {
+    "start": {
+      "description": "Rebuild and run"
+    },
+    "docker:up": {
+      "description": "Create and start the containers, rebuilding image"
+    },
+    "docker:down": {
+      "description": "Stop and remove the containers, networks, images, volumes"
+    },
+    "docker:start": {
+      "description": "Start the already created containers"
+    },
+    "docker:stop": {
+      "description": "Stop the already started containers"
+    },
+    "db:generate-client": {
+      "description": "Based on the current prisma schema, regenerate the prisma client library for type-safety queries"
+    },
+    "db:migrate": {
+      "description": "Based on the current prisma schema, creates a new SQL migration file and run it against the database"
+    },
+    "db:push": {
+      "description": "Push the current prisma schema to the database, ignoring data loss and without migration history"
+    },
+    "db:flush": {
+      "description": "Delete all data and seed databases again with initial state"
+    },
+    "graphql:generate-schema": {
+      "description": "Based on the current schema defined ./src/infra/http/graphql/schema.ts, generate ./graphql/schema.graphql"
+    }
   },
   "husky": {
     "hooks": {

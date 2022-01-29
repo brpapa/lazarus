@@ -17,6 +17,10 @@ export abstract class FileRepository<T extends Entity<any>> implements IReposito
     }
   }
 
+  findByIdBatch(ids: string[]): Promise<(T | null)[]> {
+    throw new Error('Method not implemented.')
+  }
+
   exists(e: T) {
     return this.state.has(e.id.toString())
   }

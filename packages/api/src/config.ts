@@ -17,9 +17,9 @@ dotenvSafe.config({
   sample: fromRoot('.env.example'),
 })
 
-export const API_PORT = env.API_PORT ? Number(env.API_PORT) : 5000
+export const PORT = env.PORT ? Number(env.PORT) : 5000
 export const WS_GRAPHQL_SUBSCRIPTIONS_PATH = '/graphql/subscriptions'
-export const HTTP_GRAPHQL_FORCED_MIN_LATENCY_ON_DEV_IN_MS = 150
+export const HTTP_GRAPHQL_FORCED_MIN_LATENCY_ON_DEV_IN_MS = 0
 
 export const JWT_SECRET_KEY = env.JWT_SECRET_KEY || 'awesome_secret_key'
 export const JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S = 86_400 // 1 day

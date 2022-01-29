@@ -7,19 +7,19 @@ import { Debugger } from 'debug'
 import { AppContext } from 'src/modules/shared/logic/app-context'
 import { ApplicationError } from 'src/modules/shared/logic/errors'
 
-export type SeeNotificationInput = {
+export type Input = {
   notificationId: string
 }
-export type SeeNotificationOkResult = NotificationDTO
-export type SeeNotificationErrResult = NotificationNotFound
-export type SeeNotificationResult = Result<SeeNotificationOkResult, SeeNotificationErrResult>
+export type OkRes = NotificationDTO
+export type ErrRes = NotificationNotFound | UnauthorizedError
+export type Res = Result<OkRes, ErrRes>
 
-export class SeeNotificationCommand extends Command<SeeNotificationInput, SeeNotificationResult> {
+export class MarkNotificationAsSeenCommand extends Command<Input, Res> {
   constructor(log: Debugger, private notificationRepo: INotificationRepo) {
     super(log)
   }
 
-  async execImpl(input: SeeNotificationInput, ctx?: AppContext): Promise<SeeNotificationResult> {
+  async execImpl(input: Input, ctx?: AppContext): Promise<Res> {
     const notification = await this.notificationRepo.findById(input.notificationId)
     if (notification === null)
       return err(new NotificationNotFound(`Notification ${input.notificationId} not found`))

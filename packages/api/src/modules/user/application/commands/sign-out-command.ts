@@ -5,17 +5,17 @@ import { err, okVoid, Result } from '@metis/shared'
 import { IAuthService } from '@user/adapter/auth-service'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'
 
-export type SignOutInput = {
+export type Input = {
   userId: string
 }
-export type SignOutOutput = Result<void, UserNotFoundError>
+export type Res = Result<void, UserNotFoundError>
 
-export class SignOutCommand extends Command<SignOutInput, SignOutOutput> {
+export class SignOutCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(req: SignOutInput): Promise<SignOutOutput> {
+  async execImpl(req: Input): Promise<Res> {
     const user = await this.userRepo.findById(req.userId)
     if (!user) return err(new UserNotFoundError())
 

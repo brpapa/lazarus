@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button, FloatingButton, Text } from '~/components/v1/atoms'
 import { useReportIncidentMutation } from '~/data/relay/mutations/ReportIncidentMutation'
 import { useSession } from '~/hooks/use-session'
-import { CloseIcon } from '~/icons_LEGACY'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
 

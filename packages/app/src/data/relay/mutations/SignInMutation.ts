@@ -1,4 +1,4 @@
-import { getDevicePushToken } from '~/data/push-token'
+import { getDevicePushToken } from '~/shared/push-token'
 import { graphql } from 'react-relay'
 import type {
   SignInErrCodeType,

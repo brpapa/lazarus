@@ -1,4 +1,4 @@
-import { commitSeeNotificationMutation } from './../data/relay/mutations/SeeNotificationMutation'
+import { commitMarkNotificationAsSeenMutation } from '../data/relay/mutations/MarkNotificationAsSeenMutation'
 import { useNavigation } from '@react-navigation/native'
 import * as Notifications from 'expo-notifications'
 import { useEffect } from 'react'
@@ -35,7 +35,9 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
           )
         // TODO: receber um objeto link nos mesmos moldes de notication.link usado por NotificationItem, pra que a logica de navegacao seja reaproveitada implementando um NotificationLinkHandler
 
-        const result = await commitSeeNotificationMutation({ notificationId: data.notificationId })
+        const result = await commitMarkNotificationAsSeenMutation({
+          notificationId: data.notificationId,
+        })
         result.mapErr(console.error)
 
         navigation.reset({

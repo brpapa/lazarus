@@ -1,7 +1,10 @@
 import debug from 'debug'
 import { notificationRepo } from '../../infra/db/repositories'
-import { SeeNotificationCommand } from './see-notification-command'
+import { MarkNotificationAsSeenCommand } from './mark-notification-as-seen-command'
 
 const log = debug('app:notification:application')
 
-export const seeNotificationCommand = new SeeNotificationCommand(log, notificationRepo)
+export const markNotificationAsSeenCommand = new MarkNotificationAsSeenCommand(
+  log,
+  notificationRepo,
+)

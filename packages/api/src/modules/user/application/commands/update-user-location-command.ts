@@ -9,28 +9,19 @@ import { IUserRepo } from '@user/adapter/repositories/user-repo'
 import { UserDTO } from '../../adapter/dtos/user-dto'
 import { UserMapper } from '../../adapter/mappers/user-mapper'
 
-export type UpdateUserLocationInput = {
+export type Input = {
   location: LocationDTO
 }
-export type UpdateUserLocationOkResult = UserDTO
-export type UpdateUserLocationErrResult = UnauthenticatedError | UserNotFoundError
-export type UpdateUserLocationResult = Result<
-  UpdateUserLocationOkResult,
-  UpdateUserLocationErrResult
->
+export type OkRes = UserDTO
+export type ErrRes = UnauthenticatedError | UserNotFoundError
+export type Res = Result<OkRes, ErrRes>
 
-export class UpdateUserLocationCommand extends Command<
-  UpdateUserLocationInput,
-  UpdateUserLocationResult
-> {
+export class UpdateUserLocationCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo) {
     super(log)
   }
 
-  async execImpl(
-    input: UpdateUserLocationInput,
-    ctx: AppContext,
-  ): Promise<UpdateUserLocationResult> {
+  async execImpl(input: Input, ctx: AppContext): Promise<Res> {
     if (!ctx.userId) return err(new UnauthenticatedError())
 
     const location = Location.create(input.location)

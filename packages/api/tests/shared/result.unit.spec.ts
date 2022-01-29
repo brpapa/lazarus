@@ -1,6 +1,7 @@
 import { describe, it, expect } from '@jest/globals'
-import { err, ok, Result, combine } from '../../src/modules/shared/logic/result'
+import { err, ok, Result, combine } from '@metis/shared'
 
+// TODO: move to shared package
 describe('result', () => {
   it('andThen', () => {
     const r1 = ok('1-ok').andThen(() => err('1-err'))

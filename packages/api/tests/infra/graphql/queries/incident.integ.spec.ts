@@ -25,14 +25,14 @@ describe('graphql queries: incident', () => {
         username: 'my-username',
         password: UserPassword.create({ value: '1234567890' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-      }).asOk(),
+      }),
     )
     const incident = await incidentRepo.commit(
       Incident.create({
         ownerUserId: user.id,
         title: 'incident 1',
-        location: Location.create({ latitude: 2, longitude: 2 }).asOk(),
-      }).asOk(),
+        location: Location.create({ latitude: 2, longitude: 2 }),
+      }),
     )
 
     const response = await request(app.callback())

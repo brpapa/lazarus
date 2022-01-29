@@ -8,26 +8,26 @@ import { Debugger } from 'debug'
 import { unixEpochToDate } from '@shared/logic/helpers/unix-epoch'
 import assert from 'assert'
 
-export type SignInInput = {
+export type Input = {
   username: string
   password: string
   pushToken?: string
 }
-export type SignInOkResult = {
+export type OkRes = {
   accessToken: string
   accessTokenExpiresIn: Date
   refreshToken: string
 }
-export type SignInErrResult = UserOrPasswordInvalidError
-export type SignInResult = Result<SignInOkResult, SignInErrResult>
+export type ErrRes = UserOrPasswordInvalidError
+export type Res = Result<OkRes, ErrRes>
 
 /** login user and register device to receive push notifications */
-export class SignInCommand extends Command<SignInInput, SignInResult> {
+export class SignInCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
   }
 
-  async execImpl(input: SignInInput): Promise<SignInResult> {
+  async execImpl(input: Input): Promise<Res> {
     const user = await this.userRepo.findByUsername(input.username)
     if (!user) return err(new UserOrPasswordInvalidError())
 

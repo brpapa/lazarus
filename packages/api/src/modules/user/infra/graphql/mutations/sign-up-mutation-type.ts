@@ -1,6 +1,6 @@
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
 import { signUpCommand } from '@user/application/commands'
-import { SignUpInput, SignUpResult } from '@user/application/commands/sign-up-command'
+import { Input, Res } from '@user/application/commands/sign-up-command'
 import { GetUserById } from '@user/application/queries/get-user-by-id'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
@@ -8,7 +8,7 @@ import { ShortPasswordError } from 'src/modules/user/domain/models/user-password
 import { InvalidPhoneNumberError } from 'src/modules/user/domain/models/user-phone-number'
 import { UserType } from '../types/user-type'
 
-export const SignUpMutationType = createMutationType<GraphQLContext, SignUpInput, SignUpResult>({
+export const SignUpMutationType = createMutationType<GraphQLContext, Input, Res>({
   name: 'SignUp',
   description: 'Register a new user',
   inputFields: {

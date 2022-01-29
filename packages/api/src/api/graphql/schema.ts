@@ -43,7 +43,7 @@ const MutationType = new GraphQLObjectType<void, GraphQLContext>({
     updateUserLocation: UserMutations.UpdateUserLocationMutationType,
     refreshToken: UserMutations.RefreshTokenMutationType,
     reportIncident: IncidentMutations.ReportIncidentMutationType,
-    seeNotification: NotificationMutations.SeeNotificationMutationType,
+    markNotificationAsSeen: NotificationMutations.MarkNotificationAsSeenMutationType,
   }),
 })
 

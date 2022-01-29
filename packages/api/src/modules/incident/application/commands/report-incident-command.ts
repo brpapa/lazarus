@@ -14,15 +14,15 @@ import { Debugger } from 'debug'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
 import { IGeocodingService } from '../../adapter/geocoding-service'
 
-export type ReportIncidentInput = {
+export type Input = {
   title: string
   medias: MediaDTO[]
 }
-export type ReportIncidentOkResult = IncidentDTO
-export type ReportIncidentErrResult = InvalidMediaQuantityError | UnauthenticatedError
-export type ReportIncidentResult = Result<ReportIncidentOkResult, ReportIncidentErrResult>
+export type OkRes = IncidentDTO
+export type ErrResult = InvalidMediaQuantityError | UnauthenticatedError
+export type Res = Result<OkRes, ErrResult>
 
-export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIncidentResult> {
+export class ReportIncidentCommand extends Command<Input, Res> {
   constructor(
     log: Debugger,
     private incidentRepo: IIncidentRepo,
@@ -32,7 +32,7 @@ export class ReportIncidentCommand extends Command<ReportIncidentInput, ReportIn
     super(log)
   }
 
-  async execImpl(input: ReportIncidentInput, ctx: AppContext): Promise<ReportIncidentResult> {
+  async execImpl(input: Input, ctx: AppContext): Promise<Res> {
     if (!ctx.userId) return err(new UnauthenticatedError())
 
     const user = await this.userRepo.findById(ctx.userId)

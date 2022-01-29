@@ -8,22 +8,22 @@ import { ShortPasswordError, UserPassword } from '@user/domain/models/user-passw
 import { InvalidPhoneNumberError, UserPhoneNumber } from '@user/domain/models/user-phone-number'
 import { Debugger } from 'debug'
 
-export type SignUpInput = {
+export type Input = {
   username: string
   phoneNumber: string
   password: string
 }
-export type SignUpOkResult = UserDTO
-export type SignUpErrResult = ShortPasswordError | InvalidPhoneNumberError
-export type SignUpResult = Result<SignUpOkResult, SignUpErrResult>
+export type OkRes = UserDTO
+export type ErrRes = ShortPasswordError | InvalidPhoneNumberError
+export type Res = Result<OkRes, ErrRes>
 
 /** register a new user */
-export class SignUpCommand extends Command<SignUpInput, SignUpResult> {
+export class SignUpCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo) {
     super(log)
   }
 
-  async execImpl(input: SignUpInput): Promise<SignUpResult> {
+  async execImpl(input: Input): Promise<Res> {
     // todo: validar unicidade do username e do phoneNumber em relacao aos demais usuarios
     // new PhoneNumberTakenError(`The phone number ${phoneNumber} is already associated to another account`)
     // new UsernameTakenError(`The username ${username} was already taken`)

@@ -1,13 +1,12 @@
-import assert from 'assert'
 import { getIncidents } from 'src/modules/incident/application/queries'
 import { Incident } from 'src/modules/incident/domain/models/incident'
 import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
+import { Location } from 'src/modules/shared/domain/models/location'
 import { User } from 'src/modules/user/domain/models/user'
 import { UserPassword } from 'src/modules/user/domain/models/user-password'
 import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
 import { userRepo } from 'src/modules/user/infra/db/repositories'
-import { Location } from 'src/modules/shared/domain/models/location'
-import { connectDataSources, cleanUpDatasources, disconnectDatasources } from 'tests/helpers'
+import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
 describe('queries: get incidents inside boundary', () => {
   beforeAll(async () => {
@@ -18,7 +17,7 @@ describe('queries: get incidents inside boundary', () => {
         username: 'my-username',
         password: UserPassword.create({ value: '1234567890' }).asOk(),
         phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
-      }).asOk(),
+      }),
     )
 
     const LAT = -22.877187463558492
@@ -44,8 +43,8 @@ describe('queries: get incidents inside boundary', () => {
             location: Location.create({
               latitude: lat,
               longitude: lng,
-            }).asOk(),
-          }).asOk(),
+            }),
+          }),
         )
       }),
     )
@@ -56,19 +55,23 @@ describe('queries: get incidents inside boundary', () => {
   })
 
   test.todo('it should return only the incidents inside the boundaries', async () => {
-    const incidents = await getIncidents.exec({
-      boundary: {
-        northEast: {
-          latitude: -22.871394175410675,
-          longitude: -48.44534173607826,
-        },
-        southWest: {
-          latitude: -22.884795550708546,
-          longitude: -48.45416821539402,
+    const incidents = await getIncidents.exec(
+      {
+        filter: {
+          withinBoundary: {
+            northEast: {
+              latitude: -22.871394175410675,
+              longitude: -48.44534173607826,
+            },
+            southWest: {
+              latitude: -22.884795550708546,
+              longitude: -48.45416821539402,
+            },
+          },
         },
       },
-    })
-    assert(incidents.isOk())
-    expect(incidents.value.length).toBe(1)
+      { userId: null },
+    )
+    expect(incidents.length).toBe(1)
   })
 })

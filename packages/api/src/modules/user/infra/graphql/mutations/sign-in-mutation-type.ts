@@ -2,14 +2,14 @@ import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from '
 import { GraphQLContext } from 'src/api/graphql/context'
 import { signInCommand } from '@user/application/commands'
 import {
-  SignInInput,
-  SignInResult,
+  Input,
+  Res,
   UserOrPasswordInvalidError,
 } from '@user/application/commands/sign-in-command'
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
 import { DateType } from '@shared/infra/graphql/types/date-type'
 
-export const SignInMutationType = createMutationType<GraphQLContext, SignInInput, SignInResult>({
+export const SignInMutationType = createMutationType<GraphQLContext, Input, Res>({
   name: 'SignIn',
   description: 'Login',
   inputFields: {

@@ -22,9 +22,9 @@ describe('repository: incident', () => {
       const incident = Incident.create({
         ownerUserId: new UUID('my-user-id'),
         title: 'title',
-        location: Location.create({ latitude: -20, longitude: 40 }).asOk(),
+        location: Location.create({ latitude: -20, longitude: 40 }),
         status: IncidentStatus.ACTIVE,
-      }).asOk()
+      })
 
       incident.addMedias([
         Media.create({
@@ -148,7 +148,7 @@ const createIncident = async (incidentId: string, userId: string) => {
       statsCommentsCount: 0,
       statsReactionsCount: 0,
       statsViewsCount: 0,
-      statsUsersNotified: 0,
+      statsUsersNotifiedCount: 0,
       creatorUserId: userId,
       createdAt: new Date(),
       updatedAt: new Date(),

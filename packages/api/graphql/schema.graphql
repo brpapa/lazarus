@@ -46,6 +46,8 @@ type Query {
     """The notification id"""
     notificationId: String!
   ): Notification
+
+  """Get notifications of current user ordered by most recent"""
   myNotifications(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -176,7 +178,7 @@ type Notification implements Node {
   subtitle: String!
   body: String!
   link: NotificationLink!
-  seenByTargetUser: Boolean
+  seenByTargetUser: Boolean!
   createdAt: Date!
 }
 
@@ -233,8 +235,8 @@ type Mutation {
   refreshToken(input: RefreshTokenInput!): RefreshTokenOutput!
   reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
 
-  """Mark notification as seen by target user"""
-  seeNotification(input: SeeNotificationInput!): SeeNotificationOutput!
+  """Mark notification as seen by the target user"""
+  markNotificationAsSeen(input: MarkNotificationAsSeenInput!): MarkNotificationAsSeenOutput!
 }
 
 type SignUpOutput {
@@ -388,28 +390,29 @@ input MediaInput {
   url: String!
 }
 
-type SeeNotificationOutput {
-  result: SeeNotificationResult!
+type MarkNotificationAsSeenOutput {
+  result: MarkNotificationAsSeenResult!
   clientMutationId: String
 }
 
-union SeeNotificationResult = SeeNotificationOkResult | SeeNotificationErrResult
+union MarkNotificationAsSeenResult = MarkNotificationAsSeenOkResult | MarkNotificationAsSeenErrResult
 
-type SeeNotificationOkResult {
+type MarkNotificationAsSeenOkResult {
   notification: Notification!
 }
 
-type SeeNotificationErrResult {
+type MarkNotificationAsSeenErrResult {
   reason: String!
   reasonIsTranslated: Boolean!
-  code: SeeNotificationErrCodeType!
+  code: MarkNotificationAsSeenErrCodeType!
 }
 
-enum SeeNotificationErrCodeType {
+enum MarkNotificationAsSeenErrCodeType {
   NotificationNotFound
+  UnauthorizedError
 }
 
-input SeeNotificationInput {
+input MarkNotificationAsSeenInput {
   notificationId: String!
   clientMutationId: String
 }

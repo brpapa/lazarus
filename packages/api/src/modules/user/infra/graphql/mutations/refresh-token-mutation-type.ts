@@ -3,18 +3,14 @@ import { DateType } from '@shared/infra/graphql/types/date-type'
 import { refreshTokenCommand } from '@user/application/commands'
 import {
   RefreshTokenExpiredError,
-  RefreshTokenInput,
-  RefreshTokenResult,
+  Input,
+  Res,
 } from '@user/application/commands/refresh-token-command'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { UserNotFoundError } from 'src/modules/shared/logic/errors'
 
-export const RefreshTokenMutationType = createMutationType<
-  GraphQLContext,
-  RefreshTokenInput,
-  RefreshTokenResult
->({
+export const RefreshTokenMutationType = createMutationType<GraphQLContext, Input, Res>({
   name: 'RefreshToken',
   description: 'Login',
   inputFields: {

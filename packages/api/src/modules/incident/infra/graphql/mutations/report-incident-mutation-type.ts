@@ -1,8 +1,8 @@
 import { reportIncidentCommand } from '@incident/application/commands'
 import {
   InvalidMediaQuantityError,
-  ReportIncidentInput,
-  ReportIncidentResult
+  Input,
+  Res,
 } from '@incident/application/commands/report-incident-command'
 import { GetIncidentById } from '@incident/application/queries'
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
@@ -11,18 +11,14 @@ import {
   GraphQLEnumType,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLString
+  GraphQLString,
 } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { UnauthenticatedError } from 'src/modules/shared/logic/errors'
 import { IncidentType } from '../types/incident-type'
 import { MediaInputType } from '../types/media-type'
 
-export const ReportIncidentMutationType = createMutationType<
-  GraphQLContext,
-  ReportIncidentInput,
-  ReportIncidentResult
->({
+export const ReportIncidentMutationType = createMutationType<GraphQLContext, Input, Res>({
   name: 'ReportIncident',
   inputFields: {
     title: { type: GraphQLNonNull(GraphQLString) },
