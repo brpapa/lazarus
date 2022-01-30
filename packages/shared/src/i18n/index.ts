@@ -37,7 +37,8 @@ i18n.init({
   returnObjects: false,
   saveMissing: true,
   missingKeyHandler: (langs: readonly string[], ns: string, key: string) => {
-    throw new Error(`Missing key '${key}' on namespace ${ns} of languages: ${langs}`)
+    // TODO
+    // console.warn(`Missing key '${key}' on namespace ${ns}`)
   },
 })
 

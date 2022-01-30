@@ -10,7 +10,6 @@
     "npm": "8.x"
   },
   "scripts": {
-    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules --exclude dist && npm install --prefix ./node_modules/@metis/shared && npm run build --prefix ./node_modules/@metis/shared",
     "deps:sync-types": "npx typesync && npm install",
     "graphql:generate-schema": "dotenv -e .env.local -- npx ts-node --require tsconfig-paths/register ./scripts/generate-graphql-schema.ts --compiler-options 'tsconfig.json'",
     "code:format": "npx prettier --config './../../.prettierrc' --write '{src,test}/**/*.{js,ts}'",

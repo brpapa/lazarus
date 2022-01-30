@@ -5,7 +5,7 @@ import { Input, Res } from '@user/application/commands/update-user-location-comm
 import { GetUserById } from '@user/application/queries/get-user-by-id'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UnauthenticatedError, UserNotFoundError } from 'src/modules/shared/logic/errors'
+import { UnauthenticatedError, UserNotFoundError } from '@shared/logic/errors'
 import { UserType } from '../types/user-type'
 
 export const UpdateUserLocationMutationType = createMutationType<GraphQLContext, Input, Res>({

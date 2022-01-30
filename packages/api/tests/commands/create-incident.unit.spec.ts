@@ -1,10 +1,10 @@
 import { AppContext } from './../../src/modules/shared/logic/app-context'
 import { Debugger } from 'debug'
 import { mockDeep } from 'jest-mock-extended'
-import { IGeocodingService } from 'src/modules/incident/adapter/geocoding-service'
-import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
-import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { IGeocodingService } from '@incident/adapter/geocoding-service'
+import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
+import { MediaType } from '@incident/domain/models/media-type'
+import { IUserRepo } from '@user/adapter/repositories/user-repo'
 import { ReportIncidentCommand } from '../../src/modules/incident/application/commands/report-incident-command'
 
 describe('command: create incident', () => {

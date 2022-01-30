@@ -8,7 +8,7 @@ import {
 } from '@user/application/commands/refresh-token-command'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UserNotFoundError } from 'src/modules/shared/logic/errors'
+import { UserNotFoundError } from '@shared/logic/errors'
 
 export const RefreshTokenMutationType = createMutationType<GraphQLContext, Input, Res>({
   name: 'RefreshToken',

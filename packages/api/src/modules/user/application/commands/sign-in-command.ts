@@ -47,6 +47,9 @@ export class SignInCommand extends Command<Input, Res> {
     assert(jwtClaims !== null)
     const accessTokenExpiresIn = unixEpochToDate(jwtClaims.exp)
 
+    user.updateLastLoginToNow()
+    await this.userRepo.commit(user)
+
     await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)
 
     return ok({ accessToken, accessTokenExpiresIn, refreshToken })

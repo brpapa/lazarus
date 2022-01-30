@@ -10,6 +10,7 @@ export interface IUserRepo extends IRepository<User> {
   findById(id: string): Promise<User | null>
   findByIdBatch(ids: string[]): Promise<(User | null)[]>
   findByUsername(username: string): Promise<User | null>
+  findByEmail(email: string): Promise<User | null>
   findAllLocatedWithinCircle(
     centerPoint: { latitude: number; longitude: number },
     radiusInMeters: number,

@@ -74,8 +74,21 @@ type User implements Node {
   id: ID!
   userId: String!
   username: String!
-  phoneNumber: String!
+  email: String!
+  name: String!
+  preferences: UserPreferences!
   location: Location
+  avatarUrl: String
+}
+
+type UserPreferences {
+  radiusDistance: Float!
+  language: LanguageEnum!
+}
+
+enum LanguageEnum {
+  PT_BR
+  EN_US
 }
 
 type Location {
@@ -258,13 +271,16 @@ type SignUpErrResult {
 
 enum SignUpErrCodeType {
   ShortPasswordError
-  InvalidPhoneNumberError
+  InvalidEmailAddressError
+  UsernameTakenError
+  EmailTakenError
 }
 
 input SignUpInput {
   username: String!
+  name: String!
+  email: String!
   password: String!
-  phoneNumber: String
   clientMutationId: String
 }
 

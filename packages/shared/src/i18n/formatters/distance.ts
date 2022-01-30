@@ -1,6 +1,7 @@
 import { getDistance } from 'geolib'
 import { SUPPORTED_LANGUAGES } from './../../config'
-import { Language, Location } from './../../types'
+import { Language } from './../../constants'
+import { Location } from './../../types'
 
 const DIST_ACCURACY = 1 // meters accuracy
 

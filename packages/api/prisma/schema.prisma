@@ -10,16 +10,19 @@ generator client {
 // MODELS OF USER MODULE:
 
 model UserModel {
-  id                  String          @id @default(uuid()) @db.VarChar(36)
-  username            String          @unique @db.VarChar(32)
-  password            String          @db.VarChar(256)
-  phoneNumber         String          @map("phone_number") @db.VarChar(32)
-  phoneNumberVerified Boolean         @map("phone_number_verified")
-  createdAt           DateTime        @default(now()) @map("created_at")
-  incidents           IncidentModel[]
-  comments            CommentModel[]
-  reactions           ReactionModel[]
-  devices             DeviceModel[]
+  id                        String          @id @default(uuid()) @db.VarChar(36)
+  username                  String          @unique @db.VarChar(32)
+  email                     String          @unique @db.VarChar(256)
+  password                  String          @db.VarChar(256)
+  name                      String          @db.VarChar(256)
+  avatarUrl                 String?          @db.VarChar(256)
+  preferencesRadiusDistance Int             @map("preferences_radius_distance")
+  preferencesLanguage       String          @map("preferences_language") @db.VarChar(8)
+  createdAt                 DateTime        @default(now()) @map("created_at")
+  incidents                 IncidentModel[]
+  comments                  CommentModel[]
+  reactions                 ReactionModel[]
+  devices                   DeviceModel[]
 
   NotificationModel NotificationModel[]
   @@map("users")

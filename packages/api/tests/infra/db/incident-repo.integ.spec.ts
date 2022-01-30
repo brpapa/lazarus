@@ -1,14 +1,14 @@
 import assert from 'assert'
-import { Incident } from 'src/modules/incident/domain/models/incident'
+import { Incident } from '@incident/domain/models/incident'
 import { prismaClient } from 'src/api/db/prisma/client'
-import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
-import { MediaType } from 'src/modules/incident/domain/models/media-type'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { incidentRepo } from '@incident/infra/db/repositories'
+import { MediaType } from '@incident/domain/models/media-type'
+import { UUID } from '@shared/domain/models/uuid'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { Location } from 'src/modules/shared/domain/models/location'
-import { IncidentStatus } from 'src/modules/incident/domain/models/incident-status'
-import { Media } from 'src/modules/incident/domain/models/media'
-import { Comment } from 'src/modules/incident/domain/models/comment'
+import { Location } from '@shared/domain/models/location'
+import { IncidentStatus } from '@incident/domain/models/incident-status'
+import { Media } from '@incident/domain/models/media'
+import { Comment } from '@incident/domain/models/comment'
 
 describe('repository: incident', () => {
   beforeAll(connectDataSources)

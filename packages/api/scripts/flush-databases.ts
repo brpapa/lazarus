@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-// @ts-ignore
-import { randomCirclePoint } from 'random-location'
-import { AWS_S3_BUCKET_NAME } from 'src/config'
 import { Incident } from '@incident/domain/models/incident'
 import { Media } from '@incident/domain/models/media'
 import { MediaType } from '@incident/domain/models/media-type'
@@ -9,19 +6,22 @@ import { incidentRepo } from '@incident/infra/db/repositories'
 import { Device } from '@notification/domain/models/device'
 import { Notification } from '@notification/domain/models/notification'
 import { deviceRepo, notificationRepo } from '@notification/infra/db/repositories'
+import { LinkedEntityEnum, NotificationCodeEnum } from '@prisma/client'
 import { Location } from '@shared/domain/models/location'
 import { UUID } from '@shared/domain/models/uuid'
 import { User } from '@user/domain/models/user'
 import { UserPassword } from '@user/domain/models/user-password'
-import { UserPhoneNumber } from '@user/domain/models/user-phone-number'
 import { userRepo } from '@user/infra/db/repositories'
+// @ts-ignore
+import { randomCirclePoint } from 'random-location'
+import { AWS_S3_BUCKET_NAME } from 'src/config'
+import { NotificationLink } from '@notification/domain/models/notification-link'
+import { UserEmail } from '@user/domain/models/user-email'
 import {
   cleanUpDatasources as cleanUpDataSources,
   connectDataSources,
   disconnectDatasources,
 } from 'tests/helpers'
-import { LinkedEntityEnum, NotificationCodeEnum } from '@prisma/client'
-import { NotificationLink } from 'src/modules/notification/domain/models/notification-link'
 
 async function main() {
   await connectDataSources()
@@ -35,7 +35,8 @@ const seed = async () => {
       {
         username: 'User1',
         password: UserPassword.create({ value: '12345678' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        email: UserEmail.create({ value: 'user1@gmail.com' }).asOk(),
+        name: 'User 1',
         location: Location.create({
           latitude: -22.89,
           longitude: -48.45,
@@ -56,7 +57,8 @@ const seed = async () => {
       {
         username: 'User2',
         password: UserPassword.create({ value: '12345678' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        email: UserEmail.create({ value: 'user2@gmail.com' }).asOk(),
+        name: 'User 2',
         location: Location.create({
           latitude: -22.87,
           longitude: -48.43,
@@ -70,7 +72,8 @@ const seed = async () => {
       {
         username: 'User3',
         password: UserPassword.create({ value: '12345678' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        email: UserEmail.create({ value: 'user3@gmail.com' }).asOk(),
+        name: 'User 3',
         location: Location.create({
           latitude: -22.27,
           longitude: -47.93,
@@ -98,6 +101,12 @@ const seed = async () => {
           incidentId: incident.id,
           url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg`,
           type: MediaType.IMAGE,
+          recordedAt: new Date(),
+        }),
+        Media.create({
+          incidentId: incident.id,
+          url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/2ffd2f91-71b1-4154-9510-4a4565dc52b6.mov`,
+          type: MediaType.VIDEO,
           recordedAt: new Date(),
         }),
       ])

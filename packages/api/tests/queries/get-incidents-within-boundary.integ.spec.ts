@@ -1,12 +1,12 @@
-import { getIncidents } from 'src/modules/incident/application/queries'
-import { Incident } from 'src/modules/incident/domain/models/incident'
-import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
-import { Location } from 'src/modules/shared/domain/models/location'
-import { User } from 'src/modules/user/domain/models/user'
-import { UserPassword } from 'src/modules/user/domain/models/user-password'
-import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
-import { userRepo } from 'src/modules/user/infra/db/repositories'
+import { getIncidents } from '@incident/application/queries'
+import { Incident } from '@incident/domain/models/incident'
+import { incidentRepo } from '@incident/infra/db/repositories'
+import { Location } from '@shared/domain/models/location'
+import { User } from '@user/domain/models/user'
+import { UserPassword } from '@user/domain/models/user-password'
+import { userRepo } from '@user/infra/db/repositories'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
+import { UserEmail } from '@user/domain/models/user-email'
 
 describe('queries: get incidents inside boundary', () => {
   beforeAll(async () => {
@@ -16,7 +16,8 @@ describe('queries: get incidents inside boundary', () => {
       User.create({
         username: 'my-username',
         password: UserPassword.create({ value: '1234567890' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        email: UserEmail.create({ value: 'user@gmail.com' }).asOk(),
+        name: 'User full name',
       }),
     )
 

@@ -1,11 +1,16 @@
 import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
 import { signUpCommand } from '@user/application/commands'
-import { Input, Res } from '@user/application/commands/sign-up-command'
+import {
+  EmailTakenError,
+  Input,
+  Res,
+  UsernameTakenError,
+} from '@user/application/commands/sign-up-command'
 import { GetUserById } from '@user/application/queries/get-user-by-id'
+import { ShortPasswordError } from '@user/domain/models/user-password'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { ShortPasswordError } from 'src/modules/user/domain/models/user-password'
-import { InvalidPhoneNumberError } from 'src/modules/user/domain/models/user-phone-number'
+import { InvalidEmailAddressError } from 'src/modules/user/domain/models/user-email'
 import { UserType } from '../types/user-type'
 
 export const SignUpMutationType = createMutationType<GraphQLContext, Input, Res>({
@@ -13,14 +18,11 @@ export const SignUpMutationType = createMutationType<GraphQLContext, Input, Res>
   description: 'Register a new user',
   inputFields: {
     username: { type: GraphQLNonNull(GraphQLString) },
+    name: { type: GraphQLNonNull(GraphQLString) },
+    email: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
-    phoneNumber: { type: GraphQLString },
   },
-  mutateAndGetResult: async (args, ctx) =>
-    signUpCommand.exec(
-      { ...args, phoneNumber: '14999999' }, // TODO
-      ctx,
-    ),
+  mutateAndGetResult: async (args, ctx) => signUpCommand.exec({ ...args }, ctx),
   okResultFields: {
     user: {
       type: GraphQLNonNull(UserType),
@@ -42,7 +44,9 @@ export const SignUpMutationType = createMutationType<GraphQLContext, Input, Res>
           name: 'SignUpErrCodeType',
           values: {
             [ShortPasswordError.name]: { value: ShortPasswordError.name },
-            [InvalidPhoneNumberError.name]: { value: InvalidPhoneNumberError.name },
+            [InvalidEmailAddressError.name]: { value: InvalidEmailAddressError.name },
+            [UsernameTakenError.name]: { value: UsernameTakenError.name },
+            [EmailTakenError.name]: { value: EmailTakenError.name },
           },
         }),
       ),

@@ -12,9 +12,9 @@ import {
 import { globalIdField } from 'graphql-relay'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
-import { NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
-import { LinkedEntityEnum } from 'src/modules/notification/domain/models/notification-link'
-import { mapObjectValues } from 'src/modules/shared/logic/helpers/map-object-values'
+import { NotificationCodeEnum } from '@notification/domain/models/notification'
+import { LinkedEntityEnum } from '@notification/domain/models/notification-link'
+import { mapObjectValues } from '@shared/logic/helpers/map-object-values'
 
 const NotificationLinkType = new GraphQLObjectType<NotificationDTO['link']>({
   name: 'NotificationLink',

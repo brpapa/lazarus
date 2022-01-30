@@ -1,17 +1,25 @@
+import { LANGUAGE, Language, LanguageEnum } from '@metis/shared'
 import { LocationMapper, LocationRedisModel } from '@shared/adapter/mappers/location-mapper'
 import { UUID } from '@shared/domain/models/uuid'
+import { UserDTO } from '@user/adapter/dtos/user-dto'
 import { User } from '@user/domain/models/user'
+import { UserEmail } from '@user/domain/models/user-email'
 import { UserPassword } from '@user/domain/models/user-password'
-import { UserPhoneNumber } from '@user/domain/models/user-phone-number'
-import { UserPgModel } from '../../infra/db/repositories/user-repo'
-import { UserDTO } from '../dtos/user-dto'
+import { UserPgModel } from '@user/infra/db/repositories/user-repo'
+import { UserPreferences } from '../../domain/models/user-preferences'
 
 export class UserMapper {
   static fromDomainToDTO(user: User): UserDTO {
     return {
       userId: user.id.toString(),
       username: user.username,
-      phoneNumber: user.phoneNumber.value,
+      email: user.email.value,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      preferences: {
+        radiusDistance: user.preferences.radiusDistance,
+        language: user.preferences.language,
+      },
       location:
         user.location !== undefined ? LocationMapper.fromDomainToDTO(user.location) : undefined,
     }
@@ -28,12 +36,28 @@ export class UserMapper {
           value: userModel.password,
           isAlreadyHashed: true,
         }).asOk(),
+        email: UserEmail.create({ value: userModel.email }).asOk(),
+        name: userModel.name,
+        preferences: UserPreferences.create({
+          radiusDistanceMeters: userModel.preferencesRadiusDistance,
+          language: (() => {
+            const matchedLang = Object.values(LanguageEnum).find(
+              (lang) => lang === userModel.preferencesLanguage,
+            )
+            if (!matchedLang)
+              throw new Error(
+                `The received userModel.preferencesLanguage '${
+                  userModel.preferencesLanguage
+                }' is not some of ${Object.values(LanguageEnum)}`,
+              )
+            return matchedLang
+          })(),
+        }),
         location:
           userLocationModel !== null
             ? LocationMapper.fromModelToDomain(userLocationModel)
             : undefined,
-        phoneNumber: UserPhoneNumber.create({ value: userModel.phoneNumber }).asOk(),
-        isPhoneNumberVerified: userModel.phoneNumberVerified,
+        avatarUrl: userModel.avatarUrl ?? undefined,
         createdAt: userModel.createdAt,
       },
       new UUID(userModel.id),
@@ -49,8 +73,11 @@ export class UserMapper {
       id: domain.id.toString(),
       username: domain.username,
       password: hashedPassword,
-      phoneNumber: domain.phoneNumber.value,
-      phoneNumberVerified: domain.isPhoneNumberVerified,
+      email: domain.email.value,
+      name: domain.name,
+      preferencesLanguage: domain.preferences.language,
+      preferencesRadiusDistance: domain.preferences.radiusDistance,
+      avatarUrl: domain.avatarUrl ?? null,
       createdAt: domain.createdAt,
     }
   }

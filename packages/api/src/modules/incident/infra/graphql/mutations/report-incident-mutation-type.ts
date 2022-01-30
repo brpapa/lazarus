@@ -14,7 +14,7 @@ import {
   GraphQLString,
 } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UnauthenticatedError } from 'src/modules/shared/logic/errors'
+import { UnauthenticatedError } from '@shared/logic/errors'
 import { IncidentType } from '../types/incident-type'
 import { MediaInputType } from '../types/media-type'
 

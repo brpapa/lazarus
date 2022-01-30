@@ -1,13 +1,13 @@
-import request from 'supertest'
+import { Incident } from '@incident/domain/models/incident'
+import { incidentRepo } from '@incident/infra/db/repositories'
+import { Location } from '@shared/domain/models/location'
+import { User } from '@user/domain/models/user'
+import { UserPassword } from '@user/domain/models/user-password'
+import { userRepo } from '@user/infra/db/repositories'
 import { app } from 'src/api/http/app'
+import { UserEmail } from 'src/modules/user/domain/models/user-email'
+import request from 'supertest'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { userRepo } from 'src/modules/user/infra/db/repositories'
-import { UserPassword } from 'src/modules/user/domain/models/user-password'
-import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
-import { User } from 'src/modules/user/domain/models/user'
-import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
-import { Incident } from 'src/modules/incident/domain/models/incident'
-import { Location } from 'src/modules/shared/domain/models/location'
 
 describe('graphql queries: incident', () => {
   beforeAll(async () => {
@@ -24,7 +24,8 @@ describe('graphql queries: incident', () => {
       User.create({
         username: 'my-username',
         password: UserPassword.create({ value: '1234567890' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 999999999' }).asOk(),
+        email: UserEmail.create({ value: 'user@gmail.com' }).asOk(),
+        name: 'User full name',
       }),
     )
     const incident = await incidentRepo.commit(

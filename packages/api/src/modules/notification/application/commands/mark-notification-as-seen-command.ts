@@ -4,8 +4,8 @@ import { INotificationRepo } from '@notification/adapter/repositories/notificati
 import { Command } from '@shared/logic/command'
 import { err, ok, Result } from '@metis/shared'
 import { Debugger } from 'debug'
-import { AppContext } from 'src/modules/shared/logic/app-context'
-import { ApplicationError } from 'src/modules/shared/logic/errors'
+import { AppContext } from '@shared/logic/app-context'
+import { ApplicationError } from '@shared/logic/errors'
 
 export type Input = {
   notificationId: string

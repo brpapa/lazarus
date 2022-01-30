@@ -1,21 +1,24 @@
-import assert from 'assert'
 import { AggregateRoot } from '@shared/domain/aggregate-root'
 import { Location } from '@shared/domain/models/location'
 import { UUID } from '@shared/domain/models/uuid'
+import assert from 'assert'
 import { UserRegistered } from '../events/user-registered'
 import { UserSignedIn } from '../events/user-signed-in'
 import { JwtAccessToken, JwtRefreshToken } from './jwt'
+import { UserEmail } from './user-email'
 import { UserPassword } from './user-password'
-import { UserPhoneNumber } from './user-phone-number'
+import { UserPreferences } from './user-preferences'
 
 interface UserProps {
   username: string
   password: UserPassword
-  phoneNumber: UserPhoneNumber
-  isPhoneNumberVerified?: boolean
-  createdAt?: Date
+  email: UserEmail
+  name: string
   lastLogin?: Date
   location?: Location
+  avatarUrl?: string
+  preferences?: UserPreferences
+  createdAt?: Date
   // props persistidas no redis, mas repository nao as preenche ao carregar na aplicacao um usuario existente na base
   accessToken?: JwtAccessToken
   refreshToken?: JwtRefreshToken
@@ -24,19 +27,21 @@ interface UserProps {
 export class User extends AggregateRoot<UserProps> {
   get username() { return this.props.username } // prettier-ignore
   get password() { return this.props.password } // prettier-ignore
-  get phoneNumber() { return this.props.phoneNumber } // prettier-ignore
-  get isPhoneNumberVerified() { assert(this.props.isPhoneNumberVerified !== undefined); return this.props.isPhoneNumberVerified } // prettier-ignore
-  get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
+  get email() { return this.props.email } // prettier-ignore
+  get name() { return this.props.name } // prettier-ignore
   get lastLogin() { return this.props.lastLogin } // prettier-ignore
+  get location() { return this.props.location } // prettier-ignore
+  get avatarUrl() { return this.props.avatarUrl } // prettier-ignore
+  get preferences() { assert(this.props.preferences !== undefined); return this.props.preferences } // prettier-ignore
+  get createdAt() { assert(this.props.createdAt !== undefined); return this.props.createdAt } // prettier-ignore
   get accessToken() { return this.props.accessToken } // prettier-ignore
   get refreshToken() { return this.props.refreshToken } // prettier-ignore
-  get location() { return this.props.location } // prettier-ignore
 
   private constructor(props: UserProps, id?: UUID) {
     super(
       {
         ...props,
-        isPhoneNumberVerified: props.isPhoneNumberVerified || false,
+        preferences: props.preferences || UserPreferences.create({}),
         createdAt: props.createdAt || new Date(),
       },
       id,
@@ -65,5 +70,9 @@ export class User extends AggregateRoot<UserProps> {
 
   updateLocation(newLocation: Location) {
     this.props.location = newLocation
+  }
+
+  updateLastLoginToNow() {
+    this.props.lastLogin = new Date()
   }
 }

@@ -1,10 +1,11 @@
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
-import { globalIdField } from 'graphql-relay'
 import { connectionDefinitions } from '@shared/infra/graphql/connections'
-import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
-import { UserDTO } from '@user/adapter/dtos/user-dto'
-import { GraphQLContext } from 'src/api/graphql/context'
 import { LocationType } from '@shared/infra/graphql/types/location-type'
+import { UserDTO, UserPreferencesDTO } from '@user/adapter/dtos/user-dto'
+import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { globalIdField } from 'graphql-relay'
+import { GraphQLContext } from 'src/api/graphql/context'
+import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
+import { LanguageEnumType } from './language-type'
 
 const USER_TYPE_NAME = 'User'
 
@@ -18,20 +19,46 @@ export const UserType = GraphQLTypes.register(
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       userId: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (user) => user.userId,
+        type: GraphQLNonNull(GraphQLString),
       },
       username: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (user) => user.username,
-      },
-      phoneNumber: {
         type: GraphQLNonNull(GraphQLString),
-        resolve: (user) => user.phoneNumber,
+      },
+      email: {
+        resolve: (user) => user.email,
+        type: GraphQLNonNull(GraphQLString),
+      },
+      name: {
+        resolve: (user) => user.name,
+        type: GraphQLNonNull(GraphQLString),
+      },
+      preferences: {
+        resolve: (user) => user.preferences,
+        type: GraphQLNonNull(
+          new GraphQLObjectType<UserPreferencesDTO>({
+            name: 'UserPreferences',
+            fields: () => ({
+              radiusDistance: {
+                type: GraphQLNonNull(GraphQLFloat),
+                resolve: (preferences) => preferences.radiusDistance,
+              },
+              language: {
+                type: GraphQLNonNull(LanguageEnumType),
+                resolve: (preferences) => preferences.language,
+              },
+            }),
+          }),
+        ),
       },
       location: {
-        type: LocationType,
         resolve: (user) => user.location,
+        type: LocationType,
+      },
+      avatarUrl: {
+        resolve: (user) => user.avatarUrl,
+        type: GraphQLString,
       },
     }),
   }),

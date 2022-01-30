@@ -1,20 +1,26 @@
-import { Command } from '@shared/logic/command'
 import { err, ok, Result } from '@metis/shared'
+import { Command } from '@shared/logic/command'
 import { UserDTO } from '@user/adapter/dtos/user-dto'
 import { UserMapper } from '@user/adapter/mappers/user-mapper'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'
 import { User } from '@user/domain/models/user'
 import { ShortPasswordError, UserPassword } from '@user/domain/models/user-password'
-import { InvalidPhoneNumberError, UserPhoneNumber } from '@user/domain/models/user-phone-number'
 import { Debugger } from 'debug'
+import { InvalidEmailAddressError, UserEmail } from '@user/domain/models/user-email'
+import { ApplicationError } from '@shared/logic/errors'
 
 export type Input = {
   username: string
-  phoneNumber: string
+  name: string
+  email: string
   password: string
 }
 export type OkRes = UserDTO
-export type ErrRes = ShortPasswordError | InvalidPhoneNumberError
+export type ErrRes =
+  | ShortPasswordError
+  | InvalidEmailAddressError
+  | UsernameTakenError
+  | EmailTakenError
 export type Res = Result<OkRes, ErrRes>
 
 /** register a new user */
@@ -24,21 +30,23 @@ export class SignUpCommand extends Command<Input, Res> {
   }
 
   async execImpl(input: Input): Promise<Res> {
-    // todo: validar unicidade do username e do phoneNumber em relacao aos demais usuarios
-    // new PhoneNumberTakenError(`The phone number ${phoneNumber} is already associated to another account`)
-    // new UsernameTakenError(`The username ${username} was already taken`)
+    const existingUserByUsername = await this.userRepo.findByUsername(input.username)
+    if (existingUserByUsername !== null)
+      return err(new UsernameTakenError({ username: input.username }))
+
+    const existingUserByEmail = await this.userRepo.findByEmail(input.email)
+    if (existingUserByEmail !== null) return err(new EmailTakenError({ email: input.email }))
 
     const userOrErr = UserPassword.create({ value: input.password })
       .andThen((password) =>
-        UserPhoneNumber.create({ value: input.phoneNumber }).mapOk(
-          (phoneNumber) => [password, phoneNumber] as const,
-        ),
+        UserEmail.create({ value: input.email }).mapOk((email) => [password, email] as const),
       )
-      .mapOk<User>(([password, phoneNumber]) =>
+      .mapOk<User>(([password, email]) =>
         User.create({
           username: input.username,
+          email,
           password,
-          phoneNumber,
+          name: input.name,
         }),
       )
 
@@ -49,5 +57,5 @@ export class SignUpCommand extends Command<Input, Res> {
   }
 }
 
-// class UsernameTakenError extends ApplicationError {}
-// class PhoneNumberTakenError extends ApplicationError {}
+export class UsernameTakenError extends ApplicationError {}
+export class EmailTakenError extends ApplicationError {}

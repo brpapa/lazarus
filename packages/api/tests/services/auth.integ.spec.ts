@@ -1,10 +1,10 @@
 import assert from 'assert'
-import { User } from 'src/modules/user/domain/models/user'
-import { authService } from 'src/modules/user/application/services'
+import { User } from '@user/domain/models/user'
+import { authService } from '@user/application/services'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
-import { UserPassword } from 'src/modules/user/domain/models/user-password'
-import { UserPhoneNumber } from 'src/modules/user/domain/models/user-phone-number'
+import { UUID } from '@shared/domain/models/uuid'
+import { UserPassword } from '@user/domain/models/user-password'
+import { UserEmail } from '@user/domain/models/user-email'
 
 describe('services: auth', () => {
   beforeAll(connectDataSources)
@@ -18,7 +18,8 @@ describe('services: auth', () => {
       {
         username: 'my-user-name',
         password: UserPassword.create({ value: 'my awesome password' }).asOk(),
-        phoneNumber: UserPhoneNumber.create({ value: '14 9999999' }).asOk(),
+        email: UserEmail.create({ value: 'user@gmail.com' }).asOk(),
+        name: 'User full name',
       },
       new UUID('my-user-id'),
     )

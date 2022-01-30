@@ -11,7 +11,7 @@ import { Comment } from './comment'
 import { IncidentStatus } from './incident-status'
 import { Media } from './media'
 import { Reaction } from './reaction'
-import { IncidentStatistics } from './statistics'
+import { IncidentStatistics } from './incident-statistics'
 
 interface IncidentProps {
   ownerUserId: UUID
@@ -54,14 +54,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
         comments: props.comments || WatchedList.create<Comment>(),
         reactions: props.reactions || WatchedList.create<Reaction>(),
         activityLogs: props.activityLogs || [],
-        statistics:
-          props.statistics ||
-          IncidentStatistics.create({
-            commentsCount: 0,
-            reactionsCount: 0,
-            viewsCount: 0,
-            usersNotifiedCount: 0,
-          }),
+        statistics: props.statistics || IncidentStatistics.create({}),
         createdAt: props.createdAt || new Date(),
       },
       id,
@@ -96,7 +89,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
 
   addComments(comments: Comment[]) {
     this.props.comments?.addBatch(comments)
-    this.statistics.props.commentsCount += 1
+    this.statistics.incrementCommentsCount(comments.length)
     comments.forEach((comment) => this.addDomainEvent(new CommentPostedOnIncident(this, comment)))
     return this
   }

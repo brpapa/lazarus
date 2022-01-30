@@ -8,13 +8,13 @@ import { zip } from '@shared/logic/helpers/zip'
 import { IncidentCreatedEnrichedWithNearbyUsers } from '@user/domain/events/incident-created-enriched-with-nearby-users'
 import assert from 'assert'
 import { Debugger } from 'debug'
-import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
+import { INotificationRepo } from '@notification/adapter/repositories/notification-repo'
 import { IDeviceRepo } from '../../adapter/repositories/device-repo'
 import { UsersNotified } from '../../domain/events/users-notified'
 import { PushMessage } from '../../domain/models/push-message'
 
 /**
- * create a new notification entity to be displayed on notifications tab
+ * create a new notification entity to be displayed on notifications screen
  * and send push notifications for relevant users about a new incident created nearby them
  */
 export class NotifyNearbyUsersObserver

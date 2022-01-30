@@ -1,17 +1,13 @@
 import { UserModel } from '@prisma/client'
-import assert from 'assert'
-import debug from 'debug'
-import {
-  GeoReplyWithMember,
-  GeoReplyWith,
-  GeoSearchBy,
-} from 'redis/dist/lib/commands/generic-transformers'
-import { PrismaClient } from 'src/api/db/prisma/client'
-import { RedisClient } from 'src/api/db/redis/client'
-import { UserMapper } from '@user/adapter/mappers/user-mapper'
-import { User } from '@user/domain/models/user'
 import { PrismaRepo } from '@shared/infra/db/prisma-repo'
 import { zip } from '@shared/logic/helpers/zip'
+import { UserMapper } from '@user/adapter/mappers/user-mapper'
+import { User } from '@user/domain/models/user'
+import assert from 'assert'
+import debug from 'debug'
+import { GeoReplyWith, GeoSearchBy } from 'redis/dist/lib/commands/generic-transformers'
+import { PrismaClient } from 'src/api/db/prisma/client'
+import { RedisClient } from 'src/api/db/redis/client'
 import { IUserRepo, UserWithinCircle } from '../../../adapter/repositories/user-repo'
 
 const log = debug('app:user:infra')
@@ -37,6 +33,10 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
 
   async findByUsername(username: string): Promise<User | null> {
     const user = await this.prismaClient.userModel.findUnique({ where: { username } })
+    return this.enrichedWithRedis(user)
+  }
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.prismaClient.userModel.findUnique({ where: { email } })
     return this.enrichedWithRedis(user)
   }
 
