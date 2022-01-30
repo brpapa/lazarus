@@ -3,7 +3,7 @@ import { Incident } from '@incident/domain/models/incident'
 import { UUID } from '@shared/domain/models/uuid'
 import { WatchedList } from '@shared/domain/watched-list'
 import { LocationMapper, LocationRedisModel } from '../../../shared/adapter/mappers/location-mapper'
-import { IncidentStatus } from '../../domain/models/incident-status'
+import { IncidentStatusEnum } from '../../domain/models/incident-status'
 import {
   IncidentPgModel,
   IncidentPgModelPopulated,
@@ -35,7 +35,7 @@ export class IncidentMapper {
         title: incidentModel.title,
         location: LocationMapper.fromModelToDomain(incidentLocationModel),
         formattedAddress: incidentModel.formattedAddress ?? undefined,
-        status: IncidentStatus[incidentModel.status],
+        status: IncidentStatusEnum[incidentModel.status],
         createdAt: incidentModel.createdAt,
         comments: WatchedList.create<Comment>(
           incidentModel.comments.map(CommentMapper.fromModelToDomain),

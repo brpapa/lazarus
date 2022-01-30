@@ -2,11 +2,11 @@ import assert from 'assert'
 import { Incident } from '@incident/domain/models/incident'
 import { prismaClient } from 'src/api/db/prisma/client'
 import { incidentRepo } from '@incident/infra/db/repositories'
-import { MediaType } from '@incident/domain/models/media-type'
+import { MediaTypeEnum } from '@incident/domain/models/media-type'
 import { UUID } from '@shared/domain/models/uuid'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 import { Location } from '@shared/domain/models/location'
-import { IncidentStatus } from '@incident/domain/models/incident-status'
+import { IncidentStatusEnum } from '@incident/domain/models/incident-status'
 import { Media } from '@incident/domain/models/media'
 import { Comment } from '@incident/domain/models/comment'
 
@@ -23,14 +23,14 @@ describe('repository: incident', () => {
         ownerUserId: new UUID('my-user-id'),
         title: 'title',
         location: Location.create({ latitude: -20, longitude: 40 }),
-        status: IncidentStatus.ACTIVE,
+        status: IncidentStatusEnum.ACTIVE,
       })
 
       incident.addMedias([
         Media.create({
           incidentId: incident.id,
           url: 'url',
-          type: MediaType.IMAGE,
+          type: MediaTypeEnum.IMAGE,
           recordedAt: new Date(),
         }),
       ])
@@ -133,8 +133,8 @@ const createUser = async (userId: string) => {
       id: userId,
       username: 'my awesome name',
       password: 'my awesome password',
-      phoneNumber: '14 9999999',
-      phoneNumberVerified: true,
+      email: 'bas@gmail.com',
+      name: 'user',  
     },
   })
 }
@@ -144,7 +144,7 @@ const createIncident = async (incidentId: string, userId: string) => {
     data: {
       id: incidentId,
       title: 'my title',
-      status: IncidentStatus.ACTIVE,
+      status: IncidentStatusEnum.ACTIVE,
       statsCommentsCount: 0,
       statsReactionsCount: 0,
       statsViewsCount: 0,

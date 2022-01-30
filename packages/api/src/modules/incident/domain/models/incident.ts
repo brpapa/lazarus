@@ -1,17 +1,17 @@
-import assert from 'assert'
 import { CommentPostedOnIncident } from '@incident/domain/events/comment-posted-on-incident'
 import { AggregateRoot } from '@shared/domain/aggregate-root'
 import { UUID } from '@shared/domain/models/uuid'
 import { WatchedList } from '@shared/domain/watched-list'
 import { Range } from '@shared/logic/guard'
+import assert from 'assert'
 import { Location } from '../../../shared/domain/models/location'
 import { IncidentCreated } from '../events/incident-created'
 import { ActivityLog } from './activity-log'
 import { Comment } from './comment'
-import { IncidentStatus } from './incident-status'
+import { IncidentStatistics } from './incident-statistics'
+import { IncidentStatus, IncidentStatusEnum } from './incident-status'
 import { Media } from './media'
 import { Reaction } from './reaction'
-import { IncidentStatistics } from './incident-statistics'
 
 interface IncidentProps {
   ownerUserId: UUID
@@ -50,7 +50,7 @@ export class Incident extends AggregateRoot<IncidentProps> {
       {
         ...props,
         medias: props.medias || [],
-        status: props.status || IncidentStatus.PENDING,
+        status: props.status || IncidentStatusEnum.PENDING,
         comments: props.comments || WatchedList.create<Comment>(),
         reactions: props.reactions || WatchedList.create<Reaction>(),
         activityLogs: props.activityLogs || [],

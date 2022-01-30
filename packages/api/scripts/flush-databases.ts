@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
 import { Incident } from '@incident/domain/models/incident'
 import { Media } from '@incident/domain/models/media'
-import { MediaType } from '@incident/domain/models/media-type'
+import { MediaTypeEnum } from '@incident/domain/models/media-type'
 import { incidentRepo } from '@incident/infra/db/repositories'
 import { Device } from '@notification/domain/models/device'
 import { Notification } from '@notification/domain/models/notification'
+import { NotificationLink } from '@notification/domain/models/notification-link'
 import { deviceRepo, notificationRepo } from '@notification/infra/db/repositories'
 import { LinkedEntityEnum, NotificationCodeEnum } from '@prisma/client'
 import { Location } from '@shared/domain/models/location'
 import { UUID } from '@shared/domain/models/uuid'
 import { User } from '@user/domain/models/user'
+import { UserEmail } from '@user/domain/models/user-email'
 import { UserPassword } from '@user/domain/models/user-password'
 import { userRepo } from '@user/infra/db/repositories'
 // @ts-ignore
 import { randomCirclePoint } from 'random-location'
 import { AWS_S3_BUCKET_NAME } from 'src/config'
-import { NotificationLink } from '@notification/domain/models/notification-link'
-import { UserEmail } from '@user/domain/models/user-email'
 import {
   cleanUpDatasources as cleanUpDataSources,
   connectDataSources,
@@ -100,13 +100,13 @@ const seed = async () => {
         Media.create({
           incidentId: incident.id,
           url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg`,
-          type: MediaType.IMAGE,
+          type: MediaTypeEnum.IMAGE,
           recordedAt: new Date(),
         }),
         Media.create({
           incidentId: incident.id,
           url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/2ffd2f91-71b1-4154-9510-4a4565dc52b6.mov`,
-          type: MediaType.VIDEO,
+          type: MediaTypeEnum.VIDEO,
           recordedAt: new Date(),
         }),
       ])

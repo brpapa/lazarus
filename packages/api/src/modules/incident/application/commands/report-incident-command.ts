@@ -2,9 +2,9 @@ import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
 import { IncidentMapper } from '@incident/adapter/mappers/incident-mapper'
 import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
 import { Incident } from '@incident/domain/models/incident'
-import { IncidentStatus } from '@incident/domain/models/incident-status'
+import { IncidentStatusEnum } from '@incident/domain/models/incident-status'
 import { Media } from '@incident/domain/models/media'
-import { MediaType } from '@incident/domain/models/media-type'
+import { MediaTypeEnum } from '@incident/domain/models/media-type'
 import { err, ok, Result } from '@metis/shared'
 import { AppContext } from '@shared/logic/app-context'
 import { Command } from '@shared/logic/command'
@@ -42,7 +42,7 @@ export class ReportIncidentCommand extends Command<Input, Res> {
       ownerUserId: user.id,
       title: input.title,
       location: user.location,
-      status: IncidentStatus.ACTIVE,
+      status: IncidentStatusEnum.ACTIVE,
     })
 
     const [min, max] = Incident.ALLOWED_QTY_OF_MEDIAS_PER_INCIDENT
@@ -53,7 +53,7 @@ export class ReportIncidentCommand extends Command<Input, Res> {
       Media.create({
         ...m,
         incidentId: incident.id,
-        type: MediaType.IMAGE, // TODO
+        type: MediaTypeEnum.IMAGE, // TODO
         recordedAt: new Date(), // TODO
       }),
     )

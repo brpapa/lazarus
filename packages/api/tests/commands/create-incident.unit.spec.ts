@@ -1,10 +1,10 @@
-import { AppContext } from './../../src/modules/shared/logic/app-context'
-import { Debugger } from 'debug'
-import { mockDeep } from 'jest-mock-extended'
 import { IGeocodingService } from '@incident/adapter/geocoding-service'
 import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
-import { MediaType } from '@incident/domain/models/media-type'
+import { MediaTypeEnum } from '@incident/domain/models/media-type'
+import { AppContext } from '@shared/logic/app-context'
 import { IUserRepo } from '@user/adapter/repositories/user-repo'
+import { Debugger } from 'debug'
+import { mockDeep } from 'jest-mock-extended'
 import { ReportIncidentCommand } from '../../src/modules/incident/application/commands/report-incident-command'
 
 describe('command: create incident', () => {
@@ -56,7 +56,7 @@ describe('command: create incident', () => {
             .fill(null)
             .map(() => ({
               url: 'https://s3.amazonaws.com',
-              type: MediaType.IMAGE,
+              type: MediaTypeEnum.IMAGE,
               recordedAt: new Date(),
             })),
         },

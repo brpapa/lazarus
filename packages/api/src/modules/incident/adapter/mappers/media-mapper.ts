@@ -1,7 +1,7 @@
+import { MediaTypeEnum } from '@incident/domain/models/media-type'
 import { MediaModel } from '@prisma/client'
 import { UUID } from '@shared/domain/models/uuid'
 import { Media } from '../../domain/models/media'
-import { MediaType } from '../../domain/models/media-type'
 import { MediaDTO } from '../dtos/media-dto'
 
 export class MediaMapper {
@@ -14,7 +14,7 @@ export class MediaMapper {
     return Media.create(
       {
         url: model.url,
-        type: MediaType[model.type],
+        type: MediaTypeEnum[model.type],
         recordedAt: model.recordedAt,
         incidentId: new UUID(model.incidentId),
       },
