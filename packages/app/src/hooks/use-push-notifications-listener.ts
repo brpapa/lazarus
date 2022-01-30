@@ -13,7 +13,7 @@ Notifications.setNotificationHandler({
 })
 
 export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
-  const navigation = useNavigation()
+  const nav = useNavigation()
 
   useEffect(() => {
     if (!when) return
@@ -40,7 +40,7 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
         })
         result.mapErr(console.error)
 
-        navigation.reset({
+        nav.reset({
           index: 0,
           routes: [{ name: 'Incident', params: { incidentId: data.incidentId } }],
         })
@@ -51,5 +51,5 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
       Notifications.removeNotificationSubscription(notificationListener)
       Notifications.removeNotificationSubscription(responseListener)
     }
-  }, [navigation, when])
+  }, [nav, when])
 }

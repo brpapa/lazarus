@@ -5,9 +5,8 @@ import {
   Modal,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { graphql, useLazyLoadQuery } from 'react-relay'
 import { Loading, Text } from '~/components/v1/atoms'
 import { CustomHeader } from '~/components/v1/molecules'
@@ -25,7 +24,6 @@ const query = graphql`
 
 export function Notifications() {
   const s = useStyles()
-  const insets = useSafeAreaInsets()
 
   const data = useLazyLoadQuery<NotificationsQueryType>(
     query,
@@ -59,7 +57,7 @@ export function Notifications() {
 
   return (
     <>
-      <View style={[s.container, { marginBottom: insets.bottom }]}>
+      <View style={s.container}>
         <CustomHeader
           title={t('notification.header')}
           rightIcon="More"
@@ -94,10 +92,11 @@ export function Notifications() {
   )
 }
 
-const useStyles = makeUseStyles(({ colors, spacing }) => ({
+const useStyles = makeUseStyles(({ colors, spacing, insets }) => ({
   container: {
     flex: 1,
     backgroundColor: colors.backgroundDarker,
+    marginBottom: insets.bottom,
   },
   androidModalContainer: {
     flex: 1,

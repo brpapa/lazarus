@@ -1,4 +1,3 @@
-import { t } from '@metis/shared'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { Loading } from '~/components/v1/atoms'
@@ -21,11 +20,7 @@ export function ReportStackNavigator() {
     >
       <ReportStack.Screen name="CameraPermissions" component={CameraPermissions} />
       <ReportStack.Screen name="Camera" component={Camera} options={{ headerShown: false }} />
-      <ReportStack.Screen
-        name="MediasReview"
-        component={MediasReview}
-        options={{ ...navHeader }}
-      />
+      <ReportStack.Screen name="MediasReview" component={MediasReview} options={{ ...navHeader }} />
     </ReportStack.Navigator>
   )
 }

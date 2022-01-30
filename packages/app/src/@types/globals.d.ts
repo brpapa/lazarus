@@ -25,10 +25,11 @@ type AccessToken = {
 }
 
 type CapturedMedia = {
+  type: MediaType
   /** path in device file system where the picture was saved */
   uri: string
-  width: number
-  height: number
+  width?: number
+  height?: number
   mimeType?: string
   extension?: string
 }

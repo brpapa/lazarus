@@ -1,19 +1,22 @@
 import { t } from '@metis/shared'
 import { TransitionPresets } from '@react-navigation/stack'
+import type { EdgeInsets } from 'react-native-safe-area-context'
 import { colorTheme, fontSizes, fontVariants, iconSizes, spacing } from './constants'
 import { floatingButtonSizes } from './constants/buttons'
 
 // This is information about the device or system, which the theme might depend on, such as light/dark mode.
 export type Config = {
+  insets: EdgeInsets
   colorScheme: 'light' | 'dark' | 'no-preference'
   aesthetic: 'ios' | 'android'
 }
 
-export const getTheme = ({ colorScheme, aesthetic }: Config) => {
+export const getTheme = ({ insets, colorScheme, aesthetic }: Config) => {
   const isDarkMode = colorScheme === 'dark'
   const colors = colorTheme(isDarkMode)
 
   return {
+    insets,
     colors,
     fontSizes: fontSizes,
     iconSizes: iconSizes,

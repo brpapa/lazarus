@@ -9,9 +9,9 @@ import { IncidentPreview } from '~/components/v1/organisms/IncidentPreview'
 import MapView from '~/components/v1/organisms/MapView'
 import { IncidentMarkerList } from '~/components/v1/organisms/MapView/IncidentMarkerList'
 import type { MapViewRef } from '~/components/v1/organisms/MapView/MapView'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/config'
 import { selectedIncidentIdInMap } from '~/data/recoil'
 import { useIncidentsFilterSegmentedControlProps } from '~/hooks/use-incidents-filter-segmented-control'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/constants'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { ExplorerRefreshQuery as ExplorerRefreshQueryType } from '~/__generated__/ExplorerRefreshQuery.graphql'
 import type { Explorer_query$key } from '~/__generated__/Explorer_query.graphql'
@@ -110,12 +110,12 @@ export function Explorer(props: ExplorerProps) {
   )
 }
 
-const useStyles = makeUseStyles(({ colors, spacing }) => ({
+const useStyles = makeUseStyles(({ colors, spacing, insets }) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT(insets),
   },
   topContainer: {
     position: 'absolute',

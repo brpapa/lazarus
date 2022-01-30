@@ -7,21 +7,10 @@ import { Text } from '~/components/v1/atoms'
 import { CustomHeader } from '~/components/v1/molecules'
 import { MediasCarousel } from '~/components/v1/organisms'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
-import { MediaType, SCREEN_HEIGHT } from '~/shared/constants'
+import { SCREEN_HEIGHT } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
 
-// TODO
-const CAPTURED_MEDIAS: Media[] = [
-  {
-    type: MediaType.IMAGE,
-    uri: 'https://metis-public-static-content.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg',
-  },
-  {
-    type: MediaType.VIDEO,
-    uri: 'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4',
-  },
-]
-
+// exemplo pra depois: ~/dev/@clones/react-native-vision-camera/example/src/MediaPage.tsx
 export function MediasReview() {
   const s = useStyles()
   const insets = useSafeAreaInsets()
@@ -29,20 +18,27 @@ export function MediasReview() {
   const { params } = useRoute<ReportStackRouteProp<'MediasReview'>>()
 
   const recordOneMoreMedia = useCallback(() => {
-    nav.replace('Camera', { previousCapturedMedias: params.capturedMedias })
+    nav.reset({
+      index: 0,
+      routes: [{ name: 'Camera', params: { previousCapturedMedias: params.capturedMedias } }],
+    })
   }, [params.capturedMedias, nav])
 
   const onReportPressed = () => {
     nav.navigate('ReportIncident', { capturedMedias: params.capturedMedias })
   }
   return (
-    <View style={[s.container, { marginBottom: insets.bottom }]}>
+    <View style={s.container}>
       <CustomHeader
         title={t('Review')}
         rightTitle={t('report.reportButton')}
         onPressRight={onReportPressed}
       />
-      <MediasCarousel medias={CAPTURED_MEDIAS} height={SCREEN_HEIGHT * 0.78} />
+      <MediasCarousel
+        medias={params.capturedMedias}
+        height={SCREEN_HEIGHT(insets) * 0.78}
+        autoplay
+      />
 
       <View style={s.buttonsContainer}>
         <Text variant="link" onPress={recordOneMoreMedia}>
@@ -53,11 +49,12 @@ export function MediasReview() {
   )
 }
 
-const useStyles = makeUseStyles(({ colors }) => ({
+const useStyles = makeUseStyles(({ colors, insets }) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
     flexDirection: 'column',
+    marginBottom: insets.bottom,
   },
   buttonsContainer: {
     flex: 1,

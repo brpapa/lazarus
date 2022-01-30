@@ -1,5 +1,5 @@
 import { err, ok, Result } from '@metis/shared'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useMutation } from 'react-relay'
 import type { GraphQLTaggedNode, MutationParameters, SelectorStoreUpdater } from 'relay-runtime'
 
@@ -24,10 +24,12 @@ export function createResultMutationHook<
   TErrResult = {},
 >(config: Config<TMutation, TInput>) {
   return function useResultMutation() {
-    const [commit, isSending] = useMutation<TMutation>(config.mutation)
+    const [isSending, setIsSending] = useState(false)
+    const [commit] = useMutation<TMutation>(config.mutation)
 
     const commitAsync = useCallback(
       async (input: TInput) => {
+        setIsSending(true)
         const mappedInput = await (config.inputMapper
           ? Promise.resolve(config.inputMapper(input))
           : Promise.resolve(input))
@@ -36,6 +38,7 @@ export function createResultMutationHook<
           commit({
             variables: { input: mappedInput },
             onCompleted: (response, errors) => {
+              setIsSending(false)
               if (errors !== null) throw new Error(`Unexpected error: ${JSON.stringify(errors)}`)
 
               const output = (response as any)[config.mutationName]
@@ -60,6 +63,7 @@ export function createResultMutationHook<
               }
             },
             onError: (error) => {
+              setIsSending(false)
               // Server errors (5xx HTTP codes, 1xxx WebSocket codes)
               // Client problems e.g. rate-limited, unauthorized, etc. (4xx HTTP codes)
               // The query is missing/malformed

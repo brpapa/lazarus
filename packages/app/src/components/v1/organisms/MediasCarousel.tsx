@@ -4,20 +4,23 @@ import { Image, StyleSheet, View } from 'react-native'
 import { VideoPlayer } from './VideoPlayer'
 import { MediaType } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
+import { useIsFocused } from '@react-navigation/native'
+import { useIsForeground } from '~/hooks/use-is-foreground'
 
 type MediasCarousel = {
   medias?: Media[]
   height: number
+  autoplay?: boolean
 }
 
 export function MediasCarousel(props: MediasCarousel) {
-  const { medias = [], height } = props
+  const { medias = [], height, autoplay = false } = props
 
   const s = useStyles()
 
   return (
     <View style={[{ height }]}>
-      <Carousel style={{ flex: 1 }} showsControls={false} loop={true} index={0}>
+      <Carousel style={{ flex: 1 }} showsControls={false} loop={true} index={0} autoplay={autoplay}>
         {medias.length > 0 ? (
           medias.map((media, key) => <Slide key={key} media={media} height={height} />)
         ) : (

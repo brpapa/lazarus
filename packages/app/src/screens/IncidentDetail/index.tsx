@@ -8,7 +8,7 @@ import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from 'reac
 import { useRecoilValue } from 'recoil'
 import { FloatingButton, IconWithLabel, Loading, Text } from '~/components/v1/atoms'
 import { MediasCarousel } from '~/components/v1/organisms'
-import { SCREEN_HEIGHT } from '~/config'
+import { SCREEN_HEIGHT } from '~/shared/constants'
 import { userLocationState } from '~/data/recoil'
 import type { MainStackNavProp, MainStackRouteProp } from '~/navigation/types'
 import { MediaType } from '~/shared/constants'
@@ -63,12 +63,11 @@ type Props = {
 function IncidentDetail(props: Props) {
   const nav = useNavigation<MainStackNavProp<'IncidentDetail'>>()
   const { params } = useRoute<MainStackRouteProp<'IncidentDetail'>>()
+  const insets = useSafeAreaInsets()
 
   const s = useStyles()
   const data = usePreloadedQuery<IncidentDetailQueryType>(query, props.preloadedQueryRef)
   const userLocation = useRecoilValue(userLocationState)
-
-  const insets = useSafeAreaInsets()
 
   const onCommentsPressed = () => {
     nav.navigate('IncidentComments', { incidentId: params.incidentId })
@@ -83,7 +82,7 @@ function IncidentDetail(props: Props) {
   return (
     <View style={s.container}>
       <ScrollView style={s.scrollableContainer}>
-        <MediasCarousel medias={MEDIAS} height={SCREEN_HEIGHT * 0.65} />
+        <MediasCarousel medias={MEDIAS} height={SCREEN_HEIGHT(insets) * 0.65} />
         <View style={s.contentContainer}>
           <Text variant="header">{data.incident?.title}</Text>
           <Text variant="body2" style={s.mb}>
@@ -115,10 +114,10 @@ function IncidentDetail(props: Props) {
           </Text>
         </View>
       </ScrollView>
-      <View style={[s.buttonsContainer, { paddingRight: insets.right, paddingTop: insets.top }]}>
+      <View style={s.buttonsContainer}>
         <FloatingButton icon="Close" onPress={onClosePressed} />
       </View>
-      <View style={[{ paddingBottom: insets.bottom }, s.bottomContainer]}>
+      <View style={s.bottomContainer}>
         <IconWithLabel
           label={t('formatters.bigNumber', { number: REACTIONS_COUNT }) as string}
           size="xl"
@@ -137,7 +136,7 @@ function IncidentDetail(props: Props) {
   )
 }
 
-const useStyles = makeUseStyles(({ colors, spacing }) => ({
+const useStyles = makeUseStyles(({ colors, spacing, insets }) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -159,6 +158,7 @@ const useStyles = makeUseStyles(({ colors, spacing }) => ({
     justifyContent: 'space-evenly',
     color: colors.textLighter,
     marginTop: spacing.m,
+    paddingBottom: insets.bottom,
   },
   actionIcon: {
     // backgroundColor: colors.transparentBackground,
@@ -167,6 +167,8 @@ const useStyles = makeUseStyles(({ colors, spacing }) => ({
     position: 'absolute',
     right: 15,
     top: 10,
+    paddingRight: insets.right,
+    paddingTop: insets.top,
   },
   mb: {
     marginBottom: spacing.xl,

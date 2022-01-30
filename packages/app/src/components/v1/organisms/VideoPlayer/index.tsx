@@ -1,7 +1,7 @@
 import { Audio, AVPlaybackStatus, Video } from 'expo-av'
 import React, { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Animated, View } from 'react-native'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { ControlStates, ErrorSeverity, PlaybackStates } from './constants'
 import { defaultProps, VideoPlayerProps } from './props'
 import { deepMerge, ErrorMessage, styles } from './utils'
@@ -188,11 +188,8 @@ export function VideoPlayer(tempProps: VideoPlayerProps) {
         maxWidth: '100%',
       }}
       onPress={() => {
-        if (playbackInstanceInfo.state === PlaybackStates.Playing) {
-          playbackInstance?.pauseAsync()
-        } else {
-          playbackInstance?.playAsync()
-        }
+        if (playbackInstanceInfo.state === PlaybackStates.Playing) playbackInstance?.pauseAsync()
+        else playbackInstance?.playAsync()
       }}
     >
       <Video

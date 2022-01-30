@@ -1,9 +1,8 @@
 import type { BottomTabBarOptions, BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Badge, Icon, Text } from '~/components/v1/atoms'
-import { __IOS__ } from '~/config'
+import { __IOS__ } from '~/shared/constants'
 import type { IconName } from '~/icons'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { HomeTabParams } from '../types'
@@ -22,7 +21,6 @@ const routeToIcon = (route: keyof HomeTabParams): IconName => {
 }
 
 export function TabBar({ state, navigation, descriptors }: BottomTabBarProps<BottomTabBarOptions>) {
-  const insets = useSafeAreaInsets()
   const s = useStyles()
   const { colors } = useTheme()
 
@@ -55,7 +53,7 @@ export function TabBar({ state, navigation, descriptors }: BottomTabBarProps<Bot
             style={s.tab}
             activeOpacity={state.index === index ? 1 : 0.2}
           >
-            <View style={[{ paddingBottom: insets.bottom }, s.tabItemContainer]}>
+            <View style={s.tabItemContainer}>
               <Icon
                 name={routeToIcon(route.name as keyof HomeTabParams)}
                 size="xl"
@@ -75,7 +73,7 @@ export function TabBar({ state, navigation, descriptors }: BottomTabBarProps<Bot
   )
 }
 
-const useStyles = makeUseStyles(({ colors }) => ({
+const useStyles = makeUseStyles(({ colors, insets }) => ({
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: colors.background,
@@ -89,6 +87,7 @@ const useStyles = makeUseStyles(({ colors }) => ({
   },
   tabItemContainer: {
     alignItems: 'center',
+    paddingBottom: insets.bottom,
   },
   badge: {
     position: 'absolute',

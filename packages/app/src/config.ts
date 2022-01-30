@@ -10,7 +10,7 @@ export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}:${SERVER_PORT}`
 
 export const ENABLE_GOOGLE_MAPS = __IOS__ || __ANDROID__
 export const ENABLE_CAMERA_MOCK = false
-export const ENABLE_NAVIGATION_STATE_PERSISTENCE = false
+export const ENABLE_NAVIGATION_STATE_PERSISTENCE = true
 
 export const FOREGROUND_LOCATION_OPTIONS: Location.LocationOptions = {
   accuracy: Location.Accuracy.High,
