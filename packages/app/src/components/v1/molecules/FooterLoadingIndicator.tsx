@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { makeUseStyles } from '~/theme/v1'
-import { ActivityIndicator } from '../atoms'
+import { ActivityIndicator } from '../atoms/ActivityIndicator'
 
 type Props = {
   isHidden?: boolean

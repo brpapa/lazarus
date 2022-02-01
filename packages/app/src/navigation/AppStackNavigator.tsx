@@ -10,7 +10,7 @@ import { useRequiredPermissions } from '~/hooks/use-required-permissions'
 import { RootStackNavigator } from '~/navigation/RootStackNavigator'
 import type { ColorScheme } from '~/theme/v1/helpers/color-scheme'
 import { useColorScheme } from '~/theme/v1/contexts/ColorScheme'
-import { Loading } from '~/components/v1/atoms'
+import { Loading } from '~/components/v1'
 import { RequiredPermissions } from '~/screens'
 import type { AppStackParams } from '~/navigation/types'
 

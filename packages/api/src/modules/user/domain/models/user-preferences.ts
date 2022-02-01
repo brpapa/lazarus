@@ -1,5 +1,5 @@
 import { Language, LanguageEnum } from '@metis/shared'
-import { ValueObject } from '@shared/domain/value-object'
+import { ValueObject } from 'src/modules/shared/domain/value-object'
 import assert from 'assert'
 
 interface UserPreferencesProps {
@@ -13,7 +13,7 @@ export class UserPreferences extends ValueObject<UserPreferencesProps> {
 
   private constructor(props: UserPreferencesProps) {
     super({
-      radiusDistanceMeters: props.radiusDistanceMeters || 300,
+      radiusDistanceMeters: props.radiusDistanceMeters || 500,
       language: props.language || LanguageEnum.PT_BR,
     })
   }

@@ -10,20 +10,9 @@ type Query {
     """The ID of an object"""
     id: ID!
   ): Node
-  me: User
-  users(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
 
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): UserConnection!
+  """Informations related to requester user"""
+  me: Me
   incident(
     """The incident id"""
     incidentId: String!
@@ -46,9 +35,19 @@ type Query {
     """The notification id"""
     notificationId: String!
   ): Notification
+}
 
-  """Get notifications of current user ordered by most recent"""
-  myNotifications(
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Me {
+  user: User!
+
+  """Notifications of requester user ordered by the most recents"""
+  notifications(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -61,12 +60,9 @@ type Query {
     """Returns the last n items from the list."""
     last: Int
   ): NotificationConnection!
-}
 
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
-  id: ID!
+  """Statistics related to requester user"""
+  stats: Stats!
 }
 
 type User implements Node {
@@ -76,12 +72,12 @@ type User implements Node {
   username: String!
   email: String!
   name: String!
-  preferences: UserPreferences!
+  preferences: Preferences!
   location: Location
   avatarUrl: String
 }
 
-type UserPreferences {
+type Preferences {
   radiusDistance: Float!
   language: LanguageEnum!
 }
@@ -97,12 +93,18 @@ type Location {
 }
 
 """A connection to a list of items."""
-type UserConnection {
+type NotificationConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [UserEdge]
+  edges: [NotificationEdge]
+
+  """Total count of notifications of user"""
+  totalCount: Int!
+
+  """Count of not seen notifications of user"""
+  notSeenCount: Int!
 }
 
 """Information about pagination in a connection."""
@@ -121,64 +123,12 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type UserEdge {
+type NotificationEdge {
   """The item at the end of the edge"""
-  node: User!
+  node: Notification!
 
   """A cursor for use in pagination"""
   cursor: String!
-}
-
-type Incident implements Node {
-  """The opaque identifier of GraphQL node, based on relay specs"""
-  id: ID!
-  incidentId: String!
-  title: String!
-  location: Location!
-  formattedAddress: String
-  medias: [Media!]!
-  usersNotifiedCount: Int!
-  createdAt: Date!
-}
-
-type Media {
-  url: String!
-}
-
-"""Date type serialized into ISO string"""
-scalar Date
-
-"""A connection to a list of items."""
-type IncidentConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [IncidentEdge]
-}
-
-"""An edge in a connection."""
-type IncidentEdge {
-  """The item at the end of the edge"""
-  node: Incident!
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-input IncidentsFilterInputType {
-  withinBoundary: WithinBoundaryInput
-}
-
-"""Filter by incidents localizated within a box boundary"""
-input WithinBoundaryInput {
-  northEast: LocationInput!
-  southWest: LocationInput!
-}
-
-input LocationInput {
-  latitude: Float!
-  longitude: Float!
 }
 
 type Notification implements Node {
@@ -209,52 +159,107 @@ enum LinkedEntityEnum {
   USER
 }
 
+"""Date type serialized into ISO string"""
+scalar Date
+
+type Stats {
+  """Count of incidents nearby to me based on my distanceRadius preference"""
+  nearbyIncidentsCount: Int
+
+  """
+  Count of users nearby to me (not counting me) based on my distanceRadius preference
+  """
+  nearbyUsersCount: Int
+}
+
+type Incident implements Node {
+  """The opaque identifier of GraphQL node, based on relay specs"""
+  id: ID!
+  incidentId: String!
+  title: String!
+  location: Location!
+  formattedAddress: String
+  medias: [Media!]!
+  usersNotifiedCount: Int!
+  ownerUser: User!
+  createdAt: Date!
+}
+
+type Media {
+  url: String!
+  type: MediaTypeEnum!
+}
+
+enum MediaTypeEnum {
+  IMAGE
+  VIDEO
+}
+
 """A connection to a list of items."""
-type NotificationConnection {
+type IncidentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [NotificationEdge]
+  edges: [IncidentEdge]
 
-  """Total count of notifications of user"""
+  """Total count of incidents"""
   totalCount: Int!
-
-  """Count of notifications not seen by user yet"""
-  notSeenCount: Int!
 }
 
 """An edge in a connection."""
-type NotificationEdge {
+type IncidentEdge {
   """The item at the end of the edge"""
-  node: Notification!
+  node: Incident!
 
   """A cursor for use in pagination"""
   cursor: String!
 }
 
+input IncidentsFilterInputType {
+  withinBox: IncidentsFilterWithinBox
+  withinCircle: IncidentsFilterWithinCircle
+}
+
+"""Filter by incidents located within the boundaries of given box"""
+input IncidentsFilterWithinBox {
+  northEast: LocationInput!
+  southWest: LocationInput!
+}
+
+input LocationInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""Filter by incidents located within the boundaries of given circle"""
+input IncidentsFilterWithinCircle {
+  center: LocationInput!
+
+  """The circle radius given in meters"""
+  radius: Float!
+}
+
 """The mutation root type"""
 type Mutation {
   """Register a new user"""
-  signUp(input: SignUpInput!): SignUpOutput!
+  signUp(input: SignUpInput!): SignUpResult!
 
   """Login"""
-  signIn(input: SignInInput!): SignInOutput!
+  signIn(input: SignInInput!): SignInResult!
 
   """Update the current location of the authenticated user"""
-  updateUserLocation(input: UpdateUserLocationInput!): UpdateUserLocationOutput!
+  updateUserLocation(input: UpdateUserLocationInput!): UpdateUserLocationResult!
 
   """Login"""
-  refreshToken(input: RefreshTokenInput!): RefreshTokenOutput!
-  reportIncident(input: ReportIncidentInput!): ReportIncidentOutput!
+  refreshToken(input: RefreshTokenInput!): RefreshTokenResult!
+  reportIncident(input: ReportIncidentInput!): ReportIncidentResult!
 
   """Mark notification as seen by the target user"""
-  markNotificationAsSeen(input: MarkNotificationAsSeenInput!): MarkNotificationAsSeenOutput!
-}
+  markNotificationAsSeen(input: MarkNotificationAsSeenInput!): MarkNotificationAsSeenResult!
 
-type SignUpOutput {
-  result: SignUpResult!
-  clientMutationId: String
+  """Mark all notifications of requester user as seen"""
+  markAllNotificationsAsSeen(input: MarkAllNotificationsAsSeenInput!): MarkAllNotificationsAsSeenResult!
 }
 
 union SignUpResult = SignUpOkResult | SignUpErrResult
@@ -281,11 +286,6 @@ input SignUpInput {
   name: String!
   email: String!
   password: String!
-  clientMutationId: String
-}
-
-type SignInOutput {
-  result: SignInResult!
   clientMutationId: String
 }
 
@@ -316,11 +316,6 @@ input SignInInput {
   clientMutationId: String
 }
 
-type UpdateUserLocationOutput {
-  result: UpdateUserLocationResult!
-  clientMutationId: String
-}
-
 union UpdateUserLocationResult = UpdateUserLocationOkResult | UpdateUserLocationErrResult
 
 type UpdateUserLocationOkResult {
@@ -340,11 +335,6 @@ enum UpdateUserLocationErrCodeType {
 
 input UpdateUserLocationInput {
   location: LocationInput!
-  clientMutationId: String
-}
-
-type RefreshTokenOutput {
-  result: RefreshTokenResult!
   clientMutationId: String
 }
 
@@ -373,11 +363,6 @@ input RefreshTokenInput {
   clientMutationId: String
 }
 
-type ReportIncidentOutput {
-  result: ReportIncidentResult!
-  clientMutationId: String
-}
-
 union ReportIncidentResult = ReportIncidentOkResult | ReportIncidentErrResult
 
 type ReportIncidentOkResult {
@@ -402,13 +387,8 @@ input ReportIncidentInput {
 }
 
 input MediaInput {
-  """S3 url"""
   url: String!
-}
-
-type MarkNotificationAsSeenOutput {
-  result: MarkNotificationAsSeenResult!
-  clientMutationId: String
+  type: MediaTypeEnum!
 }
 
 union MarkNotificationAsSeenResult = MarkNotificationAsSeenOkResult | MarkNotificationAsSeenErrResult
@@ -433,14 +413,28 @@ input MarkNotificationAsSeenInput {
   clientMutationId: String
 }
 
-"""The subscription root type"""
-type Subscription {
-  onUserAdded: UserAddedOutput
+union MarkAllNotificationsAsSeenResult = MarkAllNotificationsAsSeenOkResult | MarkAllNotificationsAsSeenErrResult
 
-  """Triggered whenever a incident is created nearby to the subscriber user"""
-  onNearbyIncidentCreated: Incident!
+type MarkAllNotificationsAsSeenOkResult {
+  notifications: [Notification]!
 }
 
-type UserAddedOutput {
-  userEdge: UserEdge
+type MarkAllNotificationsAsSeenErrResult {
+  reason: String!
+  reasonIsTranslated: Boolean!
+  code: MarkAllNotificationsAsSeenErrCodeType!
+}
+
+enum MarkAllNotificationsAsSeenErrCodeType {
+  UnauthenticatedError
+}
+
+input MarkAllNotificationsAsSeenInput {
+  clientMutationId: String
+}
+
+"""The subscription root type"""
+type Subscription {
+  """Triggered whenever a incident is created nearby to the subscriber user"""
+  onNearbyIncidentCreated: Incident!
 }

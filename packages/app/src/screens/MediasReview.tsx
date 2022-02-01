@@ -3,9 +3,9 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Text } from '~/components/v1/atoms'
-import { CustomHeader } from '~/components/v1/molecules'
-import { MediasCarousel } from '~/components/v1/organisms'
+import { Text } from '~/components/v1'
+import { CustomHeader } from '~/components/v1'
+import { MediasCarousel } from '~/components/v1'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
 import { SCREEN_HEIGHT } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
@@ -35,7 +35,7 @@ export function MediasReview() {
         onPressRight={onReportPressed}
       />
       <MediasCarousel
-        medias={params.capturedMedias}
+        medias={params.capturedMedias.map(({ uri, type }) => ({ uri, type }))}
         height={SCREEN_HEIGHT(insets) * 0.78}
         autoplay
       />

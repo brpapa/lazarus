@@ -1,6 +1,6 @@
 import { combine } from '@metis/shared'
-import { ValueObject } from '@shared/domain/value-object'
-import { Guard, Range } from '@shared/logic/guard'
+import { ValueObject } from 'src/modules/shared/domain/value-object'
+import { Guard, Range } from 'src/modules/shared/logic/guard'
 
 export interface LocationProps {
   latitude: number

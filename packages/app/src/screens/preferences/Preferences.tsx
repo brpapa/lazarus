@@ -2,15 +2,28 @@ import { t } from '@metis/shared'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { ScrollView, View } from 'react-native'
-import { Divider, Text } from '~/components/v1/atoms'
-import { MenuItem } from '~/components/v1/molecules'
+import { graphql, useFragment } from 'react-relay'
+import { Divider } from '~/components/v1'
+import { MenuItem } from '~/components/v1'
 import type { HomeTabNavProp } from '~/navigation/types'
 import { makeUseStyles, useColorScheme } from '~/theme/v1'
+import type { Preferences_user$key } from '~/__generated__/Preferences_user.graphql'
 
-// TODO
-const DISTANCE_RADIUS = 51
+const frag = graphql`
+  fragment Preferences_user on User {
+    preferences {
+      radiusDistance
+    }
+  }
+`
 
-export function Preferences() {
+type Props = {
+  userRef: Preferences_user$key
+}
+
+export function Preferences(props: Props) {
+  const data = useFragment<Preferences_user$key>(frag, props.userRef)
+
   const s = useStyles()
   const nav = useNavigation<HomeTabNavProp<'Profile'>>()
 
@@ -33,9 +46,15 @@ export function Preferences() {
               title={t('Distance radius')}
               iconName="Notifications" // TODO
               showRightIcon={false}
-              rightText={t('formatters.distance', { distInMeters: DISTANCE_RADIUS }) as string}
+              rightText={
+                t('formatters.distance', {
+                  distInMeters: data.preferences.radiusDistance,
+                }) as string
+              }
               onPress={() =>
-                nav.navigate('DistanceRadiusPreference', { currentValue: DISTANCE_RADIUS })
+                nav.navigate('DistanceRadiusPreference', {
+                  currentValue: data.preferences.radiusDistance,
+                })
               }
             />
           </View>

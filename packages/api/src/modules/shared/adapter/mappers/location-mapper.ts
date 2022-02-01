@@ -1,4 +1,4 @@
-import { Location } from '@shared/domain/models/location'
+import { Location } from 'src/modules/shared/domain/models/location'
 import { LocationDTO } from '../dtos/location-dto'
 
 export type LocationRedisModel = { latitude: string; longitude: string }

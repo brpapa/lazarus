@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, Text, TextInput, TextInputType } from '~/components/v1/atoms'
-import { CustomHeader } from '~/components/v1/molecules/Header'
+import { Button, Text, TextInput, TextInputType } from '~/components/v1'
+import { CustomHeader } from '~/components/v1'
 import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
 import type { MainStackNavProp } from '~/navigation/types'
 import { getTextInputRules } from '~/shared/form/get-text-input-rules'
@@ -24,7 +24,6 @@ type Form = {
 
 export function SignUp() {
   const nav = useNavigation<MainStackNavProp<'SignUp'>>()
-  const { colorScheme } = useColorScheme()
   const s = useStyles()
   const [signUp, isSending] = useSignUpMutation()
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -49,10 +48,10 @@ export function SignUp() {
       return
     }
 
-    const result = await signUp({ email, name, username, password }) // TODO: also send email and name to sign up
+    const result = await signUp({ email, name, username, password })
     result.map(
       () => nav.navigate('SignIn'),
-      (err) => setErrorMsg(err.reason),
+      (err) => setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic')),
     )
   })
 

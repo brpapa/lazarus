@@ -6,6 +6,25 @@ import type {
   SignInMutation as SignInMutationType,
 } from '~/__generated__/SignInMutation.graphql'
 import { createResultMutationHook } from '../utils/create-result-mutation-hook'
+import type { ErrResult } from '../utils/types'
+
+const mutation = graphql`
+  mutation SignInMutation($input: SignInInput!) {
+    signIn(input: $input) {
+      __typename
+      ... on SignInOkResult {
+        accessToken
+        accessTokenExpiresIn
+        refreshToken
+      }
+      ... on SignInErrResult {
+        reason
+        reasonIsTranslated
+        code
+      }
+    }
+  }
+`
 
 type SignInInput = Omit<RawSignInInput, 'pushToken'>
 
@@ -15,10 +34,7 @@ type SignInOkResult = {
   refreshToken: string
 }
 
-type SignInErrResult = {
-  reason: string
-  code: SignInErrCodeType
-}
+type SignInErrResult = ErrResult<SignInErrCodeType>
 
 export const useSignInMutation = createResultMutationHook<
   SignInMutationType,
@@ -28,24 +44,7 @@ export const useSignInMutation = createResultMutationHook<
 >({
   mutationName: 'signIn',
   resultTypenamePreffix: 'SignIn',
-  mutation: graphql`
-    mutation SignInMutation($input: SignInInput!) {
-      signIn(input: $input) {
-        result {
-          __typename
-          ... on SignInOkResult {
-            accessToken
-            accessTokenExpiresIn
-            refreshToken
-          }
-          ... on SignInErrResult {
-            reason
-            code
-          }
-        }
-      }
-    }
-  `,
+  mutation,
   inputMapper: async (input): Promise<RawSignInInput> => {
     const pushToken = (await getDevicePushToken()) ?? undefined
 

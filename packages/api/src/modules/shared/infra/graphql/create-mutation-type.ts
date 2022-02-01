@@ -1,3 +1,4 @@
+import { Result } from '@metis/shared'
 import {
   GraphQLFieldConfig,
   GraphQLInputFieldConfig,
@@ -8,38 +9,35 @@ import {
   GraphQLString,
   GraphQLUnionType,
 } from 'graphql'
-import { Result } from '@metis/shared'
 
-/** create mutation with clientMutationId field based on relay specs */
-export function createMutationType<Ctx, Input, Res extends Result<any, any>>(config: {
+/** create mutation based on relay specs and with Result (ok xor err) output type */
+export function createResultMutationType<Ctx, Input, Res extends Result<any, any>>(config: {
   name: string
   description?: string
   inputFields: Record<keyof Input, GraphQLInputFieldConfig>
   mutateAndGetResult: (input: Input, ctx: Ctx, info: GraphQLResolveInfo) => Res | Promise<Res>
-  okResultFields: Record<string, GraphQLFieldConfig<Res, Ctx>>
-  errResultFields: Record<string, GraphQLFieldConfig<Res, Ctx>>
+  resultFields: {
+    ok: Record<string, GraphQLFieldConfig<Res, Ctx>>
+    err: Record<string, GraphQLFieldConfig<Res, Ctx>>
+  }
 }) {
-  const { name, inputFields, okResultFields, errResultFields, mutateAndGetResult } = config
+  const { name, inputFields, resultFields, mutateAndGetResult } = config
 
   const MutationInputType = new GraphQLInputObjectType({
     name: `${name}Input`,
     fields: {
       ...inputFields,
-      clientMutationId: { type: GraphQLString },
+      clientMutationId: { type: GraphQLString }, // legacy, but removing it cause troubles when inputFields is an empty object
     },
   })
 
   const OkResultType = new GraphQLObjectType<Res>({
     name: `${name}OkResult`,
-    fields: {
-      ...okResultFields,
-    },
+    fields: resultFields.ok,
   })
   const ErrResultType = new GraphQLObjectType<Res>({
     name: `${name}ErrResult`,
-    fields: {
-      ...errResultFields,
-    },
+    fields: resultFields.err,
     // interfaces: [ErrResultInterfaceType],
   })
 
@@ -53,33 +51,15 @@ export function createMutationType<Ctx, Input, Res extends Result<any, any>>(con
     },
   })
 
-  const MutationOutputType = new GraphQLObjectType({
-    name: `${name}Output`,
-    fields: {
-      result: {
-        type: GraphQLNonNull(ResultType),
-        resolve: (enrichedResult) => enrichedResult.result,
-      },
-      clientMutationId: {
-        type: GraphQLString,
-        resolve: (enrichedResult) => enrichedResult.clientMutationId,
-      },
-    },
-  })
-
   const mutationType: GraphQLFieldConfig<any, Ctx> = {
-    type: GraphQLNonNull(MutationOutputType),
+    type: GraphQLNonNull(ResultType),
     description: config.description,
     args: {
       input: { type: GraphQLNonNull(MutationInputType) },
     },
     resolve: (_, { input }, ctx, info) => {
       const result = mutateAndGetResult(input, ctx, info)
-
-      return Promise.resolve(result).then((result) => ({
-        result,
-        clientMutationId: input.clientMutationId,
-      }))
+      return Promise.resolve(result)
     },
   }
 

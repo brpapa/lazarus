@@ -3,7 +3,8 @@
   "entryPoint": "./index.js",
   "expo": {
     "name": "metis",
-    "slug": "metis",
+    "owner": "metis",
+    "slug": "app",
     "version": "1.0.0",
     "platforms": [
       "ios",

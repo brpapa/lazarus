@@ -1,9 +1,7 @@
 import { t } from '@metis/shared'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
-import { graphql, usePreloadedQuery } from 'react-relay'
-import { useRecoilValue } from 'recoil'
-import { initialQueryRefState } from '~/data/recoil/initial-query-ref'
+import { graphql, useLazyLoadQuery } from 'react-relay'
 import { Explorer, Profile } from '~/screens'
 import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'
 import { ReportStackNavigator } from '../ReportStackNavigator'
@@ -14,8 +12,10 @@ const HomeTab = createBottomTabNavigator<HomeTabParams>()
 
 const query = graphql`
   query HomeTabNavigatorQuery {
-    notificationsInfo: myNotifications {
-      notSeenCount
+    me {
+      notifications {
+        notSeenCount
+      }
     }
     ...Explorer_query
     ...Profile_query
@@ -23,8 +23,7 @@ const query = graphql`
 `
 
 export function HomeTabNavigator() {
-  const homeTabNavigatorQueryRef = useRecoilValue(initialQueryRefState)
-  const data = usePreloadedQuery<HomeTabNavigatorQueryType>(query, homeTabNavigatorQueryRef)
+  const data = useLazyLoadQuery<HomeTabNavigatorQueryType>(query, {})
 
   return (
     <HomeTab.Navigator initialRouteName="Explorer" tabBar={(props) => <TabBar {...props} />}>
@@ -48,16 +47,10 @@ export function HomeTabNavigator() {
         name="Profile"
         options={{
           title: t('home.profileTabLabel'),
-          tabBarBadge: getBadge(data.notificationsInfo.notSeenCount),
+          tabBarBadge: getBadge(data.me?.notifications.notSeenCount),
         }}
       >
-        {(props) => (
-          <Profile
-            queryRef={data}
-            haveNotSeenNotifications={data.notificationsInfo.notSeenCount > 0}
-            {...props}
-          />
-        )}
+        {(props) => <Profile queryRef={data} {...props} />}
       </HomeTab.Screen>
     </HomeTab.Navigator>
   )

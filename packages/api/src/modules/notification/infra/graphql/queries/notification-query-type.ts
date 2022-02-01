@@ -1,5 +1,5 @@
-import { NotificationDTO } from '@notification/adapter/dtos/notification-dto'
-import { GetNotificationById } from '@notification/application/queries'
+import { NotificationDTO } from 'src/modules/notification/adapter/dtos/notification-dto'
+import { GetNotificationById } from 'src/modules/notification/application/queries'
 import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { NotificationType } from '../types/notification-type'

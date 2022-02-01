@@ -1,11 +1,11 @@
 import { S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import debug from 'debug'
 import prettyBytes from 'pretty-bytes'
 import { hrtime } from 'process'
-import { AWS_SERVICE_ENDPOINT, AWS_REGION, AWS_S3_BUCKET_NAME } from 'src/config'
-import { UUID } from '@shared/domain/models/uuid'
 import { Readable } from 'stream'
+import { AWS_REGION, AWS_S3_BUCKET_NAME, AWS_SERVICE_ENDPOINT } from 'src/config'
 import { FileMetadata } from './form-data-parser'
 
 const log = debug('app:infra:http')

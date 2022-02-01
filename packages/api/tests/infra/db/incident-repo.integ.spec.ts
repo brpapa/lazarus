@@ -1,14 +1,14 @@
 import assert from 'assert'
-import { Incident } from '@incident/domain/models/incident'
+import { Incident } from 'src/modules/incident/domain/models/incident'
 import { prismaClient } from 'src/api/db/prisma/client'
-import { incidentRepo } from '@incident/infra/db/repositories'
-import { MediaTypeEnum } from '@incident/domain/models/media-type'
-import { UUID } from '@shared/domain/models/uuid'
+import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
+import { MediaTypeEnum } from 'src/modules/incident/domain/models/media-type'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { Location } from '@shared/domain/models/location'
-import { IncidentStatusEnum } from '@incident/domain/models/incident-status'
-import { Media } from '@incident/domain/models/media'
-import { Comment } from '@incident/domain/models/comment'
+import { Location } from 'src/modules/shared/domain/models/location'
+import { IncidentStatusEnum } from 'src/modules/incident/domain/models/incident-status'
+import { Media } from 'src/modules/incident/domain/models/media'
+import { Comment } from 'src/modules/incident/domain/models/comment'
 
 describe('repository: incident', () => {
   beforeAll(connectDataSources)
@@ -134,7 +134,9 @@ const createUser = async (userId: string) => {
       username: 'my awesome name',
       password: 'my awesome password',
       email: 'bas@gmail.com',
-      name: 'user',  
+      name: 'user',
+      preferencesLanguage: 'pt_BR',
+      preferencesRadiusDistance: 40,
     },
   })
 }

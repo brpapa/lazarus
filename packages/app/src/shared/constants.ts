@@ -6,10 +6,12 @@ export const __DEVICE_IS_SIMULATOR__ = !isDevice
 export const __IOS__ = Platform.OS === 'ios'
 export const __ANDROID__ = Platform.OS === 'android'
 
-export enum MediaType {
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
+export const MediaTypeEnum = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO',
+} as const
+
+export type MediaType = typeof MediaTypeEnum[keyof typeof MediaTypeEnum]
 
 export const NOTIFICATIONS_PAGE_SIZE = 10
 export const VIDEO_RECORD_MAX_DURATION_S = 30

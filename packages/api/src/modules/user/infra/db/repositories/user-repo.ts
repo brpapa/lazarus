@@ -1,8 +1,8 @@
 import { UserModel } from '@prisma/client'
-import { PrismaRepo } from '@shared/infra/db/prisma-repo'
-import { zip } from '@shared/logic/helpers/zip'
-import { UserMapper } from '@user/adapter/mappers/user-mapper'
-import { User } from '@user/domain/models/user'
+import { PrismaRepo } from 'src/modules/shared/infra/db/prisma-repo'
+import { zip } from 'src/modules/shared/logic/helpers/zip'
+import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
+import { User } from 'src/modules/user/domain/models/user'
 import assert from 'assert'
 import debug from 'debug'
 import { GeoReplyWith, GeoSearchBy } from 'redis/dist/lib/commands/generic-transformers'
@@ -15,12 +15,12 @@ const log = debug('app:user:infra')
 export type UserPgModel = UserModel
 
 /**
- * each (userId, location) is persisted on Redis in a GeoSet data structure where:
- *  key: userLocations
+ * each (userId, location) is persisted on Redis in the following GeoSet data structure:
+ *  key: USER_LOCATIONS
  *  value: list of (member, location) pair, where member is the userId
  */
 export class UserRepo extends PrismaRepo<User> implements IUserRepo {
-  private REDIS_GEO_SET_KEY = 'userLocations'
+  private REDIS_GEO_SET_KEY = 'USER_LOCATIONS'
 
   constructor(private prismaClient: PrismaClient, private redisClient: RedisClient) {
     super('userModel')
@@ -35,6 +35,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     const user = await this.prismaClient.userModel.findUnique({ where: { username } })
     return this.enrichedWithRedis(user)
   }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prismaClient.userModel.findUnique({ where: { email } })
     return this.enrichedWithRedis(user)
@@ -70,6 +71,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
     })
     const orderedUsers = usersId.map((userId) => users.find((v) => v.id === userId) ?? null)
 
+    assert(orderedUsers.length === locations.length)
     return zip(orderedUsers, locations).map(([user, location]) => {
       assert(!!user && !!location)
       assert(user.id.toString() === location.member)
@@ -123,6 +125,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       users.map((user) => user?.id || ''),
     )
 
+    assert(users.length === usersLocations.length)
     return zip(users, usersLocations).map(([user, userLocation]) => {
       assert(!!user)
       return UserMapper.fromModelToDomain(user, userLocation ?? null)

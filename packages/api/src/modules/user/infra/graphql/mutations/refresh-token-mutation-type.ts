@@ -1,53 +1,55 @@
-import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
-import { DateType } from '@shared/infra/graphql/types/date-type'
-import { refreshTokenCommand } from '@user/application/commands'
+import { createResultMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
+import { UserNotFoundError } from 'src/modules/shared/logic/errors'
+import { refreshTokenCommand } from 'src/modules/user/application/commands'
 import {
-  RefreshTokenExpiredError,
   Input,
+  RefreshTokenExpiredError,
   Res,
-} from '@user/application/commands/refresh-token-command'
+} from 'src/modules/user/application/commands/refresh-token-command'
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { UserNotFoundError } from '@shared/logic/errors'
 
-export const RefreshTokenMutationType = createMutationType<GraphQLContext, Input, Res>({
+export const RefreshTokenMutationType = createResultMutationType<GraphQLContext, Input, Res>({
   name: 'RefreshToken',
   description: 'Login',
   inputFields: {
     refreshToken: { type: GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetResult: async (args, ctx) => refreshTokenCommand.exec(args, ctx),
-  okResultFields: {
-    accessToken: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: (result) => result.asOk().accessToken,
+  resultFields: {
+    ok: {
+      accessToken: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asOk().accessToken,
+      },
+      accessTokenExpiresIn: {
+        type: GraphQLNonNull(DateType),
+        description: 'The timestamp where the access token is no longer more valid',
+        resolve: (res) => res.asOk().accessTokenExpiresIn,
+      },
     },
-    accessTokenExpiresIn: {
-      type: GraphQLNonNull(DateType),
-      description: 'The timestamp where the access token is no longer more valid',
-      resolve: (result) => result.asOk().accessTokenExpiresIn,
-    },
-  },
-  errResultFields: {
-    reason: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: (result) => result.asErr().reason,
-    },
-    reasonIsTranslated: {
-      type: GraphQLNonNull(GraphQLBoolean),
-      resolve: (result) => result.asErr().reasonIsTranslated,
-    },
-    code: {
-      type: GraphQLNonNull(
-        new GraphQLEnumType({
-          name: 'RefreshTokenErrCodeType',
-          values: {
-            [RefreshTokenExpiredError.name]: { value: RefreshTokenExpiredError.name },
-            [UserNotFoundError.name]: { value: UserNotFoundError.name },
-          },
-        }),
-      ),
-      resolve: (result) => result.asErr().code,
+    err: {
+      reason: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asErr().reason,
+      },
+      reasonIsTranslated: {
+        type: GraphQLNonNull(GraphQLBoolean),
+        resolve: (res) => res.asErr().reasonIsTranslated,
+      },
+      code: {
+        type: GraphQLNonNull(
+          new GraphQLEnumType({
+            name: 'RefreshTokenErrCodeType',
+            values: {
+              [RefreshTokenExpiredError.name]: { value: RefreshTokenExpiredError.name },
+              [UserNotFoundError.name]: { value: UserNotFoundError.name },
+            },
+          }),
+        ),
+        resolve: (res) => res.asErr().code,
+      },
     },
   },
 })

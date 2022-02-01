@@ -3,7 +3,7 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { HeaderBackButton } from '@react-navigation/stack'
 import { StatusBar, StatusBarStyle } from 'expo-status-bar'
 
-import { ActivityIndicator } from '~/components/v1/atoms'
+import { ActivityIndicator } from './../../atoms'
 import type { IconName } from '~/icons'
 import { Color, makeUseStyles, useColorScheme, useTheme } from '~/theme/v1'
 

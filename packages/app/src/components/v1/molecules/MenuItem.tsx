@@ -1,8 +1,9 @@
 import React from 'react'
 import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
-import { ActivityIndicator, Dot, Icon, IconWithLabel, Text } from '~/components/v1/atoms'
 import type { IconName } from '~/icons'
 import { makeUseStyles, useTheme } from '~/theme/v1'
+import { Dot, Icon, IconWithLabel, Text } from '../atoms'
+import { ActivityIndicator } from '../atoms/ActivityIndicator'
 
 type Props = TouchableOpacityProps & {
   title: string
@@ -18,7 +19,16 @@ export function MenuItem(props: Props) {
   const s = useStyles()
   const { colors } = useTheme()
 
-  const { title, iconName, iconColor, indicator = false, loading, showRightIcon = true, disabled, ...otherProps } = props
+  const {
+    title,
+    iconName,
+    iconColor,
+    indicator = false,
+    loading,
+    showRightIcon = true,
+    disabled,
+    ...otherProps
+  } = props
 
   return (
     <TouchableOpacity

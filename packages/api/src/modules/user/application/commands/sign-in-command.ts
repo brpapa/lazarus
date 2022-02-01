@@ -1,11 +1,11 @@
-import { DomainEvents } from '@shared/domain/events/domain-events'
+import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
 import { err, ok, Result } from '@metis/shared'
-import { Command } from '@shared/logic/command'
-import { ApplicationError } from '@shared/logic/errors'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
-import { IAuthService } from '@user/adapter/auth-service'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError } from 'src/modules/shared/logic/errors'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { Debugger } from 'debug'
-import { unixEpochToDate } from '@shared/logic/helpers/unix-epoch'
+import { unixEpochToDate } from 'src/modules/shared/logic/helpers/unix-epoch'
 import assert from 'assert'
 
 export type Input = {

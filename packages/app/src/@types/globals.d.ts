@@ -24,18 +24,6 @@ type AccessToken = {
   expiresIn: Date
 }
 
-type CapturedMedia = {
-  type: MediaType
-  /** path in device file system where the picture was saved */
-  uri: string
-  width?: number
-  height?: number
-  mimeType?: string
-  extension?: string
-}
-
-type Media = { type: MediaType; uri: string }
-
 type User = {
   id: number
   username: string

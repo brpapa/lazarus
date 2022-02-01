@@ -1,13 +1,13 @@
 import debug from 'debug'
 import { getDistance } from 'geolib'
-import { Incident } from '@incident/domain/models/incident'
+import { Incident } from 'src/modules/incident/domain/models/incident'
 import { IUserRepo } from '../../adapter/repositories/user-repo'
 
 const log = debug('app:user:services:location')
 
 export class LocationService {
   private DIST_ACCURACY = 1 // meters accuracy
-  private MAX_DIST_IN_METERS = 5000
+  private MAX_DIST_IN_METERS = 5000 // TODO: read from user.preference.distanceRadius
 
   constructor(private userRepo: IUserRepo) {}
 

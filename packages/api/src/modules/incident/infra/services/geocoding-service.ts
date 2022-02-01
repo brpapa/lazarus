@@ -1,9 +1,9 @@
+import { IGeocodingService } from 'src/modules/incident/adapter/geocoding-service'
 import { LANGUAGE } from '@metis/shared'
+import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
 import axios from 'axios'
 import { Debugger } from 'debug'
-import { IGeocodingService } from '@incident/adapter/geocoding-service'
-import { LocationDTO } from '@shared/adapter/dtos/location-dto'
-import { GOOGLE_MAPS_GEOCODING_API_KEY } from '../../../../config'
+import { GOOGLE_MAPS_GEOCODING_API_KEY, TURN_OFF_GEOCODING_API } from 'src/config'
 
 export class GeocodingService implements IGeocodingService {
   private URL = 'https://maps.googleapis.com/maps/api/geocode/json'
@@ -12,6 +12,8 @@ export class GeocodingService implements IGeocodingService {
 
   // reverse geocoding: input coordinate and outputs human-legible address
   async fetchFormattedAddress(location: LocationDTO): Promise<string | null> {
+    if (TURN_OFF_GEOCODING_API) return null
+
     if (!GOOGLE_MAPS_GEOCODING_API_KEY) {
       this.log('[warn] Google Maps Geocoding API secret not found')
       return null

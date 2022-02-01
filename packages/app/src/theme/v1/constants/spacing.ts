@@ -1,9 +1,3 @@
-// DOING
-// spacing v0 -> spacing v1
-// xs -> xs
-// sm -> m
-// md -> xl
-// lg -> xxl
 export const spacing = {
   xxxl: 36,
   xxl: 24,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
-import { Icon, Text } from '~/components/v1/atoms'
+import { Icon, Text } from '~/components/v1'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 
 type Props = TouchableOpacityProps & {

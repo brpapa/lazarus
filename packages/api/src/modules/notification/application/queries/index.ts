@@ -1,8 +1,8 @@
+import { notificationRepo } from 'src/modules/notification/infra/db/repositories'
 import debug from 'debug'
-import { notificationRepo } from '../../infra/db/repositories'
-import { GetMyNotifications } from './get-my-notifications'
+import { MyNotificationsQuery } from './my-notifications-query'
 
 const log = debug('app:notification:application')
 
 export { GetNotificationById } from './get-notification-by-id'
-export const getMyNotifications = new GetMyNotifications(log, notificationRepo)
+export const myNotificationsQuery = new MyNotificationsQuery(log, notificationRepo)

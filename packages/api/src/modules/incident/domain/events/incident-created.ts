@@ -1,6 +1,6 @@
-import { Incident } from '@incident/domain/models/incident'
-import { DomainEvent } from '@shared/domain/events/domain-event'
-import { UUID } from '@shared/domain/models/uuid'
+import { Incident } from 'src/modules/incident/domain/models/incident'
+import { DomainEvent } from 'src/modules/shared/domain/events/domain-event'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 
 export class IncidentCreated extends DomainEvent {
   constructor(public incident: Incident) {

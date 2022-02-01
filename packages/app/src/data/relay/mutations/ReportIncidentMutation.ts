@@ -1,19 +1,49 @@
 import { graphql } from 'react-relay'
-import type { CapturedPicture } from '~/components/v1/organisms/CameraView'
-import { uploadPictures } from '~/data/upload-pictures'
 import { appendIncidentToConnection } from '~/data/relay/utils/store'
+import { uploadMedias } from '~/data/upload-medias'
+import type { CapturedMedia } from '~/types'
 import type {
   ReportIncidentErrCodeType,
   ReportIncidentInput as RawReportIncidentInput,
   ReportIncidentMutation as ReportIncidentMutationType,
 } from '~/__generated__/ReportIncidentMutation.graphql'
 import { createResultMutationHook } from '../utils/create-result-mutation-hook'
+import type { ErrResult } from '../utils/types'
+
+// REBEMBER THAT THE MUTATION PAYLOAD QUERY ABOVE SHOULD CONTAINS ALL FIELDS AVAILABLE IN SCHEMA DUE TO UPDATER IMPLEMENTATION BELOW THAT APPENDS INCIDENT TO CONNECTION
+const mutation = graphql`
+  mutation ReportIncidentMutation($input: ReportIncidentInput!) {
+    reportIncident(input: $input) {
+      __typename
+      ... on ReportIncidentOkResult {
+        incident {
+          id
+          incidentId
+          title
+          location {
+            latitude
+            longitude
+          }
+          medias {
+            url
+          }
+          createdAt
+        }
+      }
+      ... on ReportIncidentErrResult {
+        reason
+        reasonIsTranslated
+        code
+      }
+    }
+  }
+`
 
 type ReportIncidentInput = Omit<RawReportIncidentInput, 'medias'> & {
-  pictures: CapturedPicture[]
+  medias: CapturedMedia[]
 }
 type ReportIncidentOkResult = {}
-type ReportIncidentErrResult = { reason: string; code: ReportIncidentErrCodeType }
+type ReportIncidentErrResult = ErrResult<ReportIncidentErrCodeType>
 
 export const useReportIncidentMutation = createResultMutationHook<
   ReportIncidentMutationType,
@@ -23,49 +53,27 @@ export const useReportIncidentMutation = createResultMutationHook<
 >({
   mutationName: 'reportIncident',
   resultTypenamePreffix: 'ReportIncident',
-  // REBEMBER THAT THE MUTATION PAYLOAD QUERY ABOVE SHOULD CONTAINS ALL FIELDS AVAILABLE IN SCHEMA DUE TO UPDATER IMPLEMENTATION BELOW THAT APPENDS INCIDENT TO CONNECTION
-  mutation: graphql`
-    mutation ReportIncidentMutation($input: ReportIncidentInput!) {
-      reportIncident(input: $input) {
-        result {
-          __typename
-          ... on ReportIncidentOkResult {
-            incident {
-              id
-              incidentId
-              title
-              location {
-                latitude
-                longitude
-              }
-              medias {
-                url
-              }
-              createdAt
-            }
-          }
-          ... on ReportIncidentErrResult {
-            reason
-            code
-          }
-        }
-      }
-    }
-  `,
+  mutation,
   inputMapper: async (input): Promise<RawReportIncidentInput> => {
-    const uploadResults = await uploadPictures(input.pictures)
+    const uploadedMediasById = await uploadMedias(input.medias)
 
-    const mutationInput = {
-      ...input,
-      pictures: undefined,
-      medias: uploadResults.map((r) => ({ url: r.s3Url })),
+    const medias = input.medias.map((media) => {
+      const uploaded = uploadedMediasById[media.id]
+      if (!uploaded) throw new Error(`Media ${media.id} not found in API return`)
+
+      return {
+        type: media.type,
+        url: uploaded.s3Url,
+      }
+    })
+
+    return {
+      title: input.title,
+      medias,
     }
-
-    return mutationInput
   },
   updater: (store) => {
-    const payloadRecord = store.getRootField('reportIncident') // relative to this mutation only
-    const resultRecord = payloadRecord.getLinkedRecord('result')
+    const resultRecord = store.getRootField('reportIncident') // relative to this mutation only
 
     // abort store update if is an err result
     if (resultRecord.getValue('__typename') === 'ReportIncidentErrResult') return

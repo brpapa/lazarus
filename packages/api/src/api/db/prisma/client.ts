@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { DB_CONN_STRING_PG } from 'src/config'
-import { DomainEvents } from '@shared/domain/events/domain-events'
-import { UUID } from '@shared/domain/models/uuid'
 
 const prismaClient = new PrismaClient({
   log: ['error', 'warn'],
@@ -14,7 +14,7 @@ const prismaClient = new PrismaClient({
 })
 
 /** dispatch domain events after an aggregate root change is persisted without blocking the execution */
-prismaClient.$use(async (params, next) => {
+prismaClient.$use(async (params: any, next: any) => {
   const result = await next(params)
 
   if (mutatingActions.includes(params.action) && typeof result?.id === 'string') {

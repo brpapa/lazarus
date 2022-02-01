@@ -1,4 +1,9 @@
-import { ConnectionHandler, RecordProxy, RecordSourceSelectorProxy } from 'relay-runtime'
+import {
+  ConnectionHandler,
+  RecordProxy,
+  RecordSourceProxy,
+  RecordSourceSelectorProxy,
+} from 'relay-runtime'
 
 export const appendIncidentToConnection = (
   store: RecordSourceSelectorProxy,
@@ -20,4 +25,25 @@ export const appendIncidentToConnection = (
 
   // add the new edge record to the end of the connection record
   ConnectionHandler.insertEdgeAfter(connectionRecord, newEdgeRecord)
+}
+
+export const updateProfileTabBarBadgeValue = (
+  store: RecordSourceProxy,
+  operation: {
+    type: 'INCREMENT' | 'SET'
+    value: number
+  },
+) => {
+  const notificationsRecord = store
+    .getRoot()
+    ?.getLinkedRecord('me')
+    ?.getLinkedRecord('notifications')
+  if (!notificationsRecord) throw new Error('Not found root.me.notifications record')
+
+  const notSeenCount = notificationsRecord.getValue('notSeenCount')
+  if (typeof notSeenCount !== 'number')
+    throw new Error('Value of root.me.notifications.notSeenCount scalar is not a number')
+
+  const newValue = operation.type === 'INCREMENT' ? notSeenCount + operation.value : operation.value
+  notificationsRecord.setValue(newValue, 'notSeenCount')
 }

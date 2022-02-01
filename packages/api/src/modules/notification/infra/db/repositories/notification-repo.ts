@@ -1,8 +1,8 @@
-import { NotificationMapper } from '@notification/adapter/mappers/notification-mapper'
-import { INotificationRepo } from '@notification/adapter/repositories/notification-repo'
-import { Notification } from '@notification/domain/models/notification'
+import { NotificationMapper } from 'src/modules/notification/adapter/mappers/notification-mapper'
+import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
+import { Notification } from 'src/modules/notification/domain/models/notification'
 import { PrismaClient } from '@prisma/client'
-import { PrismaRepo } from '@shared/infra/db/prisma-repo'
+import { PrismaRepo } from 'src/modules/shared/infra/db/prisma-repo'
 import { Debugger } from 'debug'
 
 export class NotificationRepo extends PrismaRepo<Notification> implements INotificationRepo {

@@ -1,4 +1,4 @@
-import { DomainEvent } from '@shared/domain/events/domain-event'
+import { DomainEvent } from 'src/modules/shared/domain/events/domain-event'
 
 /** count of users that received push notification */
 export class UsersNotified extends DomainEvent {

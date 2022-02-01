@@ -10,6 +10,7 @@ import { useIsForeground } from '~/hooks/use-is-foreground'
 import type { ReportStackNavProp, ReportStackRouteProp } from '~/navigation/types'
 import { CONTENT_SPACING, SAFE_AREA_PADDING } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
+import type { CapturedMedia } from '~/types'
 import { CameraMock } from './CameraMock'
 import { CaptureButton } from './CaptureButton'
 

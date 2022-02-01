@@ -1,12 +1,14 @@
+import debug from 'debug'
 import { GraphQLFieldConfig, GraphQLNonNull } from 'graphql'
 import { withFilter } from 'graphql-subscriptions'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { pubSub, TOPICS } from 'src/api/graphql/pub-sub'
-import { IncidentMapper } from '@incident/adapter/mappers/incident-mapper'
-import { IncidentCreated } from '@incident/domain/events/incident-created'
-import { Incident } from '@incident/domain/models/incident'
-import { locationService } from '@user/application/services'
+import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
+import { IncidentCreated } from 'src/modules/incident/domain/events/incident-created'
+import { locationService } from 'src/modules/user/application/services'
 import { IncidentType } from '../types/incident-type'
+
+const log = debug('app:incident:infra')
 
 export const OnNearbyIncidentCreatedSubscriptionType: GraphQLFieldConfig<
   IncidentCreated,
@@ -23,6 +25,7 @@ export const OnNearbyIncidentCreatedSubscriptionType: GraphQLFieldConfig<
       if (ctx.userId === payload.incident.ownerUserId.toString()) return true
 
       const shouldSend = await locationService.userIsNearbyToIncident(ctx.userId, payload.incident)
+      log(`Should send subscription? ${shouldSend}`)
       return shouldSend
     },
   ),

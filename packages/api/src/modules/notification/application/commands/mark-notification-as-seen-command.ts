@@ -1,11 +1,11 @@
-import { NotificationDTO } from '@notification/adapter/dtos/notification-dto'
-import { NotificationMapper } from '@notification/adapter/mappers/notification-mapper'
-import { INotificationRepo } from '@notification/adapter/repositories/notification-repo'
-import { Command } from '@shared/logic/command'
+import { NotificationDTO } from 'src/modules/notification/adapter/dtos/notification-dto'
+import { NotificationMapper } from 'src/modules/notification/adapter/mappers/notification-mapper'
+import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
+import { Command } from 'src/modules/shared/logic/command'
 import { err, ok, Result } from '@metis/shared'
 import { Debugger } from 'debug'
-import { AppContext } from '@shared/logic/app-context'
-import { ApplicationError } from '@shared/logic/errors'
+import { AppContext } from 'src/modules/shared/logic/app-context'
+import { ApplicationError } from 'src/modules/shared/logic/errors'
 
 export type Input = {
   notificationId: string
@@ -31,7 +31,7 @@ export class MarkNotificationAsSeenCommand extends Command<Input, Res> {
         ),
       )
 
-    notification.see()
+    notification.markAsSeen()
     await this.notificationRepo.commit(notification)
 
     return ok(NotificationMapper.fromDomainToDTO(notification))

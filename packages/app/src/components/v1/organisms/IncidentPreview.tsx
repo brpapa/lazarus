@@ -3,19 +3,13 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { graphql, PreloadedQuery, usePreloadedQuery } from 'react-relay'
+import { graphql, useLazyLoadQuery } from 'react-relay'
 import { useRecoilValue } from 'recoil'
-import { FloatingButton, Text } from '~/components/v1/atoms'
+import { FloatingButton, Text } from '~/components/v1'
 import { userLocationState } from '~/data/recoil'
 import type { HomeTabNavProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
 import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
-
-type IncidentPreviewProps = {
-  preloadedQuery: PreloadedQuery<IncidentPreviewQueryType>
-  closeable: boolean
-  onClosed?: () => void
-}
 
 const query = graphql`
   query IncidentPreviewQuery($id: String!) {
@@ -32,45 +26,58 @@ const query = graphql`
   }
 `
 
+type IncidentPreviewProps = {
+  incidentId: string
+  closeable: boolean
+  onClosed?: () => void
+}
+
 export function IncidentPreview(props: IncidentPreviewProps) {
   if (!props.closeable && props.onClosed)
     throw new Error('Invalid props: component should be closeable to have the onClosed prop')
 
   const s = useStyles()
-
   const nav = useNavigation<HomeTabNavProp<'Explorer'>>()
   const userLocation = useRecoilValue(userLocationState)
 
-  const data = usePreloadedQuery<IncidentPreviewQueryType>(query, props.preloadedQuery)
+  const data = useLazyLoadQuery<IncidentPreviewQueryType>(
+    query,
+    { id: props.incidentId },
+    { fetchPolicy: 'store-or-network' },
+  )
 
   const onTouched = useCallback(() => {
-    nav.navigate('IncidentDetail', {
-      incidentId: data.incident?.incidentId!,
-    })
-  }, [])
+    if (!data.incident?.incidentId) return
 
-  console.log('IncidentPreview', data.incident?.incidentId)
+    nav.push('IncidentDetail', {
+      incidentId: data.incident.incidentId,
+    })
+  }, [data])
 
   return (
     <TouchableWithoutFeedback onPress={onTouched}>
       <View style={s.container}>
-        <Text variant="title">{data.incident?.title}</Text>
-        <View style={s.row}>
-          <Text variant="body2">
-            {
-              t('formatters.relativeTimeToNow', {
-                time: new Date(data!.incident!.createdAt),
-              }) as string
-            }
-          </Text>
-          <Text variant="body2">
-            {
-              t('incident.distanceToUser', {
-                segment: [data.incident!.location, userLocation],
-              }) as string
-            }
-          </Text>
-        </View>
+        {data?.incident && (
+          <>
+            <Text variant="title">{data.incident.title}</Text>
+            <View style={s.row}>
+              <Text variant="body2">
+                {
+                  t('formatters.relativeTimeToNow', {
+                    time: new Date(data.incident.createdAt),
+                  }) as string
+                }
+              </Text>
+              <Text variant="body2">
+                {
+                  t('incident.distanceToUser', {
+                    segment: [data.incident.location, userLocation],
+                  }) as string
+                }
+              </Text>
+            </View>
+          </>
+        )}
 
         {props.closeable && (
           <FloatingButton

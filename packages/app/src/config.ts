@@ -3,19 +3,25 @@ import * as Location from 'expo-location'
 import { __IOS__, __ANDROID__ } from '~/shared/constants'
 import type { ColorScheme } from './theme/v1/helpers/color-scheme'
 
+// TODO: local
 const SERVER_HOST = '192.168.0.25' // `ifconfig | grep inet`
 const SERVER_PORT = 5555
 export const HTTP_SERVER_BASE_URL = `http://${SERVER_HOST}:${SERVER_PORT}`
 export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}:${SERVER_PORT}`
 
+// TODO: prod
+// const SERVER_HOST = 'metis-node-api.herokuapp.com'
+// export const HTTP_SERVER_BASE_URL = `https://${SERVER_HOST}`
+// export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}`
+
 export const ENABLE_GOOGLE_MAPS = __IOS__ || __ANDROID__
-export const ENABLE_CAMERA_MOCK = false
-export const ENABLE_NAVIGATION_STATE_PERSISTENCE = true
+export const ENABLE_CAMERA_MOCK = true
+export const ENABLE_NAVIGATION_STATE_PERSISTENCE = false
 
 export const FOREGROUND_LOCATION_OPTIONS: Location.LocationOptions = {
-  accuracy: Location.Accuracy.High,
+  accuracy: Location.Accuracy.Balanced,
   timeInterval: 100,
-  distanceInterval: 10,
+  distanceInterval: 50,
   mayShowUserSettingsDialog: false,
 }
 

@@ -1,6 +1,6 @@
 import debug from 'debug'
-import { userRepo } from '@user/infra/db/repositories'
-import { authService } from '@user/application/services'
+import { userRepo } from 'src/modules/user/infra/db/repositories'
+import { authService } from 'src/modules/user/application/services'
 import { RefreshTokenCommand } from './refresh-token-command'
 import { SignInCommand } from './sign-in-command'
 import { SignOutCommand } from './sign-out-command'

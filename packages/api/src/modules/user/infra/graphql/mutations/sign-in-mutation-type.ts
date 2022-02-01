@@ -1,15 +1,11 @@
 import { GraphQLBoolean, GraphQLEnumType, GraphQLNonNull, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { signInCommand } from '@user/application/commands'
-import {
-  Input,
-  Res,
-  UserOrPasswordInvalidError,
-} from '@user/application/commands/sign-in-command'
-import { createMutationType } from '@shared/infra/graphql/create-mutation-type'
-import { DateType } from '@shared/infra/graphql/types/date-type'
+import { signInCommand } from 'src/modules/user/application/commands'
+import { Input, Res, UserOrPasswordInvalidError } from 'src/modules/user/application/commands/sign-in-command'
+import { createResultMutationType } from 'src/modules/shared/infra/graphql/create-mutation-type'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
 
-export const SignInMutationType = createMutationType<GraphQLContext, Input, Res>({
+export const SignInMutationType = createResultMutationType<GraphQLContext, Input, Res>({
   name: 'SignIn',
   description: 'Login',
   inputFields: {
@@ -18,40 +14,42 @@ export const SignInMutationType = createMutationType<GraphQLContext, Input, Res>
     pushToken: { type: GraphQLString },
   },
   mutateAndGetResult: async (args, ctx) => signInCommand.exec(args, ctx),
-  okResultFields: {
-    accessToken: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: (result) => result.asOk().accessToken,
+  resultFields: {
+    ok: {
+      accessToken: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asOk().accessToken,
+      },
+      refreshToken: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asOk().refreshToken,
+      },
+      accessTokenExpiresIn: {
+        type: GraphQLNonNull(DateType),
+        description: 'The timestamp where the access token is no longer more valid',
+        resolve: (res) => res.asOk().accessTokenExpiresIn,
+      },
     },
-    refreshToken: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: (result) => result.asOk().refreshToken,
-    },
-    accessTokenExpiresIn: {
-      type: GraphQLNonNull(DateType),
-      description: 'The timestamp where the access token is no longer more valid',
-      resolve: (result) => result.asOk().accessTokenExpiresIn,
-    },
-  },
-  errResultFields: {
-    reason: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: (result) => result.asErr().reason,
-    },
-    reasonIsTranslated: {
-      type: GraphQLNonNull(GraphQLBoolean),
-      resolve: (result) => result.asErr().reasonIsTranslated,
-    },
-    code: {
-      type: GraphQLNonNull(
-        new GraphQLEnumType({
-          name: 'SignInErrCodeType',
-          values: {
-            [UserOrPasswordInvalidError.name]: { value: UserOrPasswordInvalidError.name },
-          },
-        }),
-      ),
-      resolve: (result) => result.asErr().code,
+    err: {
+      reason: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asErr().reason,
+      },
+      reasonIsTranslated: {
+        type: GraphQLNonNull(GraphQLBoolean),
+        resolve: (res) => res.asErr().reasonIsTranslated,
+      },
+      code: {
+        type: GraphQLNonNull(
+          new GraphQLEnumType({
+            name: 'SignInErrCodeType',
+            values: {
+              [UserOrPasswordInvalidError.name]: { value: UserOrPasswordInvalidError.name },
+            },
+          }),
+        ),
+        resolve: (res) => res.asErr().code,
+      },
     },
   },
 })

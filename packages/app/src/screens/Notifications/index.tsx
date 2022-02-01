@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native'
 import { graphql, useLazyLoadQuery } from 'react-relay'
-import { Loading, Text } from '~/components/v1/atoms'
-import { CustomHeader } from '~/components/v1/molecules'
-import { __IOS__ } from '~/config'
-import { NOTIFICATIONS_PAGE_SIZE } from '~/shared/constants'
+import { Loading, Text } from '~/components/v1'
+import { CustomHeader } from '~/components/v1'
+import { useMarkAllNotificationsAsSeenMutation } from '~/data/relay/mutations/MarkAllNotificationsAsSeenMutation'
+import { NOTIFICATIONS_PAGE_SIZE, __IOS__ } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
 import type { NotificationsQuery as NotificationsQueryType } from '~/__generated__/NotificationsQuery.graphql'
 import { NotificationList } from './NotificationList'
@@ -34,7 +34,7 @@ export function Notifications() {
     { fetchPolicy: 'network-only' },
   )
 
-  // const [markAllAsRead, isSending] = useMarkAllNotificationsAsSeenMutation() // TODO
+  const [markAllAsRead, isSending] = useMarkAllNotificationsAsSeenMutation()
   const [showMore, setShowMore] = useState(false)
 
   const onPressMore = () => {
@@ -45,9 +45,7 @@ export function Notifications() {
           cancelButtonIndex: 1,
         },
         async (buttonIndex) => {
-          if (buttonIndex === 0) {
-            // await markAllAsRead() // TODO
-          }
+          if (buttonIndex === 0) await markAllAsRead({})
         },
       )
     } else {
@@ -62,9 +60,9 @@ export function Notifications() {
           title={t('notification.header')}
           rightIcon="More"
           onPressRight={onPressMore}
-          // isLoading={isSending} // TODO
+          isLoading={isSending}
         />
-        {data ? <NotificationList queryRef={data} /> : <Loading />}
+        {data && <NotificationList queryRef={data} />}
       </View>
       {/* TODO: trocar por ActionSheet component ? */}
       <TouchableOpacity>
@@ -75,7 +73,7 @@ export function Notifications() {
                 <TouchableOpacity
                   style={s.modalButtonContainer}
                   onPress={async () => {
-                    // await markAllAsRead() // TODO
+                    await markAllAsRead({})
                     setShowMore(false)
                   }}
                 >

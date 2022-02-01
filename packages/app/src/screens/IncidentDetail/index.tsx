@@ -6,37 +6,17 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from 'react-relay'
 import { useRecoilValue } from 'recoil'
-import { FloatingButton, IconWithLabel, Loading, Text } from '~/components/v1/atoms'
-import { MediasCarousel } from '~/components/v1/organisms'
-import { SCREEN_HEIGHT } from '~/shared/constants'
+import { FloatingButton, IconWithLabel, Loading, MediasCarousel, Text } from '~/components/v1'
 import { userLocationState } from '~/data/recoil'
 import type { MainStackNavProp, MainStackRouteProp } from '~/navigation/types'
-import { MediaType } from '~/shared/constants'
+import { MediaTypeEnum, SCREEN_HEIGHT } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
 import type { IncidentDetailQuery as IncidentDetailQueryType } from '~/__generated__/IncidentDetailQuery.graphql'
 import IncidentDetailQuery from '~/__generated__/IncidentDetailQuery.graphql'
 
-// TODO
-const INCIDENT_OWNER_USER_ID = 'a'
-const INCIDENT_OWNER_USER_NAME = 'Reginaldo'
-const VIEWS_COUNT = 11231
-const REPLIES_COUNT = 10
-const REACTIONS_COUNT = 2
-const FORMATTED_ADDRESS = 'Rua Solaine da Silva Golçalves, 64 - Botucatu - São Paulo'
-const MEDIAS: Media[] = [
-  {
-    type: MediaType.IMAGE,
-    uri: 'https://metis-public-static-content.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg',
-  },
-  {
-    type: MediaType.VIDEO,
-    uri: 'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4',
-  },
-  {
-    type: MediaType.VIDEO,
-    uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-  },
-]
+// TODO: [backend] incident.stats
+const REPLIES_COUNT = 0
+const REACTIONS_COUNT = 0
 
 const query = graphql`
   query IncidentDetailQuery($incidentId: String!) {
@@ -45,13 +25,19 @@ const query = graphql`
       title
       medias {
         url
+        type
       }
-      usersNotifiedCount
-      createdAt
       location {
         latitude
         longitude
       }
+      ownerUser {
+        userId
+        name
+      }
+      formattedAddress
+      usersNotifiedCount
+      createdAt
     }
   }
 `
@@ -76,13 +62,22 @@ function IncidentDetail(props: Props) {
     nav.pop()
   }
   const onUserOwnerClick = () => {
-    // TODO: go to user screen passing INCIDENT_OWNER_USER_ID
+    console.log(data?.incident?.ownerUser?.userId)
+    // TODO: go to user screen passing data?.incident?.ownerUser?.userId
   }
 
   return (
     <View style={s.container}>
       <ScrollView style={s.scrollableContainer}>
-        <MediasCarousel medias={MEDIAS} height={SCREEN_HEIGHT(insets) * 0.65} />
+        <MediasCarousel
+          medias={
+            data.incident?.medias.map(({ url, type }) => ({
+              uri: url,
+              type: MediaTypeEnum[type as 'IMAGE' | 'VIDEO'],
+            })) ?? []
+          }
+          height={SCREEN_HEIGHT(insets) * 0.65}
+        />
         <View style={s.contentContainer}>
           <Text variant="header">{data.incident?.title}</Text>
           <Text variant="body2" style={s.mb}>
@@ -92,11 +87,11 @@ function IncidentDetail(props: Props) {
               }) as string
             }
             <Text variant="link" onPress={onUserOwnerClick}>
-              {INCIDENT_OWNER_USER_NAME}
+              {data.incident?.ownerUser.name}
             </Text>
           </Text>
           <Text variant="subheader" style={s.mb}>
-            {FORMATTED_ADDRESS}
+            {data.incident?.formattedAddress ?? undefined}
           </Text>
           <Text variant="body">
             {

@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleProp, TextStyle, View, ViewProps } from 'react-native'
-
-import { Text } from '~/components/v1/atoms'
 import { makeUseStyles } from '~/theme/v1'
+import { Text } from './../../atoms'
 
 type Props = ViewProps & {
   left?: ReactElement

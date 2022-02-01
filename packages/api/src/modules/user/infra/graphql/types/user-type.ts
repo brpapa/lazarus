@@ -1,10 +1,10 @@
-import { connectionDefinitions } from '@shared/infra/graphql/connections'
-import { LocationType } from '@shared/infra/graphql/types/location-type'
-import { UserDTO, UserPreferencesDTO } from '@user/adapter/dtos/user-dto'
 import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
+import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
+import { LocationType } from 'src/modules/shared/infra/graphql/types/location-type'
+import { UserDTO, UserPreferencesDTO } from 'src/modules/user/adapter/dtos/user-dto'
 import { LanguageEnumType } from './language-type'
 
 const USER_TYPE_NAME = 'User'
@@ -38,7 +38,7 @@ export const UserType = GraphQLTypes.register(
         resolve: (user) => user.preferences,
         type: GraphQLNonNull(
           new GraphQLObjectType<UserPreferencesDTO>({
-            name: 'UserPreferences',
+            name: 'Preferences',
             fields: () => ({
               radiusDistance: {
                 type: GraphQLNonNull(GraphQLFloat),

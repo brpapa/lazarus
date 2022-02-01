@@ -1,7 +1,7 @@
-import { UUID } from '@shared/domain/models/uuid'
-import { Entity } from '@shared/domain/entity'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { Entity } from 'src/modules/shared/domain/entity'
 import { ok, Result } from '@metis/shared'
-import { DomainError } from '@shared/logic/errors'
+import { DomainError } from 'src/modules/shared/logic/errors'
 import assert from 'assert'
 
 interface CommentProps {

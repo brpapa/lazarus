@@ -1,10 +1,10 @@
 import assert from 'assert'
 import { Debugger } from 'debug'
-import { IAuthService } from '@user/adapter/auth-service'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
-import { Command } from '@shared/logic/command'
-import { ApplicationError, UserNotFoundError } from '@shared/logic/errors'
-import { unixEpochToDate } from '@shared/logic/helpers/unix-epoch'
+import { IAuthService } from 'src/modules/user/adapter/auth-service'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError, UserNotFoundError } from 'src/modules/shared/logic/errors'
+import { unixEpochToDate } from 'src/modules/shared/logic/helpers/unix-epoch'
 import { err, ok, Result } from '@metis/shared'
 
 export type Input = {

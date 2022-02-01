@@ -1,8 +1,8 @@
-import { IGeocodingService } from '@incident/adapter/geocoding-service'
-import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
-import { MediaTypeEnum } from '@incident/domain/models/media-type'
-import { AppContext } from '@shared/logic/app-context'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
+import { IGeocodingService } from 'src/modules/incident/adapter/geocoding-service'
+import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
+import { MediaTypeEnum } from 'src/modules/incident/domain/models/media-type'
+import { AppContext } from 'src/modules/shared/logic/app-context'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { Debugger } from 'debug'
 import { mockDeep } from 'jest-mock-extended'
 import { ReportIncidentCommand } from '../../src/modules/incident/application/commands/report-incident-command'
@@ -27,6 +27,7 @@ describe('command: create incident', () => {
         medias: [
           {
             url: 'https://s3.amazonaws.com',
+            type: MediaTypeEnum.IMAGE,
           },
         ],
       },

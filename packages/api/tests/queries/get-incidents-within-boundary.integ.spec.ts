@@ -1,12 +1,12 @@
-import { getIncidents } from '@incident/application/queries'
-import { Incident } from '@incident/domain/models/incident'
-import { incidentRepo } from '@incident/infra/db/repositories'
-import { Location } from '@shared/domain/models/location'
-import { User } from '@user/domain/models/user'
-import { UserPassword } from '@user/domain/models/user-password'
-import { userRepo } from '@user/infra/db/repositories'
+import { incidentsQuery } from 'src/modules/incident/application/queries'
+import { Incident } from 'src/modules/incident/domain/models/incident'
+import { incidentRepo } from 'src/modules/incident/infra/db/repositories'
+import { Location } from 'src/modules/shared/domain/models/location'
+import { User } from 'src/modules/user/domain/models/user'
+import { UserPassword } from 'src/modules/user/domain/models/user-password'
+import { userRepo } from 'src/modules/user/infra/db/repositories'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
-import { UserEmail } from '@user/domain/models/user-email'
+import { UserEmail } from 'src/modules/user/domain/models/user-email'
 
 describe('queries: get incidents inside boundary', () => {
   beforeAll(async () => {
@@ -56,10 +56,10 @@ describe('queries: get incidents inside boundary', () => {
   })
 
   test.todo('it should return only the incidents inside the boundaries', async () => {
-    const incidents = await getIncidents.exec(
+    const incidents = await incidentsQuery.exec(
       {
         filter: {
-          withinBoundary: {
+          withinBox: {
             northEast: {
               latitude: -22.871394175410675,
               longitude: -48.44534173607826,
@@ -73,6 +73,6 @@ describe('queries: get incidents inside boundary', () => {
       },
       { userId: null },
     )
-    expect(incidents.length).toBe(1)
+    expect(incidents.incidents.length).toBe(1)
   })
 })

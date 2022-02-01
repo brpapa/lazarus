@@ -1,5 +1,6 @@
+import { Connection } from 'graphql-relay'
 import { Language } from '@metis/shared'
-import { LocationDTO } from '@shared/adapter/dtos/location-dto'
+import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
 
 export interface UserDTO {
   userId: string
@@ -15,3 +16,5 @@ export interface UserPreferencesDTO {
   radiusDistance: number
   language: Language
 }
+
+export type UserConnectionDTO = Connection<UserDTO>

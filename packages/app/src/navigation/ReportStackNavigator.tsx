@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { Loading } from '~/components/v1/atoms'
+import { Loading } from '~/components/v1'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import { Camera, CameraPermissions, MediasReview } from '~/screens'
 import { useTheme } from '~/theme/v1'

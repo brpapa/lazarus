@@ -1,5 +1,5 @@
-import { Notification } from '@notification/domain/models/notification'
-import { IRepository } from '@shared/infra/db/repository'
+import { Notification } from 'src/modules/notification/domain/models/notification'
+import { IRepository } from 'src/modules/shared/infra/db/repository'
 
 export interface INotificationRepo extends IRepository<Notification> {
   findById(id: string): Promise<Notification | null>

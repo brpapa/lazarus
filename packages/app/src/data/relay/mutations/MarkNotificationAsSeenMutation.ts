@@ -6,33 +6,31 @@ import type {
 } from '~/__generated__/MarkNotificationAsSeenMutation.graphql'
 import { createResultMutationCommitFn } from '../utils/create-result-mutation-commit-fn'
 import { createResultMutationHook } from '../utils/create-result-mutation-hook'
+import { updateProfileTabBarBadgeValue } from '../utils/store'
+import type { ErrResult } from '../utils/types'
 
 // is good return all data that are changed by backend so the relay store is automatically updated based on node id
 const mutation = graphql`
   mutation MarkNotificationAsSeenMutation($input: MarkNotificationAsSeenInput!) {
     markNotificationAsSeen(input: $input) {
-      result {
-        __typename
-        ... on MarkNotificationAsSeenOkResult {
-          notification {
-            id
-            seenByTargetUser
-          }
+      __typename
+      ... on MarkNotificationAsSeenOkResult {
+        notification {
+          id
+          seenByTargetUser
         }
-        ... on MarkNotificationAsSeenErrResult {
-          reason
-          code
-        }
+      }
+      ... on MarkNotificationAsSeenErrResult {
+        reason
+        reasonIsTranslated
+        code
       }
     }
   }
 `
 
 type MarkNotificationAsSeenOkResult = {}
-type MarkNotificationAsSeenErrResult = {
-  reason: string
-  code: MarkNotificationAsSeenErrCodeType
-}
+type MarkNotificationAsSeenErrResult = ErrResult<MarkNotificationAsSeenErrCodeType>
 
 export const useMarkNotificationAsSeenMutation = createResultMutationHook<
   MarkNotificationAsSeenMutationType,
@@ -44,14 +42,7 @@ export const useMarkNotificationAsSeenMutation = createResultMutationHook<
   resultTypenamePreffix: 'MarkNotificationAsSeen',
   mutation,
   updater: (store) => {
-    const myNotificationsRecord = store.getRoot().getLinkedRecord('myNotifications')
-    if (!myNotificationsRecord) throw new Error('Not found root.myNotifications record')
-
-    const notSeenCount = myNotificationsRecord.getValue('notSeenCount')
-    if (typeof notSeenCount !== 'number')
-      throw new Error('Value of root.myNotifications.notSeenCount scalar is not a number')
-
-    myNotificationsRecord.setValue(notSeenCount - 1, 'notSeenCount')
+    updateProfileTabBarBadgeValue(store, { type: 'INCREMENT', value: -1 })
   },
 })
 

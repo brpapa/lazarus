@@ -8,8 +8,8 @@ import {
 } from 'redis/dist/lib/commands/generic-transformers'
 import { PrismaClient } from 'src/api/db/prisma/client'
 import { RedisClient } from 'src/api/db/redis/client'
-import { Incident } from '@incident/domain/models/incident'
-import { zip } from '@shared/logic/helpers/zip'
+import { Incident } from 'src/modules/incident/domain/models/incident'
+import { zip } from 'src/modules/shared/logic/helpers/zip'
 import { LocationProps } from '../../../../shared/domain/models/location'
 import { PrismaRepo } from '../../../../shared/infra/db/prisma-repo'
 import { IncidentMapper } from '../../../adapter/mappers/incident-mapper'
@@ -24,13 +24,13 @@ export type IncidentPgModelPopulated = IncidentPgModel & {
 }
 
 /**
- * each (incidentId, location) is persisted on Redis in a GeoSet data structure where:
- *  key: incidentLocations
+ * each (incidentId, location) is persisted on Redis in the following GeoSet data structure:
+ *  key: INCIDENT_LOCATIONS
  *  value: list of (member, location) pair, where member is the incidentId
  */
 export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo {
   private baseInclude = { medias: true, comments: { take: 25 } }
-  private REDIS_GEO_SET_KEY = 'incidentLocations'
+  private REDIS_GEO_SET_KEY = 'INCIDENT_LOCATIONS'
 
   constructor(
     private log: Debugger,
@@ -45,7 +45,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     const incident: IncidentPgModelPopulated | null =
       await this.prismaClient.incidentModel.findUnique({
         where: { id },
-        include: { ...this.baseInclude },
+        include: this.baseInclude,
       })
     return this.enrichedWithRedis(incident)
   }
@@ -53,7 +53,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   async findByIdBatch(ids: string[]): Promise<(Incident | null)[]> {
     const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
       where: { id: { in: ids } },
-      include: { ...this.baseInclude },
+      include: this.baseInclude,
     })
     const orderedIncidents = ids.map((id) => incidents.find((v) => v.id === id) ?? null)
     return this.enrichedWithRedisBatch(orderedIncidents)
@@ -61,7 +61,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
   async findAll(): Promise<Incident[]> {
     const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
-      include: { ...this.baseInclude },
+      include: this.baseInclude,
     })
     return (await this.enrichedWithRedisBatch(incidents)).filter((v) => v !== null) as Incident[]
   }
@@ -79,6 +79,37 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     )
 
     return this.enrichedWithPgBatch(incidentsLocations)
+  }
+
+  async findAllLocatedWithinCircle(
+    centerPoint: { latitude: number; longitude: number },
+    radiusInMeters: number,
+  ): Promise<Incident[]> {
+    const byRadius: GeoSearchBy = { radius: radiusInMeters, unit: 'm' }
+
+    const locations = await this.redisClient.geoSearchWith(
+      this.REDIS_GEO_SET_KEY,
+      centerPoint,
+      byRadius,
+      [GeoReplyWith.COORDINATES],
+    )
+    const incidentsId = locations.map((v) => v.member)
+
+    const incidents = await this.prismaClient.incidentModel.findMany({
+      where: { id: { in: incidentsId } },
+      include: this.baseInclude,
+    })
+    const orderedIncidents = incidentsId.map(
+      (incidentId) => incidents.find((v) => v.id === incidentId) ?? null,
+    )
+
+    assert(orderedIncidents.length === locations.length)
+    return zip(orderedIncidents, locations).map(([incident, location]) => {
+      assert(!!incident && !!location)
+      assert(incident.id.toString() === location.member)
+      assert(location.coordinates !== undefined)
+      return IncidentMapper.fromModelToDomain(incident, location.coordinates)
+    })
   }
 
   async commit(incident: Incident): Promise<Incident> {
@@ -140,6 +171,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
       incidents.map((incident) => incident?.id || ''),
     )
 
+    assert(incidents.length === incidentsLocations.length)
     return zip(incidents, incidentsLocations).map(([incident, incidentLocation]) => {
       if (!incident && !incidentLocation) return null
       assert(!!incident && !!incidentLocation)
@@ -152,12 +184,13 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
     const incidents = await this.prismaClient.incidentModel.findMany({
       where: { id: { in: incidentsId } },
-      include: { ...this.baseInclude },
+      include: this.baseInclude,
     })
     const orderedIncidents = incidentsId.map(
       (incidentId) => incidents.find((v) => v.id === incidentId) ?? null,
     )
 
+    assert(orderedIncidents.length === locations.length)
     return zip(orderedIncidents, locations).map(([incident, location]) => {
       assert(!!incident && !!location)
       assert(incident.id.toString() === location.member)

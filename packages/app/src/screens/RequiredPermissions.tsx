@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
-import { Text } from '~/components/v1/atoms'
+import { Text } from '~/components/v1'
 import { useRequiredPermissions } from '~/hooks/use-required-permissions'
 import type { AppStackParams } from '~/navigation/types'
 

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
-import { ValueObject } from '@shared/domain/value-object'
-import { DomainError } from '@shared/logic/errors'
+import { ValueObject } from 'src/modules/shared/domain/value-object'
+import { DomainError } from 'src/modules/shared/logic/errors'
 import { err, ok, Result } from '@metis/shared'
 
 interface UserPasswordProps {

@@ -1,6 +1,7 @@
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import type { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
+import type { CapturedMedia } from '~/types'
 
 // AppStackNavigator -> RootStackNavigator -> MainStackNavigator -> HomeTabNavigator -> ReportStackNavigator
 

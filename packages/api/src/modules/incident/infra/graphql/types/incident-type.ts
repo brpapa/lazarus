@@ -1,11 +1,13 @@
-import { GraphQLContext } from 'src/api/graphql/context'
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList, GraphQLInt } from 'graphql'
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import { globalIdField } from 'graphql-relay'
-import { connectionDefinitions } from '@shared/infra/graphql/connections'
+import { GraphQLContext } from 'src/api/graphql/context'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
-import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
-import { DateType } from '@shared/infra/graphql/types/date-type'
-import { LocationType } from '@shared/infra/graphql/types/location-type'
+import { IncidentConnectionDTO, IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
+import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
+import { LocationType } from 'src/modules/shared/infra/graphql/types/location-type'
+import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
+import { UserType } from 'src/modules/user/infra/graphql/types/user-type'
 import { MediaType } from './media-type'
 
 const INCIDENT_TYPE_NAME = 'Incident'
@@ -20,32 +22,36 @@ export const IncidentType = GraphQLTypes.register(
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       incidentId: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (incident) => incident.incidentId,
+        type: GraphQLNonNull(GraphQLString),
       },
       title: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (incident) => incident.title,
+        type: GraphQLNonNull(GraphQLString),
       },
       location: {
-        type: GraphQLNonNull(LocationType),
         resolve: (incident) => incident.location,
+        type: GraphQLNonNull(LocationType),
       },
       formattedAddress: {
-        type: GraphQLString,
         resolve: (incident) => incident.formattedAddress,
+        type: GraphQLString,
       },
       medias: {
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
         resolve: (incident) => incident.medias,
+        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(MediaType))),
       },
       usersNotifiedCount: {
-        type: GraphQLNonNull(GraphQLInt),
         resolve: (incident) => incident.usersNotifiedCount,
+        type: GraphQLNonNull(GraphQLInt),
+      },
+      ownerUser: {
+        resolve: (incident, _, ctx) => GetUserById.gen({ userId: incident.ownerUserId }, ctx),
+        type: GraphQLNonNull(UserType),
       },
       createdAt: {
-        type: GraphQLNonNull(DateType),
         resolve: (incident) => incident.createdAt,
+        type: GraphQLNonNull(DateType),
       },
     }),
   }),
@@ -57,4 +63,11 @@ export const { connectionType: IncidentConnectionType, edgeType: IncidentEdgeTyp
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nodeType: GraphQLNonNull(IncidentType),
+    connectionFields: () => ({
+      totalCount: {
+        type: GraphQLNonNull(GraphQLInt),
+        description: 'Total count of incidents',
+        resolve: (c: IncidentConnectionDTO) => c.totalCount,
+      },
+    }),
   })

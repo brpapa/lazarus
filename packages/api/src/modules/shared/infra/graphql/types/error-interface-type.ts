@@ -1,5 +1,5 @@
 import { GraphQLInterfaceType, GraphQLNonNull, GraphQLString } from 'graphql'
-import { BaseError } from '@shared/logic/errors'
+import { BaseError } from 'src/modules/shared/logic/errors'
 
 export const ErrResultInterfaceType = new GraphQLInterfaceType({
   name: 'ErrResult',

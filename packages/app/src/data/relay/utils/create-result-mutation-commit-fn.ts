@@ -35,12 +35,8 @@ export function createResultMutationCommitFn<
         onCompleted: (response, errors) => {
           if (errors !== null) throw new Error(`Unexpected error: ${JSON.stringify(errors)}`)
 
-          const output = (response as any)[config.mutationName]
-          if (!output) throw new Error(`Mutation ${config.mutationName} not exists`)
-
-          const result = output.result
-          if (!result)
-            throw new Error(`Output of mutation ${config.mutationName} not contains 'result' field`)
+          const result = (response as any)[config.mutationName]
+          if (!result) throw new Error(`Mutation ${config.mutationName} not exists`)
 
           if (result.__typename === `${config.resultTypenamePreffix}OkResult`) {
             resolve(ok(result as TOkResult))

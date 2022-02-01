@@ -4,7 +4,7 @@ import React, { useCallback } from 'react'
 import { View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { graphql, useFragment } from 'react-relay'
-import { Divider, Dot, Icon, Text } from '~/components/v1/atoms'
+import { Divider, Dot, Icon, Text } from '~/components/v1'
 import { useMarkNotificationAsSeenMutation } from '~/data/relay/mutations/MarkNotificationAsSeenMutation'
 import type { MainStackNavProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
@@ -40,6 +40,7 @@ export function NotificationItem(props: Props) {
   const [markAsSeen] = useMarkNotificationAsSeenMutation()
 
   const onPressed = useCallback(async () => {
+    // TODO: [notification-link] reutilizar logica
     switch (data.link.entity) {
       case 'INCIDENT':
         nav.navigate('IncidentDetail', { incidentId: data.link.entityId })

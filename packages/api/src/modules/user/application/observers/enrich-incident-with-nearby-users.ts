@@ -1,9 +1,9 @@
 import { Debugger } from 'debug'
-import { IncidentCreated } from '@incident/domain/events/incident-created'
-import { DomainEvents } from '@shared/domain/events/domain-events'
-import { IObserver } from '@shared/domain/events/observer'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
-import { IncidentCreatedEnrichedWithNearbyUsers } from '@user/domain/events/incident-created-enriched-with-nearby-users'
+import { IncidentCreated } from 'src/modules/incident/domain/events/incident-created'
+import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
+import { IObserver } from 'src/modules/shared/domain/events/observer'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { IncidentCreatedEnrichedWithNearbyUsers } from 'src/modules/user/domain/events/incident-created-enriched-with-nearby-users'
 
 /** just dispathes an enriched IncidentCreated event */
 export class EnrichIncidentWithNearbyUsersObserver implements IObserver<IncidentCreated> {

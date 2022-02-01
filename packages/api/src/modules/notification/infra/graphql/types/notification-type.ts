@@ -1,6 +1,3 @@
-import { NotificationDTO } from '@notification/adapter/dtos/notification-dto'
-import { connectionDefinitions } from '@shared/infra/graphql/connections'
-import { DateType } from '@shared/infra/graphql/types/date-type'
 import {
   GraphQLBoolean,
   GraphQLEnumType,
@@ -12,9 +9,15 @@ import {
 import { globalIdField } from 'graphql-relay'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
-import { NotificationCodeEnum } from '@notification/domain/models/notification'
-import { LinkedEntityEnum } from '@notification/domain/models/notification-link'
-import { mapObjectValues } from '@shared/logic/helpers/map-object-values'
+import {
+  NotificationConnectionDTO,
+  NotificationDTO,
+} from 'src/modules/notification/adapter/dtos/notification-dto'
+import { NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
+import { LinkedEntityEnum } from 'src/modules/notification/domain/models/notification-link'
+import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
+import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
+import { mapObjectValues } from 'src/modules/shared/logic/helpers/map-object-values'
 
 const NotificationLinkType = new GraphQLObjectType<NotificationDTO['link']>({
   name: 'NotificationLink',
@@ -47,45 +50,45 @@ export const NotificationType = GraphQLTypes.register(
         description: 'The opaque identifier of GraphQL node, based on relay specs',
       },
       notificationId: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (n) => n.notificationId,
+        type: GraphQLNonNull(GraphQLString),
       },
       targetUserId: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (n) => n.targetUserId,
+        type: GraphQLNonNull(GraphQLString),
       },
       code: {
+        resolve: (n) => n.code,
         type: GraphQLNonNull(
           new GraphQLEnumType({
             name: 'NotificationCodeEnum',
             values: mapObjectValues(NotificationCodeEnum, (v) => ({ value: v })),
           }),
         ),
-        resolve: (n) => n.code,
       },
       title: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (n) => n.title,
+        type: GraphQLNonNull(GraphQLString),
       },
       subtitle: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (n) => n.subtitle,
+        type: GraphQLNonNull(GraphQLString),
       },
       body: {
-        type: GraphQLNonNull(GraphQLString),
         resolve: (n) => n.body,
+        type: GraphQLNonNull(GraphQLString),
       },
       link: {
-        type: GraphQLNonNull(NotificationLinkType),
         resolve: (n) => n.link,
+        type: GraphQLNonNull(NotificationLinkType),
       },
       seenByTargetUser: {
-        type: GraphQLNonNull(GraphQLBoolean),
         resolve: (n) => n.seenByTargetUser,
+        type: GraphQLNonNull(GraphQLBoolean),
       },
       createdAt: {
-        type: GraphQLNonNull(DateType),
         resolve: (n) => n.createdAt,
+        type: GraphQLNonNull(DateType),
       },
     }),
   }),
@@ -101,12 +104,12 @@ export const { connectionType: NotificationConnectionType, edgeType: Notificatio
       totalCount: {
         type: GraphQLNonNull(GraphQLInt),
         description: 'Total count of notifications of user',
-        resolve: (c) => c.totalCount,
+        resolve: (c: NotificationConnectionDTO) => c.totalCount,
       },
       notSeenCount: {
         type: GraphQLNonNull(GraphQLInt),
-        description: 'Count of notifications not seen by user yet',
-        resolve: (c) => c.notSeenCount,
+        description: 'Count of not seen notifications of user',
+        resolve: (c: NotificationConnectionDTO) => c.notSeenCount,
       },
     }),
   })

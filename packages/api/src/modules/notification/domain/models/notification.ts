@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { Entity } from '@shared/domain/entity'
-import { UUID } from '@shared/domain/models/uuid'
+import { Entity } from 'src/modules/shared/domain/entity'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { NotificationLink } from './notification-link'
 import { PushMessage } from './push-message'
 
@@ -60,7 +60,7 @@ export class Notification extends Entity<NotificationProps> {
     }
   }
 
-  see() {
+  markAsSeen() {
     this.props.seenByTargetUser = true
   }
 }

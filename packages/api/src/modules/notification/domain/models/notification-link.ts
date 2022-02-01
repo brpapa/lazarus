@@ -1,4 +1,4 @@
-import { ValueObject } from '@shared/domain/value-object'
+import { ValueObject } from 'src/modules/shared/domain/value-object'
 
 export const LinkedEntityEnum = {
   INCIDENT: 'INCIDENT',

@@ -1,7 +1,7 @@
 import type { BottomTabBarOptions, BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { Badge, Icon, Text } from '~/components/v1/atoms'
+import { Badge, Icon, Text } from '~/components/v1'
 import { __IOS__ } from '~/shared/constants'
 import type { IconName } from '~/icons'
 import { makeUseStyles, useTheme } from '~/theme/v1'

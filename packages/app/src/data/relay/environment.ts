@@ -45,8 +45,9 @@ const fetchFn: FetchFunction = async (operation, variables) => {
     })
     json = await response.json()
   } catch (e) {
+    console.error(e)
     throw new Error(
-      `Unexpected error fetching GraphQL operation '${operation.name}': ${JSON.stringify(e)}`,
+      `Unexpected error fetching GraphQL operation '${operation.name}'`,
     )
   }
 

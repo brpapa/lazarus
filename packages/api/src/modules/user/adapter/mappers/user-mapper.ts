@@ -1,11 +1,11 @@
 import { LANGUAGE, Language, LanguageEnum } from '@metis/shared'
-import { LocationMapper, LocationRedisModel } from '@shared/adapter/mappers/location-mapper'
-import { UUID } from '@shared/domain/models/uuid'
-import { UserDTO } from '@user/adapter/dtos/user-dto'
-import { User } from '@user/domain/models/user'
-import { UserEmail } from '@user/domain/models/user-email'
-import { UserPassword } from '@user/domain/models/user-password'
-import { UserPgModel } from '@user/infra/db/repositories/user-repo'
+import { LocationMapper, LocationRedisModel } from 'src/modules/shared/adapter/mappers/location-mapper'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
+import { User } from 'src/modules/user/domain/models/user'
+import { UserEmail } from 'src/modules/user/domain/models/user-email'
+import { UserPassword } from 'src/modules/user/domain/models/user-password'
+import { UserPgModel } from 'src/modules/user/infra/db/repositories/user-repo'
 import { UserPreferences } from '../../domain/models/user-preferences'
 
 export class UserMapper {

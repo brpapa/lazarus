@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Animated, Easing, TouchableOpacity, View } from 'react-native'
-import { __IOS__ } from '~/config'
+import { __IOS__ } from '~/shared/constants'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import { Text } from './Text'
 

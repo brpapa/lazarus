@@ -3,8 +3,8 @@ import Slider from '@react-native-community/slider'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { Text } from '~/components/v1/atoms'
-import { HeaderItem, ModalHeader } from '~/components/v1/molecules'
+import { Text } from '~/components/v1'
+import { HeaderItem, ModalHeader } from '~/components/v1'
 import { SCREEN_WIDTH } from '~/shared/constants'
 import type { RootStackNavProp, RootStackRouteProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
@@ -22,7 +22,7 @@ export function DistanceRadiusPreference() {
   }, [route])
 
   const onSubmit = () => {
-    // TODO: send distRadius
+    // TODO: [backend] user.preferences.distanceRadius
   }
 
   return (
@@ -50,7 +50,7 @@ export function DistanceRadiusPreference() {
             style={s.slider}
             step={0.1}
             minimumValue={1}
-            maximumValue={500}
+            maximumValue={1000}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.backgroundDarker}
             value={distRadius}

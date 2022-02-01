@@ -57,17 +57,12 @@
     ],
     "no-unused-vars": "off",
     "no-shadow": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "import/no-unresolved": "off"
   },
   // pre-defined global variables
   "env": {
     "node": true,
     "jest/globals": true
-  },
-  "settings": {
-    "import/resolver": {
-      "node": true,
-      "eslint-import-resolver-typescript": true
-    }
   }
 }

@@ -1,6 +1,6 @@
 import { CommentModel } from '@prisma/client'
-import { UUID } from '@shared/domain/models/uuid'
-import { Comment } from '@incident/domain/models/comment'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { Comment } from 'src/modules/incident/domain/models/comment'
 
 export class CommentMapper {
   static fromModelToDomain(model: CommentModel): Comment {

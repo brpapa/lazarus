@@ -55,8 +55,10 @@ const createUser = async (userId: string) => {
       id: userId,
       username: 'my awesome name',
       password: 'my awesome password',
-      phoneNumber: '14 9999999',
-      phoneNumberVerified: true,
+      email: 'bas@gmail.com',
+      name: 'user',
+      preferencesLanguage: 'pt_BR',
+      preferencesRadiusDistance: 40,
     },
   })
 }

@@ -1,8 +1,8 @@
-import { NotificationDTO } from '@notification/adapter/dtos/notification-dto'
-import { Notification } from '@notification/domain/models/notification'
-import { NotificationLink } from '@notification/domain/models/notification-link'
+import { NotificationDTO } from 'src/modules/notification/adapter/dtos/notification-dto'
+import { Notification } from 'src/modules/notification/domain/models/notification'
+import { NotificationLink } from 'src/modules/notification/domain/models/notification-link'
 import { NotificationModel } from '@prisma/client'
-import { UUID } from '@shared/domain/models/uuid'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 
 export class NotificationMapper {
   static fromDomainToDTO(domain: Notification): NotificationDTO {

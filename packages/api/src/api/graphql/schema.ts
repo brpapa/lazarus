@@ -1,14 +1,10 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql'
+import { GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql'
 import { GraphQLContext } from 'src/api/graphql/context'
 import { nodeField } from 'src/api/graphql/node'
-import * as IncidentQueries from '@incident/infra/graphql/queries'
-import * as IncidentMutations from '@incident/infra/graphql/mutations'
-import * as IncidentSubscriptions from '@incident/infra/graphql/subscriptions'
-import * as UserQueries from '@user/infra/graphql/queries'
-import * as UserMutations from '@user/infra/graphql/mutations'
-import * as UserSubscriptions from '@user/infra/graphql/subscriptions'
-import * as NotificationQueries from '@notification/infra/graphql/queries'
-import * as NotificationMutations from '@notification/infra/graphql/mutations'
+import * as IncidentOperations from 'src/modules/incident/infra/graphql'
+import * as NotificationOperations from 'src/modules/notification/infra/graphql'
+import * as UserOperations from 'src/modules/user/infra/graphql'
+import * as AggregatedOperations from './aggregated'
 
 const QueryType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Query',
@@ -24,26 +20,24 @@ const QueryType = new GraphQLObjectType<void, GraphQLContext>({
       description:
         'Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface',
     },
-    me: UserQueries.MeQueryType,
-    users: UserQueries.UsersQueryType,
-    incident: IncidentQueries.IncidentQueryType,
-    incidents: IncidentQueries.IncidentsQueryType,
-    notification: NotificationQueries.NotificationQueryType,
-    myNotifications: NotificationQueries.MyNotificationsQueryType,
+    me: AggregatedOperations.MeQueryType,
+    incident: IncidentOperations.IncidentQueryType,
+    incidents: IncidentOperations.IncidentsQueryType,
+    notification: NotificationOperations.NotificationQueryType,
   }),
 })
 
-// each mutation field should be created based on relay specs: https://github.com/graphql/graphql-relay-js#mutations
 const MutationType = new GraphQLObjectType<void, GraphQLContext>({
   name: 'Mutation',
   description: 'The mutation root type',
   fields: () => ({
-    signUp: UserMutations.SignUpMutationType,
-    signIn: UserMutations.SignInMutationType,
-    updateUserLocation: UserMutations.UpdateUserLocationMutationType,
-    refreshToken: UserMutations.RefreshTokenMutationType,
-    reportIncident: IncidentMutations.ReportIncidentMutationType,
-    markNotificationAsSeen: NotificationMutations.MarkNotificationAsSeenMutationType,
+    signUp: UserOperations.SignUpMutationType,
+    signIn: UserOperations.SignInMutationType,
+    updateUserLocation: UserOperations.UpdateUserLocationMutationType,
+    refreshToken: UserOperations.RefreshTokenMutationType,
+    reportIncident: IncidentOperations.ReportIncidentMutationType,
+    markNotificationAsSeen: NotificationOperations.MarkNotificationAsSeenMutationType,
+    markAllNotificationsAsSeen: NotificationOperations.MarkAllNotificationsAsSeenMutationType,
   }),
 })
 
@@ -56,8 +50,7 @@ const SubscriptionType = new GraphQLObjectType<any, GraphQLContext>({
   name: 'Subscription',
   description: 'The subscription root type',
   fields: () => ({
-    onUserAdded: UserSubscriptions.OnUserAddedSubscriptionType,
-    onNearbyIncidentCreated: IncidentSubscriptions.OnNearbyIncidentCreatedSubscriptionType,
+    onNearbyIncidentCreated: IncidentOperations.OnNearbyIncidentCreatedSubscriptionType,
   }),
 })
 

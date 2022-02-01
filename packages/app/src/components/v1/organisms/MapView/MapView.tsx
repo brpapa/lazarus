@@ -4,12 +4,7 @@ import BaseMap, { Circle, LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-m
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { selectedIncidentIdInMap, userLocationState } from '~/data/recoil'
 import { makeUseStyles, useColorScheme } from '~/theme/v1'
-import {
-  INITIAL_ZOOM_LEVEL,
-  USER_CENTERED_ZOOM_LEVEL,
-  ZOOM_LEVEL_1,
-  ZOOM_LEVEL_2,
-} from './constants'
+import { INITIAL_ZOOM_LEVEL, USER_CENTERED_ZOOM_LEVEL } from './constants'
 import { customMapStyles } from './custom-map-styles'
 
 export interface MapViewRef {

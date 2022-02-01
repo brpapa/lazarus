@@ -1,11 +1,11 @@
+import debug from 'debug'
 import fs from 'fs'
-import path from 'path'
 import { graphql } from 'graphql'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { introspectionQuery, printSchema } from 'graphql/utilities'
-import { schema } from 'src/api/graphql/schema'
-import debug from 'debug'
+import path from 'path'
+import { schema } from '../src/api/graphql/schema'
 
 const log = debug('app:scripts')
 

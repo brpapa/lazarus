@@ -9,17 +9,18 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-
 # Directory Structure
 
 ```
-├── /data                      # Generated GraphQL schema from code (source of truth)
-├── /scripts                   # GraphQL schema and database scripts
+├── /graphql                   # Generated GraphQL schema from code 
+├── /prisma                    # Generated database Prisma schema from code
+├── /scripts                   # Utility scripts to development
 ├── /src                       # Source code
-|   ├── /api
+|   ├── /api                   # Entrypoint
 │   ├── /modules
-│   │   ├── /<module>          # Isolated piece of code, also referred as subdomain
-│   │   │   ├── /domain        # Declaration of core business logic/rules, entities, value objects and domain events
-│   │   │   ├── /application   # Use cases (features) that relies on domain objects, application services, external services, domain event handlers
+│   │   ├── /<module>          # A isolated piece of code, also referred as an subdomain
+│   │   │   ├── /domain        # Declaration of core business logic/rules, like entities, value objects and domain events
+│   │   │   ├── /application   # Use cases that relies on domain objects, like application services, external services, domain event handlers
 │   │   │   ├── /adapter       # Abstractions so that the application layer code can interact with the infra layer code without depends from it (i.e. IUserRepo, IJWTTokenService)
 │   │   │   ├── /infra         # Concrete implementations of the abstractions from the adapter layer code so that they can be spun up at runtime, like controllers, routes, databases, external APIs, caches and ORMs
-│   │   │   ├── /shared        # Shared code between all modules, like a global module
+│   │   │   /shared            # A global module shared between all modules
 ├── /test                      # Test helpers
 ```
 

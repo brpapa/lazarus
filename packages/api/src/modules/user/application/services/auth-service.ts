@@ -1,11 +1,11 @@
 import assert from 'assert'
 import jwt from 'jsonwebtoken'
-import { IUserSessionRepo } from '@incident/adapter/repositories/user-session-repo'
-import { IAuthService } from '@user/adapter/auth-service'
-import { JwtAccessToken, JwtClaims, JwtRefreshToken } from '@user/domain/models/jwt'
-import { User } from '@user/domain/models/user'
+import { IUserSessionRepo } from 'src/modules/incident/adapter/repositories/user-session-repo'
+import { IAuthService } from 'src/modules/user/adapter/auth-service'
+import { JwtAccessToken, JwtClaims, JwtRefreshToken } from 'src/modules/user/domain/models/jwt'
+import { User } from 'src/modules/user/domain/models/user'
 import { JWT_ACCESS_TOKEN_EXPIRITY_TIME_IN_S, JWT_SECRET_KEY } from 'src/config'
-import { UUID } from '@shared/domain/models/uuid'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 
 /**
  * persists jwt tokens to redis if is signed, and determine their validity
@@ -27,10 +27,10 @@ export class AuthService implements IAuthService {
     })
   }
 
-  decodeJwtIgnoringExpiration(token: JwtAccessToken): Promise<JwtClaims> {
+  decodeJwtIgnoringExpiration(token: JwtAccessToken): Promise<JwtClaims | null> {
     return new Promise((res, rej) => {
       jwt.verify(token, JWT_SECRET_KEY, { ignoreExpiration: true }, (error, decoded) => {
-        return error ? rej(error) : res(<JwtClaims>decoded)
+        return error ? res(null) : res(<JwtClaims>decoded)
       })
     })
   }

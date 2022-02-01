@@ -1,7 +1,7 @@
-import { Comment } from '@incident/domain/models/comment'
-import { Incident } from '@incident/domain/models/incident'
-import { UUID } from '@shared/domain/models/uuid'
-import { WatchedList } from '@shared/domain/watched-list'
+import { Comment } from 'src/modules/incident/domain/models/comment'
+import { Incident } from 'src/modules/incident/domain/models/incident'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { WatchedList } from 'src/modules/shared/domain/watched-list'
 import { LocationMapper, LocationRedisModel } from '../../../shared/adapter/mappers/location-mapper'
 import { IncidentStatusEnum } from '../../domain/models/incident-status'
 import {
@@ -16,6 +16,7 @@ export class IncidentMapper {
   static fromDomainToDTO(domain: Incident): IncidentDTO {
     return {
       incidentId: domain.id.toString(),
+      ownerUserId: domain.ownerUserId.toString(),
       title: domain.title,
       location: LocationMapper.fromDomainToDTO(domain.location),
       formattedAddress: domain.formattedAddress,

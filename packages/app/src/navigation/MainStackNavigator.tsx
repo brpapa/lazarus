@@ -1,8 +1,9 @@
 import { t } from '@metis/shared'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { Suspense, useEffect } from 'react'
-import { Loading } from '~/components/v1/atoms'
+import React, { useEffect } from 'react'
+import { useRecoilValue } from 'recoil'
 import { startBackgroundLocationTracking } from '~/data/background-tasks/background-location-tracking'
+import { preferencesUserRefState } from '~/data/recoil/preferences-user-ref'
 import { useOnNearbyIncidentCreatedSubscription } from '~/data/relay/subscriptions/OnNearbyIncidentCreatedSubscription'
 import { usePushNotificationsListener } from '~/hooks/use-push-notifications-listener'
 import { useSession } from '~/hooks/use-session'
@@ -26,6 +27,8 @@ export function MainStackNavigator() {
     }
   }, [isSignedIn])
 
+  const preferencesUserRef = useRecoilValue(preferencesUserRefState)
+
   return (
     <MainStack.Navigator
       mode={'card'}
@@ -38,11 +41,6 @@ export function MainStackNavigator() {
             component={HomeTabNavigator}
             options={{ headerShown: false }}
           />
-          {/* {(props) => (
-              <Suspense fallback={<Loading />}>
-                <HomeTabNavigator {...props} />
-              </Suspense>
-            )} */}
           <MainStack.Screen
             name="IncidentDetail"
             component={IncidentDetail}
@@ -53,11 +51,14 @@ export function MainStackNavigator() {
             component={Notifications}
             options={{ title: t('notification.header'), ...navHeader }}
           />
-          <MainStack.Screen
-            name="Preferences"
-            component={Preferences}
-            options={{ title: t('Preferences'), ...navHeader }}
-          />
+          {preferencesUserRef && (
+            <MainStack.Screen
+              name="Preferences"
+              options={{ title: t('Preferences'), ...navHeader }}
+            >
+              {(props) => <Preferences userRef={preferencesUserRef} {...props} />}
+            </MainStack.Screen>
+          )}
         </>
       ) : (
         <>

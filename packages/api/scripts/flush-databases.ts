@@ -1,27 +1,33 @@
 /* eslint-disable no-console */
-import { Incident } from '@incident/domain/models/incident'
-import { Media } from '@incident/domain/models/media'
-import { MediaTypeEnum } from '@incident/domain/models/media-type'
-import { incidentRepo } from '@incident/infra/db/repositories'
-import { Device } from '@notification/domain/models/device'
-import { Notification } from '@notification/domain/models/notification'
-import { NotificationLink } from '@notification/domain/models/notification-link'
-import { deviceRepo, notificationRepo } from '@notification/infra/db/repositories'
-import { LinkedEntityEnum, NotificationCodeEnum } from '@prisma/client'
-import { Location } from '@shared/domain/models/location'
-import { UUID } from '@shared/domain/models/uuid'
-import { User } from '@user/domain/models/user'
-import { UserEmail } from '@user/domain/models/user-email'
-import { UserPassword } from '@user/domain/models/user-password'
-import { userRepo } from '@user/infra/db/repositories'
 // @ts-ignore
 import { randomCirclePoint } from 'random-location'
-import { AWS_S3_BUCKET_NAME } from 'src/config'
+import { UserPreferences } from 'src/modules/user/domain/models/user-preferences'
+import { AWS_S3_BUCKET_NAME } from '../src/config'
+import { Incident } from '../src/modules/incident/domain/models/incident'
+import { Media } from '../src/modules/incident/domain/models/media'
+import { MediaTypeEnum } from '../src/modules/incident/domain/models/media-type'
+import { incidentRepo } from '../src/modules/incident/infra/db/repositories'
+import { Device } from '../src/modules/notification/domain/models/device'
+import {
+  Notification,
+  NotificationCodeEnum,
+} from '../src/modules/notification/domain/models/notification'
+import {
+  LinkedEntityEnum,
+  NotificationLink,
+} from '../src/modules/notification/domain/models/notification-link'
+import { deviceRepo, notificationRepo } from '../src/modules/notification/infra/db/repositories'
+import { Location } from '../src/modules/shared/domain/models/location'
+import { UUID } from '../src/modules/shared/domain/models/uuid'
+import { User } from '../src/modules/user/domain/models/user'
+import { UserEmail } from '../src/modules/user/domain/models/user-email'
+import { UserPassword } from '../src/modules/user/domain/models/user-password'
+import { userRepo } from '../src/modules/user/infra/db/repositories'
 import {
   cleanUpDatasources as cleanUpDataSources,
   connectDataSources,
   disconnectDatasources,
-} from 'tests/helpers'
+} from '../tests/helpers'
 
 async function main() {
   await connectDataSources()
@@ -41,6 +47,7 @@ const seed = async () => {
           latitude: -22.89,
           longitude: -48.45,
         }),
+        preferences: UserPreferences.create({ radiusDistanceMeters: 5000 }),
       },
       new UUID('user1-id'),
     ),
@@ -116,7 +123,7 @@ const seed = async () => {
   )
 
   await notificationRepo.commitBatch(
-    new Array(30).fill(null).map((_, i) =>
+    new Array(10).fill(null).map((_, i) =>
       Notification.create({
         targetUserId: user1.id.toString(),
         code: NotificationCodeEnum.NEARBY_INCIDENT_CREATED,

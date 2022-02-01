@@ -1,11 +1,10 @@
 import { t } from '@metis/shared'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Keyboard, SafeAreaView, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, Text, TextInput } from '~/components/v1/atoms'
-import { HeaderItem, ModalHeader } from '~/components/v1/molecules'
+import { Button, HeaderItem, ModalHeader, Text, TextInput } from '~/components/v1'
 import { useReportIncidentMutation } from '~/data/relay/mutations/ReportIncidentMutation'
 import type { RootStackNavProp, RootStackRouteProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'
@@ -28,22 +27,22 @@ export function ReportIncident() {
     reset,
   } = useForm<Form>({ mode: 'onChange', reValidateMode: 'onChange' })
 
-  const closeReport = useCallback(() => {
-    nav.popToTop()
-    nav.goBack()
-  }, [nav])
-
   const onSubmit = handleSubmit(async ({ title }) => {
     Keyboard.dismiss()
     const result = await reportIncident({
       title: title,
-      pictures: params.capturedMedias,
+      medias: params.capturedMedias,
     })
 
     result.map(
-      () => closeReport(),
+      () => {
+        nav.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        })
+      },
       (err) => {
-        setErrorMsg(err.reason)
+        setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic'))
         reset({ title: '' })
       },
     )

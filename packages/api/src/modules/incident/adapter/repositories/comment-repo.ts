@@ -1,6 +1,6 @@
-import { WatchedList } from '@shared/domain/watched-list'
-import { Comment } from '@incident/domain/models/comment'
-import { IRepository } from '@shared/infra/db/repository'
+import { WatchedList } from 'src/modules/shared/domain/watched-list'
+import { Comment } from 'src/modules/incident/domain/models/comment'
+import { IRepository } from 'src/modules/shared/infra/db/repository'
 
 export interface ICommentRepo extends IRepository<Comment> {
   findAllOfIncident(incidentId: string, offset?: number): Promise<Comment[]>

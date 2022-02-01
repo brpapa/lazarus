@@ -1,24 +1,40 @@
-import { GraphQLFieldConfig, GraphQLInputObjectType, GraphQLNonNull } from 'graphql'
-import { Connection, connectionArgs, ConnectionArguments, connectionFromArray } from 'graphql-relay'
+import { GraphQLFieldConfig, GraphQLFloat, GraphQLInputObjectType, GraphQLNonNull } from 'graphql'
+import { connectionArgs, ConnectionArguments, connectionFromArray } from 'graphql-relay'
 import { GraphQLContext } from 'src/api/graphql/context'
-import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
-import { getIncidents } from '@incident/application/queries'
-import { LocationInputType } from '@shared/infra/graphql/types/location-type'
+import { IncidentConnectionDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
+import { incidentsQuery } from 'src/modules/incident/application/queries'
+import type { Input as IncidentQueryInput } from 'src/modules/incident/application/queries/incidents-query'
+import { LocationInputType } from 'src/modules/shared/infra/graphql/types/location-type'
 import { IncidentConnectionType } from '../types/incident-type'
 
 const IncidentsFilterInputType = new GraphQLInputObjectType({
   name: 'IncidentsFilterInputType',
   fields: () => ({
-    withinBoundary: {
+    withinBox: {
       type: new GraphQLInputObjectType({
-        name: 'WithinBoundaryInput',
-        description: 'Filter by incidents localizated within a box boundary',
+        name: 'IncidentsFilterWithinBox',
+        description: 'Filter by incidents located within the boundaries of given box',
         fields: () => ({
           northEast: {
             type: GraphQLNonNull(LocationInputType),
           },
           southWest: {
             type: GraphQLNonNull(LocationInputType),
+          },
+        }),
+      }),
+    },
+    withinCircle: {
+      type: new GraphQLInputObjectType({
+        name: 'IncidentsFilterWithinCircle',
+        description: 'Filter by incidents located within the boundaries of given circle',
+        fields: () => ({
+          center: {
+            type: GraphQLNonNull(LocationInputType),
+          },
+          radius: {
+            type: GraphQLNonNull(GraphQLFloat),
+            description: 'The circle radius given in meters',
           },
         }),
       }),
@@ -36,17 +52,11 @@ export const IncidentsQueryType: GraphQLFieldConfig<void, GraphQLContext, any> =
   },
   resolve: async (
     _,
-    args: ConnectionArguments & {
-      filter?: {
-        withinBoundary?: {
-          northEast: { latitude: number; longitude: number }
-          southWest: { latitude: number; longitude: number }
-        }
-      }
-    },
+    args: ConnectionArguments & IncidentQueryInput,
     ctx,
-  ): Promise<Connection<IncidentDTO>> => {
-    const incidents = await getIncidents.exec({ filter: args.filter }, ctx)
-    return connectionFromArray(incidents, args)
+  ): Promise<IncidentConnectionDTO> => {
+    const { incidents, totalCount } = await incidentsQuery.exec(args, ctx)
+    const connection = connectionFromArray(incidents, args)
+    return { ...connection, totalCount }
   },
 }

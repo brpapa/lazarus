@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { View } from 'react-native'
-import { FloatingButton, Text } from '~/components/v1/atoms'
+import { FloatingButton, Text } from '~/components/v1'
 import { useCameraPermissions } from '~/hooks/use-camera-permissions'
 import type { ReportStackNavProp } from '~/navigation/types'
 import { makeUseStyles } from '~/theme/v1'

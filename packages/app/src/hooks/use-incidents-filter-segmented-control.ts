@@ -1,6 +1,6 @@
 import { t } from '@metis/shared'
 import { useCallback, useState } from 'react'
-import { SCREEN_WIDTH } from '~/config'
+import { SCREEN_WIDTH } from '~/shared/constants'
 
 const filterTypes = {
   LATEST_DAY: { label: () => t('24h') },

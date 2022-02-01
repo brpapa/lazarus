@@ -1,12 +1,17 @@
 import { t } from '@metis/shared'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { Suspense, useEffect, useRef } from 'react'
+import React, { Suspense, useRef } from 'react'
 import { View } from 'react-native'
-import { graphql, useQueryLoader, useRefetchableFragment } from 'react-relay'
+import { graphql, useRefetchableFragment } from 'react-relay'
 import { useRecoilState } from 'recoil'
-import { FloatingButton, Loading, SegmentedControl, Text } from '~/components/v1/atoms'
-import { IncidentPreview } from '~/components/v1/organisms/IncidentPreview'
-import MapView from '~/components/v1/organisms/MapView'
+import {
+  FloatingButton,
+  IncidentPreview,
+  Loading,
+  MapView,
+  SegmentedControl,
+  Text,
+} from '~/components/v1'
 import { IncidentMarkerList } from '~/components/v1/organisms/MapView/IncidentMarkerList'
 import type { MapViewRef } from '~/components/v1/organisms/MapView/MapView'
 import { selectedIncidentIdInMap } from '~/data/recoil'
@@ -15,21 +20,29 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '~/shared/constants'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { ExplorerRefreshQuery as ExplorerRefreshQueryType } from '~/__generated__/ExplorerRefreshQuery.graphql'
 import type { Explorer_query$key } from '~/__generated__/Explorer_query.graphql'
-import type { IncidentPreviewQuery as IncidentPreviewQueryType } from '~/__generated__/IncidentPreviewQuery.graphql'
-import IncidentPreviewQuery from '~/__generated__/IncidentPreviewQuery.graphql'
-
-// TODO
-const USER_RADIUS_DISTANCE_IN_METERS = 5000
-const NEARBY_INCIDENTS_COUNT = 2
-const NEARBY_USERS_COUNT = 1230
 
 type ExplorerProps = {
   queryRef: Explorer_query$key
 }
 
+// prettier-ignore
 const frag = graphql`
-  fragment Explorer_query on Query @refetchable(queryName: "ExplorerRefreshQuery") {
+  fragment Explorer_query on Query 
+    @refetchable(queryName: "ExplorerRefreshQuery") {
+
     ...IncidentMarkerList_query
+
+    me {
+      user {
+        preferences {
+          radiusDistance
+        }
+      }
+      stats {
+        nearbyIncidentsCount
+        nearbyUsersCount
+      }
+    }
   }
 `
 
@@ -42,29 +55,21 @@ export function Explorer(props: ExplorerProps) {
     props.queryRef,
   )
 
+  const mapViewRef = useRef<MapViewRef | null>(null)
   const [selectedIncidentId, setSelectedIncidentId] = useRecoilState(selectedIncidentIdInMap)
-  const someIncidentIsSelected = selectedIncidentId !== null
-
-  const [incidentPreviewQueryRef, loadIncidentPreviewQuery] =
-    useQueryLoader<IncidentPreviewQueryType>(IncidentPreviewQuery)
-
-  useEffect(() => {
-    if (selectedIncidentId === null) return
-    loadIncidentPreviewQuery({ id: selectedIncidentId })
-  }, [loadIncidentPreviewQuery, selectedIncidentId])
-
   const filterSegmentedControlProps = useIncidentsFilterSegmentedControlProps()
 
-  const mapViewRef = useRef<MapViewRef | null>(null)
+  const showHighlightStats = data.me?.stats.nearbyIncidentsCount && data.me?.stats.nearbyUsersCount
 
   return (
     <View style={s.container}>
-      <MapView ref={mapViewRef} radiusDistance={USER_RADIUS_DISTANCE_IN_METERS}>
+      <MapView ref={mapViewRef} radiusDistance={data?.me?.user?.preferences.radiusDistance ?? 0}>
         <IncidentMarkerList queryRef={data} />
       </MapView>
 
       {/* overlayed to MapView views: */}
 
+      {/* // TODO: filter by latest days */}
       <View style={s.topContainer}>
         <SegmentedControl {...filterSegmentedControlProps} />
       </View>
@@ -79,32 +84,36 @@ export function Explorer(props: ExplorerProps) {
         locations={[0, 0.79]}
       />
 
-      {!someIncidentIsSelected ? (
-        <View style={s.highlightContainer}>
-          <Text variant="header">
-            {t('explorer.incidentsNearby', { count: NEARBY_INCIDENTS_COUNT }) as string}
-          </Text>
-          <Text variant="body">
-            {
-              t('explorer.peopleWithinCircle', {
-                count: NEARBY_USERS_COUNT,
-                radiusInMeters: USER_RADIUS_DISTANCE_IN_METERS,
-              }) as string
-            }
-          </Text>
-        </View>
-      ) : (
-        incidentPreviewQueryRef && (
-          <View style={s.previewContainer}>
-            <Suspense fallback={<Loading />}>
-              <IncidentPreview
-                preloadedQuery={incidentPreviewQueryRef}
-                closeable={true}
-                onClosed={() => setSelectedIncidentId(null)}
-              />
-            </Suspense>
+      {selectedIncidentId === null ? (
+        showHighlightStats && (
+          <View style={s.highlightStatsContainer}>
+            <Text variant="header">
+              {
+                t('explorer.incidentsNearby', {
+                  count: data.me.stats.nearbyIncidentsCount,
+                }) as string
+              }
+            </Text>
+            <Text variant="body">
+              {
+                t('explorer.peopleWithinCircle', {
+                  count: data.me.stats.nearbyUsersCount,
+                  radiusInMeters: data.me.user.preferences.radiusDistance,
+                }) as string
+              }
+            </Text>
           </View>
         )
+      ) : (
+        <View style={s.previewContainer}>
+          <Suspense fallback={<Loading />}>
+            <IncidentPreview
+              incidentId={selectedIncidentId}
+              closeable={true}
+              onClosed={() => setSelectedIncidentId(null)}
+            />
+          </Suspense>
+        </View>
       )}
     </View>
   )
@@ -141,7 +150,7 @@ const useStyles = makeUseStyles(({ colors, spacing, insets }) => ({
     bottom: 0,
     width: '100%',
   },
-  highlightContainer: {
+  highlightStatsContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,

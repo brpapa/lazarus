@@ -1,5 +1,6 @@
-import type { LinkedEntityEnum } from '@notification/domain/models/notification-link'
-import type { NotificationCodeEnum } from '@notification/domain/models/notification'
+import { Connection } from 'graphql-relay'
+import type { NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
+import type { LinkedEntityEnum } from 'src/modules/notification/domain/models/notification-link'
 
 export interface NotificationDTO {
   notificationId: string
@@ -14,4 +15,9 @@ export interface NotificationDTO {
   }
   seenByTargetUser: boolean
   createdAt?: Date
+}
+
+export type NotificationConnectionDTO = Connection<NotificationDTO> & {
+  totalCount: number
+  notSeenCount: number
 }

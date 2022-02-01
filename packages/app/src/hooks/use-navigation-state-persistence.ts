@@ -18,6 +18,7 @@ export const useNavigationStatePersistence = () => {
   useEffect(() => {
     const loadInitialNavigationState = async () => {
       try {
+        // await AsyncStorage.removeItem(PERSISTENCE_KEY)
         // const initialUrl = await Linking.getInitialURL() // if initialUrl == null there is no deep link
 
         if (Platform.OS !== 'web') {

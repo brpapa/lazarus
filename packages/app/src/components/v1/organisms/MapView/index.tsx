@@ -29,4 +29,4 @@ const createMapView: () => MapViewType = ENABLE_GOOGLE_MAPS
     }
 
 const MapView = createMapView()
-export default MapView
+export { MapView }

@@ -4,7 +4,7 @@ import { makeUseStyles, useTheme } from '~/theme/v1'
 import {
   AVATAR_ICON_SIZES,
   AVATAR_ICON_SIZE_VARIANTS,
-  AVATAR_LETTER_SIZES
+  AVATAR_LETTER_SIZES,
 } from '~/theme/v1/constants'
 import { LetterAvatar } from './LetterAvatar'
 
@@ -24,7 +24,7 @@ export function Avatar(props: Props) {
   const { colors } = useTheme()
 
   const {
-    src = '',
+    src,
     size = 's',
     color = colors.textLighter,
     style,
@@ -39,8 +39,8 @@ export function Avatar(props: Props) {
   const finalSize = AVATAR_ICON_SIZES[size]
   const fontSize = AVATAR_LETTER_SIZES[size]
 
-  const loadChild = src === '' || error
-  const imgSource = { uri: src }
+  const loadChild = src === undefined || error
+  const imgSource = { uri: src ?? undefined }
 
   const letterAvatar = (
     <LetterAvatar size={finalSize} color={color} label={label} style={style} fontSize={fontSize} />
@@ -48,7 +48,7 @@ export function Avatar(props: Props) {
 
   return (
     <TouchableOpacity onPress={onPress}>
-      {src === '' && loading ? (
+      {src === undefined && loading ? (
         letterAvatar
       ) : (
         <ImageBackground

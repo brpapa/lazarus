@@ -1,11 +1,10 @@
 import Carousel from 'pinar'
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
-import { VideoPlayer } from './VideoPlayer'
-import { MediaType } from '~/shared/constants'
+import { MediaTypeEnum } from '~/shared/constants'
 import { makeUseStyles } from '~/theme/v1'
-import { useIsFocused } from '@react-navigation/native'
-import { useIsForeground } from '~/hooks/use-is-foreground'
+import type { Media } from '~/types'
+import { VideoPlayer } from './VideoPlayer'
 
 type MediasCarousel = {
   medias?: Media[]
@@ -36,9 +35,9 @@ function Slide(props: { media: Media; height: number }) {
   const s = useStyles()
 
   switch (media.type) {
-    case MediaType.IMAGE:
+    case MediaTypeEnum.IMAGE:
       return <Image source={{ uri: media.uri }} style={[s.media, s.image, { height }]} />
-    case MediaType.VIDEO:
+    case MediaTypeEnum.VIDEO:
       return (
         <VideoPlayer
           videoProps={{

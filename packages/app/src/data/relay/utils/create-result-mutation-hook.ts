@@ -30,6 +30,7 @@ export function createResultMutationHook<
     const commitAsync = useCallback(
       async (input: TInput) => {
         setIsSending(true)
+
         const mappedInput = await (config.inputMapper
           ? Promise.resolve(config.inputMapper(input))
           : Promise.resolve(input))
@@ -41,14 +42,8 @@ export function createResultMutationHook<
               setIsSending(false)
               if (errors !== null) throw new Error(`Unexpected error: ${JSON.stringify(errors)}`)
 
-              const output = (response as any)[config.mutationName]
-              if (!output) throw new Error(`Mutation ${config.mutationName} not exists`)
-
-              const result = output.result
-              if (!result)
-                throw new Error(
-                  `Output of mutation ${config.mutationName} not contains 'result' field`,
-                )
+              const result = (response as any)[config.mutationName]
+              if (!result) throw new Error(`Mutation ${config.mutationName} not exists`)
 
               if (result.__typename === `${config.resultTypenamePreffix}OkResult`) {
                 resolve(ok(result as TOkResult))

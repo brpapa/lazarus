@@ -1,15 +1,15 @@
-import { IncidentDTO } from '@incident/adapter/dtos/incident-dto'
-import { IncidentMapper } from '@incident/adapter/mappers/incident-mapper'
-import { IIncidentRepo } from '@incident/adapter/repositories/incident-repo'
-import { Incident } from '@incident/domain/models/incident'
-import { IncidentStatusEnum } from '@incident/domain/models/incident-status'
-import { Media } from '@incident/domain/models/media'
-import { MediaTypeEnum } from '@incident/domain/models/media-type'
+import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
+import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
+import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
+import { Incident } from 'src/modules/incident/domain/models/incident'
+import { IncidentStatusEnum } from 'src/modules/incident/domain/models/incident-status'
+import { Media } from 'src/modules/incident/domain/models/media'
+import { MediaTypeEnum } from 'src/modules/incident/domain/models/media-type'
 import { err, ok, Result } from '@metis/shared'
-import { AppContext } from '@shared/logic/app-context'
-import { Command } from '@shared/logic/command'
-import { ApplicationError, UnauthenticatedError } from '@shared/logic/errors'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
+import { AppContext } from 'src/modules/shared/logic/app-context'
+import { Command } from 'src/modules/shared/logic/command'
+import { ApplicationError, UnauthenticatedError } from 'src/modules/shared/logic/errors'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { Debugger } from 'debug'
 import { MediaDTO } from '../../adapter/dtos/media-dto'
 import { IGeocodingService } from '../../adapter/geocoding-service'
@@ -53,14 +53,14 @@ export class ReportIncidentCommand extends Command<Input, Res> {
       Media.create({
         ...m,
         incidentId: incident.id,
-        type: MediaTypeEnum.IMAGE, // TODO
+        type: MediaTypeEnum[m.type],
         recordedAt: new Date(), // TODO
       }),
     )
     incident.addMedias(medias)
 
     const address = await this.geocodingService.fetchFormattedAddress(incident.location)
-    if (address != null) incident.setFormattedAddress(address)
+    if (address !== null) incident.setFormattedAddress(address)
 
     await this.incidentRepo.commit(incident)
 

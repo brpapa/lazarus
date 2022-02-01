@@ -16,6 +16,7 @@ import Reanimated, {
   withTiming,
 } from 'react-native-reanimated'
 import { CAPTURE_BUTTON_SIZE } from '~/shared/constants'
+import type { CapturedMedia } from '~/types'
 import { getStartRecording, getTakePicture } from './camera-wrappers'
 
 const START_RECORDING_DELAY = 100

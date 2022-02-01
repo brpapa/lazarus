@@ -6,15 +6,30 @@ import type {
   RefreshTokenMutation as RefreshTokenMutationType,
 } from '~/__generated__/RefreshTokenMutation.graphql'
 import { createResultMutationCommitFn } from '../utils/create-result-mutation-commit-fn'
+import type { ErrResult } from '../utils/types'
+
+const mutation = graphql`
+  mutation RefreshTokenMutation($input: RefreshTokenInput!) {
+    refreshToken(input: $input) {
+      __typename
+      ... on RefreshTokenOkResult {
+        accessToken
+        accessTokenExpiresIn
+      }
+      ... on RefreshTokenErrResult {
+        reason
+        reasonIsTranslated
+        code
+      }
+    }
+  }
+`
 
 type RefreshTokenOkResult = {
   accessToken: string
   accessTokenExpiresIn: string
 }
-type RefreshTokenErrResult = {
-  reason: string
-  code: RefreshTokenErrCodeType
-}
+type RefreshTokenErrResult = ErrResult<RefreshTokenErrCodeType>
 
 const commit = createResultMutationCommitFn<
   RefreshTokenMutationType,
@@ -24,23 +39,7 @@ const commit = createResultMutationCommitFn<
 >({
   mutationName: 'refreshToken',
   resultTypenamePreffix: 'RefreshToken',
-  mutation: graphql`
-    mutation RefreshTokenMutation($input: RefreshTokenInput!) {
-      refreshToken(input: $input) {
-        result {
-          __typename
-          ... on RefreshTokenOkResult {
-            accessToken
-            accessTokenExpiresIn
-          }
-          ... on RefreshTokenErrResult {
-            reason
-            code
-          }
-        }
-      }
-    }
-  `,
+  mutation,
 })
 
 export const commitRefreshTokenMutation = (

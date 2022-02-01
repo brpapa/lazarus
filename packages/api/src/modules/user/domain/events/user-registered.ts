@@ -1,6 +1,6 @@
-import { DomainEvent } from '@shared/domain/events/domain-event'
-import { UUID } from '@shared/domain/models/uuid'
-import { User } from '@user/domain/models/user'
+import { DomainEvent } from 'src/modules/shared/domain/events/domain-event'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
+import { User } from 'src/modules/user/domain/models/user'
 
 export class UserRegistered extends DomainEvent {
   constructor(public user: User) {

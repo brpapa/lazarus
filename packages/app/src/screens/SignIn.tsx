@@ -4,8 +4,7 @@ import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, Text, TextInput, TextInputType } from '~/components/v1/atoms'
-import { CustomHeader } from '~/components/v1/molecules/Header'
+import { Button, CustomHeader, Text, TextInput, TextInputType } from '~/components/v1'
 import { useSignInMutation } from '~/data/relay/mutations/SignInMutation'
 import { useSession } from '~/hooks/use-session'
 import type { MainStackNavProp } from '~/navigation/types'
@@ -49,7 +48,7 @@ export function SignIn() {
         )
       },
       (err) => {
-        setErrorMsg(err.reason)
+        setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic'))
         reset({ username: '', password: '' })
       },
     )

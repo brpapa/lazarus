@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleProp, TextStyle, TouchableOpacity, TouchableOpacityProps } from 'react-native'
-
-import { ActivityIndicator, Icon, IconProps, IconWithLabel, Text } from '~/components/v1/atoms'
 import type { IconName } from '~/icons'
 import { makeUseStyles, useTheme } from '~/theme/v1'
+import { IconWithLabel } from '../../atoms'
+import { ActivityIndicator, Icon, IconProps, Text } from './../../atoms'
 
 type HeaderItemProps = Omit<TouchableOpacityProps, 'onPress'> &
   Pick<IconProps, 'color' | 'size'> & {

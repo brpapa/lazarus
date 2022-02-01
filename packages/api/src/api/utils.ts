@@ -1,5 +1,5 @@
 import debug from 'debug'
-import { authService } from '@user/application/services'
+import { authService } from 'src/modules/user/application/services'
 
 const log = debug('app:infra:utils')
 
@@ -19,8 +19,12 @@ export const getUserIdIgnoringExpiration = async (
 ): Promise<string | null> => {
   if (!authorization) return null
   const token = extractToken(authorization)
-  const { userId } = await authService.decodeJwtIgnoringExpiration(token)
-  return userId
+  const decodedToken = await authService.decodeJwtIgnoringExpiration(token)
+  if (!decodedToken) {
+    log('The received access token is expired or invalid')
+    return null
+  }
+  return decodedToken.userId
 }
 
 const extractToken = (authorization: string) => {

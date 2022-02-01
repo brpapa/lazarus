@@ -1,13 +1,13 @@
 import { err, ok, Result } from '@metis/shared'
-import { Command } from '@shared/logic/command'
-import { UserDTO } from '@user/adapter/dtos/user-dto'
-import { UserMapper } from '@user/adapter/mappers/user-mapper'
-import { IUserRepo } from '@user/adapter/repositories/user-repo'
-import { User } from '@user/domain/models/user'
-import { ShortPasswordError, UserPassword } from '@user/domain/models/user-password'
+import { Command } from 'src/modules/shared/logic/command'
+import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
+import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
+import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
+import { User } from 'src/modules/user/domain/models/user'
+import { ShortPasswordError, UserPassword } from 'src/modules/user/domain/models/user-password'
 import { Debugger } from 'debug'
-import { InvalidEmailAddressError, UserEmail } from '@user/domain/models/user-email'
-import { ApplicationError } from '@shared/logic/errors'
+import { InvalidEmailAddressError, UserEmail } from 'src/modules/user/domain/models/user-email'
+import { ApplicationError } from 'src/modules/shared/logic/errors'
 
 export type Input = {
   username: string

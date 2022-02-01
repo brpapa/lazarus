@@ -7,8 +7,8 @@ import {
   TouchableOpacityProps,
   View,
 } from 'react-native'
-import { Avatar, AvatarProps, Text } from '~/components/v1/atoms'
 import { FontVariant, makeUseStyles } from '~/theme/v1'
+import { Avatar, AvatarProps, Text } from './../atoms'
 
 type Props = TouchableOpacityProps &
   Pick<AvatarProps, 'size'> & {
