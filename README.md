@@ -1,54 +1,124 @@
-# Schedule
+# Tech stack
 
-- planning:
+- javascript (language)
+- typescript (type system)
+- node (backend runtime)
+- koa (server framework)
+- graphql (API)
+- vscode (IDE)
+- recoil ("global" state management)
+- ws + graphql-ws (for websockets)
+- relay (declarative data fetching)
+- redis (cache, queue management, pubsub)
+- jest (test framework)
+- supertest (HTTP tests)
+- prettier (code formatting)
+- prisma (database ORM)
+- github actions (CI/CD)
+- eslint (lint rules)
+- internationalization: [i18next](https://www.i18next.com)
+- IaC: terraform
 
-  - at least:
-    - signup & signin, incident publishing
-    - background and foreground user location tracking
-    - push notifications about new incidents for relevant users
-    - i18n support
-    - notification as entity
-    - redesign of all screens
-      - git commit -m '[app] initial setup of tamagui'
-        - gradually and testing each component at time!
-      - individual incident view 
-      - report screen (with video upload)
-      - notifications view
-      - nearby incidents map view
-    - user interacting with another incidents
-      - user react, user comment, user upvote/downvote comments
+- react (declarative UI)
+- react native (native apps)
+- expo
 
-  - would be nice:
-    - 08/01 - 09/01: user friendships, friends map view with (with real-time updates?)
-    - 15/01 - 16/01: user-user chat
-    - 22/01 - 23/01: incidents fetching filtering within screen
-    - 29/01 - 30/01: reputation system, user editing your owned incidents
+- React Native framework for building native apps with React
+- Expo library for better development experience
+- Relay framework for using GraphQL with React
+- TypeScript language for type checking and better code quality
+- React Navigation library for navigation
 
-- maybe:
-  - git commit -m '[api/app] add logout mutation (when user logout remove user devices that are listening for push notifications)'
-  - git commit -m '[api] add pino logger'
-  - git commit -m '[shared] add common types'
-  - git commit -m '[app] bump relay to v13.0.0.0 (with rust compiler)'
-  - git commit -m '[api] bump graphql-js to v16.0.0'
-  - git commit -m '[api/app] refactor to graphql upload'
-    - https://github.com/jaydenseric/graphql-upload
-    - multipart request over graphql (use busboy under the hood)
+<!-- - mongoose (mongo schema) -->
+<!-- - bulljs (event driven distributed jobs) -->
+<!-- - webpack (bundling server and frontend apps) -->
+<!-- - rollup (bundling for packages and libraries) -->
+<!-- - babel (enable modern syntax and plugins) -->
+<!-- - jscodeshift (codemod) -->
+<!-- - openapi (API REST documentation) -->
+<!-- - docusuarus (documentation) -->
+<!-- - hygen (codegen) -->
+<!-- - styled-components (css in js) -->
+<!-- - storybook (design system and email builder) -->
+<!-- - testing library (testing dom) -->
+<!-- - material-ui (ui base components) -->
+<!-- - styled-system (functional css) -->
+<!-- - react-router (routing) -->
+<!-- - nivo + d3 (for charts) -->
+<!-- - react-table (table management) -->
+<!-- - draftjs (richtext) -->
+<!-- - formik (forms) -->
+<!-- - fastlane (android/ios deploy automation) -->
 
-- goal:
-  - 01/02: frontend+backend 100% pronto localmente (3a apresentacao pro remo)
-  - 15/02: monografia escrita (4a apresentacao pro remo)
-  - 01/03: apresentacao criada (apresentacao na banca final)
+# Architecture overview
 
-- deploy
-  - backend
-    - heroky (git push e ja ta no ar)
-  - app
-    - set up Expo Android app to get push notifications using your own Firebase Cloud Messagign (FCM) credentials: https://docs.expo.dev/push-notifications/using-fcm 
-    - expo: read the [permissions on iOS](https://docs.expo.dev/guides/permissions/#ios) and [permissions on Android](https://docs.expo.dev/guides/permissions/#android) sections carefully before deploying your app to stores
+- `mobile`: React native application
+- `api`: Heroku application
+- `redis`: Heroku Redis
+<!-- heroku redis free plan is not persistent (restart = data losing), 20 max concurrent connections only -->
+- `postgresql`: Amazon RDS
+- `static-storage`: Amazon S3
+
+- `mobile` -> `api`
+- `api` -> `redis`
+- `api` -> `postgresql`
+- `api` -> `static-storage`
+
+## Infrastructure
+
+All infrastructure components are defined inside [terraform](./terraform) folder using the IaC tool [Terraform](https://www.terraform.io).
+
+- Before do anything, define a `terraform/secrets.tfvars` file with your secrets:
+
+  ```
+  heroku_api_key = "your_heroku_api_key"
+  heroku_email = "your_heroku_email"
+  aws_profile = "your_aws_profile"
+  aws_access_key = "your_aws_access_key"
+  aws_secret_key = "your_aws_secret_key"
+  pg_root_username = "your_pg_root_username"
+  pg_root_password = "your_pg_root_password"
+  ```
+
+Inside `./terraform` folder, you can run this commands:
+  - `terraform init`: initialize terraform configuration and install plugins.
+  - `terraform fmt`: format *.tf files
+  - `terraform validate`: validate *.tf files
+  - `terraform plan -var-file="secrets.tfvars"`: preview the changes that will be done on providers to match current configuration.
+  - `terraform apply -var-file="secrets.tfvars"`: make the planned changes on providers.
+  - `terraform destroy -var-file="secrets.tfvars"`: clean up the resources created on providers.
+
+Links:
+- [Terraform Heroku provider documentation](https://registry.terraform.io/providers/heroku/heroku/latest/docs)
+- [Terraform AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+
+## Deploy
+
+At the moment, every new code must be deployed manually.
+
+### API
+
+- Inside `./packages/api` folder, run:
+  - `heroku container:push web --app metis-node-api --context-path ..`: build and push image do heroku registry
+  - `heroku container:release web --app metis-node-api`: deploy previous image
+
+- To view production logs: `heroku logs --app metis-node-api --tail`
+- To restart application: `heroku restart --app metis-node-api`
+
+### APP
+
+- For now app is built only as [pre-release](https://docs.expo.dev/guides/sharing-preview-releases/#internal-distribution) in my personal Expo account.
+
+- Create a project in your [Expo account](https://expo.dev)
+- Run `expo publish`
+  - https://docs.expo.dev/classic/building-standalone-apps/
+  - https://docs.expo.dev/build/setup/
+- Accessed in: https://expo.dev/@metis/metis
 
 # Requirements
 
-## Functional requirements (e os use cases que ele contem)
+## Functional requirements 
+<!-- (e os use cases que ele contem) -->
 
 - 1. usuários devem ser capazes de publicar alertas
 
@@ -154,85 +224,17 @@
   - para atender isso:
     - otimizar para leitura
 
-# Some definitions
 
-Active user: when user is with app opened (websocket connection stablished)
+# Development
+
+See instrucions for [api](./packages/api/README.md) and [app](./packages/app/README.md).
+
+Set credentials of Google Cloud Platform, AWS and Heroku.
+
+## Codebase definitions
+
 Relevant users: users that are located nearby to one incident
 User session: an auth token life cycle (access token & refresh token)
-
-# See it later
-
-- real-time updates
-
-  - https://mattkrick.medium.com/graphql-after-4-years-scaling-subscriptions-d6ea1a8987be
-
-  - all active app users keep a connection open with the server (websocket with GraphQL Subscription) to receive updates about
-
-    - [ ] progresso de upload de arquivos
-    - [ ] novo alerta criado na proximidade
-    - [ ] nova interação em alertas ativos na proximidade
-    - [ ] quantidade de usuarios nos arredores (não necessariamente logados)
-    - [?] chat 1-1
-      <!-- https://www.youtube.com/watch?v=E3NHd-PkLrQ -->
-      <!-- https://dev.to/dsckiitdev/build-a-chat-app-with-graphql-subscriptions-typescript-part-2-3k35 -->
-
-  - user location tracking
-    - [ ] near real-time user location updates, only between a friendship group of users
-      <!-- https://www.infoworld.com/article/3128306/build-geospatial-apps-with-redis.html -->
-        <!-- https://github.com/RedisLabs/geo.lua#location-updates -->
-          <!-- When you combine this geospatial support with other Redis capabilities, some interesting functionality becomes extremely simple to implement. For example, by melding the new Geo Sets and PubSub, it is nearly trivial to set up a real-time tracking system in which every update to a member’s position is sent to all interested parties (think of a running or biking group where you want to track group members locations in real time). -->
-
-# Tech stack
-
-
-- javascript (language)
-- typescript (type system)
-- node (backend runtime)
-- koa (server framework)
-- graphql (API)
-- vscode (IDE)
-- recoil ("global" state management)
-- ws + graphql-ws (for websockets)
-- relay (declarative data fetching)
-- redis (cache, queue management, pubsub)
-- jest (test framework)
-- supertest (HTTP tests)
-- prettier (code formatting)
-- prisma (database ORM)
-- github actions (CI/CD)
-- eslint (lint rules)
-- internationalization: [i18next](https://www.i18next.com)
-
-- react (declarative UI)
-- react native (native apps)
-- expo
-
-- React Native framework for building native apps with React
-- Expo library for better development experience
-- Relay framework for using GraphQL with React
-- TypeScript language for type checking and better code quality
-- React Navigation library for navigation
-
-<!-- - mongoose (mongo schema) -->
-<!-- - bulljs (event driven distributed jobs) -->
-<!-- - webpack (bundling server and frontend apps) -->
-<!-- - rollup (bundling for packages and libraries) -->
-<!-- - babel (enable modern syntax and plugins) -->
-<!-- - jscodeshift (codemod) -->
-<!-- - openapi (API REST documentation) -->
-<!-- - docusuarus (documentation) -->
-<!-- - hygen (codegen) -->
-<!-- - styled-components (css in js) -->
-<!-- - storybook (design system and email builder) -->
-<!-- - testing library (testing dom) -->
-<!-- - material-ui (ui base components) -->
-<!-- - styled-system (functional css) -->
-<!-- - react-router (routing) -->
-<!-- - nivo + d3 (for charts) -->
-<!-- - react-table (table management) -->
-<!-- - draftjs (richtext) -->
-<!-- - formik (forms) -->
-<!-- - fastlane (android/ios deploy automation) -->
 
 # Project structure visualization
 

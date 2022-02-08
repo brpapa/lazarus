@@ -48,3 +48,7 @@ _*
 **/mocks
 **/__mocks__
 
+# Terraform
+.terraform
+terraform.tfstate
+secrets.tfvars
