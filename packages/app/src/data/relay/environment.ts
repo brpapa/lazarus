@@ -7,7 +7,7 @@ import {
   Store,
   SubscribeFunction,
 } from 'relay-runtime'
-import { HTTP_SERVER_BASE_URL, WS_SERVER_BASE_URL } from '~/config'
+import { SERVER_HTTP_BASE_URL, SERVER_WS_BASE_URL } from '@env'
 import { AuthTokensManager } from '../storage/auth-tokens-manager'
 import { CloseCode, createClient } from 'graphql-ws'
 
@@ -35,7 +35,7 @@ const fetchFn: FetchFunction = async (operation, variables) => {
   let json = {} as any
   try {
     const headers = await createRequestHeaders()
-    const response = await fetch(`${HTTP_SERVER_BASE_URL}/graphql`, {
+    const response = await fetch(`${SERVER_HTTP_BASE_URL}/graphql`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -62,7 +62,7 @@ const fetchFn: FetchFunction = async (operation, variables) => {
 }
 
 const subscriptionsClient = createClient({
-  url: `${WS_SERVER_BASE_URL}/graphql/subscriptions`,
+  url: `${SERVER_WS_BASE_URL}/graphql/subscriptions`,
   connectionParams: async () => {
     const accessToken = await AuthTokensManager.getAccessToken()
     if (accessToken === null) return {}

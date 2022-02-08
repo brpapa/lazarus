@@ -1,6 +1,6 @@
 import { t } from '@metis/shared'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import { startBackgroundLocationTracking } from '~/data/background-tasks/background-location-tracking'
 import { preferencesUserRefState } from '~/data/recoil/preferences-user-ref'
@@ -36,11 +36,13 @@ export function MainStackNavigator() {
     >
       {isSignedIn ? (
         <>
-          <MainStack.Screen
-            name="HomeTabNavigator"
-            component={HomeTabNavigator}
-            options={{ headerShown: false }}
-          />
+          <MainStack.Screen name="HomeTabNavigator" options={{ headerShown: false }}>
+            {(props) => (
+              <Suspense fallback={null}>
+                <HomeTabNavigator {...props} />
+              </Suspense>
+            )}
+          </MainStack.Screen>
           <MainStack.Screen
             name="IncidentDetail"
             component={IncidentDetail}
@@ -48,9 +50,14 @@ export function MainStackNavigator() {
           />
           <MainStack.Screen
             name="Notifications"
-            component={Notifications}
             options={{ title: t('notification.header'), ...navHeader }}
-          />
+          >
+            {(props) => (
+              <Suspense fallback={null}>
+                <Notifications {...props} />
+              </Suspense>
+            )}
+          </MainStack.Screen>
           {preferencesUserRef && (
             <MainStack.Screen
               name="Preferences"

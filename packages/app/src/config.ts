@@ -1,18 +1,10 @@
+import { APP_ENV, SERVER_HTTP_BASE_URL } from '@env'
 import type { LocationTaskOptions } from 'expo-location'
 import * as Location from 'expo-location'
-import { __IOS__, __ANDROID__ } from '~/shared/constants'
+import { __ANDROID__, __IOS__ } from '~/shared/constants'
 import type { ColorScheme } from './theme/v1/helpers/color-scheme'
 
-// TODO: local
-const SERVER_HOST = '192.168.0.25' // `ifconfig | grep inet`
-const SERVER_PORT = 5555
-export const HTTP_SERVER_BASE_URL = `http://${SERVER_HOST}:${SERVER_PORT}`
-export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}:${SERVER_PORT}`
-
-// TODO: prod
-// const SERVER_HOST = 'metis-node-api.herokuapp.com'
-// export const HTTP_SERVER_BASE_URL = `https://${SERVER_HOST}`
-// export const WS_SERVER_BASE_URL = `ws://${SERVER_HOST}`
+console.log(`[info] ${JSON.stringify({ APP_ENV, SERVER_HTTP_BASE_URL })}`)
 
 export const ENABLE_GOOGLE_MAPS = __IOS__ || __ANDROID__
 export const ENABLE_CAMERA_MOCK = true
@@ -33,7 +25,4 @@ export const BACKGROUND_LOCATION_OPTIONS: LocationTaskOptions = {
   pausesUpdatesAutomatically: true,
 }
 
-export const FIXED_COLOR_SCHEME: ColorScheme = 'light' // se no-preference é considerado preferencia sistema
-
-export type ThemeName_V2_BETA_TAMAGUI = 'light' | 'dark'
-export const DEFAULT_THEME_V2_BETA_TAMAGUI: ThemeName_V2_BETA_TAMAGUI = 'light'
+export const FIXED_COLOR_SCHEME: ColorScheme = 'light' // se for no-preference é considerado preferencia sistema

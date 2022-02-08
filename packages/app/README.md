@@ -15,6 +15,8 @@ App
 
 # Development
 
+- Find your local IP address: `ifconfig | grep inet`
+
 - Config toggles in `src/config.ts`:
 
   - Set `ENABLE_CAMERA_MOCK` to true so that the Camera component to be mocked (useful while using simulator)

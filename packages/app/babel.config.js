@@ -4,6 +4,15 @@ module.exports = function (api) {
     presets: ['babel-preset-expo'],
     plugins: [
       [
+        'module:react-native-dotenv',
+        {
+          envName: 'APP_ENV',
+          moduleName: '@env',
+          path: '.env',
+          allowUndefined: false,
+        },
+      ],
+      [
         'relay',
         {
           src: './src',
@@ -11,13 +20,13 @@ module.exports = function (api) {
           artifactDirectory: './src/__generated__',
         },
       ], // babel-plugin-relay
-      [
-        '@tamagui/babel-plugin',
-        {
-          components: ['tamagui'],
-          config: './tamagui.config.ts',
-        },
-      ],
+      // [
+      //   '@tamagui/babel-plugin',
+      //   {
+      //     components: ['tamagui'],
+      //     config: './tamagui.config.ts',
+      //   },
+      // ],
       [
         'module-resolver',
         {

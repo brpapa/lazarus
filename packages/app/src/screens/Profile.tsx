@@ -12,6 +12,7 @@ import type { HomeTabNavProp } from '~/navigation/types'
 import { makeUseStyles, useTheme } from '~/theme/v1'
 import type { Profile_query$key } from '~/__generated__/Profile_query.graphql'
 
+// TODO: [backend] me.stats.reportedIncidentsCount
 const frag = graphql`
   fragment Profile_query on Query {
     me {

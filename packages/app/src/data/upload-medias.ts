@@ -1,5 +1,5 @@
 import FormData from 'form-data'
-import { HTTP_SERVER_BASE_URL } from '~/config'
+import { SERVER_HTTP_BASE_URL } from '@env'
 import { MediaTypeEnum } from '~/shared/constants'
 import type { CapturedMedia } from '../types'
 
@@ -30,7 +30,7 @@ export const uploadMedias = async (medias: CapturedMedia[]): Promise<ResponseBod
     return acc
   }, new FormData())
 
-  const response = await fetch(`${HTTP_SERVER_BASE_URL}/uploads`, {
+  const response = await fetch(`${SERVER_HTTP_BASE_URL}/uploads`, {
     method: 'POST',
     headers: {
       'Content-Type': 'multipart/form-data',

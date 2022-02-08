@@ -8,7 +8,10 @@ declare module '*.svg' {
   export default Component
 }
 
-// declare module '@env' {
-//   export const MOBILE_PROSE_HOST: string
-//   export const MOBILE_PROSE_PORT: number
-// }
+declare module '@env' {
+  export const APP_ENV: 'local' | 'prod'
+  export const SERVER_HTTP_BASE_URL: string
+  export const SERVER_WS_BASE_URL: string
+  export const GOOGLE_MAPS_IOS_SDK_API_KEY: string
+  export const GOOGLE_MAPS_ANDROID_SDK_API_KEY: string
+}
