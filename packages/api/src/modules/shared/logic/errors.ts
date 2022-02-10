@@ -36,3 +36,9 @@ export abstract class ApplicationError extends BaseError {}
 
 export class UnauthenticatedError extends ApplicationError {}
 export class UserNotFoundError extends ApplicationError {}
+
+export class UnauthorizedError extends ApplicationError {
+  constructor(reason: string) {
+    super(undefined, reason)
+  }
+}

@@ -1,27 +1,20 @@
+import assert from 'assert'
+import { Debugger } from 'debug'
+import { getCenter, getDistance } from 'geolib'
 import { IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { IncidentMapper } from 'src/modules/incident/adapter/mappers/incident-mapper'
 import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
 import { Incident } from 'src/modules/incident/domain/models/incident'
-import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
+import { WithinBoxFilter, WithinCircleFilter } from 'src/modules/shared/adapter/dtos/filters'
 import { Query } from 'src/modules/shared/logic/query'
-import assert from 'assert'
-import { Debugger } from 'debug'
-import { getCenter, getDistance } from 'geolib'
 
 export type Input = {
   filter?: {
+    userId?: string
     /** the corner coordinates of map view in app */
     withinBox?: WithinBoxFilter
     withinCircle?: WithinCircleFilter
   }
-}
-type WithinBoxFilter = {
-  northEast: LocationDTO
-  southWest: LocationDTO
-}
-type WithinCircleFilter = {
-  center: LocationDTO
-  radiusInMeters: number
 }
 
 export type Res = {
@@ -29,7 +22,6 @@ export type Res = {
   totalCount: number
 }
 
-/** requested on each map view resize */
 export class IncidentsQuery extends Query<Input, Res> {
   private DIST_ACCURACY = 0.01 // centimeter accuracy
 
@@ -46,16 +38,25 @@ export class IncidentsQuery extends Query<Input, Res> {
   }
 
   private query(req: Input): Promise<Incident[]> {
-    if (req.filter?.withinCircle !== undefined) {
-      const { center, radiusInMeters } = req.filter.withinCircle
-      return this.incidentRepo.findAllLocatedWithinCircle(center, radiusInMeters)
-    }
+    const filtersCount = req.filter
+      ? Object.values(req.filter).filter((v) => v !== undefined).length
+      : 0
+    if (filtersCount === 0) return this.incidentRepo.findAll()
+    if (filtersCount === 1) {
+      if (req.filter?.userId !== undefined)
+        return this.incidentRepo.findAllOfUser(req.filter.userId)
 
-    if (req.filter?.withinBox !== undefined) {
-      return this.findManyWithinBox(req.filter.withinBox)
-    }
+      if (req.filter?.withinCircle !== undefined) {
+        const { center, radiusInMeters } = req.filter.withinCircle
+        return this.incidentRepo.findAllLocatedWithinCircle(center, radiusInMeters)
+      }
 
-    return this.incidentRepo.findAll()
+      if (req.filter?.withinBox !== undefined) return this.findManyWithinBox(req.filter.withinBox)
+
+      throw new Error('Unreachable')
+    } else {
+      throw new Error('Different filters coexisting is not supported')
+    }
   }
 
   // FIXME

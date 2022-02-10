@@ -16,7 +16,7 @@ import {
 import { NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
 import { LinkedEntityEnum } from 'src/modules/notification/domain/models/notification-link'
 import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
-import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
+import { DateScalarType } from 'src/modules/shared/infra/graphql/types/date-scalar-type'
 import { mapObjectValues } from 'src/modules/shared/logic/helpers/map-object-values'
 
 const NotificationLinkType = new GraphQLObjectType<NotificationDTO['link']>({
@@ -88,7 +88,7 @@ export const NotificationType = GraphQLTypes.register(
       },
       createdAt: {
         resolve: (n) => n.createdAt,
-        type: GraphQLNonNull(DateType),
+        type: GraphQLNonNull(DateScalarType),
       },
     }),
   }),

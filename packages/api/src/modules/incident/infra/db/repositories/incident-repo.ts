@@ -1,5 +1,5 @@
 import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
-import assert from 'assert'
+import assert, { throws } from 'assert'
 import { Debugger } from 'debug'
 import {
   GeoReplyWith,
@@ -61,6 +61,16 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
 
   async findAll(): Promise<Incident[]> {
     const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
+      include: this.baseInclude,
+    })
+    return (await this.enrichedWithRedisBatch(incidents)).filter((v) => v !== null) as Incident[]
+  }
+
+  async findAllOfUser(userId: string): Promise<Incident[]> {
+    const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
+      where: {
+        creatorUserId: userId,
+      },
       include: this.baseInclude,
     })
     return (await this.enrichedWithRedisBatch(incidents)).filter((v) => v !== null) as Incident[]
@@ -149,6 +159,13 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     }
 
     return incident
+  }
+
+  async delete(incident: Incident) {
+    const where = { incidentId: incident.id.toString() }
+    await this.prismaClient.mediaModel.deleteMany({ where })
+    await this.prismaClient.commentModel.deleteMany({ where })
+    await this.prismaClient.incidentModel.delete({ where: { id: incident.id.toString() } })
   }
 
   private async enrichedWithRedis(

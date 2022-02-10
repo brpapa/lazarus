@@ -7,6 +7,7 @@ export interface IIncidentRepo extends IRepository<Incident> {
   findById(id: string): Promise<Incident | null>
   findByIdBatch(ids: string[]): Promise<(Incident | null)[]>
   findAll(): Promise<Incident[]>
+  findAllOfUser(userId: string): Promise<Incident[]>
   findAllLocatedWithinCircle(
     centerPoint: LocationProps,
     radiusInMeters: number,

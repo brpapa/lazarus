@@ -1,5 +1,7 @@
 import { Result } from '@metis/shared'
 import {
+  GraphQLBoolean,
+  GraphQLEnumType,
   GraphQLFieldConfig,
   GraphQLInputFieldConfig,
   GraphQLInputObjectType,
@@ -9,36 +11,53 @@ import {
   GraphQLString,
   GraphQLUnionType,
 } from 'graphql'
+import { BaseError } from '../../logic/errors'
 
 /** create mutation based on relay specs and with Result (ok xor err) output type */
-export function createResultMutationType<Ctx, Input, Res extends Result<any, any>>(config: {
+export function createResultMutationType<Ctx, Input, Res extends Result<any, BaseError>>(config: {
   name: string
   description?: string
   inputFields: Record<keyof Input, GraphQLInputFieldConfig>
   mutateAndGetResult: (input: Input, ctx: Ctx, info: GraphQLResolveInfo) => Res | Promise<Res>
-  resultFields: {
-    ok: Record<string, GraphQLFieldConfig<Res, Ctx>>
-    err: Record<string, GraphQLFieldConfig<Res, Ctx>>
-  }
+  okFields: Record<string, GraphQLFieldConfig<Res, Ctx>>
+  errors: typeof BaseError[]
 }) {
-  const { name, inputFields, resultFields, mutateAndGetResult } = config
+  const { name, inputFields, mutateAndGetResult, okFields, errors } = config
 
   const MutationInputType = new GraphQLInputObjectType({
     name: `${name}Input`,
     fields: {
       ...inputFields,
-      clientMutationId: { type: GraphQLString }, // legacy, but removing it cause troubles when inputFields is an empty object
+      _: { type: GraphQLString }, // remove it cause troubles when inputFields is an empty object
     },
   })
 
   const OkResultType = new GraphQLObjectType<Res>({
     name: `${name}OkResult`,
-    fields: resultFields.ok,
+    fields: okFields,
   })
   const ErrResultType = new GraphQLObjectType<Res>({
     name: `${name}ErrResult`,
-    fields: resultFields.err,
     // interfaces: [ErrResultInterfaceType],
+    fields: {
+      reason: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve: (res) => res.asErr().reason,
+      },
+      reasonIsTranslated: {
+        type: GraphQLNonNull(GraphQLBoolean),
+        resolve: (res) => res.asErr().reasonIsTranslated,
+      },
+      code: {
+        type: GraphQLNonNull(
+          new GraphQLEnumType({
+            name: `${name}ErrCodeType`,
+            values: Object.fromEntries(errors.map((e) => [e.name, { value: e.name }])),
+          }),
+        ),
+        resolve: (res) => res.asErr().code,
+      },
+    },
   })
 
   const ResultType = new GraphQLUnionType({

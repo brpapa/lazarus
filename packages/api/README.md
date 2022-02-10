@@ -1,5 +1,9 @@
 Server
 
+# Diagrams
+
+Module/subdomain: https://excalidraw.com/#json=1Sk7Eg-XCaj9gtf_VpjF3,b6_pPHWASe6k3ZS1DKpD8g
+
 <!--
 reference graphql+dataloader architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/rbaf-graphql-api
 reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-forum
@@ -11,7 +15,7 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-
 ```
 ├── /graphql                   # Generated GraphQL schema from code 
 ├── /prisma                    # Generated database Prisma schema from code
-├── /scripts                   # Utility scripts to development
+├── /scripts                   # Utility scripts at development time
 ├── /src                       # Source code
 |   ├── /api                   # Entrypoint
 │   ├── /modules

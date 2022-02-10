@@ -5,5 +5,8 @@ import { MeType } from './me-type'
 export const MeQueryType: GraphQLFieldConfig<void, GraphQLContext, any> = {
   type: MeType,
   description: 'Informations related to requester user',
-  resolve: (): Record<string, never> => ({}),
+  resolve: (_, __, ctx): Record<string, never> | null => {
+    if (ctx.userId === null) return null
+    return {}
+  },
 }

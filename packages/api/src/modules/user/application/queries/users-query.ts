@@ -1,5 +1,5 @@
 import { Debugger } from 'debug'
-import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
+import { WithinCircleFilter } from 'src/modules/shared/adapter/dtos/filters'
 import { Query } from 'src/modules/shared/logic/query'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
 import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'
@@ -9,13 +9,8 @@ import { User } from 'src/modules/user/domain/models/user'
 export type Input = {
   filter?: {
     withinCircle?: WithinCircleFilter
-    /* userIds to not include in response */
-    excluding?: string[]
+    exceptUserIds?: string[]
   }
-}
-type WithinCircleFilter = {
-  center: LocationDTO
-  radiusInMeters: number
 }
 
 export type Res = {
@@ -45,7 +40,9 @@ export class UsersQuery extends Query<Input, Res> {
           users
             .map(({ user }) => user)
             .filter((user) =>
-              req.filter?.excluding ? !req.filter.excluding.includes(user.id.toString()) : true,
+              req.filter?.exceptUserIds
+                ? !req.filter.exceptUserIds.includes(user.id.toString())
+                : true,
             ),
         )
     }

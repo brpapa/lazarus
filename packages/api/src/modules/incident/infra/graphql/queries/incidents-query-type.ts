@@ -3,7 +3,7 @@ import { connectionArgs, ConnectionArguments, connectionFromArray } from 'graphq
 import { GraphQLContext } from 'src/api/graphql/context'
 import { IncidentConnectionDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { incidentsQuery } from 'src/modules/incident/application/queries'
-import type { Input as IncidentQueryInput } from 'src/modules/incident/application/queries/incidents-query'
+import { WithinBoxFilter, WithinCircleFilter } from 'src/modules/shared/adapter/dtos/filters'
 import { LocationInputType } from 'src/modules/shared/infra/graphql/types/location-type'
 import { IncidentConnectionType } from '../types/incident-type'
 
@@ -52,7 +52,12 @@ export const IncidentsQueryType: GraphQLFieldConfig<void, GraphQLContext, any> =
   },
   resolve: async (
     _,
-    args: ConnectionArguments & IncidentQueryInput,
+    args: ConnectionArguments & {
+      filter?: {
+        withinBox?: WithinBoxFilter
+        withinCircle?: WithinCircleFilter
+      }
+    },
     ctx,
   ): Promise<IncidentConnectionDTO> => {
     const { incidents, totalCount } = await incidentsQuery.exec(args, ctx)

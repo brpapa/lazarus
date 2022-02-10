@@ -1,6 +1,6 @@
 import { GraphQLScalarType, Kind, GraphQLError } from 'graphql'
 
-export const DateType = new GraphQLScalarType({
+export const DateScalarType = new GraphQLScalarType({
   name: 'Date',
   description: 'Date type serialized into ISO string',
   /**

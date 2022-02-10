@@ -4,7 +4,7 @@ import { GraphQLContext } from 'src/api/graphql/context'
 import { GraphQLTypes, NodeInterfaceType } from 'src/api/graphql/node'
 import { IncidentConnectionDTO, IncidentDTO } from 'src/modules/incident/adapter/dtos/incident-dto'
 import { connectionDefinitions } from 'src/modules/shared/infra/graphql/connections'
-import { DateType } from 'src/modules/shared/infra/graphql/types/date-type'
+import { DateScalarType } from 'src/modules/shared/infra/graphql/types/date-scalar-type'
 import { LocationType } from 'src/modules/shared/infra/graphql/types/location-type'
 import { GetUserById } from 'src/modules/user/application/queries/get-user-by-id'
 import { UserType } from 'src/modules/user/infra/graphql/types/user-type'
@@ -51,7 +51,7 @@ export const IncidentType = GraphQLTypes.register(
       },
       createdAt: {
         resolve: (incident) => incident.createdAt,
-        type: GraphQLNonNull(DateType),
+        type: GraphQLNonNull(DateScalarType),
       },
     }),
   }),
