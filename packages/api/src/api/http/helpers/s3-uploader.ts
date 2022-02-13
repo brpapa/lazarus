@@ -1,11 +1,11 @@
 import { S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
-import { UUID } from 'src/modules/shared/domain/models/uuid'
 import debug from 'debug'
 import prettyBytes from 'pretty-bytes'
 import { hrtime } from 'process'
+import { AWS_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY } from 'src/config'
+import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { Readable } from 'stream'
-import { AWS_REGION, AWS_S3_BUCKET_NAME, AWS_SERVICE_ENDPOINT } from 'src/config'
 import { FileMetadata } from './form-data-parser'
 
 const log = debug('app:infra:http')
@@ -25,7 +25,7 @@ export async function uploadToS3(
 ): Promise<UploadResult> {
   const s3Client = new S3Client({
     region: AWS_REGION,
-    endpoint: AWS_SERVICE_ENDPOINT,
+    credentials: { accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_ACCESS_KEY },
   })
   const objectKey = createObjectKey(metadata)
   registerDownloadProgressReporter(incomingFile, metadata)

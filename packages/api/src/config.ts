@@ -4,7 +4,7 @@ import dotenvSafe from 'dotenv-safe'
 
 const { env } = process
 
-type NodeEnv = 'local' | 'test' | 'dev' | 'prod'
+type NodeEnv = 'local' | 'test' | 'prod'
 export const NODE_ENV = (env.NODE_ENV || 'prod') as NodeEnv
 export const IS_PRODUCTION = NODE_ENV === 'prod'
 
@@ -27,9 +27,11 @@ export const JWT_REFRESH_TOKEN_EXPIRITY_TIME_IN_S = 1_296_000 // 15 days
 export const DB_CONN_STRING_REDIS = env.DATABASE_REDIS_CONNECTION_STRING!
 export const DB_CONN_STRING_PG = env.DATABASE_PG_CONNECTION_STRING!
 
+export const AWS_ACCESS_KEY = env.AWS_ACCESS_KEY!
+export const AWS_SECRET_ACCESS_KEY = env.AWS_SECRET_ACCESS_KEY!
 export const AWS_S3_BUCKET_NAME = 'public-metis-static-content'
 export const AWS_REGION = 'us-east-1'
-export const AWS_SERVICE_ENDPOINT = undefined
+// export const AWS_SERVICE_ENDPOINT = undefined
 // export const AWS_SERVICE_ENDPOINT = ['test', 'dev'].includes(NODE_ENV)
 //   ? 'http://localhost:4566'
 //   : undefined

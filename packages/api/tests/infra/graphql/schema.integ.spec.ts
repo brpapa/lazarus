@@ -5,7 +5,6 @@ import { schema } from 'src/api/graphql/schema'
 
 describe('graphql schema', () => {
   test.skip('it should be instropected succesfully', async () => {
-    // TODO: rever se é o q imagino
     const result = await graphql(schema, introspectionQuery)
     if (result.errors) {
       console.error(result.errors)

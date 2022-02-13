@@ -2,7 +2,6 @@ import request from 'supertest'
 import { app } from 'src/api/http/app'
 import { cleanUpDatasources, connectDataSources, disconnectDatasources } from 'tests/helpers'
 
-// DOING
 describe('graphql query: user', () => {
   beforeAll(connectDataSources)
   beforeEach(cleanUpDatasources)
