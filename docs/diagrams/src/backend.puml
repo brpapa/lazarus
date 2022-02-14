@@ -1,8 +1,10 @@
-@startuml backend-high-level-graph
+@startuml graph-diagram-backend-high-level
 
 digraph g {
-  graph [ rankdir = "TB" ]
+  graph [ rankdir = "LR" ]
   node [ fontsize = "14" shape = "record" ]
+  
+  api [ label = "GraphQL API" ]
 
   subgraph cluster_0 {
     label = "Incident\n(module)"
@@ -18,16 +20,26 @@ digraph g {
   subgraph cluster_1 {
     label = "User\n(module)"
     
+    user_command_SignUp [ label = "SignUp\n(command)" ]
+    user_command_SignIn [ label = "SignIn\n(command)" ]
+    user_command_SignOut [ label = "SignOut\n(command)" ]
+    user_command_RefreshToken [ label = "RefreshToken\n(command)" ]
+    user_command_UpdateUserLocation [ label = "UpdateUserLocation\n(command)" ]
+    
     user_event_IncidentCreatedEnrichedWithNearbyUsers [ label = "IncidentCreatedEnrichedWithNearbyUsers\n(event)" ]
+    user_event_UserRegistered [ label = "UserRegistered\n(event)" ]
     user_event_UserSignedIn [ label = "UserSignedIn\n(event)" ]
     user_event_UserSignedOut [ label = "UserSignedOut\n(event)" ]
 
-    ' it could be implemented in a Location module?
+    ' // TODO it could be implemented in a Location module?
     user_observer_EnrichIncidentWithNearbyUsers [ label = "EnrichIncidentWithNearbyUsers\n(observer)" ]
   }
 
   subgraph cluster_2 {
     label = "Notification\n(module)"
+    
+    notification_command_MarkNotificationAsSeen [ label = "MarkNotificationAsSeen\n(event)" ]
+    notification_command_MarkAllNotificationsAsSeen [ label = "MarkAllNotificationsAsSeen\n(event)" ]
     
     notification_event_UsersNotified [ label = "UsersNotified\n(event)" ]
     
@@ -45,6 +57,19 @@ digraph g {
 
   user_event_UserSignedIn -> notification_observer_RegisterDevice [ label = "is handled by"]
   user_event_UserSignedOut -> notification_observer_UnregisterDevice [ label = "is handled by"]
+
+  user_command_SignUp -> user_event_UserRegistered [ label = "dispatch" ]
+  user_command_SignIn -> user_event_UserSignedIn [ label = "dispatch" ]
+  user_command_SignOut -> user_event_UserSignedOut [ label = "dispatch" ]
+
+  api -> user_command_UpdateUserLocation
+  api -> notification_command_MarkNotificationAsSeen
+  api -> notification_command_MarkAllNotificationsAsSeen
+  api -> incident_command_ReportIncident
+  api -> user_command_SignUp
+  api -> user_command_SignIn
+  api -> user_command_SignOut
+  api -> user_command_RefreshToken
 }
 
 

@@ -1,0 +1,40 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}
+\babel@toc {brazil}{}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {1}\MakeTextUppercase {Introdução}}{6}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivação}{6}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Solução}{6}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Desafios}{6}{section.1.3}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {2}\MakeTextUppercase {Soluções existentes e objetivos da proposta}}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Soluções existentes}{8}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Mundo}{8}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Brasil}{8}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Análise}{8}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Objetivos}{9}{section.2.2}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {3}\MakeTextUppercase {Detalhamento do problema}}{10}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Natureza do problema}{10}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Requisitos}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Requisitos funcionais}{10}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Requisitos não funcionais}{11}{subsection.3.2.2}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {4}\MakeTextUppercase {Descrição do projeto proposto}}{12}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Arquitetura}{12}{section.4.1}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {5}\MakeTextUppercase {Tecnologias pesquisadas e escolhidas}}{15}{chapter.5}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {6}\MakeTextUppercase {Procedimentos de validação do projeto}}{16}{chapter.6}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {7}\MakeTextUppercase {Riscos}}{17}{chapter.7}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {8}\MakeTextUppercase {Cronograma do projeto}}{18}{chapter.8}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {9}\MakeTextUppercase {Conclusão}}{19}{chapter.9}%
+\vspace {\cftbeforechapterskip }
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{\MakeTextUppercase {Refer\^encias}}{20}{section*.9}%
