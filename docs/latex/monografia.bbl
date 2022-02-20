@@ -5,4 +5,146 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
+\bibitem[Amazon Web Services documentation]{aws}
+\abntrefinfo{Amazon\ldots}{AMAZON\ldots}{}
+{AMAZON Web Services documentation. Disponível em:
+  <\url{https://aws.amazon.com}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Aplicativo Citizen]{citizen}
+\abntrefinfo{Aplicativo\ldots}{APLICATIVO\ldots}{a}
+{APLICATIVO Citizen. Disponível em:
+  <\url{https://play.google.com/store/apps/details?id=sp0n.citizen&hl=pt_BR&gl=US}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Aplicativo SP+ segura]{sp-mais-segura}
+\abntrefinfo{Aplicativo\ldots}{APLICATIVO\ldots}{b}
+{APLICATIVO SP+ segura. Disponível em:
+  <\url{https://play.google.com/store/apps/details?id=com.policiapopular.spsegura&hl=pt_BR&gl=US}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Aplicativo Waze]{waze}
+\abntrefinfo{Aplicativo\ldots}{APLICATIVO\ldots}{c}
+{APLICATIVO Waze. Disponível em: <\url{https://www.waze.com/pt-BR}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Bob 2017]{clean-architecture}
+\abntrefinfo{Bob}{BOB}{2017}
+{BOB, U. \emph{Clean Architecture: A Craftsman's Guide to Software Structure
+  and Design}. [S.l.]: Pearson, 2017.}
+
+\bibitem[Docker documentation]{docker}
+\abntrefinfo{Docker\ldots}{DOCKER\ldots}{}
+{DOCKER documentation. Disponível em: <\url{https://www.docker.com}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Evans 2003]{domain-driven-design}
+\abntrefinfo{Evans}{EVANS}{2003}
+{EVANS, E. \emph{Domain-Driven Design: Tackling Complexity in the Heart of
+  Software}. [S.l.]: Addison-Wesley Professional, 2003.}
+
+\bibitem[Expo documentation]{expo}
+\abntrefinfo{Expo\ldots}{EXPO\ldots}{}
+{EXPO documentation. Disponível em: <\url{https://expo.dev}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[GraphQL documentation]{graphql}
+\abntrefinfo{GraphQL\ldots}{GRAPHQL\ldots}{}
+{GRAPHQL documentation. Disponível em: <\url{https://graphql.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Heroku documentation]{heroku}
+\abntrefinfo{Heroku\ldots}{HEROKU\ldots}{}
+{HEROKU documentation. Disponível em: <\url{http://heroku.com}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Javascript documentation]{javascript}
+\abntrefinfo{Javascript\ldots}{JAVASCRIPT\ldots}{}
+{JAVASCRIPT documentation. Disponível em:
+  <\url{https://developer.mozilla.org/docs/Web/JavaScript}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Jest documentation]{jest}
+\abntrefinfo{Jest\ldots}{JEST\ldots}{}
+{JEST documentation. Disponível em: <\url{https://jestjs.io}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Koa documentation]{koa}
+\abntrefinfo{Koa\ldots}{KOA\ldots}{}
+{KOA documentation. Disponível em: <\url{https://koajs.com}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Meyer 2000]{object-oriented-software-construction}
+\abntrefinfo{Meyer}{MEYER}{2000}
+{MEYER, B. \emph{Object Oriented Software Construction}. 2. ed. [S.l.]: Pearson
+  College Div, 2000.}
+
+\bibitem[Node.js documentation]{node}
+\abntrefinfo{Node\ldots}{NODE\ldots}{}
+{NODE.JS documentation. Disponível em: <\url{https://nodejs.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[PostgreSQL documentation]{postgresql}
+\abntrefinfo{PostgreSQL\ldots}{POSTGRESQL\ldots}{}
+{POSTGRESQL documentation. Disponível em: <\url{https://www.postgresql.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Prisma documentation]{prisma}
+\abntrefinfo{Prisma\ldots}{PRISMA\ldots}{}
+{PRISMA documentation. Disponível em: <\url{https://www.prisma.io}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[React documentation]{react}
+\abntrefinfo{React\ldots}{REACT\ldots}{a}
+{REACT documentation. Disponível em: <\url{https://reactjs.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[React Native documentation]{react-native}
+\abntrefinfo{React\ldots}{REACT\ldots}{b}
+{REACT Native documentation. Disponível em: <\url{https://reactnative.dev}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[React Navigation documentation]{react-navigation}
+\abntrefinfo{React\ldots}{REACT\ldots}{c}
+{REACT Navigation documentation. Disponível em:
+  <\url{https://reactnavigation.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Recoil documentation]{recoil}
+\abntrefinfo{Recoil\ldots}{RECOIL\ldots}{}
+{RECOIL documentation. Disponível em: <\url{https://recoiljs.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Redis documentation]{redis}
+\abntrefinfo{Redis\ldots}{REDIS\ldots}{}
+{REDIS documentation. Disponível em: <\url{https://redis.io}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Relay documentation]{relay}
+\abntrefinfo{Relay\ldots}{RELAY\ldots}{}
+{RELAY documentation. Disponível em: <\url{https://relay.dev}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Supertest documentation]{supertest}
+\abntrefinfo{Supertest\ldots}{SUPERTEST\ldots}{}
+{SUPERTEST documentation. Disponível em:
+  <\url{https://www.npmjs.com/package/supertest}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Terraform documentation]{terraform}
+\abntrefinfo{Terraform\ldots}{TERRAFORM\ldots}{}
+{TERRAFORM documentation. Disponível em: <\url{https://www.terraform.io}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Typescript documentation]{typescript}
+\abntrefinfo{Typescript\ldots}{TYPESCRIPT\ldots}{}
+{TYPESCRIPT documentation. Disponível em:
+  <\url{https://www.typescriptlang.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Wikipedia]{wikipedia}
+\abntrefinfo{Wikipedia}{WIKIPEDIA}{}
+{WIKIPEDIA. Disponível em: <\url{https://pt.wikipedia.org}>.
+Acesso em 20 de fevereiro de 2022.}
+
 \end{thebibliography}

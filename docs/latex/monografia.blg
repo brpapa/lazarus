@@ -17,49 +17,74 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=200001) to 20 items from 10.
 Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Warning--campo year vazio ou faltando em aws
+Warning--campo year vazio ou faltando em citizen
+Warning--campo year vazio ou faltando em sp-mais-segura
+Warning--campo year vazio ou faltando em waze
+Warning--campo year vazio ou faltando em docker
+Warning--campo year vazio ou faltando em expo
+Warning--campo year vazio ou faltando em graphql
+Warning--campo year vazio ou faltando em heroku
+Warning--campo year vazio ou faltando em javascript
+Warning--campo year vazio ou faltando em jest
+Warning--campo year vazio ou faltando em koa
+Warning--campo year vazio ou faltando em node
+Warning--campo year vazio ou faltando em postgresql
+Warning--campo year vazio ou faltando em prisma
+Warning--campo year vazio ou faltando em react
+Warning--campo year vazio ou faltando em react-native
+Warning--campo year vazio ou faltando em react-navigation
+Warning--campo year vazio ou faltando em recoil
+Warning--campo year vazio ou faltando em redis
+Warning--campo year vazio ou faltando em relay
+Warning--campo year vazio ou faltando em supertest
+Warning--campo year vazio ou faltando em terraform
+Warning--campo year vazio ou faltando em typescript
+Warning--campo year vazio ou faltando em wikipedia
 +---------------------------------------------------------+
 | Estilo bibliográfico abntex2-alf.bst versão v-1.9.7           |
 | Em caso de dúvidas ou problemas com este estilo procure |
 | http://www.abntex.net.br/                               |
 +---------------------------------------------------------+
-You've used 2 entries,
+You've used 29 entries,
             6714 wiz_defined-function locations,
-            1198 strings with 9360 characters,
-and the built_in function-call counts, 1117 in all, are:
-= -- 201
-> -- 1
-< -- 1
-+ -- 47
-- -- 1
-* -- 45
-:= -- 195
-add.period$ -- 0
-call.type$ -- 2
-change.case$ -- 6
-chr.to.int$ -- 5
-cite$ -- 0
-duplicate$ -- 8
-empty$ -- 79
-format.name$ -- 0
-if$ -- 272
-int.to.chr$ -- 1
+            1286 strings with 11663 characters,
+and the built_in function-call counts, 22596 in all, are:
+= -- 3234
+> -- 47
+< -- 2
++ -- 445
+- -- 16
+* -- 965
+:= -- 2628
+add.period$ -- 82
+call.type$ -- 29
+change.case$ -- 193
+chr.to.int$ -- 31
+cite$ -- 51
+duplicate$ -- 749
+empty$ -- 1733
+format.name$ -- 69
+if$ -- 6409
+int.to.chr$ -- 5
 int.to.str$ -- 1
-missing$ -- 20
-newline$ -- 8
-num.names$ -- 0
-pop$ -- 31
+missing$ -- 462
+newline$ -- 140
+num.names$ -- 15
+pop$ -- 658
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 87
 quote$ -- 0
-skip$ -- 120
+skip$ -- 2910
 stack$ -- 1
-substring$ -- 54
-swap$ -- 1
+substring$ -- 725
+swap$ -- 262
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 2
+type$ -- 191
+warning$ -- 24
+while$ -- 68
 width$ -- 0
-write$ -- 8
+write$ -- 363
+(There were 24 warnings)

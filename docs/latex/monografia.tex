@@ -82,7 +82,7 @@
 % INFORMAÇÕES DE DADOS PARA CAPA E FOLHA DE ROSTO
 % --------------------------------------------------------
 
-\titulo{Sistema colaborativo para o rastreamento em tempo real de alertas de segurança pública}
+\titulo{Aplicativo para publicação e acompanhamento de alertas de segurança pública}
 \autor{Bruno José Papa}
 \local{Bauru}
 \data{Agosto/2021}
@@ -204,67 +204,66 @@
 \imprimirfolhaderosto*
 
 % TODO: Inserir a ficha bibliografica
-% \begin{fichacatalografica}
-% 	\sffamily
-% 	\vspace*{\fill}					% Posição vertical
-% 	\begin{center}					% Minipage Centralizado
-% 		\fbox{\begin{minipage}[c][7.5cm]{12.5cm}		% Largura
-% 			\small
-% 			\imprimirautor
-% 			\hspace{0.5cm} \imprimirtitulo  / \imprimirautor. --
-% 			\imprimirlocal, \imprimirdata-
-% 			\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
-% 			\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador\\
-% 			\hspace{0.5cm}
-% 			\parbox[t]{\textwidth}{\imprimirtipotrabalho~--~\imprimirinstituicao,
-% 				\imprimirdata.}\\
-% 			\hspace{0.5cm}
-% 			1. Tags
-% 			2. Para
-% 			3. A
-% 			4. Ficha
-% 			5. Catalográfica
-% 			\end{minipage}}
-% 	\end{center}
-% \end{fichacatalografica}
+\begin{fichacatalografica}
+	\sffamily
+	\vspace*{\fill}					% Posição vertical
+	\begin{center}					% Minipage Centralizado
+		\fbox{\begin{minipage}[c][7.5cm]{12.5cm}		% Largura
+			\small
+			\imprimirautor
+			\hspace{0.5cm} \imprimirtitulo  / \imprimirautor. --
+			\imprimirlocal, \imprimirdata-
+			\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
+			\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador\\
+			\hspace{0.5cm}
+			\parbox[t]{\textwidth}{\imprimirtipotrabalho~--~\imprimirinstituicao,
+				\imprimirdata.}\\
+			\hspace{0.5cm}
+			1. Tags
+			2. Para
+			3. A
+			4. Ficha
+			5. Catalográfica
+			\end{minipage}}
+	\end{center}
+\end{fichacatalografica}
 
 % TODO: Inserir folha de aprovação
-% \begin{folhadeaprovacao}
-% 	\begin{center}
-% 		{\ABNTEXchapterfont\large\imprimirautor}
-% 		\vspace*{\fill}\vspace*{\fill}
-% 		\begin{center}
-% 			\ABNTEXchapterfont\bfseries\Large\imprimirtitulo
-% 		\end{center}
-% 		\vspace*{\fill}
-% 		\hspace{.45\textwidth}
-% 		\begin{minipage}{.5\textwidth}
-% 			\imprimirpreambulo
-% 		\end{minipage}%
-% 		\vspace*{\fill}
-% 	\end{center}
-% 	\center Banca Examinadora
-% 	\assinatura{\textbf{\imprimirorientador} \\ Orientador\\
-% 		Departamento de Computação \\
-% 		Faculdade de Ciências \\
-% 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
-% 	\assinatura{\textbf{Professor Convidado 1} \\
-% 		Departamento de Computação \\
-% 		Faculdade de Ciências \\
-% 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
-% 	\assinatura{\textbf{Professor Convidado 2} \\
-% 		Departamento de Computação \\
-% 		Faculdade de Ciências \\
-% 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
-% 	\begin{center}
-% 		\vspace*{0.5cm}
-% 		\par
-% 		{Bauru, \_\_\_\_\_ de \_\_\_\_\_\_\_\_\_\_\_ de \_\_\_\_.}
-% 		\vspace*{1cm}
-% 	\end{center}
-% \end{folhadeaprovacao}
+\begin{folhadeaprovacao}
+	\begin{center}
+		{\ABNTEXchapterfont\large\imprimirautor}
+		\vspace*{\fill}\vspace*{\fill}
+		\begin{center}
+			\ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+		\end{center}
+		\vspace*{\fill}
+		\hspace{.45\textwidth}
+		\begin{minipage}{.5\textwidth}
+			\imprimirpreambulo
+		\end{minipage}%
+		\vspace*{\fill}
+	\end{center}
+	\center Banca Examinadora
+	\assinatura{\textbf{\imprimirorientador} \\ Orientador\\
+		Departamento de Computação \\
+		Faculdade de Ciências \\
+	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
+	\assinatura{\textbf{Professor Convidado 1} \\
+		Departamento de Computação \\
+		Faculdade de Ciências \\
+	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
+	\assinatura{\textbf{Professor Convidado 2} \\
+		Departamento de Computação \\
+		Faculdade de Ciências \\
+	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
+	\begin{center}
+		\vspace*{0.5cm}
+		\par
+		{Bauru, \_\_\_\_\_ de \_\_\_\_\_\_\_\_\_\_\_ de \_\_\_\_.}
+		\vspace*{1cm}
+	\end{center}
+\end{folhadeaprovacao}
 
-% TODO: Dedicatória
 % \begin{dedicatoria}
 % 	\vspace*{\fill}
 % 	\begin{flushright}
@@ -272,12 +271,10 @@
 % 	\end{flushright}
 % \end{dedicatoria}
 
-% TODO: Agradecimentos
 % \begin{agradecimentos}
 % 	Espaço destinado aos agradecimentos.
 % \end{agradecimentos}
 
-% TODO: Epígrafe
 % \begin{epigrafe}
 % 	\vspace*{\fill}
 % 	\begin{flushright}
@@ -291,28 +288,26 @@
 % RESUMOS
 % --------------------------------------------------------
 
-% resumo em português
 \setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
+
+% resumo em português
 \begin{resumo}
-	O presente trabalho tem como objetivo especificar, prototipar, analisar, projetar, implementar, testar e avaliar um sistema intuitivo e colaborativo para o rastreamento e publicação em tempo real de alertas relacionados à segurança pública no Brasil. O usuário final irá interagir com o sistema via uma aplicação móvel. É demonstrado que a colaboração pode ser também uma ferramenta de segurança, capaz de manter as pessoas conscientes das suas proximidades para que elas possam tentar se proteger ou proteger os outros e, então, maiores danos sejam evitados. O aplicativo não estimula que a justiça seja feita com as próprias mãos, ela deve ficar a cargo dos orgãos públicos locais.
+	O presente trabalho tem como objetivo analisar, projetar, implementar e avaliar uma aplicação móvel para a publicação e o acompanhamento de alertas relacionados à segurança pública no Brasil, o qual é capaz de manter as pessoas conscientes de eventuais perigos dos seus arredores em tempo real. Essas informações, provenientes pelas comunidades locais, podem ser cruciais para que as pessoas busquem se proteger e proteger uns aos outros. É exposto que a tecnologia, aliada com a colaboração entre usuários pela internet, pode também ser uma importante ferramenta de segurança. As principais funcionalidades do aplicativo desenvolvido são: rastreamento da localização do usuário, publicação de alertas com suporte ao envio de imagens e vídeos, e o disparo de notificações baseados em localização. É importante ressaltar que este trabalhado não estimula que a justiça seja feita com as próprias mãos, uma vez que isso é resposabilidade dos orgãos públicos locais.
 	\\
-	\textbf{Palavras-chave:} aplicação móvel, sistema colaborativo, tempo real.
+	\textbf{Palavras-chave:} aplicação móvel, sistema colaborativo, engenharia de software
 \end{resumo}
 
-% TODO: resumo em inglês
-% \begin{resumo}[Abstract]
-% 	\begin{otherlanguage*}{english}
-% 		Abstract area.\\
-% 		\textbf{Keywords:} Abstract keywords.
-% 	\end{otherlanguage*}
-% \end{resumo}
-
+\begin{resumo}[Abstract]
+	\begin{otherlanguage*}{english}
+		The current project aims to analyze, design, implement and evaluate a mobile application for the publication and monitoring of alerts related to public safety in Brazil, which is capable of keeping people aware of possible dangers in their surroundings in real time. This informations, provided by local communities, can be crucial for people to seek to protect themselves and each other. It is exposed that the technology, combined with collaboration between users over the internet, can also be an important security tool. The main features of the developed application are: user's location tracking, publishing alerts with images and videos uploads suports, and triggering location-based notifications. It is important to emphasize that this work does not encourage justice to be done with their own hands, since this is the responsibility of local public bodies.
+		\\
+		\textbf{Keywords:} mobile application, collaborative system, software engineering.
+	\end{otherlanguage*}
+\end{resumo}
 
 % --------------------------------------------------------
 % LISTA DE ILUSTRAÇÕES
 % --------------------------------------------------------
-
-% inserir lista de ilustrações
 \pdfbookmark[0]{\listfigurename}{lof}
 \listoffigures*
 \cleardoublepage
@@ -320,7 +315,6 @@
 % --------------------------------------------------------
 % LISTA DE QUADROS
 % --------------------------------------------------------
-% TODO: inserir lista de quadros
 % \pdfbookmark[0]{\listofquadrosname}{loq}
 % \listofquadros*
 % \cleardoublepage
@@ -329,8 +323,6 @@
 % --------------------------------------------------------
 % LISTA DE TABELAS
 % --------------------------------------------------------
-
-% TODO: inserir lista de tabelas
 % \pdfbookmark[0]{\listtablename}{lot}
 % \listoftables*
 % \cleardoublepage
@@ -340,7 +332,13 @@
 % ---
 \begin{siglas}
 	\item[AWS] Amazon Web Services
-	
+	\item[HTTP] Hypertext Transfer Protocol
+	\item[API] Application Programming Interface
+	\item[DTO] Data Transfer Object
+	\item[IaC] Infrastructure as Code
+	\item[ORM] Object-Relational Mapping
+	\item[SDK] Software Development Kit
+	\item[REST] Representational State Transfer
 \end{siglas}
 % --------------------------------------------------------
 
@@ -360,17 +358,15 @@
 
 \pagestyle{simple}
 
-% Arquivos .tex do texto, podendo ser escritos em um único arquivo ou divididos da forma desejada
-% \input{chapters/_playground}
-\input{chapters/introducao}
-\input{chapters/solucoes-existentes-e-objetivos}
-\input{chapters/detalhamento}
-\input{chapters/descricao}
-\input{chapters/tecnologias}
-\input{chapters/validacao}
-\input{chapters/riscos}
-\input{chapters/cronograma}
-\input{chapters/conclusao}
+\input{chapters/1-introducao}
+\input{chapters/2-solucoes-existentes-e-objetivos}
+\input{chapters/3-detalhamento-do-problema}
+\input{chapters/4-descricao-do-projeto}
+\input{chapters/5-tecnologias-escolhidas}
+\input{chapters/6-validacao}
+\input{chapters/7-riscos}
+\input{chapters/8-cronograma}
+\input{chapters/9-conclusao}
 
 % --------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS

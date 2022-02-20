@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.7.2)  11 AUG 2021 23:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.18)  20 FEB 2022 19:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/papa/dev/metis/docs/_tcc/monografia/monografia.tex
-(/Users/papa/dev/metis/docs/_tcc/monografia/monografia.tex
+**/Users/bruno.papa/dev/lazarus/docs/latex/monografia.tex
+(/Users/bruno.papa/dev/lazarus/docs/latex/monografia.tex
 LaTeX2e <2020-10-01> patch level 4
-L3 programming layer <2021-02-18> (/Users/papa/dev/metis/docs/_tcc/monografia/lib/abntex2.cls
+L3 programming layer <2021-02-18> (/Users/bruno.papa/dev/lazarus/docs/latex/lib/abntex2.cls
 Document Class: lib/abntex2 <CURRENT_DATE> v<VERSION> abnTeX2
 (/usr/local/texlive/2021/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
@@ -636,7 +636,7 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 Package: lipsum 2021-03-03 v2.3 150 paragraphs of Lorem Ipsum dummy text
  (/usr/local/texlive/2021/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex
 File: lipsum.ltd.tex 2021-03-03 v2.3 The Lorem ipsum dummy text
-)) (/Users/papa/dev/metis/docs/_tcc/monografia/lib/update-abntex.sty (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/base/glossaries.sty
+)) (/Users/bruno.papa/dev/lazarus/docs/latex/lib/update-abntex.sty (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/base/glossaries.sty
 Package: glossaries 2020/03/19 v4.46 (NLCT)
  (/usr/local/texlive/2021/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
@@ -871,7 +871,7 @@ LaTeX Info: Redefining \GenericWarning on input line 433.
 \sl@TempBOE=\toks52
 \sl@BankOfErrors=\toks53
 LaTeX Info: Redefining \GenericError on input line 601.
-) (/Users/papa/dev/metis/docs/_tcc/monografia/lib/abntex2cite.sty
+) (/Users/bruno.papa/dev/lazarus/docs/latex/lib/abntex2cite.sty
 Package: abntex2cite <CURRENT_DATE> v<VERSION> abnTeX2
  (/usr/local/texlive/2021/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
 \minimumbiblabelwidth=\skip275
@@ -889,7 +889,7 @@ Package: relsize 2013/03/29 ver 4.1
 LaTeX Info: Redefining \newblock on input line 591.
 LaTeX Info: Redefining \cite on input line 618.
 \ABCItoken=\toks54
-) (/Users/papa/dev/metis/docs/_tcc/monografia/lib/nicealgo.sty
+) (/Users/bruno.papa/dev/lazarus/docs/latex/lib/nicealgo.sty
 Package: nicealgo 2005/04/08 v1.6 nice algorithm drawing
 \c@nalevel=\count395
 \c@naline=\count396
@@ -899,7 +899,7 @@ Package: nicealgo 2005/04/08 v1.6 nice algorithm drawing
 \nayyy=\skip279
 \nazzz=\skip280
 \c@algorithm=\count399
-) (/Users/papa/dev/metis/docs/_tcc/monografia/lib/customizacoes.sty
+) (/Users/bruno.papa/dev/lazarus/docs/latex/lib/customizacoes.sty
 Package: customizacoes 2014/09/01 Criacao desta customizacao do abnTeX2
 ) (/usr/local/texlive/2021/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count400
@@ -963,7 +963,7 @@ Package glossaries Info: Writing glossary file monografia.sbl on input line 175.
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 186.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) (/Users/papa/dev/metis/docs/_tcc/monografia/monografia.aux)
+) (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.aux)
 \openout1 = `monografia.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 186.
@@ -1090,72 +1090,205 @@ l.205
 
 
 
-] [2] (/Users/papa/dev/metis/docs/_tcc/monografia/monografia.lof) [3
+]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 227.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 227.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 227.
+ [2] [3
 
 ] [4
 
+] [5
 
-] (/Users/papa/dev/metis/docs/_tcc/monografia/monografia.toc) [5
+] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.lof) [6
 
-] (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/introducao.tex
+] [7
+
+
+] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.toc) [8
+
+] [9] (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/1-introducao.tex
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 13.
-) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/solucoes-existentes-e-objetivos.tex [6
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 6.
 
 
-] [7] [8
+Package hyperref Warning: Suppressing empty link on input line 6.
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/detalhamento.tex [9] [10
+[10
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/descricao.tex [11]
-<figs/arquitetura.png, id=144, 937.5025pt x 512.91624pt>
-File: figs/arquitetura.png Graphic file (type png)
-<use figs/arquitetura.png>
-Package pdftex.def Info: figs/arquitetura.png  used on input line 26.
-(pdftex.def)             Requested size: 468.7501pt x 256.45749pt.
 
-Overfull \hbox (13.7501pt too wide) in paragraph at lines 26--28
- [][] 
- []
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/2-solucoes-existentes-e-objetivos.tex [11]
+<./images/citizen.png, id=163, 1849.91125pt x 1088.065pt>
+File: ./images/citizen.png Graphic file (type png)
+<use ./images/citizen.png>
+Package pdftex.def Info: ./images/citizen.png  used on input line 24.
+(pdftex.def)             Requested size: 455.0pt x 267.61592pt.
 
-<figs/eventos.png, id=146, 680.5425pt x 609.27625pt>
-File: figs/eventos.png Graphic file (type png)
-<use figs/eventos.png>
-Package pdftex.def Info: figs/eventos.png  used on input line 34.
-(pdftex.def)             Requested size: 340.27042pt x 304.63737pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<./images/sp-mais-segura.png, id=167, 2392.94pt x 1086.0575pt>
+File: ./images/sp-mais-segura.png Graphic file (type png)
+<use ./images/sp-mais-segura.png>
+Package pdftex.def Info: ./images/sp-mais-segura.png  used on input line 40.
+(pdftex.def)             Requested size: 455.0pt x 206.50221pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [12
 
- </Users/papa/dev/metis/docs/_tcc/monografia/figs/arquitetura.png>]
-<figs/diagrama-de-classes.png, id=154, 995.72pt x 493.845pt>
-File: figs/diagrama-de-classes.png Graphic file (type png)
-<use figs/diagrama-de-classes.png>
-Package pdftex.def Info: figs/diagrama-de-classes.png  used on input line 45.
-(pdftex.def)             Requested size: 497.85878pt x 246.92189pt.
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/3-detalhamento-do-problema.tex [13 </Users/bruno.papa/dev/lazarus/docs/latex/./images/citizen.png>] [14 </Users/bruno.papa/dev/lazarus/docs/latex/./images/sp-mais-segura.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/4-descricao-do-projeto.tex [15
 
-Overfull \hbox (42.85878pt too wide) in paragraph at lines 45--47
- [][] 
- []
+]
+LaTeX Font Info:    Trying to load font information for TS1+lmss on input line 20.
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/ts1lmss.fd
+File: ts1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmss' (encoding: TS1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 20.
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+<../diagrams/out/system_server.png, id=203, 2435.0975pt x 914.41624pt>
+File: ../diagrams/out/system_server.png Graphic file (type png)
+<use ../diagrams/out/system_server.png>
+Package pdftex.def Info: ../diagrams/out/system_server.png  used on input line 29.
+(pdftex.def)             Requested size: 455.0pt x 170.85265pt.
 
-) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/tecnologias.tex [13 </Users/papa/dev/metis/docs/_tcc/monografia/figs/eventos.png>] [14 </Users/papa/dev/metis/docs/_tcc/monografia/figs/diagrama-de-classes.png>]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/validacao.tex [15
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/riscos.tex [16
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/cronograma.tex [17
+<../diagrams/out/system_server_each-module_layers.png, id=205, 2443.1275pt x 1925.1925pt>
+File: ../diagrams/out/system_server_each-module_layers.png Graphic file (type png)
+<use ../diagrams/out/system_server_each-module_layers.png>
+Package pdftex.def Info: ../diagrams/out/system_server_each-module_layers.png  used on input line 41.
+(pdftex.def)             Requested size: 455.0pt x 358.5345pt.
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/chapters/conclusao.tex [18
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-]) (/Users/papa/dev/metis/docs/_tcc/monografia/monografia.bbl [19
+[16
+
+]
+<../diagrams/out/system_server_shared-module_domain.png, id=215, 730.73pt x 410.53375pt>
+File: ../diagrams/out/system_server_shared-module_domain.png Graphic file (type png)
+<use ../diagrams/out/system_server_shared-module_domain.png>
+Package pdftex.def Info: ../diagrams/out/system_server_shared-module_domain.png  used on input line 59.
+(pdftex.def)             Requested size: 455.0pt x 255.62453pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server.png>] [18 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_each-module_layers.png>]
+<../diagrams/out/system_server_all-modules_domain-entities.png, id=231, 1147.28625pt x 1265.72874pt>
+File: ../diagrams/out/system_server_all-modules_domain-entities.png Graphic file (type png)
+<use ../diagrams/out/system_server_all-modules_domain-entities.png>
+Package pdftex.def Info: ../diagrams/out/system_server_all-modules_domain-entities.png  used on input line 89.
+(pdftex.def)             Requested size: 455.0pt x 501.95631pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<../diagrams/out/system_server_all_modules_commands-observers-events.png, id=233, 3621.53pt x 2316.655pt>
+File: ../diagrams/out/system_server_all_modules_commands-observers-events.png Graphic file (type png)
+<use ../diagrams/out/system_server_all_modules_commands-observers-events.png>
+Package pdftex.def Info: ../diagrams/out/system_server_all_modules_commands-observers-events.png  used on input line 99.
+(pdftex.def)             Requested size: 455.0pt x 291.03049pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/5-tecnologias-escolhidas.tex [19 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_shared-module_domain.png (PNG copy)>] [20 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all-modules_domain-entities.png (PNG copy)>] [21 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all_modules_commands-observers-events.png>]
+
+Package hyperref Warning: Suppressing empty link on input line 11.
+
+
+Package hyperref Warning: Suppressing empty link on input line 12.
+
+
+Package hyperref Warning: Suppressing empty link on input line 13.
+
+
+Package hyperref Warning: Suppressing empty link on input line 14.
+
+
+Package hyperref Warning: Suppressing empty link on input line 15.
+
+
+Package hyperref Warning: Suppressing empty link on input line 16.
+
+
+Package hyperref Warning: Suppressing empty link on input line 17.
+
+
+Package hyperref Warning: Suppressing empty link on input line 18.
+
+
+Package hyperref Warning: Suppressing empty link on input line 19.
+
+
+Package hyperref Warning: Suppressing empty link on input line 20.
+
+
+Package hyperref Warning: Suppressing empty link on input line 21.
+
+
+Package hyperref Warning: Suppressing empty link on input line 22.
+
+
+Package hyperref Warning: Suppressing empty link on input line 23.
+
+
+Package hyperref Warning: Suppressing empty link on input line 24.
+
+[22
+
+]
+
+Package hyperref Warning: Suppressing empty link on input line 27.
+
+
+Package hyperref Warning: Suppressing empty link on input line 28.
+
+
+Package hyperref Warning: Suppressing empty link on input line 29.
+
+<../diagrams/out/system.png, id=290, 2044.63875pt x 869.2475pt>
+File: ../diagrams/out/system.png Graphic file (type png)
+<use ../diagrams/out/system.png>
+Package pdftex.def Info: ../diagrams/out/system.png  used on input line 38.
+(pdftex.def)             Requested size: 455.0pt x 193.4368pt.
+<../diagrams/out/system_server_api.png, id=292, 2505.36pt x 1152.305pt>
+File: ../diagrams/out/system_server_api.png Graphic file (type png)
+<use ../diagrams/out/system_server_api.png>
+Package pdftex.def Info: ../diagrams/out/system_server_api.png  used on input line 48.
+(pdftex.def)             Requested size: 455.0pt x 209.26971pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/6-validacao.tex [23 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system.png>] [24 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_api.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/7-riscos.tex [25
+
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/8-cronograma.tex [26
+
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/9-conclusao.tex [27
+
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.bbl [28
 
 ]
 bibitemlist
+[29
 
-LaTeX Warning: Empty `thebibliography' environment on input line 8.
-
-) 
+]) 
 AED: lastpage setting LastPage
-[20
-
-]
+[30]
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
@@ -1167,20 +1300,20 @@ This document will not have a glossary.
 \tf@toc=\write10
 \openout10 = `monografia.toc'.
 
-(/Users/papa/dev/metis/docs/_tcc/monografia/monografia.aux) ) 
+(/Users/bruno.papa/dev/lazarus/docs/latex/monografia.aux) ) 
 Here is how much of TeX's memory you used:
- 25379 strings out of 478994
- 408841 string characters out of 5858185
- 928468 words of memory out of 5000000
- 42174 multiletter control sequences out of 15000+600000
- 447074 words of font info for 107 fonts, out of 8000000 for 9000
+ 25762 strings out of 478994
+ 416350 string characters out of 5858184
+ 940972 words of memory out of 5000000
+ 42433 multiletter control sequences out of 15000+600000
+ 465896 words of font info for 139 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 117i,11n,116p,1034b,500s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsso12.pfb>
-Output written on /Users/papa/dev/metis/docs/_tcc/monografia/monografia.pdf (21 pages, 919077 bytes).
+ 117i,11n,116p,1099b,606s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
+Output written on /Users/bruno.papa/dev/lazarus/docs/latex/monografia.pdf (31 pages, 4469569 bytes).
 PDF statistics:
- 315 PDF objects out of 1000 (max. 8388607)
- 273 compressed objects within 3 object streams
- 75 named destinations out of 1000 (max. 500000)
- 22788 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 525 PDF objects out of 1000 (max. 8388607)
+ 460 compressed objects within 5 object streams
+ 120 named destinations out of 1000 (max. 500000)
+ 35682 words of extra memory for PDF output out of 35830 (max. 10000000)
 

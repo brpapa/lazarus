@@ -1,0 +1,120 @@
+@startuml system_server_all-modules_domain-entities
+left to right direction
+
+skinparam classAttributeIconSize 10
+skinparam shadowing false
+' skinparam genericDisplay old
+' skinparam linetype ortho
+' skinparam linetype polyline
+' skinparam groupInheritance 1
+
+' Composition A "1" *-- "1"	B: A "has-an" instance of B, B cannot exists without A
+' Aggregation A o--	B: A "has-an" instance of B, B can exists without A
+
+package "Incident module" <<Rectangle>> {
+  class Incident as "**Incident**\n//extends AggregateRoot//" {
+    + id: string
+    + ownerUserId: string
+    + title: string
+    + location: Location
+    + formattedAddress: string?
+    + medias: Media[]
+    + statistics: IncidentStatistics?
+    + createdAt: Date?
+    + lastUpdateAt: Date?
+  }
+  class IncidentStatistics as "**IncidentStatistics**\n//extends ValueObject//" {
+    + viewsCount: number
+    + usersNotifiedCount: number
+  }
+  Incident "1" *-- "1" IncidentStatistics
+}
+
+package "User module" <<Rectangle>> {
+  class User as "**User**\n//extends AggregateRoot//" {
+    + id: string
+    + username: string
+    + password: UserPassword
+    + email: UserEmail
+    + name: string
+    + lastLogin: Date?
+    + location: Location?
+    + avatarUrl: string?
+    + preferences: UserPreferences?
+    + createdAt: Date?
+    + accessToken: string?
+    + refreshToken: string?
+  }
+  class UserEmail as "**UserEmail**\n//extends ValueObject//" {
+    + value: string
+    + isValid(): boolean
+  }
+  class UserPassword as "**UserPassword**\n//extends ValueObject//" {
+    + value: string
+    + isAlreadyHashed: string
+    + getHashedValue(): void
+    + compareAgainstPlainText(plainTextPassword: string): boolean
+  }
+  class UserPreferences as "**UserPreferences**\n//extends ValueObject//" {
+    + radiusDistanceInMeters: number
+    + language: number
+  }
+  User "1" *-- "1" UserEmail
+  User "1" *-- "1" UserPassword
+  User "1" *-- "1" UserPreferences
+}
+
+package "Notification module" <<Rectangle>> {
+  class Device as "**Device**\n//extends Entity//" {
+    + userId: string
+    + pushToken: string
+  }
+  class Notification as "**Notification**\n//extends Entity//" {
+    + targetUserId: string
+    + code: NotificationCodeEnum
+    + title: string
+    + subtitle: string
+    + body: string
+    + link: NotificationLink
+    + seenByTargetUser: boolean
+    + createdAt: Date
+  }
+  enum NotificationCodeEnum {
+    NEARBY_INCIDENT_CREATED
+  }
+  class NotificationLink as "**NotificationLink**\n//extends ValueObject//" {
+    + entityName: LinkedEntityEnum
+    + entityId: string
+  }
+  enum LinkedEntityEnum {
+    INCIDENT
+    USER
+  }
+  Notification "1" *-- "1" NotificationCodeEnum
+  Notification "1" *-- "1" NotificationLink
+  NotificationLink "1" *-- "1" LinkedEntityEnum
+}
+
+User "0..1" -- "n" Notification
+User "0..1" -- "n" Incident
+User "1" -- "n" Device
+
+' ------------------------------------------
+
+package Legend <<Rectangle>> {
+  class ClassName {
+    {field} + publicField: string = "string"
+    {field} - privatefield: number
+    {field} # protectedfield: type
+    {field} ~ protectedfieldInPackage: any
+
+    {method} + publicMethod(s: string, v: number): void
+    {method} - privateMethod(): number
+    {method} # protectedMethod(): double
+    {method} ~ protectedMethodInPackage(): any
+
+    {static} + publicStaticField: type
+  }
+}
+
+@enduml
