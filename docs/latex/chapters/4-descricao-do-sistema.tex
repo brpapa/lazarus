@@ -1,0 +1,189 @@
+\chapter{Descrição do sistema}
+
+% - Caracterizar claramente o projeto em termos de suas funcionalidades e da forma de sua interação com o usuário e com o ambiente.
+% - Apresentar um diagrama em blocos mostrando uma visão geral do sistema a ser desenvolvido.
+% - Cada bloco (ou módulo) corresponde a uma representação lógica de uma parte da solução proposta, o qual realiza uma função identificável do sistema completo. Um bloco deve corresponder a uma parte do sistema que pode ser desenvolvida e testada de forma independente das demais.
+% - Cada bloco deve será ser descrito individualmente, caracterizar suas entradas e saídas, o processamento que realiza e como se comunica com os demais blocos.
+% - Deve ser indicado também, de maneira sucinta, como cada módulo será desenvolvido (se em hardware digital, hardware analógico, software em desktop, firmware embarcado, etc.).
+
+O sistema como um todo segue uma arquitetura cliente-servidor, onde o usuário interage com uma aplicação cliente que, por sua vez, se comunica com um servidor através da internet utilizando algum protocolo de rede. A aplicação cliente, nesse caso, é um aplicativo para dispositivos móveis, enquanto o servidor é uma aplicação monolítica, ou seja, um serviço único que roda em um único processo. Foi considerado o desenvolvimento de vários microserviços, porém a arquiteture monolítica foi escolhida em virtude da simplicidade de desenvolvimento, facilidade de testes e de \emph{deploy}.
+
+A Figura~\ref{f.system} ilustra os componentes físicos do sistema.
+
+\begin{figure}[htbp]
+	\caption{\small Componentes físicos do sistema.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system.png}
+	\label{f.system}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+\section{Servidor}
+
+Os princípios do \emph{domain-driven design}, termo cunhado inicialmente por Eric Evans ~\cite{domain-driven-design}, e a ideias propostas por Uncle Bob em \emph{Clean Architecture} ~\cite{clean-architecture} tiveram grande contribuição para o projeto do servidor, tendo em vista que a \emph{separation of concerns} e a divisão da aplicação em camadas bem definidas com um rico modelo de domínio no centro permitem com que a complexidade do projeto cresça de forma manutenível ao longo do tempo.
+
+A partir dos requisitos listados na Seção~\ref{s.requisitos}, se fez necessário identificar os diferentes subdomínios do sistema. Um módulo, também chamado de subdomínio, é um pedaço isolado de código. Como ilustrado pela Figura~\ref{f.system_server}, os seguintes módulos foram identificados:
+
+\begin{itemize}
+	\item \texttt{user module}: responsável pelos usuários, gerenciamento de identidade, autenticação e autorização;
+	\item \texttt{incident module}: responsável por todas as operações relacionadas aos alertas;
+	\item \texttt{notification module}: responsável pelo envio de notificações aos dispositivos dos usuários;
+	\item \texttt{shared module}: módulo global para reuso de código entre diferentes módulos.
+\end{itemize}
+
+\begin{figure}[htbp]
+	\caption{\small Visão geral do sistema.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server.png}
+	\label{f.system_server}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Camadas de cada módulo}
+
+De acordo com a "arquitetura hexagonal" de Alistair Cockburn ~\cite{hexagonal-architecture}, a camada mais interna da arquitetura deve manter a camada de aplicação e domínio, e fora dessa camada devem estar os adaptadores (ou portas). Os adaptadores são "uma maneira de conectar o mundo exterior ao mundo interior". A aplicação é escrita em cima das tecnologias específicas que existem no "mundo exterior", como bancos de dados, APIs externas e serviços em nuvem. Definindo adaptadores, as tecnologias específicas podem ser envolvidos com segurança pela aplicação, o que é chamado de inversão de dependência. Esse tipo de arquitetura trás inúmeros benefícios como: 
+
+\begin{alineas}
+	\item Atrasar a decisão sobre exatamente qual tipo de servidor web, banco de dados, serviços externos ou tecnologia de cache será escolhido até que seja absolutamente necessário decidir. Facilitando, por exemplo, que se faça uma implementação inicial em memória do bancos de dados para agilizar o desenvolvimento;
+	\item Prioriza a escrita de código que pode ser facilmente testado usando injeção de dependência, minimizando o uso de dependências concretas que poderiam tornar o código não testável; e
+	\item Ajusta o foco às coisas específicas da aplicação e do domínio.
+\end{alineas}
+
+Portanto, cada um dos módulos respeita a divisão em camadas descrita pela Figura~\ref{f.system_server_each-module_layers}, onde camadas mais externas dependem das camadas mais internas e, consequentemente, camadas mais internas não conhecem camadas mais externas. 
+
+\begin{figure}[htbp]
+	\caption{\small Camadas de um módulo do servidor.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server_each-module_layers.png}
+	\label{f.system_server_each-module_layers}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+\subsubsection{A camada de domínio}
+
+A \texttt{domain layer} é a camada mais interna. É a camada que contém tudo aquilo que é importante para o negócio e que está menos propensa a mudar, configurando-se como a camada mais estável dentre todas e a qual todas as outras dependem.
+
+Para encapsular regras de validação, existem os \texttt{value objecs}. Uma \texttt{entity} é um objeto que encorpa um pequeno conjunto de regras de negócio.
+
+Um \texttt{aggregate root} é um tipo específico de \texttt{entity} que pode emitir \texttt{domain events} quando algo relavante para o negócio ocorre, e para isso, ele armazena como estado os eventos que ainda não foram emitidos pela camada de infraestrutura. Ele é implementado pela principal entidade de um \emph{cluster} de \texttt{entities} e \texttt{value objects} relacionados, os quais são tratados como uma única unidade de mudança.
+
+A Figura~\ref{f.system_server_shared-module_domain} demonstra como essas classes abstratas são definidas no módulo \texttt{shared}, além da implementação da classe \texttt{DomainEvents}.
+
+\begin{figure}[htbp]
+	\caption{\small Diagrama de classes da camada de domínio do módulo compartilhado do servidor.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server_shared-module_domain.png}
+	\label{f.system_server_shared-module_domain}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+A classe \texttt{DomainEvents} é um \emph{singleton}, ou seja, uma única instância global com tempo de vida vitalício em relação ao tempo de vida da aplicação. Ela é usada para encapsular o estado de quais \texttt{observers} estão interessados em ouvir pelos eventos emitidos por determinados \texttt{aggregate roots}. As instâncias dos \texttt{aggregate roots} inscritos contém \texttt{domain events} que serão dispachados para seus \texttt{observers} quando a camada de infraestrutura persistir as alterações feitas.
+
+\subsubsection{A camada de aplicação}
+
+A \texttt{application layer} contém os casos de uso, ou seja, principais funcionalidades, da aplicação. Em relação ao ambiente externo as entradas são os \texttt{commands} e \texttt{queries}, mas essa camada também implementa \texttt{application services} e \texttt{observers}, que são funções que serão executadas quando um determinado evento de domínio ocorre.
+
+O \emph{Command-Query Separation (CQS)} é um padrão introduzido por Bertrand Meyer ~\cite{object-oriented-software-construction} que afirma que um método é ou um \texttt{command} que executa uma ação ou uma \texttt{query} que retorna dados ao chamador, mas nunca ambos. Dessa forma os fluxos de operações que mudam o sistema (e geram efeitos colaterais) são separados daqueles que apenas requisitam dados ao sistema, tornando o código mais simples de entender e manter.
+
+\subsubsection{A camada de adaptadores}
+
+A \texttt{adapter layer} contém abstrações para que a \texttt{application layer} possa interagir com a \texttt{infrastructure layer} sem depender dela, habilitando o que é chamado de inversão de dependência. Interfaces de repositórios que acessam bancos de dados, interfaces ou classes abstratadas que chamam APIs externas e mapeadores de objetos entre diferentes camadas (modelo de domínio, DTO, modelo de persistência) são exemplos do que pode estar nessa camada..
+
+\subsubsection{A camada de infraestrutura}
+
+A \texttt{infrastructure layer} é a camada mais externa. Ela contém os detalhes da aplicação, os quais possuem maior chance de serem trocados por outras bibliotecas ou frameworks específicos ao decorrer do tempo. Isso inclui implementações concretas das abstrações definidas na \texttt{adapter layer} para que elas possam ser executadas em \emph{runtime}, como serviços externos, repositórios para acesso à bancos de dados. Além disso, também contém lógicas de apresentação, como \texttt{HTTP endpoints} e \texttt{GraphQL operations}.
+
+\subsection{Módulos}
+
+Na sequência tem-se uma visão mais ampla de todos os módulos e como eles se inter-relacionam. Um módulo apenas deve se comunicar com outro via eventos de domínio, permitindo o desacoplamento entre eles.
+
+A Figura~\ref{f.system_server_all-modules_domain-entities} ilustra como as entidades de cada módulo estão definidas. 
+
+\begin{figure}[htbp]
+	\caption{\small Entidades de domínio de cada módulo do servidor.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server_all-modules_domain-entities.png}
+	\label{f.system_server_all-modules_domain-entities}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+A Figura~\ref{f.system_server_all_modules_commands-observers-events} ilustra as entradas e saídas de cada módulo.
+
+\begin{figure}[htbp]
+	\caption{\small Entradas e saídas de cada módulo do servidor.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server_all_modules_commands-observers-events.png}
+	\label{f.system_server_all_modules_commands-observers-events}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Principais tecnologias} % TODO
+
+Para a implementação do servidor, tecnologias específicas foram escolhidas e cada uma delas tiveram um motivador de escolha.
+
+% \paragraph{Node.js}
+
+% O node~\cite{node}
+% Por que Node?
+
+% \paragraph{Redis}
+% Por que Redis?
+
+% \paragraph{PostgreSQL}
+% Por que PostgreSQL?
+
+\section{Comunicação entre servidor e cliente}
+
+\subsection{GraphQL}
+% vatangens do GraphQL: https://khalilstemmler.com/articles/graphql/graphql-architectural-advantages/#The-Data-Graph
+
+GraphQL~\cite{graphql} é uma linguagem de consulta para APIs que permite com que clientes requisitem e recebam do servidor exatamente os dados que eles precisam. Ele possui seu próprio sistema de tipos e campos, ao contrário de \emph{endpoints} de um tradicional servidor HTTP que segue princípios REST.
+
+Para criar uma API GraphQL é necessário instalar uma biblioteca que o implementa as especificações do GraphQL  na linguagem desejada, expor um endpoint para receber as requisições GraphQL, definir um \texttt{GraphQL schema} e conectar os \texttt{resolvers} de cada campo aos seus respectivos \texttt{data sources}.
+
+O \texttt{GraphQL schema} é definido em um arquivo declarativo e auto-documentável. Ele é conhecido tanto pelo servidor como pelo cliente e atua como uma camada virtual entre eles. Ele define um grafo com todos os dados que o servidor está expondo, assim como todas as operações disponíveis para a busca e alteração desses dados. Os dados que estão sendo expostos para consultas são definidos através de \texttt{GraphQL queries}, já os que estão sendo expostos para serem alterados, através de \texttt{GraphQL mutations}. Além deles, também existem as \texttt{GraphQL subscriptions}, usadas quando o cliente deseja ouvir por atualizações do servidor. Todos eles, juntos, são chamados de \texttt{GraphQL operations}.
+
+\subsection{Do cliente ao módulo do servidor}
+
+A Figura~\ref{f.system_server_api} ilustra de forma mais detalhada como o aplicativo se comunica com o servidor. Para \texttt{GraphQL queries} e \texttt{GraphQL mutations} há um fluxo síncrono de requisição-resposta onde é utilizado o protocolo HTTP, enquanto que para \texttt{GraphQL subscriptions} há um fluxo assíncrono e onde é estabelecida uma conexão persistente via o protocolo WebSocket para que o servidor possa também enviar atualizações ao cliente sem que haja uma requisição prévia feita dele. Isso permite com que o usuário visualize os dados mais atualizados possíveis na tela. Alertas criados próximo à um usuário que está com o aplicativo aberto é um exemplo de atualização enviada apenas pelo servidor através de uma \texttt{GraphQL subscription}, a qual a aplicação cliente fica ``ouvindo'' desde o momento em que é iniciada.
+
+\begin{figure}[htbp]
+	\caption{\small Interação detalhada entre cliente e servidor.}
+	\centering
+	\includegraphics[width=\textwidth]{../diagrams/out/system_server_api.png}
+	\label{f.system_server_api}
+	\legend{\small Fonte: Elaborado pelo autor.}
+\end{figure}
+
+\FloatBarrier
+
+\section{Aplicativo} % TODO
+
+% TODO: diagram com: relay cache, graphql subscriptions, background location tracker, notifications listener
+
+% TODO: permissoes com SO exigidas
+
+% TODO: print das telas
+
+\subsection{Principais tecnologias}
+
+\subsubsection{React Native}
+% TODO: Por que React Native?
+
+\subsubsection{Relay}
+% TODO: Por que React Native?
+
+\subsubsection{Print das telas}
+

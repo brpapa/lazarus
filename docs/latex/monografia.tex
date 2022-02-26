@@ -24,6 +24,7 @@
 % --------------------------------------------------------
 % PACOTES
 % --------------------------------------------------------
+\usepackage[section]{placeins}
 \usepackage{cmap}				% Mapear caracteres especiais no PDF
 \usepackage{lmodern}			% Usa a fonte Latin Modern
 \usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
@@ -85,8 +86,8 @@
 \titulo{Aplicativo para publicação e acompanhamento de alertas de segurança pública}
 \autor{Bruno José Papa}
 \local{Bauru}
-\data{Agosto/2021}
-\orientador{Prof. Dr. Roberta Spolon}
+\data{Março/2022}
+\orientador{Profa. Dra. Roberta Spolon}
 \instituicao{%
   Universidade Estadual Paulista ``Júlio de Mesquita Filho''
   \par
@@ -203,7 +204,6 @@
 % (o * indica que haverá a ficha bibliográfica)
 \imprimirfolhaderosto*
 
-% TODO: Inserir a ficha bibliografica
 \begin{fichacatalografica}
 	\sffamily
 	\vspace*{\fill}					% Posição vertical
@@ -228,7 +228,6 @@
 	\end{center}
 \end{fichacatalografica}
 
-% TODO: Inserir folha de aprovação
 \begin{folhadeaprovacao}
 	\begin{center}
 		{\ABNTEXchapterfont\large\imprimirautor}
@@ -248,11 +247,11 @@
 		Departamento de Computação \\
 		Faculdade de Ciências \\
 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
-	\assinatura{\textbf{Professor Convidado 1} \\
+	\assinatura{\textbf{Prof. Dr. José Remo Ferreira Brega} \\
 		Departamento de Computação \\
 		Faculdade de Ciências \\
 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
-	\assinatura{\textbf{Professor Convidado 2} \\
+	\assinatura{\textbf{Profa. Dra. Márcia A. Zanoli Meira e Silva} \\
 		Departamento de Computação \\
 		Faculdade de Ciências \\
 	Universidade Estadual Paulista "Júlio de Mesquita Filho"}
@@ -292,14 +291,14 @@
 
 % resumo em português
 \begin{resumo}
-	O presente trabalho tem como objetivo analisar, projetar, implementar e avaliar uma aplicação móvel para a publicação e o acompanhamento de alertas relacionados à segurança pública no Brasil, o qual é capaz de manter as pessoas conscientes de eventuais perigos dos seus arredores em tempo real. Essas informações, provenientes pelas comunidades locais, podem ser cruciais para que as pessoas busquem se proteger e proteger uns aos outros. É exposto que a tecnologia, aliada com a colaboração entre usuários pela internet, pode também ser uma importante ferramenta de segurança. As principais funcionalidades do aplicativo desenvolvido são: rastreamento da localização do usuário, publicação de alertas com suporte ao envio de imagens e vídeos, e o disparo de notificações baseados em localização. É importante ressaltar que este trabalhado não estimula que a justiça seja feita com as próprias mãos, uma vez que isso é resposabilidade dos orgãos públicos locais.
+	O presente trabalho apresenta a análise, projeto, implementação e avaliação de uma aplicação móvel para a publicação e o acompanhamento de alertas relacionados à segurança pública no Brasil, o qual é capaz de manter as pessoas conscientes de eventuais perigos dos seus arredores em tempo real. Essas informações, provenientes pelas comunidades locais, podem ser cruciais para que as pessoas busquem se proteger e proteger uns aos outros. É exposto que a tecnologia, aliada com a colaboração entre usuários pela internet, pode também ser uma importante ferramenta de segurança. As principais funcionalidades do aplicativo desenvolvido são: rastreamento da localização do usuário, publicação de alertas com suporte ao envio de imagens e vídeos, e o disparo de notificações baseados em localização. É importante ressaltar que este trabalhado não estimula que a justiça seja feita com as próprias mãos, uma vez que isso é resposabilidade dos orgãos públicos locais.
 	\\
 	\textbf{Palavras-chave:} aplicação móvel, sistema colaborativo, engenharia de software
 \end{resumo}
 
 \begin{resumo}[Abstract]
 	\begin{otherlanguage*}{english}
-		The current project aims to analyze, design, implement and evaluate a mobile application for the publication and monitoring of alerts related to public safety in Brazil, which is capable of keeping people aware of possible dangers in their surroundings in real time. This informations, provided by local communities, can be crucial for people to seek to protect themselves and each other. It is exposed that the technology, combined with collaboration between users over the internet, can also be an important security tool. The main features of the developed application are: user's location tracking, publishing alerts with images and videos uploads suports, and triggering location-based notifications. It is important to emphasize that this work does not encourage justice to be done with their own hands, since this is the responsibility of local public bodies.
+		The current project presents the analyze, design, implementation and evaluation of a mobile application for the publication and monitoring of alerts related to public safety in Brazil, which is capable of keeping people aware of possible dangers in their surroundings in real time. This informations, provided by local communities, can be crucial for people to seek to protect themselves and each other. It is exposed that the technology, combined with collaboration between users over the internet, can also be an important security tool. The main features of the developed application are: user's location tracking, publishing alerts with images and videos uploads suports, and triggering location-based notifications. It is important to emphasize that this work does not encourage justice to be done with their own hands, since this is the responsibility of local public bodies.
 		\\
 		\textbf{Keywords:} mobile application, collaborative system, software engineering.
 	\end{otherlanguage*}
@@ -351,7 +350,6 @@
 \tableofcontents*
 \cleardoublepage
 
-
 % --------------------------------------------------------
 % ELEMENTOS TEXTUAIS
 % --------------------------------------------------------
@@ -361,12 +359,9 @@
 \input{chapters/1-introducao}
 \input{chapters/2-solucoes-existentes-e-objetivos}
 \input{chapters/3-detalhamento-do-problema}
-\input{chapters/4-descricao-do-projeto}
-\input{chapters/5-tecnologias-escolhidas}
-\input{chapters/6-validacao}
-\input{chapters/7-riscos}
-\input{chapters/8-cronograma}
-\input{chapters/9-conclusao}
+\input{chapters/4-descricao-do-sistema}
+\input{chapters/5-tecnologias}
+\input{chapters/6-conclusao}
 
 % --------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
