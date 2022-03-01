@@ -56,11 +56,76 @@
 % --------------------------------------------------------
 % CONFIGURAÇÕES DE PACOTES
 % --------------------------------------------------------
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 
 % Configurações do pacote listing
 \renewcommand{\lstlistingname}{Código} %Mudança no caption do listing para Código
 \renewcommand{\lstlistlistingname}{Lista de códigos} %Mudança no caption da lista de listings.
 
+%Customize a bit the look
+\lstset{
+	backgroundcolor=\color{white}, % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+	basicstyle=\footnotesize, % the size of the fonts that are used for the code
+	breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace
+	breaklines=true, % sets automatic line breaking
+	captionpos=b, % sets the caption-position to bottom
+	commentstyle=\color{mygreen}, % comment style
+	deletekeywords={...}, % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)}, % if you want to add LaTeX within your code
+	extendedchars=true, % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single, % adds a frame around the code
+	keepspaces=true, % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue}, % keyword style
+	% language=Octave, % the language of the code
+	morekeywords={*,...}, % if you want to add more keywords to the set
+	numbers=left, % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt, % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black}, % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false, % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false, % underline spaces within strings only
+	showtabs=false, % show tabs within strings adding particular underscores
+	stepnumber=1, % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve}, % string literal style
+	tabsize=2, % sets default tabsize to 2 spaces
+	title=\lstname % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% define Javascript language
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]",
+	morestring=[b]`
+}
+ 
+\lstset{
+	language=JavaScript,
+	extendedchars=true,
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b
+}
 
 % Configurações do pacote backref
 \renewcommand{\familydefault}{\sfdefault}
@@ -291,14 +356,14 @@
 
 % resumo em português
 \begin{resumo}
-	O presente trabalho apresenta a análise, projeto, implementação e avaliação de uma aplicação móvel para a publicação e o acompanhamento de alertas relacionados à segurança pública no Brasil, o qual é capaz de manter as pessoas conscientes de eventuais perigos dos seus arredores em tempo real. Essas informações, provenientes pelas comunidades locais, podem ser cruciais para que as pessoas busquem se proteger e proteger uns aos outros. É exposto que a tecnologia, aliada com a colaboração entre usuários pela internet, pode também ser uma importante ferramenta de segurança. As principais funcionalidades do aplicativo desenvolvido são: rastreamento da localização do usuário, publicação de alertas com suporte ao envio de imagens e vídeos, e o disparo de notificações baseados em localização. É importante ressaltar que este trabalhado não estimula que a justiça seja feita com as próprias mãos, uma vez que isso é resposabilidade dos orgãos públicos locais.
+	O presente trabalho apresenta a análise, projeto, implementação e avaliação de uma aplicação móvel para a publicação e o acompanhamento de alertas relacionados à segurança pública no Brasil, o qual é capaz de manter as pessoas conscientes de eventuais perigos dos seus arredores em tempo real. Essas informações fornecidas pelas comunidades locais podem ser cruciais para que as pessoas busquem se proteger e proteger uns aos outros. É exposto que a tecnologia, aliada com a colaboração entre usuários pela internet, pode também ser uma importante ferramenta de segurança. As principais funcionalidades do aplicativo desenvolvido são: rastreamento da localização do usuário, publicação de alertas com suporte ao envio de imagens e vídeos, e o disparo de notificações baseados em localização. É importante ressaltar que este trabalhado não estimula que a justiça seja feita com as próprias mãos, uma vez que isso é resposabilidade dos orgãos públicos locais.
 	\\
 	\textbf{Palavras-chave:} aplicação móvel, sistema colaborativo, engenharia de software
 \end{resumo}
 
 \begin{resumo}[Abstract]
 	\begin{otherlanguage*}{english}
-		The current project presents the analyze, design, implementation and evaluation of a mobile application for the publication and monitoring of alerts related to public safety in Brazil, which is capable of keeping people aware of possible dangers in their surroundings in real time. This informations, provided by local communities, can be crucial for people to seek to protect themselves and each other. It is exposed that the technology, combined with collaboration between users over the internet, can also be an important security tool. The main features of the developed application are: user's location tracking, publishing alerts with images and videos uploads suports, and triggering location-based notifications. It is important to emphasize that this work does not encourage justice to be done with their own hands, since this is the responsibility of local public bodies.
+		The current project presents the analyze, design, implementation and evaluation of a mobile application for the publication and monitoring of alerts related to public safety in Brazil, which is capable of keeping people aware of possible dangers in their surroundings in real time. This informations provided by local communities can be crucial for people to seek to protect themselves and each other. It is exposed that the technology, combined with collaboration between users over the internet, can also be an important security tool. The main features of the developed application are: user's location tracking, publishing alerts with images and videos uploads suports, and triggering location-based notifications. It is important to emphasize that this work does not encourage justice to be done with their own hands, since this is the responsibility of local public bodies.
 		\\
 		\textbf{Keywords:} mobile application, collaborative system, software engineering.
 	\end{otherlanguage*}
@@ -360,8 +425,7 @@
 \input{chapters/2-solucoes-existentes-e-objetivos}
 \input{chapters/3-detalhamento-do-problema}
 \input{chapters/4-descricao-do-sistema}
-\input{chapters/5-tecnologias}
-\input{chapters/6-conclusao}
+\input{chapters/5-conclusao}
 
 % --------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS

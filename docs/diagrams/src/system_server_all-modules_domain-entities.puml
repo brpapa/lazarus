@@ -101,20 +101,20 @@ User "1" -- "n" Device
 
 ' ------------------------------------------
 
-package Legend <<Rectangle>> {
-  class ClassName {
-    {field} + publicField: string = "string"
-    {field} - privatefield: number
-    {field} # protectedfield: type
-    {field} ~ protectedfieldInPackage: any
+' package Legend <<Rectangle>> {
+'   class ClassName {
+'     {field} + publicField: string = "string"
+'     {field} - privatefield: number
+'     {field} # protectedfield: type
+'     {field} ~ protectedfieldInPackage: any
 
-    {method} + publicMethod(s: string, v: number): void
-    {method} - privateMethod(): number
-    {method} # protectedMethod(): double
-    {method} ~ protectedMethodInPackage(): any
+'     {method} + publicMethod(s: string, v: number): void
+'     {method} - privateMethod(): number
+'     {method} # protectedMethod(): double
+'     {method} ~ protectedMethodInPackage(): any
 
-    {static} + publicStaticField: type
-  }
-}
+'     {static} + publicStaticField: type
+'   }
+' }
 
 @enduml
