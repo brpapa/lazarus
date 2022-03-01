@@ -1,15 +1,13 @@
+import assert from 'assert'
 import { CommentPostedOnIncident } from 'src/modules/incident/domain/events/comment-posted-on-incident'
 import { AggregateRoot } from 'src/modules/shared/domain/aggregate-root'
 import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { WatchedList } from 'src/modules/shared/domain/watched-list'
 import { Range } from 'src/modules/shared/logic/guard'
-import assert from 'assert'
 import { Location } from '../../../shared/domain/models/location'
 import { IncidentCreated } from '../events/incident-created'
-import { ActivityLog } from './activity-log'
 import { Comment } from './comment'
 import { IncidentStatistics } from './incident-statistics'
-import { IncidentStatus, IncidentStatusEnum } from './incident-status'
 import { Media } from './media'
 import { Reaction } from './reaction'
 
@@ -19,12 +17,10 @@ interface IncidentProps {
   location: Location
   formattedAddress?: string
   medias?: Media[]
-  status?: IncidentStatus
   comments?: WatchedList<Comment>
   reactions?: WatchedList<Reaction>
-  activityLogs?: ActivityLog[]
   statistics?: IncidentStatistics
-  relevanceScore?: number // TODO: para que no mapa só mostre os mais relevantes no caso de ter muitos
+  // relevanceScore?: number // TODO: para que no mapa só mostre os mais relevantes no caso de ter muitos
   createdAt?: Date
   lastUpdateAt?: Date
 }
@@ -37,10 +33,8 @@ export class Incident extends AggregateRoot<IncidentProps> {
   get location() { return this.props.location } // prettier-ignore
   get formattedAddress() { return this.props.formattedAddress } // prettier-ignore
   get medias() { assert(this.props.medias); return this.props.medias } // prettier-ignore
-  get status() { assert(this.props.status); return this.props.status } // prettier-ignore
   get comments() { assert(this.props.comments); return this.props.comments } // prettier-ignore
   get reactions() { assert(this.props.reactions); return this.props.reactions } // prettier-ignore
-  get activityLogs() { assert(this.props.activityLogs); return this.props.activityLogs } // prettier-ignore
   get statistics() { assert(this.props.statistics); return this.props.statistics } // prettier-ignore
   get createdAt() { assert(this.props.createdAt); return this.props.createdAt } // prettier-ignore
   get lastUpdateAt() { return this.props.lastUpdateAt } // prettier-ignore
@@ -50,10 +44,8 @@ export class Incident extends AggregateRoot<IncidentProps> {
       {
         ...props,
         medias: props.medias || [],
-        status: props.status || IncidentStatusEnum.PENDING,
         comments: props.comments || WatchedList.create<Comment>(),
         reactions: props.reactions || WatchedList.create<Reaction>(),
-        activityLogs: props.activityLogs || [],
         statistics: props.statistics || IncidentStatistics.create({}),
         createdAt: props.createdAt || new Date(),
       },

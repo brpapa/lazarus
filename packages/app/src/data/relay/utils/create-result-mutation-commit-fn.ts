@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
 import {
   commitMutation,
   GraphQLTaggedNode,

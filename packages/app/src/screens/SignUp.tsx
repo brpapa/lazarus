@@ -1,15 +1,14 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Keyboard, View } from 'react-native'
+import { Image, Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, Text, TextInput, TextInputType } from '~/components/v1'
-import { CustomHeader } from '~/components/v1'
+import { Button, CustomHeader, Text, TextInput, TextInputType } from '~/components/v1'
 import { useSignUpMutation } from '~/data/relay/mutations/SignUpMutation'
 import type { MainStackNavProp } from '~/navigation/types'
 import { getTextInputRules } from '~/shared/form/get-text-input-rules'
-import { makeUseStyles, useColorScheme } from '~/theme/v1'
+import { makeUseStyles } from '~/theme/v1'
 
 const { emailInputRules, usernameInputRules, nameInputRules, passwordInputRules } =
   getTextInputRules()
@@ -51,7 +50,7 @@ export function SignUp() {
     const result = await signUp({ email, name, username, password })
     result.map(
       () => nav.navigate('SignIn'),
-      (err) => setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic')),
+      (err) => setErrorMsg(err.reasonIsTranslated ? err.reason : t('errors.generic')),
     )
   })
 
@@ -62,11 +61,11 @@ export function SignUp() {
       style={s.container}
     >
       <CustomHeader title={t('auth.signUp')} noShadow />
-      {/* <Image
-        source={colorScheme === 'dark' ? DarkLogo : LightLogo}
+      <Image
+        // source={colorScheme === 'dark' ? DarkLogo : LightLogo}
         style={s.logo}
         resizeMode="contain"
-      /> */}
+      />
       <View style={s.inputContainer}>
         {errorMsg && <Text style={s.errorMsg}>{errorMsg}</Text>}
         <Controller
@@ -206,7 +205,7 @@ const useStyles = makeUseStyles(({ colors, fontSizes, spacing }) => ({
     backgroundColor: colors.background,
   },
   logo: {
-    height: 120,
+    height: 20,
     width: '100%',
     marginVertical: spacing.xxxl,
   },
@@ -234,5 +233,6 @@ const useStyles = makeUseStyles(({ colors, fontSizes, spacing }) => ({
   },
   label: {
     paddingBottom: spacing.m,
+    color: colors.accent4,
   },
 }))

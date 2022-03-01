@@ -1,5 +1,5 @@
 import { CommentModel, IncidentModel, MediaModel } from '@prisma/client'
-import assert, { throws } from 'assert'
+import assert from 'assert'
 import { Debugger } from 'debug'
 import {
   GeoReplyWith,

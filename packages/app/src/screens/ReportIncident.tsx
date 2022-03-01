@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -42,7 +42,7 @@ export function ReportIncident() {
         })
       },
       (err) => {
-        setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic'))
+        setErrorMsg(err.reasonIsTranslated ? err.reason : t('errors.generic'))
         reset({ title: '' })
       },
     )

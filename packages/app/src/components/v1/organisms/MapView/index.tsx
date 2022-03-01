@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import React from 'react'
 import { Text, View } from 'react-native'
 import { ENABLE_GOOGLE_MAPS } from '~/config'
@@ -23,7 +23,7 @@ const createMapView: () => MapViewType = ENABLE_GOOGLE_MAPS
             justifyContent: 'center',
           }}
         >
-          <Text>{t('🗺 Map is not available :/') as string}</Text>
+          <Text>{t('infos.unavailableMap') as string}</Text>
         </View>
       )
     }

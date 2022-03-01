@@ -1,4 +1,4 @@
-import { combine } from '@metis/shared'
+import { combine } from '@lazarus/shared'
 import { ValueObject } from 'src/modules/shared/domain/value-object'
 import { Guard, Range } from 'src/modules/shared/logic/guard'
 

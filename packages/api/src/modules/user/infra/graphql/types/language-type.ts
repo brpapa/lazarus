@@ -1,4 +1,4 @@
-import { LanguageEnum } from '@metis/shared'
+import { LanguageEnum } from '@lazarus/shared'
 import { GraphQLEnumType } from 'graphql'
 import { mapObjectValues } from 'src/modules/shared/logic/helpers/map-object-values'
 

@@ -1,5 +1,5 @@
 import * as Notifications from 'expo-notifications'
-import { __ANDROID__, __DEVICE_IS_SIMULATOR__ } from '../config'
+import { __ANDROID__, __DEVICE_IS_SIMULATOR__ } from '~/shared/constants'
 
 /**
  * returns the expo push token of device

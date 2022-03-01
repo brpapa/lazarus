@@ -1,4 +1,4 @@
-import type { Result } from '@metis/shared'
+import type { Result } from '@lazarus/shared'
 import { graphql } from 'react-relay'
 import type {
   RefreshTokenErrCodeType,

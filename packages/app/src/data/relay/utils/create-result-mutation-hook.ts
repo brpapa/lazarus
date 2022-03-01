@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
 import { useCallback, useState } from 'react'
 import { useMutation } from 'react-relay'
 import type { GraphQLTaggedNode, MutationParameters, SelectorStoreUpdater } from 'relay-runtime'

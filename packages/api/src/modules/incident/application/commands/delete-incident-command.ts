@@ -1,4 +1,4 @@
-import { err, okVoid, Result } from '@metis/shared'
+import { err, okVoid, Result } from '@lazarus/shared'
 import { Debugger } from 'debug'
 import { IIncidentRepo } from 'src/modules/incident/adapter/repositories/incident-repo'
 import { AppContext } from 'src/modules/shared/logic/app-context'

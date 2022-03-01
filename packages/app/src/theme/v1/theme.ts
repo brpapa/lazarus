@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { TransitionPresets } from '@react-navigation/stack'
 import type { EdgeInsets } from 'react-native-safe-area-context'
 import { colorTheme, fontSizes, fontVariants, iconSizes, spacing } from './constants'

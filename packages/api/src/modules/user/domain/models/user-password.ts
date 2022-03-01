@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
 import { ValueObject } from 'src/modules/shared/domain/value-object'
 import { DomainError } from 'src/modules/shared/logic/errors'
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
+import assert from 'assert'
 
 interface UserPasswordProps {
   value: string
@@ -13,10 +14,10 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   static MIN_LENGTH = 8
 
   get value() { return this.props.value } // prettier-ignore
-  get isAlreadyHashed() { return !!this.props.isAlreadyHashed } // prettier-ignore
+  get isAlreadyHashed() { assert(this.props.isAlreadyHashed !== undefined); return this.props.isAlreadyHashed } // prettier-ignore
 
   private constructor(props: UserPasswordProps) {
-    super(props)
+    super({ ...props, isAlreadyHashed: props.isAlreadyHashed || false })
     this.generatedHashes = []
   }
 

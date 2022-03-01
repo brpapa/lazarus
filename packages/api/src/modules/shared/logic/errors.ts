@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 
 /** the name of leaft class is the error code and also the key to search for i18n messages */
 export abstract class BaseError {

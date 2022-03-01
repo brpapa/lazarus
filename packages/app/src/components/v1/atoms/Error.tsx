@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import React from 'react'
 import { View } from 'react-native'
 import { Text } from './Text'
@@ -11,7 +11,7 @@ type Props = {
 export function Error(props: Props) {
   const styles = useStyles()
 
-  const { message = t('Something unexpected happened. Please try again') } = props
+  const { message = t('errors.generic') } = props
 
   return (
     <View style={styles.container}>

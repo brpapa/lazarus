@@ -1,4 +1,4 @@
-import { Result, err, okVoid } from '@metis/shared'
+import { Result, err, okVoid } from '@lazarus/shared'
 
 export type Range = [min: number, max: number]
 

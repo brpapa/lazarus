@@ -29,7 +29,7 @@ export const DB_CONN_STRING_PG = env.DATABASE_PG_CONNECTION_STRING!
 
 export const AWS_ACCESS_KEY = env.AWS_ACCESS_KEY!
 export const AWS_SECRET_ACCESS_KEY = env.AWS_SECRET_ACCESS_KEY!
-export const AWS_S3_BUCKET_NAME = 'public-metis-static-content'
+export const AWS_S3_BUCKET_NAME = 'public-lazarus-static-content'
 export const AWS_REGION = 'us-east-1'
 // export const AWS_SERVICE_ENDPOINT = undefined
 // export const AWS_SERVICE_ENDPOINT = ['test', 'dev'].includes(NODE_ENV)

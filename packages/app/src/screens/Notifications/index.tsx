@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import React, { useState } from 'react'
 import {
   ActionSheetIOS,
@@ -41,7 +41,7 @@ export function Notifications() {
     if (__IOS__) {
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: [t('Mark all as read'), t('Cancel')],
+          options: [t('notifications.markAllAsRead'), t('cancel')],
           cancelButtonIndex: 1,
         },
         async (buttonIndex) => {
@@ -57,7 +57,7 @@ export function Notifications() {
     <>
       <View style={s.container}>
         <CustomHeader
-          title={t('notification.header')}
+          title={t('notifications.header')}
           rightIcon="More"
           onPressRight={onPressMore}
           isLoading={isSending}
@@ -78,7 +78,7 @@ export function Notifications() {
                   }}
                 >
                   <Text style={s.modalText} color="pureBlack" size="l">
-                    {t('Mark all as read') as string}
+                    {t('notifications.markAllAsRead') as string}
                   </Text>
                 </TouchableOpacity>
               </View>

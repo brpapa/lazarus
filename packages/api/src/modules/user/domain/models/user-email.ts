@@ -1,5 +1,5 @@
 import { DomainError } from 'src/modules/shared/logic/errors'
-import { Result, err, ok } from '@metis/shared'
+import { Result, err, ok } from '@lazarus/shared'
 import { ValueObject } from 'src/modules/shared/domain/value-object'
 
 interface UserEmailProps {

@@ -1,5 +1,5 @@
 import { IGeocodingService } from 'src/modules/incident/adapter/geocoding-service'
-import { LANGUAGE } from '@metis/shared'
+import { LANGUAGE } from '@lazarus/shared'
 import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
 import axios from 'axios'
 import { Debugger } from 'debug'

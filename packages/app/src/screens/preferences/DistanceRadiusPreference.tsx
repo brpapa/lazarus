@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import Slider from '@react-native-community/slider'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
@@ -28,18 +28,14 @@ export function DistanceRadiusPreference() {
   return (
     <View style={s.container}>
       <ModalHeader
-        title={t('Distance radius')}
+        title={t('profile.preferences.distanceRadius')}
         left={<HeaderItem left label={t('back')} onPressItem={nav.goBack} />}
-        right={<HeaderItem label={t('Submit')} onPressItem={onSubmit} />}
+        right={<HeaderItem label={t('submit')} onPressItem={onSubmit} />}
       />
       <ScrollView>
         <View style={s.bodyContainer}>
           <Text variant="body2" style={s.info}>
-            {
-              t(
-                'Is the maximum distante from your current location which you are interested to listen by new incidents.',
-              ) as string
-            }
+            {t('profile.preferences.distanceRadiusDescription') as string}
           </Text>
 
           <Text style={s.value}>

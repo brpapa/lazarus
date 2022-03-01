@@ -1,5 +1,5 @@
 import { Connection } from 'graphql-relay'
-import { Language } from '@metis/shared'
+import { Language } from '@lazarus/shared'
 import { LocationDTO } from 'src/modules/shared/adapter/dtos/location-dto'
 
 export interface UserDTO {

@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import React, { useCallback, useEffect } from 'react'
 import { RefreshControl, VirtualizedList } from 'react-native'
 import { commitLocalUpdate, graphql, usePaginationFragment, useRelayEnvironment } from 'react-relay'
@@ -76,7 +76,7 @@ export function NotificationList(props: Props) {
     : []
 
   if (nodes.length === 0) {
-    return <Error message={t('No notifications available') as string} />
+    return <Error message={t('notifications.noAvailable') as string} />
   }
 
   return (

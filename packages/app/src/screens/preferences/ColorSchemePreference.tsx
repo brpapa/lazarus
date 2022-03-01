@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { ScrollView, View } from 'react-native'
@@ -22,17 +22,17 @@ export function ColorSchemePreference() {
         <View style={s.bodyContainer}>
           <View style={s.menuContainer}>
             <SettingsItem
-              title={t('Light mode')}
+              title={t('colorScheme.light')}
               onPress={() => setColorScheme('light')}
               selected={colorScheme === 'light'}
             />
             <SettingsItem
-              title={t('Dark mode')}
+              title={t('colorScheme.dark')}
               onPress={() => setColorScheme('dark')}
               selected={colorScheme === 'dark'}
             />
             <SettingsItem
-              title={t('System')}
+              title={t('colorScheme.system')}
               onPress={() => setColorScheme('no-preference')}
               selected={colorScheme === 'no-preference'} // TODO: now working yet
             />

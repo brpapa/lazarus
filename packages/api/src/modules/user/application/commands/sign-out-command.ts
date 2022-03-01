@@ -1,7 +1,7 @@
 import { Debugger } from 'debug'
 import { Command } from 'src/modules/shared/logic/command'
 import { UserNotFoundError } from 'src/modules/shared/logic/errors'
-import { err, okVoid, Result } from '@metis/shared'
+import { err, okVoid, Result } from '@lazarus/shared'
 import { IAuthService } from 'src/modules/user/adapter/auth-service'
 import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 

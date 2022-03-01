@@ -1,4 +1,4 @@
-import { LANGUAGE, Language, LanguageEnum } from '@metis/shared'
+import { LANGUAGE, Language, LanguageEnum } from '@lazarus/shared'
 import { LocationMapper, LocationRedisModel } from 'src/modules/shared/adapter/mappers/location-mapper'
 import { UUID } from 'src/modules/shared/domain/models/uuid'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'

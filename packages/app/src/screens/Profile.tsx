@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, View } from 'react-native'
@@ -91,7 +91,7 @@ export function Profile(props: Props) {
               </Text>
             </View>
             <Button
-              content={t('Edit Profile')}
+              content={t('profile.editButton')}
               style={s.button}
               disabled={false}
               // onPress={() => nav.navigate('EditProfile', { user })} // TODO: EditProfile screen
@@ -100,7 +100,7 @@ export function Profile(props: Props) {
           <View style={s.bodyContainer}>
             <View style={s.menuContainer}>
               <MenuItem
-                title={t('Notifications')}
+                title={t('profile.notifications')}
                 iconName="Notifications"
                 indicator={
                   data.me?.notifications.notSeenCount
@@ -111,26 +111,26 @@ export function Profile(props: Props) {
               />
               {/* <Divider style={s.dividerList} />
               <MenuItem
-                title={t('Messages')}
+                title={'Messages'}
                 iconName="Mail"
                 // onPress={() => nav.navigate('Messages')} // TODO: Messages screen
               />
               <Divider style={s.dividerList} />
               <MenuItem
-                title={t('Activity')}
+                title={'Activity'}
                 iconName="Chart"
                 // onPress={() => nav.navigate('Activity')} // TODO: Activity screen
               /> */}
             </View>
             <View style={s.menuContainer}>
               {/* <MenuItem
-                title={t('Password')}
+                title={'Password'}
                 iconName="Lock"
                 // onPress={() => nav.navigate('ChangePassword')} // TODO: ChangePassword screen
               />
               <Divider style={s.dividerList} /> */}
               <MenuItem
-                title={t('Preferences')}
+                title={t('profile.preferences')}
                 iconName="Settings"
                 onPress={() => nav.navigate('Preferences')}
               />

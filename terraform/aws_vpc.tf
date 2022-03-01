@@ -14,7 +14,7 @@ module "vpc" {
   enable_dns_support   = true
 }
 
-resource "aws_security_group" "metis_security_group" {
+resource "aws_security_group" "lazarus_security_group" {
   vpc_id = module.vpc.vpc_id
 
   ingress {

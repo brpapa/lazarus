@@ -1,78 +1,60 @@
 # Tech stack
 
-- javascript (language)
-- typescript (type system)
-- node (backend runtime)
-- koa (server framework)
-- graphql (API)
-- vscode (IDE)
-- recoil ("global" state management)
-- ws + graphql-ws (for websockets)
-- relay (declarative data fetching)
-- redis (cache, queue management, pubsub)
-- jest (test framework)
-- supertest (HTTP tests)
-- prettier (code formatting)
-- prisma (database ORM)
-- github actions (CI/CD)
-- eslint (lint rules)
-- internationalization: [i18next](https://www.i18next.com)
-- IaC: terraform
+- javascript: language
+- typescript: type system for type checking and better code quality
+- graphql: API
+- vscode: IDE
+- ws + graphql-ws: for websockets
+- redis: cache, queue management, pubsub
+- prettier: code formatting
+- github actions: CI/CD
+- eslint: lint rules
+- i18next: internationalization
+- terraform: infrastructure as code tool
+- docker: to run containers locally
 
-- react (declarative UI)
-- react native (native apps)
-- expo
+- server-only:
+  - node: backend runtime
+  - koa: server framework
+  - prisma: database ORM
+  - jest: test framework
+  - supertest: HTTP tests
 
-- React Native framework for building native apps with React
-- Expo library for better development experience
-- Relay framework for using GraphQL with React
-- TypeScript language for type checking and better code quality
-- React Navigation library for navigation
+- app-only:
+  - react: declarative ui
+  - react native: framework for building native apps with react
+  - expo: runtime and SDK for better development experience
+  - relay: declarative graphql data fetching in react
+  - recoil: global state management
+  - react navigation: library for navigation
+  - react-hook-form: forms
+  - babel: enable modern syntax and plugins
 
-<!-- - mongoose (mongo schema) -->
-<!-- - bulljs (event driven distributed jobs) -->
-<!-- - webpack (bundling server and frontend apps) -->
-<!-- - rollup (bundling for packages and libraries) -->
-<!-- - babel (enable modern syntax and plugins) -->
-<!-- - jscodeshift (codemod) -->
-<!-- - openapi (API REST documentation) -->
-<!-- - docusuarus (documentation) -->
-<!-- - hygen (codegen) -->
-<!-- - styled-components (css in js) -->
-<!-- - storybook (design system and email builder) -->
-<!-- - testing library (testing dom) -->
-<!-- - material-ui (ui base components) -->
-<!-- - styled-system (functional css) -->
-<!-- - react-router (routing) -->
-<!-- - nivo + d3 (for charts) -->
-<!-- - react-table (table management) -->
-<!-- - draftjs (richtext) -->
-<!-- - formik (forms) -->
-<!-- - fastlane (android/ios deploy automation) -->
+# Development
 
-# Architecture overview
+See instrucions for [api](./packages/api/README.md) and [app](./packages/app/README.md).
 
-- `mobile`: React native application
-- `api`: Heroku application
-- `redis`: Heroku Redis
+Set credentials of Google Cloud Platform, AWS and Heroku.
+
+<!-- ## Codebase definitions
+
+Relevant users: users that are located nearby to one incident
+User session: an auth token life cycle (access token & refresh token) -->
+
+# System overview
+
+![system](./docs/diagrams/out/system.png)
 <!-- heroku redis free plan is not persistent (restart = data losing), 20 max concurrent connections only -->
-- `postgresql`: Amazon RDS
-- `static-storage`: Amazon S3
-
-- `mobile` -> `api`
-- `api` -> `redis`
-- `api` -> `postgresql`
-- `api` -> `static-storage`
 
 ## Infrastructure
 
-All infrastructure components are defined inside [terraform](./terraform) folder using the IaC tool [Terraform](https://www.terraform.io).
+All infrastructure components are defined inside [terraform](./terraform) folder using the [Terraform](https://www.terraform.io) IaC tool.
 
 - Before do anything, define a `terraform/secrets.tfvars` file with your secrets:
 
   ```
-  heroku_api_key = "your_heroku_api_key"
   heroku_email = "your_heroku_email"
+  heroku_api_key = "your_heroku_api_key"
   aws_profile = "your_aws_profile"
   aws_access_key = "your_aws_access_key"
   aws_secret_key = "your_aws_secret_key"
@@ -80,7 +62,7 @@ All infrastructure components are defined inside [terraform](./terraform) folder
   pg_root_password = "your_pg_root_password"
   ```
 
-Inside `./terraform` folder, you can run this commands:
+Inside `./terraform` folder, you can run the commands:
   - `terraform init`: initialize terraform configuration and install plugins.
   - `terraform fmt`: format *.tf files
   - `terraform validate`: validate *.tf files
@@ -88,37 +70,42 @@ Inside `./terraform` folder, you can run this commands:
   - `terraform apply -var-file="secrets.tfvars"`: make the planned changes on providers.
   - `terraform destroy -var-file="secrets.tfvars"`: clean up the resources created on providers.
 
+After apply new changes, run inside `./terraform`:
+  - change redis config to not kill idle connections after 300 seconds (default): `heroku redis:timeout --app lazarus-node-api --seconds=0`
+  - init pg tables: `(cd ../packages/api && dotenv -e env.prod -- npx prisma db push)`
+
 Links:
 - [Terraform Heroku provider documentation](https://registry.terraform.io/providers/heroku/heroku/latest/docs)
 - [Terraform AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
-## Deploy
+## Code deploy
 
-At the moment, every new code must be deployed manually.
+At the moment, every new code is deployed manually.
 
-### API
+### Server
 
-- Inside `./packages/api` folder, run:
-  - `heroku container:push web --app metis-node-api --context-path ..`: build and push image do heroku registry
-  - `heroku container:release web --app metis-node-api`: deploy previous image
+1. If you are not logged to your Heroku account yet: `heroku auth:login -i`
 
-- To view production logs: `heroku logs --app metis-node-api --tail`
-- To restart application: `heroku restart --app metis-node-api`
+2. Go to right folder, build and push image to Heroku Registry, and deploy the image built: `(cd ./packages/api && heroku container:push web --app lazarus-node-api --context-path .. && heroku container:release web --app lazarus-node-api)`
 
-### APP
+- To view production logs: `heroku logs --app lazarus-node-api --tail`
+- To restart application: `heroku restart --app lazarus-node-api`
 
-- For now app is built only as [pre-release](https://docs.expo.dev/guides/sharing-preview-releases/#internal-distribution) in my personal Expo account.
+### Mobile app
+
+The app can be deployed to Expo hosting as a [preview release](https://docs.expo.dev/guides/sharing-preview-releases). But this works only for Android and not for iOS due to Apple restrictions, more details [here](https://docs.expo.dev/workflow/publishing/#on-ios-you-cant-share-your-published).
 
 - Create a project in your [Expo account](https://expo.dev)
-- Run `expo publish`
+
+- Run `APP_ENV='prod' expo publish --clear`
   - https://docs.expo.dev/classic/building-standalone-apps/
   - https://docs.expo.dev/build/setup/
-- Accessed in: https://expo.dev/@metis/metis
+
+- Accessed in: https://expo.dev/@lazarus/app
 
 # Requirements
 
 ## Functional requirements 
-<!-- (e os use cases que ele contem) -->
 
 - 1. usuários devem ser capazes de publicar alertas
 
@@ -129,9 +116,8 @@ At the moment, every new code must be deployed manually.
     - toda mídia deve ter sido gravada no momento atual, dentro de uma margem de 1 hora
     - toda mídia deve ter sido gravada no local em que o usuário está, dentro de uma margem de 2 km
 
-  - não deve ser criado se:
-
-    - houverem outros alertas ativos muito próximos ao do novo alerta
+  <!-- - não deve ser criado se: -->
+    <!-- - houverem outros alertas ativos muito próximos ao do novo alerta -->
       <!-- tentativa de evitar duplicações de alertas -->
 
   - o alerta criado deve assumir a localização atual de quem o criou
@@ -139,18 +125,18 @@ At the moment, every new code must be deployed manually.
 - 2. usuários e anônimos devem visualizar um mapa de alertas
 
   - visão geral dos alertas:
-
-    - default view: alertas mais recentes (criados nas últimas 24 horas) e nas proximidades
-    - trend view: alertas ativos mais populares (com mais interações) de qualquer lugar
+    <!-- - default view: alertas mais recentes (criados nas últimas 24 horas) e nas proximidades -->
+    <!-- - trend view: alertas ativos mais populares (com mais interações) de qualquer lugar -->
     - stats:
       - quantidade de usuários nas proximidades
+      - quantidade de alertas nas proximidades
 
   - visão de um alerta específico:
     - stats:
       - quantidade de usuário notificados
       - tempo relativo em relação à última atualização do alerta
-      - quantidade de reações
-      - quantidade de comentários
+      <!-- - quantidade de reações -->
+      <!-- - quantidade de comentários -->
 
 - 3. usuários devem ser notificados quando alertas forem publicados nas suas proximidades por outros usuários
 
@@ -167,35 +153,35 @@ At the moment, every new code must be deployed manually.
     <!-- todo: usuários reportam/denunciam outros usuários? -->
     <!-- todo: usuários se auto moderam? avaliam e são avaliados? main moderators avaliam usuarios, e ai seu peso vale mais? -->
 
-- 5. usuários podem colaborar com o contéudo de alertas publicados por outros usuários e que estão nas suas proximidades
+<!-- - 5. usuários podem colaborar com o contéudo de alertas publicados por outros usuários e que estão nas suas proximidades -->
 
-  - usuário colaborante pode adicionar novas fotos/vídeos
+  <!-- - usuário colaborante pode adicionar novas fotos/vídeos -->
 
-- 6. usuários podem modificar seus próprios alertas
+<!-- - 6. usuários podem modificar seus próprios alertas -->
 
-  - usuário criador pode "encerrar" o alerta
-  - usuário criador pode remover qualquer colaboração adicionada por outro usuário
+  <!-- - usuário criador pode "encerrar" o alerta -->
+  <!-- - usuário criador pode remover qualquer colaboração adicionada por outro usuário -->
 
   <!-- todo: usuário criador pode ajustar a localização do alerta? -->
-    <!-- área ajustável disponível? ex: dentro de 100 metros de distância da localicação atual do alerta -->
-    <!-- mas ai precisaria limitar também o número de ajustes permitidos -->
+  <!--   área ajustável disponível? ex: dentro de 100 metros de distância da localicação atual do alerta -->
+  <!--   mas ai precisaria limitar também o número de ajustes permitidos -->
 
-- 7. usuários podem adicionar outros usuários como amigos
+<!-- - 7. usuários podem adicionar outros usuários como amigos -->
 
-  - no envio da solicitação e no aceite de uma solicitação, o usuário deve ser lembrado de adicionar apenas usuários em que ele confia, pois estará compartilhando a sua localização em tempo real com ele
+  <!-- - no envio da solicitação e no aceite de uma solicitação, o usuário deve ser lembrado de adicionar apenas usuários em que ele confia, pois estará compartilhando a sua localização em tempo real com ele -->
 
-- 8. usuários que são amigos podem conversar em um chat privado 1-1 em tempo real
+<!-- - 8. usuários que são amigos podem conversar em um chat privado 1-1 em tempo real -->
 
-- 9. usuários visualizam no mapa a localização em tempo real de seus amigos
+<!-- - 9. usuários visualizam no mapa a localização em tempo real de seus amigos -->
 
-- 10. usuários podem cadastrar localidades para "ouvir" por alertas
+<!-- - 10. usuários podem cadastrar localidades para "ouvir" por alertas -->
   <!-- - exemplos: casa dele, casa da vó, local de trabalho -->
 
-- 11. usuários devem podem acessar o perfil de outros usuários
+<!-- - 11. usuários devem podem acessar o perfil de outros usuários -->
 
-  - stats:
-    - quantidade de alertas publicados por ele
-    - quantidade média de upvotes e downvotes
+  <!-- - stats: -->
+  <!--   - quantidade de alertas publicados por ele -->
+  <!--   - quantidade média de upvotes e downvotes -->
 
 ## Non-functional requirements
 
@@ -224,17 +210,6 @@ At the moment, every new code must be deployed manually.
   - para atender isso:
     - otimizar para leitura
 
-
-# Development
-
-See instrucions for [api](./packages/api/README.md) and [app](./packages/app/README.md).
-
-Set credentials of Google Cloud Platform, AWS and Heroku.
-
-## Codebase definitions
-
-Relevant users: users that are located nearby to one incident
-User session: an auth token life cycle (access token & refresh token)
 
 # Project structure visualization
 

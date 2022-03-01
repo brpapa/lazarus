@@ -1,8 +1,8 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Keyboard, View } from 'react-native'
+import { Image, Keyboard, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Button, CustomHeader, Text, TextInput, TextInputType } from '~/components/v1'
 import { useSignInMutation } from '~/data/relay/mutations/SignInMutation'
@@ -48,7 +48,7 @@ export function SignIn() {
         )
       },
       (err) => {
-        setErrorMsg(err.reasonIsTranslated ? err.reason : t('erros.generic'))
+        setErrorMsg(err.reasonIsTranslated ? err.reason : t('errors.generic'))
         reset({ username: '', password: '' })
       },
     )
@@ -71,11 +71,11 @@ export function SignIn() {
         onPressRight={onSignUpPressed}
         noShadow
       />
-      {/* <Image
-        source={colorScheme === 'dark' ? DarkLogo : LightLogo}
+      <Image
+        // source={colorScheme === 'dark' ? DarkLogo : LightLogo}
         style={s.logo}
         resizeMode="contain"
-      /> */}
+      />
       <View style={s.formContainer}>
         {errorMsg && (
           <Text color="error" style={s.spacingBottom}>
@@ -143,7 +143,7 @@ const useStyles = makeUseStyles(({ colors, spacing }) => ({
     backgroundColor: colors.background,
   },
   logo: {
-    height: 120,
+    height: 20,
     width: '100%',
     marginVertical: spacing.xxxl,
     backgroundColor: colors.background,

@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { default as React, Suspense, useEffect } from 'react'
 import { View } from 'react-native'
@@ -112,7 +112,7 @@ function IncidentDetail(props: Props) {
       <View style={s.buttonsContainer}>
         <FloatingButton icon="Close" onPress={onClosePressed} />
       </View>
-      <View style={s.bottomContainer}>
+      {/* <View style={s.bottomContainer}>
         <IconWithLabel
           label={t('formatters.bigNumber', { number: REACTIONS_COUNT }) as string}
           size="xl"
@@ -126,7 +126,7 @@ function IncidentDetail(props: Props) {
           style={s.actionIcon}
           onPress={onCommentsPressed}
         />
-      </View>
+      </View> */}
     </View>
   )
 }

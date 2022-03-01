@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { Suspense, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
@@ -61,7 +61,7 @@ export function MainStackNavigator() {
           {preferencesUserRef && (
             <MainStack.Screen
               name="Preferences"
-              options={{ title: t('Preferences'), ...navHeader }}
+              options={{ title: t('profile.preferences'), ...navHeader }}
             >
               {(props) => <Preferences userRef={preferencesUserRef} {...props} />}
             </MainStack.Screen>

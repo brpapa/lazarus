@@ -33,7 +33,6 @@ model UserModel {
 model IncidentModel {
   id                      String             @id @default(uuid()) @db.VarChar(36)
   title                   String             @db.VarChar(256)
-  status                  IncidentStatusEnum
   medias                  MediaModel[]
   comments                CommentModel[]
   reactions               ReactionModel[]
@@ -98,12 +97,6 @@ model ActivityLogModel {
   createdAt  DateTime      @default(now()) @map("created_at")
 
   @@map("activity_logs")
-}
-
-enum IncidentStatusEnum {
-  PENDING
-  ACTIVE
-  CLOSED
 }
 
 enum ReactionTypeEnum {

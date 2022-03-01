@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
 import { Command } from 'src/modules/shared/logic/command'
 import { UserDTO } from 'src/modules/user/adapter/dtos/user-dto'
 import { UserMapper } from 'src/modules/user/adapter/mappers/user-mapper'

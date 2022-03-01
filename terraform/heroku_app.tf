@@ -1,5 +1,5 @@
-resource "heroku_app" "metis_api" {
-  name   = "metis-node-api"
+resource "heroku_app" "lazarus_api" {
+  name   = "lazarus-node-api"
   region = "us"
   stack = "container"
 }

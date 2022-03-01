@@ -5,7 +5,7 @@ import { IUserRepo } from 'src/modules/user/adapter/repositories/user-repo'
 import { Command } from 'src/modules/shared/logic/command'
 import { ApplicationError, UserNotFoundError } from 'src/modules/shared/logic/errors'
 import { unixEpochToDate } from 'src/modules/shared/logic/helpers/unix-epoch'
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
 
 export type Input = {
   refreshToken: string

@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { IPushNotificationService } from 'src/modules/notification/adapter/push-notification-service'
 import { Notification, NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
 import { LinkedEntityEnum, NotificationLink } from 'src/modules/notification/domain/models/notification-link'

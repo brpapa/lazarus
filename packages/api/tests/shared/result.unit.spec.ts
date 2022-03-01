@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals'
-import { err, ok, Result, combine } from '@metis/shared'
+import { err, ok, Result, combine } from '@lazarus/shared'
 
 // TODO: move to shared package
 describe('result', () => {

@@ -1,4 +1,4 @@
-import { err, ok, Result } from '@metis/shared'
+import { err, ok, Result } from '@lazarus/shared'
 import { Debugger } from 'debug'
 import { NotificationDTO } from 'src/modules/notification/adapter/dtos/notification-dto'
 import { NotificationMapper } from 'src/modules/notification/adapter/mappers/notification-mapper'

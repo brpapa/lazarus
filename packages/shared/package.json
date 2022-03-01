@@ -1,7 +1,7 @@
 {
-  "name": "@metis/shared",
+  "name": "@lazarus/shared",
   "version": "1.0.0",
-  "description": "Code shared beetween @metis/api and @metis/app packages",
+  "description": "Code shared beetween @lazarus/api and @lazarus/app packages",
   "main": "src/index.ts",
   "author": "Bruno Papa <bruno.papa@hotmail.com>",
   "license": "ISC",

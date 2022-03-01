@@ -7,7 +7,7 @@ provider "aws" {
   # apply tags to all aws resources
   default_tags {
     tags = {
-      App         = "metis"
+      App         = "lazarus"
       Environment = "prod"
     }
   }

@@ -54,4 +54,4 @@ App
 
 # PS
 
-I can not add a local npm dependency with `npm install ../shared` because this add a link from `./node_modules/@metis/shared` to `../shared` folder and [react native dont supports symlinks](https://stackoverflow.com/questions/44061155/react-native-npm-link-local-dependency-unable-to-resolve-module). So this dependency is added with a workarounded npm postinstall script.
+I can not add a local npm dependency with `npm install ../shared` because this add a link from `./node_modules/@lazarus/shared` to `../shared` folder and [react native dont supports symlinks](https://stackoverflow.com/questions/44061155/react-native-npm-link-local-dependency-unable-to-resolve-module). So this dependency is added with a workarounded npm postinstall script.

@@ -12,7 +12,6 @@ import { getUserId, getUserIdIgnoringExpiration } from '../utils'
 
 const log = debug('app:infra:ws')
 
-/** ws for susbcription graphql operations */
 export const initializeWebSocketServer = (httpServer: http.Server) => {
   const wsServer = new WebSocketServer({
     server: httpServer,

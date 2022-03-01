@@ -23,7 +23,6 @@ describe('repository: incident', () => {
         ownerUserId: new UUID('my-user-id'),
         title: 'title',
         location: Location.create({ latitude: -20, longitude: 40 }),
-        status: IncidentStatusEnum.ACTIVE,
       })
 
       incident.addMedias([

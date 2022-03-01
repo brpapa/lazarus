@@ -1,21 +1,24 @@
 {
-  "name": "metis",
   "entryPoint": "./index.js",
   "expo": {
-    "name": "metis",
-    "owner": "metis",
-    "slug": "app",
+    "name": "Lazarus",
+    "owner": "brpapa",
+    "slug": "lazarus",
+    "privacy": "public",
+    "description": "Nearby alerts tracking",
     "version": "1.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "orientation": "portrait",
+    "jsEngine": "hermes",
+    "sdkVersion": "44.0.0",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#fff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,11 +27,8 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.metis.app",
+      "bundleIdentifier": "com.lazarus.app",
       "supportsTablet": true,
-      "config": {
-        "googleMapsApiKey": "AIzaSyBaMynGjdodGZmYdySnyH1jB7hX5weFESU"
-      },
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Please enable this permission to receive accurate notifications about new incidents around you",
         "NSLocationWhenInUseUsageDescription": "Please enable this permission to view incidents nearby you",
@@ -40,15 +40,10 @@
       }
     },
     "android": {
-      "package": "com.metis.app",
+      "package": "com.lazarus.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyAoAczCgp-2xp12NGNwviMz4QLAmHJr_Zk"
-        }
       },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
@@ -61,8 +56,6 @@
     },
     "extra": {
       "flipperHacker": "React Native packager is running"
-    },
-    "jsEngine": "hermes",
-    "sdkVersion": "44.0.0"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { View } from 'react-native'

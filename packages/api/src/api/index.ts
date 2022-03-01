@@ -9,8 +9,8 @@ import 'src/modules/user/application/observers'
 async function main() {
   await connectPrisma()
   await connectRedis()
-  const httpServer = await initializeHttpServer()
-  initializeWebSocketServer(httpServer)
+  const httpServer = await initializeHttpServer() // http for query/mutation graphql operations
+  initializeWebSocketServer(httpServer) // websocket for susbcription graphql operations
 }
 
 main().catch(async (e) => {

@@ -1,5 +1,5 @@
 {
-  "name": "@metis/app",
+  "name": "@lazarus/app",
   "description": "Mobile client",
   "version": "1.0.0",
   "private": true,
@@ -8,7 +8,7 @@
     "node": "16"
   },
   "scripts": {
-    "postinstall": "rm -rf ./node_modules/@metis/shared && mkdir -p ./node_modules/@metis/shared && rsync -avq ../shared/ ./node_modules/@metis/shared/ --exclude node_modules --exclude dist && npm install --prefix ./node_modules/@metis/shared",
+    "postinstall": "rm -rf ./node_modules/@lazarus/shared && mkdir -p ./node_modules/@lazarus/shared && rsync -avq ../shared/ ./node_modules/@lazarus/shared/ --exclude node_modules --exclude dist && npm install --prefix ./node_modules/@lazarus/shared",
     "debug": "METRO_SERVER_PORT=19000 open -a Flipper.app",
     "deps:sync-types": "npx typesync && npm install",
     "code:format": "prettier --config \"./../../.prettierrc\" --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
-    "@metis/shared": "file:../shared",
+    "@lazarus/shared": "file:../shared",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/slider": "4.1.12",
     "@react-navigation/bottom-tabs": "^5.11.11",
@@ -66,7 +66,6 @@
     "expo-av": "~10.2.0",
     "expo-camera": "~12.1.2",
     "expo-crypto": "~10.1.1",
-    "expo-dev-client": "~0.8.4",
     "expo-device": "~4.1.0",
     "expo-file-system": "~13.1.2",
     "expo-linear-gradient": "~11.0.0",

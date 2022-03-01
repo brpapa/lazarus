@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React from 'react'
 import { SafeAreaView } from 'react-native'
@@ -19,8 +19,8 @@ export function IncidentComments() {
   return (
     <SafeAreaView style={s.container}>
       <ModalHeader
-        title={t('Comments')}
-        left={<HeaderItem label={t('Cancel')} onPressItem={nav.goBack} left />}
+        title={t('comments')}
+        left={<HeaderItem label={t('cancel')} onPressItem={nav.goBack} left />}
       />
       {/* <VirtualizedList
         data={incidentComments}

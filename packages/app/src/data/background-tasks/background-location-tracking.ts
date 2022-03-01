@@ -46,6 +46,6 @@ export const startBackgroundLocationTracking = async () => {
     const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
     if (started) console.log(`Background location tracking started`)
   } catch (e) {
-    console.error('Error to start background location tracking', e)
+    console.error('Error to start the background location tracking task', e)
   }
 }

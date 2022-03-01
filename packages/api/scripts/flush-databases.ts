@@ -99,23 +99,23 @@ const seed = async () => {
 
       const incident = Incident.create({
         ownerUserId: user2.id,
-        title: `incident ${i}`,
+        title: `Alerta ${i}`,
         location: Location.create(randomPoint),
       })
 
       incident.addMedias([
         Media.create({
           incidentId: incident.id,
-          url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/91cacff3-c5f3-4b7e-93c7-37098dee928e.jpg`,
+          url: `https://s2.glbimg.com/6bPwIsd-7pKhBjeOmWxofRfJwhE=/0x0:1600x1200/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/f/h/EQhO4oSoaxjFk2ltAAwA/aeronave-queda.jpeg`,
           type: MediaTypeEnum.IMAGE,
           recordedAt: new Date(),
         }),
-        Media.create({
-          incidentId: incident.id,
-          url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/2ffd2f91-71b1-4154-9510-4a4565dc52b6.mov`,
-          type: MediaTypeEnum.VIDEO,
-          recordedAt: new Date(),
-        }),
+        // Media.create({
+        //   incidentId: incident.id,
+        //   url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/2ffd2f91-71b1-4154-9510-4a4565dc52b6.mov`,
+        //   type: MediaTypeEnum.VIDEO,
+        //   recordedAt: new Date(),
+        // }),
       ])
 
       return incidentRepo.commit(incident)

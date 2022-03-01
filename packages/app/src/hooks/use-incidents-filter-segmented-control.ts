@@ -1,11 +1,11 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useCallback, useState } from 'react'
 import { SCREEN_WIDTH } from '~/shared/constants'
 
 const filterTypes = {
-  LATEST_DAY: { label: () => t('24h') },
-  LATEST_7_DAYS: { label: () => t('7d') },
-  LATEST_30_DAYS: { label: () => t('30d') },
+  LATEST_DAY: { label: () => '24h' },
+  LATEST_7_DAYS: { label: () => '7d' },
+  LATEST_30_DAYS: { label: () => '30d' },
 }
 
 const filterOptionsArr = Object.entries(filterTypes).map(([name, { label }], index) => ({

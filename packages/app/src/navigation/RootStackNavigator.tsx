@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { IncidentComments, ReportIncident } from '~/screens'

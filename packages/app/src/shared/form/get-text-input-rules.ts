@@ -1,5 +1,5 @@
 import { RegisterOptions } from 'react-hook-form'
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { settings } from './settings'
 
 const { minUsernameLength, maxUsernameLength, minPasswordLength, fullNameRequired } = settings

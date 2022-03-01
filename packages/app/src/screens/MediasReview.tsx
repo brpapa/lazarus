@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { View } from 'react-native'
@@ -30,7 +30,7 @@ export function MediasReview() {
   return (
     <View style={s.container}>
       <CustomHeader
-        title={t('Review')}
+        title={t('review')}
         rightTitle={t('report.reportButton')}
         onPressRight={onReportPressed}
       />

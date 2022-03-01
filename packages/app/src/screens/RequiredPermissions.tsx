@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
@@ -27,22 +27,22 @@ export function RequiredPermissions() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>{t('Please, provides the following permissions before use the app') as string}</Text>
+      <Text>{t('permissions.title') as string}</Text>
       <View>
         {[
           {
             isGranted: locationForegroundPermissionIsGranted,
-            label: 'Location foreground permission',
+            label: t('permissions.locationForeground'),
             requestPermission: requestLocationForegroundPermission,
           },
           {
             isGranted: locationBackgroundPermissionIsGranted,
-            label: 'Location background permission',
+            label: t('permissions.locationBackground'),
             requestPermission: requestLocationBackgroundPermission,
           },
           {
             isGranted: pushNotificationPermissionIsGranted,
-            label: 'Push notifications permission',
+            label: t('permissions.pushNotifications'),
             requestPermission: requestPushNotificationPermission,
           },
         ]

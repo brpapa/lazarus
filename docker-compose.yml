@@ -28,7 +28,7 @@ services:
     environment:
       - POSTGRES_USER=myUser
       - POSTGRES_PASSWORD=myPassword
-      - POSTGRES_DB=metis
+      - POSTGRES_DB=lazarus
     networks:
       - default
 

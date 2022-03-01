@@ -1,11 +1,5 @@
 Server
 
-<!--
-reference graphql+dataloader architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/rbaf-graphql-api
-reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-forum
-  - quebrando em projetos/deploys diferentes: code ~/dev/metis/packages/_node-microservices-ddd
--->
-
 # Directory Structure
 
 ```
@@ -33,10 +27,10 @@ reference DDD repo architecture (nao dar ctrl+c/ctrl+v): code ~/dev/@clones/ddd-
 
 ## Module level
 
-- `domain` depends from anyone
-- `application` depends from `domain`
-- `adapter` depends from `domain`, `application`
-- `infra` depends from `domain`, `adapter`, `application`
+- `domain` layer depends from anyone
+- `application` layer depends from `domain`
+- `adapter` layer depends from `domain`, `application`
+- `infra` layer depends from `domain`, `adapter`, `application`
 
 # Command-Query Segregation (CQS)
 
@@ -59,12 +53,13 @@ Responsible by users, identity & access management, authentication, authorizatio
 
 ## `incident`
 
+Responsible by manage all incident-related operations.
+
 ## `notifications`
 
-## `friendship`
+Responsible by send push notifications to user devices
 
-Where lives frienship relations and real-time chat.
-
+<!-- 
 # Events timeline
 
 When a UserCreated event in the `users` subdomain gets fired off, we subscribe and immediately issue a CreateCitizen command from the `incidents` subdomain.
@@ -75,3 +70,5 @@ When a UserCreated event in the `users` subdomain gets fired off, we subscribe a
 | 1   | system (0) | create-ciziten    | citizen-created           | citizen   | incident  |
 | 2   | citizen    | create-incident   | incident-created          |           |           |
 | 3   | citizen    | react-to-incident |                           |           |           |
+
+ -->

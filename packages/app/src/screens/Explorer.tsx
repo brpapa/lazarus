@@ -1,4 +1,4 @@
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { Suspense, useRef } from 'react'
 import { View } from 'react-native'
@@ -70,9 +70,9 @@ export function Explorer(props: ExplorerProps) {
       {/* overlayed to MapView views: */}
 
       {/* // TODO: filter by latest days */}
-      <View style={s.topContainer}>
+      {/* <View style={s.topContainer}>
         <SegmentedControl {...filterSegmentedControlProps} />
-      </View>
+      </View> */}
 
       <View style={s.bottomsContainer}>
         <FloatingButton icon={'User'} onPress={() => mapViewRef?.current?.flyToUser()} />

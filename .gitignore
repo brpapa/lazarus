@@ -50,5 +50,6 @@ _*
 
 # Terraform
 .terraform
+.terraform.*
 terraform.tfstate
 secrets.tfvars

@@ -1,4 +1,4 @@
-import { Language, LanguageEnum } from '@metis/shared'
+import { Language, LanguageEnum } from '@lazarus/shared'
 import { ValueObject } from 'src/modules/shared/domain/value-object'
 import assert from 'assert'
 

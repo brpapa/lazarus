@@ -8,7 +8,7 @@ import type { IconName } from '~/icons'
 import { Color, makeUseStyles, useColorScheme, useTheme } from '~/theme/v1'
 
 import { HeaderItem } from './HeaderItem'
-import { t } from '@metis/shared'
+import { t } from '@lazarus/shared'
 
 type Props = {
   title?: string

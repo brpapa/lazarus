@@ -1,4 +1,4 @@
-import { Result } from '@metis/shared'
+import { Result } from '@lazarus/shared'
 import {
   GraphQLBoolean,
   GraphQLEnumType,
