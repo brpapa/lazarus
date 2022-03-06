@@ -1,3 +1,22 @@
+# Printscreens
+
+<p float="left">
+  <img width="150" src="./docs/latex/images/lazarus-explorer-1.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-explorer-2.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-camera.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-incident.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-profile.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-notifications.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-sign-in.png"/>
+  <img width="150" src="./docs/latex/images/lazarus-sign-up.png"/>
+</p>
+
+# Features
+
+- background/foreground user location tracking
+- location-based push notifications
+- i18n support
+
 # Tech stack
 
 - javascript: language
