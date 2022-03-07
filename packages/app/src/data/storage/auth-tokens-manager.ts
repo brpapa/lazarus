@@ -19,7 +19,8 @@ export class AuthTokensManager {
   }
 
   static async setAccessToken(accessToken: AccessToken | null) {
-    if (accessToken === null) return this.deleteAccessToken()
+    if (accessToken === null)
+      return await SecureStore.deleteItemAsync(this.accessTokenKey)
 
     const json = JSON.stringify(accessToken)
     await SecureStore.setItemAsync(this.accessTokenKey, json)
@@ -33,8 +34,9 @@ export class AuthTokensManager {
     await SecureStore.setItemAsync(this.refreshTokenKey, refreshToken)
   }
 
-  private static async deleteAccessToken() {
-    return SecureStore.deleteItemAsync(this.accessTokenKey)
+  static async deleteAllTokens() {
+    await SecureStore.deleteItemAsync(this.accessTokenKey)
+    await SecureStore.deleteItemAsync(this.refreshTokenKey)
   }
 
   static isExpiredNow(accessToken: AccessToken) {

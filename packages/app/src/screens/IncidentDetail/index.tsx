@@ -59,7 +59,11 @@ function IncidentDetail(props: Props) {
     nav.navigate('IncidentComments', { incidentId: params.incidentId })
   }
   const onClosePressed = () => {
-    nav.pop()
+    // must be nav.reset because a push notification click can direct to this screen
+    nav.reset({
+      index: 0,
+      routes: [{ name: 'HomeTabNavigator' }],
+    })
   }
   const onUserOwnerClick = () => {
     console.log(data?.incident?.ownerUser?.userId)

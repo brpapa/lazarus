@@ -16,7 +16,10 @@ export const useSession = () => {
     },
     [setAccessToken],
   )
-  const closeSession = useCallback(() => setAccessToken(null), [setAccessToken])
+  const closeSession = useCallback(() => {
+    setAccessToken(null)
+    AuthTokensManager.deleteAllTokens()
+  }, [setAccessToken])
 
   const handleAcessTokenExpired = useCallback(async () => {
     try {

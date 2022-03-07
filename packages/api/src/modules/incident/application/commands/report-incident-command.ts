@@ -35,7 +35,7 @@ export class ReportIncidentCommand extends Command<Input, Res> {
     if (!ctx.userId) return err(new UnauthenticatedError())
 
     const user = await this.userRepo.findById(ctx.userId)
-    if (!user?.location) throw new Error(`User ${ctx.userId} has not location saved yet`)
+    if (!user?.location) throw new Error(`User ${ctx.userId} has not location saved yet`) // TODO: front nao mostra uma mensagem de erro generica pro usuario se cair aqui, mudar
 
     const incident = Incident.create({
       ownerUserId: user.id,

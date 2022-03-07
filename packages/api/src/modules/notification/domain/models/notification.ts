@@ -53,7 +53,10 @@ export class Notification extends Entity<NotificationProps> {
       subtitle: this.props.subtitle,
       body: this.props.body,
       data: {
-        link: this.props.link,
+        link: {
+          entity: this.props.link.entity,
+          entityId: this.props.link.entityId,
+        },
         notificationId: this.id.toString(),
       },
       sound: 'default',

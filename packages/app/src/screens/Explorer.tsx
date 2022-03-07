@@ -59,11 +59,13 @@ export function Explorer(props: ExplorerProps) {
   const [selectedIncidentId, setSelectedIncidentId] = useRecoilState(selectedIncidentIdInMap)
   const filterSegmentedControlProps = useIncidentsFilterSegmentedControlProps()
 
-  const showHighlightStats = data.me?.stats.nearbyIncidentsCount && data.me?.stats.nearbyUsersCount
+  const showHighlightStats =
+    (data.me?.stats.nearbyIncidentsCount ?? null) !== null &&
+    (data.me?.stats.nearbyUsersCount ?? null) !== null
 
   return (
     <View style={s.container}>
-      <MapView ref={mapViewRef} radiusDistance={data?.me?.user?.preferences.radiusDistance ?? 0}>
+      <MapView ref={mapViewRef} radiusDistance={data?.me?.user?.preferences.radiusDistance}>
         <IncidentMarkerList queryRef={data} />
       </MapView>
 

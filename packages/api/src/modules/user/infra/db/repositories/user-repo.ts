@@ -42,8 +42,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
   }
 
   async findByIdBatch(ids: string[]): Promise<(User | null)[]> {
-    const users = await this.prismaClient.userModel.findMany({ where: { id: { in: ids } } })
-    const orderedUsers = ids.map((id) => users.find((v) => v.id === id) ?? null)
+    const orderedUsers = await this.findByIdBatchOrdered(ids)
     return this.enrichedWithRedisBatch(orderedUsers)
   }
 
@@ -65,11 +64,7 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       [GeoReplyWith.COORDINATES, GeoReplyWith.DISTANCE],
     )
     const usersId = locations.map((v) => v.member)
-
-    const users = await this.prismaClient.userModel.findMany({
-      where: { id: { in: usersId } },
-    })
-    const orderedUsers = usersId.map((userId) => users.find((v) => v.id === userId) ?? null)
+    const orderedUsers = await this.findByIdBatchOrdered(usersId)
 
     assert(orderedUsers.length === locations.length)
     return zip(orderedUsers, locations).map(([user, location]) => {
@@ -109,6 +104,12 @@ export class UserRepo extends PrismaRepo<User> implements IUserRepo {
       })
     }
     return user
+  }
+
+  private async findByIdBatchOrdered(ids: string[]) {
+    const users = await this.prismaClient.userModel.findMany({ where: { id: { in: ids } } })
+    const orderedUsers = ids.map((id) => users.find((v) => v.id === id) ?? null)
+    return orderedUsers
   }
 
   private async enrichedWithRedis(user: UserPgModel | null): Promise<User | null> {

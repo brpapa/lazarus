@@ -39,7 +39,7 @@ export function IncidentMarker(props: IncidentMarkerProps) {
         <View
           style={[
             s.incidentSquare,
-            { backgroundColor: props.selected ? colors.incidentSelected : colors.accent7 },
+            { backgroundColor: props.selected ? colors.accent7 : colors.accent7 }, // TODO: not showing color because is bugged
           ]}
         />
       </View>

@@ -46,7 +46,7 @@ export function DistanceRadiusPreference() {
             style={s.slider}
             step={0.1}
             minimumValue={1}
-            maximumValue={1000}
+            maximumValue={10000}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.backgroundDarker}
             value={distRadius}

@@ -1,14 +1,20 @@
 import { t } from '@lazarus/shared'
+import assert from 'assert'
+import { Debugger } from 'debug'
 import { IPushNotificationService } from 'src/modules/notification/adapter/push-notification-service'
-import { Notification, NotificationCodeEnum } from 'src/modules/notification/domain/models/notification'
-import { LinkedEntityEnum, NotificationLink } from 'src/modules/notification/domain/models/notification-link'
+import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
+import {
+  Notification,
+  NotificationCodeEnum,
+} from 'src/modules/notification/domain/models/notification'
+import {
+  LinkedEntityEnum,
+  NotificationLink,
+} from 'src/modules/notification/domain/models/notification-link'
 import { DomainEvents } from 'src/modules/shared/domain/events/domain-events'
 import { IObserver } from 'src/modules/shared/domain/events/observer'
 import { zip } from 'src/modules/shared/logic/helpers/zip'
 import { IncidentCreatedEnrichedWithNearbyUsers } from 'src/modules/user/domain/events/incident-created-enriched-with-nearby-users'
-import assert from 'assert'
-import { Debugger } from 'debug'
-import { INotificationRepo } from 'src/modules/notification/adapter/repositories/notification-repo'
 import { IDeviceRepo } from '../../adapter/repositories/device-repo'
 import { UsersNotified } from '../../domain/events/users-notified'
 import { PushMessage } from '../../domain/models/push-message'

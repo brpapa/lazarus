@@ -1,7 +1,8 @@
-import { commitMarkNotificationAsSeenMutation } from '../data/relay/mutations/MarkNotificationAsSeenMutation'
 import { useNavigation } from '@react-navigation/native'
 import * as Notifications from 'expo-notifications'
 import { useEffect } from 'react'
+import { resolveNotificationLink, NotificationLink } from '~/navigation/helpers'
+import { commitMarkNotificationAsSeenMutation } from '../data/relay/mutations/MarkNotificationAsSeenMutation'
 
 // determines how handles notifications that come in while the app is foregrounded
 Notifications.setNotificationHandler({
@@ -27,23 +28,20 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
     const responseListener = Notifications.addNotificationResponseReceivedListener(
       async (response) => {
         const { data } = response.notification.request.content
-        if (typeof data?.incidentId !== 'string' || typeof data?.notificationId !== 'string')
-          throw new Error(
-            `It was expected an incidentId field in data, received data object: ${JSON.stringify(
-              data,
-            )}`,
-          )
-        // TODO: [notification-link] receber um objeto link nos mesmos moldes de notication.link usado por NotificationItem, pra que a logica de navegacao seja reaproveitada implementando um NotificationLinkHandler
 
-        const result = await commitMarkNotificationAsSeenMutation({
-          notificationId: data.notificationId,
-        })
+        if (
+          typeof data?.link?.entity !== 'string' ||
+          typeof data?.link?.entityId !== 'string' ||
+          typeof data?.notificationId !== 'string'
+        )
+          throw new Error(`Bad data object, received: ${JSON.stringify(data)}`)
+
+        const { link, notificationId } = data
+
+        resolveNotificationLink(nav, link as NotificationLink)
+
+        const result = await commitMarkNotificationAsSeenMutation({ notificationId })
         result.mapErr(console.error)
-
-        nav.reset({
-          index: 0,
-          routes: [{ name: 'Incident', params: { incidentId: data.incidentId } }],
-        })
       },
     )
 

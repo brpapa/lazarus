@@ -7,7 +7,7 @@ export abstract class Query<Input, Res extends any> {
   async exec(input: Input, ctx: AppContext): Promise<Res> {
     const commandName = Reflect.getPrototypeOf(this)?.constructor.name
 
-    this.log(`Running %o by user %o with the given input: %O`, commandName, ctx?.userId, input)
+    this.log(`Running %o by user %o with the given input: %o`, commandName, ctx?.userId, input)
 
     try {
       const res = await Promise.resolve(this.execImpl(input, ctx))

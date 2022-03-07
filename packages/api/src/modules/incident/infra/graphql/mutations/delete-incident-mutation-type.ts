@@ -4,7 +4,7 @@ import { deleteIncidentCommand } from 'src/modules/incident/application/commands
 import {
   IncidentNotFound,
   Input,
-  Res
+  Res,
 } from 'src/modules/incident/application/commands/delete-incident-command'
 import { createResultMutationType } from 'src/modules/shared/infra/graphql/create-result-mutation-type'
 import { UnauthenticatedError, UnauthorizedError } from 'src/modules/shared/logic/errors'
@@ -15,11 +15,6 @@ export const DeleteIncidentMutationType = createResultMutationType<GraphQLContex
     incidentId: { type: GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetResult: (input, ctx) => deleteIncidentCommand.exec(input, ctx),
-  okFields: {
-    _: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve: () => 'void',
-    },
-  },
+  okFields: {},
   errors: [UnauthenticatedError, IncidentNotFound, UnauthorizedError],
 })

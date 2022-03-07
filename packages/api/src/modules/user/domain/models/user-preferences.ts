@@ -13,7 +13,7 @@ export class UserPreferences extends ValueObject<UserPreferencesProps> {
 
   private constructor(props: UserPreferencesProps) {
     super({
-      radiusDistanceMeters: props.radiusDistanceMeters || 500,
+      radiusDistanceMeters: props.radiusDistanceMeters || 5000,
       language: props.language || LanguageEnum.PT_BR,
     })
   }

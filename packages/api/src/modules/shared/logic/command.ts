@@ -8,13 +8,13 @@ export abstract class Command<Input, Res extends Result<any, any>> {
   async exec(input: Input, ctx: AppContext): Promise<Res> {
     const commandName = Reflect.getPrototypeOf(this)?.constructor.name
 
-    this.log(`Running %o by user %o with the given input: %O`, commandName, ctx?.userId, input)
+    this.log(`Running %o by user %o with the given input: %o`, commandName, ctx?.userId, input)
 
     try {
       const res = await Promise.resolve(this.execImpl(input, ctx))
 
       this.log(
-        `%o outputs the %o value: %O`,
+        `%o outputs the %o value: %o`,
         commandName,
         res.isOk() ? 'Ok' : 'Err',
         res.isOk() ? res.value : res.error,

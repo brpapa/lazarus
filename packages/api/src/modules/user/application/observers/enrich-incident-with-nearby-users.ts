@@ -7,7 +7,7 @@ import { IncidentCreatedEnrichedWithNearbyUsers } from 'src/modules/user/domain/
 
 /** just dispathes an enriched IncidentCreated event */
 export class EnrichIncidentWithNearbyUsersObserver implements IObserver<IncidentCreated> {
-  MAX_DISTANCE_INCIDENT_TO_USER_IN_METERS = 4e3
+  MAX_DISTANCE_INCIDENT_TO_USER_IN_METERS = 4e3 // TODO: max distance possible to of an USER PREFERENCE DISTANCE RADIUS
 
   constructor(private log: Debugger, private userRepo: IUserRepo) {
     DomainEvents.subscribeObserver(this, IncidentCreated.eventName)
@@ -20,6 +20,8 @@ export class EnrichIncidentWithNearbyUsersObserver implements IObserver<Incident
         this.MAX_DISTANCE_INCIDENT_TO_USER_IN_METERS,
       )
     ).filter((user) => user.user.id.toString() !== incident.ownerUserId.toString())
+
+    // TODO: olhar pro distance radius de cada user!
 
     this.log(`Found %o users nearby to new incident %o`, nearbyUsers.length, incident.id.toString())
 

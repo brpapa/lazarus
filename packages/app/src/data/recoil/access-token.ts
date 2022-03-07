@@ -17,9 +17,7 @@ export const accessTokenState = atom<AccessToken | null>({
       )
 
       // update secure store if recoil state changes
-      onSet((newAccessToken) => {
-        AuthTokensManager.setAccessToken(newAccessToken)
-      })
+      onSet((newAccessToken) => AuthTokensManager.setAccessToken(newAccessToken))
     },
   ],
 })

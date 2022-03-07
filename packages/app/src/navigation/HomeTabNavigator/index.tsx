@@ -1,6 +1,6 @@
 import { t } from '@lazarus/shared'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { graphql, useLazyLoadQuery } from 'react-relay'
 import { Explorer, Profile } from '~/screens'
 import type { HomeTabNavigatorQuery as HomeTabNavigatorQueryType } from '~/__generated__/HomeTabNavigatorQuery.graphql'

@@ -51,11 +51,7 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
   }
 
   async findByIdBatch(ids: string[]): Promise<(Incident | null)[]> {
-    const incidents: IncidentPgModelPopulated[] = await this.prismaClient.incidentModel.findMany({
-      where: { id: { in: ids } },
-      include: this.baseInclude,
-    })
-    const orderedIncidents = ids.map((id) => incidents.find((v) => v.id === id) ?? null)
+    const orderedIncidents = await this.findByIdBatchOrdered(ids)
     return this.enrichedWithRedisBatch(orderedIncidents)
   }
 
@@ -103,15 +99,9 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
       byRadius,
       [GeoReplyWith.COORDINATES],
     )
-    const incidentsId = locations.map((v) => v.member)
 
-    const incidents = await this.prismaClient.incidentModel.findMany({
-      where: { id: { in: incidentsId } },
-      include: this.baseInclude,
-    })
-    const orderedIncidents = incidentsId.map(
-      (incidentId) => incidents.find((v) => v.id === incidentId) ?? null,
-    )
+    const incidentsId = locations.map((v) => v.member)
+    const orderedIncidents = await this.findByIdBatchOrdered(incidentsId)
 
     assert(orderedIncidents.length === locations.length)
     return zip(orderedIncidents, locations).map(([incident, location]) => {
@@ -166,6 +156,15 @@ export class IncidentRepo extends PrismaRepo<Incident> implements IIncidentRepo 
     await this.prismaClient.mediaModel.deleteMany({ where })
     await this.prismaClient.commentModel.deleteMany({ where })
     await this.prismaClient.incidentModel.delete({ where: { id: incident.id.toString() } })
+  }
+
+  private async findByIdBatchOrdered(ids: string[]) {
+    const incidents = await this.prismaClient.incidentModel.findMany({
+      where: { id: { in: ids } },
+      include: this.baseInclude,
+    })
+    const orderedIncidents = ids.map((id) => incidents.find((v) => v.id === id) ?? null)
+    return orderedIncidents
   }
 
   private async enrichedWithRedis(

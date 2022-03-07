@@ -17,7 +17,7 @@ export abstract class BaseError {
       this.reasonIsTranslated = false
     } else {
       this.reason = t(`errors.${errorCode}`, displayableToUserReasonParams, {
-        lng: 'pt-BR', // TODO: take by user preference
+        lng: 'pt-BR', // TODO: read which is the user preference language
       })
       this.reasonIsTranslated = true
     }

@@ -44,8 +44,8 @@ const seed = async () => {
         email: UserEmail.create({ value: 'user1@gmail.com' }).asOk(),
         name: 'User 1',
         location: Location.create({
-          latitude: -22.89,
-          longitude: -48.45,
+          latitude: -22.87099719525191,
+          longitude: -48.43652376998379,
         }),
         preferences: UserPreferences.create({ radiusDistanceMeters: 5000 }),
       },
@@ -55,46 +55,46 @@ const seed = async () => {
   await deviceRepo.commit(
     Device.create({
       userId: user1.id.toString(),
-      pushToken: 'ExponentPushToken[DF6cYjJOtKDh12NixCSznh]',
+      pushToken: 'ExponentPushToken[zySE7sNMPyqiK2n4KFYtBe]',
     }),
   )
 
   const user2 = await userRepo.commit(
     User.create(
       {
-        username: 'User2',
+        username: 'reginasilva',
         password: UserPassword.create({ value: '12345678' }).asOk(),
-        email: UserEmail.create({ value: 'user2@gmail.com' }).asOk(),
-        name: 'User 2',
+        email: UserEmail.create({ value: 'regina.silva@gmail.com' }).asOk(),
+        name: 'Regina Silva',
         location: Location.create({
-          latitude: -22.87,
-          longitude: -48.43,
+          latitude: -22.88091631588186,
+          longitude: -48.446477625049754,
         }),
       },
-      new UUID('user2-id'),
+      new UUID('reginasilva-id'),
     ),
   )
-  const user3 = await userRepo.commit(
-    User.create(
-      {
-        username: 'User3',
-        password: UserPassword.create({ value: '12345678' }).asOk(),
-        email: UserEmail.create({ value: 'user3@gmail.com' }).asOk(),
-        name: 'User 3',
-        location: Location.create({
-          latitude: -22.27,
-          longitude: -47.93,
-        }),
-      },
-      new UUID('user3-id'),
-    ),
-  )
+  // const user3 = await userRepo.commit(
+  //   User.create(
+  //     {
+  //       username: 'User3',
+  //       password: UserPassword.create({ value: '12345678' }).asOk(),
+  //       email: UserEmail.create({ value: 'user3@gmail.com' }).asOk(),
+  //       name: 'User 3',
+  //       location: Location.create({
+  //         latitude: -22.869999455074222,
+  //         longitude: -48.430000841617584,
+  //       }),
+  //     },
+  //     new UUID('user3-id'),
+  //   ),
+  // )
 
   const CENTER_POINT = { latitude: -22.877187463558492, longitude: -48.44966612756252 }
   const RADIUS_IN_METERS = 1e4
 
   const incidentsCreatedByUser2 = await Promise.all(
-    new Array(30).fill(null).map(async (_, i) => {
+    new Array(0).fill(null).map(async (_, i) => {
       const randomPoint = randomCirclePoint(CENTER_POINT, RADIUS_IN_METERS)
 
       const incident = Incident.create({
@@ -107,6 +107,18 @@ const seed = async () => {
         Media.create({
           incidentId: incident.id,
           url: `https://s2.glbimg.com/6bPwIsd-7pKhBjeOmWxofRfJwhE=/0x0:1600x1200/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/f/h/EQhO4oSoaxjFk2ltAAwA/aeronave-queda.jpeg`,
+          type: MediaTypeEnum.IMAGE,
+          recordedAt: new Date(),
+        }),
+        Media.create({
+          incidentId: incident.id,
+          url: `https://www.jcnet.com.br/_midias/jpg/2020/01/23/whatsapp_image_2020_01_23_at_12_53_19-2207525.jpeg`,
+          type: MediaTypeEnum.IMAGE,
+          recordedAt: new Date(),
+        }),
+        Media.create({
+          incidentId: incident.id,
+          url: `https://www.jcnet.com.br/_midias/jpg/2020/01/23/whatsapp_image_2020_01_23_at_12_53_18-2207535.jpeg`,
           type: MediaTypeEnum.IMAGE,
           recordedAt: new Date(),
         }),
