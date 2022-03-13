@@ -9,9 +9,11 @@ drawings:
 layout: intro
 ---
 
-# Lazarus
+# Aplicativo para publicação e acompanhamento de alertas de segurança pública
 
-Aplicativo para publicação e acompanhamento de alertas de segurança pública
+<br/>
+
+Bacharelado em Sistemas de Informação - FC, Unesp Bauru
 
 <div class="absolute bottom-10">
   <span class="font-700">Bruno José Papa</span>
@@ -26,10 +28,12 @@ Aplicativo para publicação e acompanhamento de alertas de segurança pública
 ---
 
 # Introdução
+
+<br/>
  
 ## Conceito
 
-- **Alerta** = qualquer acontecimento que pode colocar em risco a segurança das pessoas, como, por exemplo, catástrofes naturais, acidentes, incêndios, assaltos, tiroteios, protestos não pacíficos, e ruas interditadas.
+- **Alerta**: qualquer acontecimento que pode colocar em risco a segurança das pessoas, como, por exemplo, catástrofes naturais, acidentes, incêndios, assaltos, tiroteios, protestos não pacíficos, e ruas interditadas.
 
 ## Problema
 
@@ -38,8 +42,13 @@ Aplicativo para publicação e acompanhamento de alertas de segurança pública
 - Tempo de resposta alto dos chamados emergenciais.
 
 <!-- 
-  - Pessoas se comunicam sobre alertas individualmente, não há um espaço onde elas todas podem se contribuir
-  - Pequenos acontecimentos próximos a voce (mas importantes) não são divulgados na mídia, e quando sao, talvez vc queria saber antes
+- Alerta = incidente
+
+- Pessoas avisam apenas amigos, não há um espaço onde elas todas podem contribuir umas com as outras de forma anônima para atingir o máximo de pessoas interessadas possível.
+
+- Não dá pra mídia noticiar tudo. Não é localizada. Ela noticia apenas o mais relevante, e somente após o ocorrido, deixando poucas changes de evitar.
+
+- Pequenos acontecimentos próximos a voce (mas importantes) não são divulgados na mídia, e quando sao, talvez vc queria saber antes
 -->
 
 ---
@@ -57,8 +66,8 @@ Aplicativo para publicação e acompanhamento de alertas de segurança pública
   - podem buscar se proteger e proteger uns aos outros
 
 <!-- 
-  - imagens/videos para que outros possam verificar/confirmar o que está sendo reportando.
-  - sabendo dos alertas ela pode pensar duas vezes antes de sair de casa
+- imagens/videos para que outros possam verificar/confirmar o que está sendo reportando.
+- sabendo dos alertas ela pode pensar duas vezes antes de sair de casa
 -->
   
 
@@ -112,15 +121,15 @@ layout: section
 <img class="h-md mx-auto p-2" src="/system_server_each-module_layers.png"/>
 
 <!-- 
-  - arquitetura em camadas: melhor manutenção e evolução do código
+- arquitetura em camadas: melhor manutenção e evolução do código
 
-  - Domain layer: que está menos propensa a mudar
-  
-  - Application layer: casos de uso, as principais funcionalidades. CQS pois operacoes que mudam o sistema (e geram efeitos colaterais) são separadas daquelas que apenas leem dados para deixar o código mais simples
+- Domain layer: que está menos propensa a mudar
 
-  - Adapter layer: contém abstrações para que a application layer possa interagir com a infrastructure layer sem depender dela, habilitando o que é chamado de inversão de dependência.
+- Application layer: casos de uso, as principais funcionalidades. CQS pois operacoes que mudam o sistema (e geram efeitos colaterais) são separadas daquelas que apenas leem dados para deixar o código mais simples
 
-  - Infrastructure layer: camada mais propensa a mudar, contém detalhes (bancos especifos, lógica de apresentacao (GraphQL ou endpoints))
+- Adapter layer: contém abstrações para que a application layer possa interagir com a infrastructure layer sem depender dela, habilitando o que é chamado de inversão de dependência. (facilar teste, nao depender de framework específico)
+
+- Infrastructure layer: camada mais propensa a mudar, contém detalhes (bancos especifos, tecnologias/lógica de apresentacao (GraphQL ou endpoints))
  -->
 
 ---
@@ -143,11 +152,15 @@ layout: section
 </div>
 
 <!-- 
-  - DomainEvents: singleton usado para para armazenar o estado de quais observers estão interessados em ouvir pelos eventos emitidos por determinados aggregate roots. 
+- DomainEvents: 
+  - Armazenar o estado de quais observers estão interessados em ouvir pelos eventos emitidos por determinados aggregate roots. 
+  
+  - subscribeObserver 
+    - (chamado quando o observer ser instanciado, q é no inicio do servidor)
+    - (como se inscrever numa newsletter de email)
+  - registerAggregate
 
-    - As instâncias dos aggregate roots inscritos contém domain events que serão dispachados para seus observers quando a camada de infraestrutura persistir as alterações feitas.
-
-  - Observers sao instanciados assim que o servidor é iniciado, e o metodo é invocado subscribeObserver.
+  - As instâncias dos aggregate roots inscritos contém domain events que serão dispachados/emitidos para seus respectivos observers quando a camada de infraestrutura persistir as alterações feitas.
  -->
 
 ---
@@ -190,6 +203,8 @@ class UserRepo extends PrismaRepo<User> implements IUserRepo {
 ```
 
 </div>
+
+<!-- Usada para buscar quais usuários estão próximos a um novo alerta -->
 
 ---
 layout: section
@@ -257,7 +272,9 @@ type Location {
 
 </div>
 
-<!-- Node type: Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface -->
+<!--
+Node type: Based on Relay specs, enable clients to handling caching and data refetching for any GraphQL type that implements the Node Interface
+-->
 
 ---
 
@@ -311,11 +328,12 @@ X-Response-Time: 18ms
 }
 ```
 
-<!-- 
-  - GraphQL reduz overhead de rede, cliente requisita e recebe apenas o que quer
- -->
-
 </div>
+
+<!-- 
+- GraphQL reduz overhead de rede, cliente requisita e recebe apenas o que quer
+- Permite trazer tudo que o cliente precisa de uma vez, evitando round-trips no servidor
+ -->
 ---
 
 # Busca de dados com Relay
@@ -325,14 +343,19 @@ X-Response-Time: 18ms
 <!-- <img class="w-20" src="/react-relay-graphql.png"/> -->
 
 <!--
- - relay conecta a visualizacao (react components) com os dados (graphql server ) 
- - relay store é uma especie de cache que armazena um grafo com todos os dados já trazidos
+- Relay conecta a visualizacao (react components) com os dados (graphql server ) 
+- Relay store é uma especie de cache em memória que armazena um grafo com todos os dados já trazidos do servidor
  -->
 ---
 
 # Fluxo de inicialização
 
 <img class="pt-5" src="/system_app_initialization-flow.png"/>
+
+<!-- 
+- background: app fechado ou em segundo plano
+- foreground: app aberto e ativo
+ -->
 
 ---
 
