@@ -8,32 +8,34 @@ skinparam shadowing false
 ' skinparam linetype ortho
 ' skinparam groupInheritance 1
 
-interface IObserver<T extends DomainEvent> {
-  + handle(event: T): void
-}
-abstract AggregateRoot extends Entity {
-  - pendingEvents: DomainEvent[]
-  # addDomainEvent(event: DomainEvent): void
-  + clearEvents(): void
-}
-abstract Entity {
-  + id: string
-}
-abstract ValueObject {}
-abstract DomainEvent {
-  - id: string
-  - ocurredAt: Date
-  {abstract} + getEventName(): string
-}
-class DomainEvents {
-  {static} - observers: Map<string, IObserver<DomainEvent>>[]
-  {static} - aggregateRoots: AggregateRoot[]
-  {static} + registerAggregate(agg: AggregateRoot): void
-  {static} + unregisterAllAggregates(): void
-  {static} + dispatchAllPendingEventsOfAggregate(aggRootId: string): void
-  {static} + dispatchEvent(event: DomainEvent): void
-  {static} + subscribeObserver<T>(observer: IObserver<T>, eventName: string): void
-  {static} + unsubscribeAllObservers(): void
+package "Shared module" <<Rectangle>> {
+  interface IObserver<T extends DomainEvent> {
+    + handle(event: T): void
+  }
+  abstract AggregateRoot extends Entity {
+    - pendingEvents: DomainEvent[]
+    # addDomainEvent(event: DomainEvent): void
+    + clearEvents(): void
+  }
+  abstract Entity {
+    + id: string
+  }
+  abstract ValueObject {}
+  abstract DomainEvent {
+    - id: string
+    - ocurredAt: Date
+    {abstract} + getEventName(): string
+  }
+  class DomainEvents {
+    {static} - observers: Map<string, IObserver<DomainEvent>>[]
+    {static} - aggregateRoots: AggregateRoot[]
+    {static} + registerAggregate(agg: AggregateRoot): void
+    {static} + unregisterAllAggregates(): void
+    {static} + dispatchAllPendingEventsOfAggregate(aggRootId: string): void
+    {static} + dispatchEvent(event: DomainEvent): void
+    {static} + subscribeObserver<T>(observer: IObserver<T>, eventName: string): void
+    {static} + unsubscribeAllObservers(): void
+  }
 }
 
 @enduml

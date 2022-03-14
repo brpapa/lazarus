@@ -5,22 +5,10 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
-\bibitem[Amazon Web Services documentation 2022]{aws}
-\abntrefinfo{Amazon\ldots}{AMAZON\ldots}{2022}
-{AMAZON Web Services documentation. 2022. Disponível em:
-  <\url{https://aws.amazon.com}>.
-Acesso em 20 de fevereiro de 2022.}
-
-\bibitem[Aplicativo Citizen 2022]{citizen}
-\abntrefinfo{Aplicativo\ldots}{APLICATIVO\ldots}{2022a}
-{APLICATIVO Citizen. 2022. Disponível em:
-  <\url{https://play.google.com/store/apps/details?id=sp0n.citizen&hl=pt_BR&gl=US}>.
-Acesso em 20 de fevereiro de 2022.}
-
-\bibitem[Aplicativo SP+ segura 2022]{sp-mais-segura}
-\abntrefinfo{Aplicativo\ldots}{APLICATIVO\ldots}{2022b}
-{APLICATIVO SP+ segura. 2022. Disponível em:
-  <\url{https://play.google.com/store/apps/details?id=com.policiapopular.spsegura&hl=pt_BR&gl=US}>.
+\bibitem[Amazon 2022]{aws}
+\abntrefinfo{Amazon}{AMAZON}{2022}
+{AMAZON. \emph{Amazon Web Services documentation}. 2022. Disponível em:
+  \nolinkurl{https://aws.amazon.com}.
 Acesso em 20 de fevereiro de 2022.}
 
 \bibitem[Bob 2017]{clean-architecture}
@@ -31,12 +19,13 @@ Acesso em 20 de fevereiro de 2022.}
 \bibitem[Cockburn 2005]{hexagonal-architecture}
 \abntrefinfo{Cockburn}{COCKBURN}{2005}
 {COCKBURN, A. \emph{Hexagonal architecture}. [S.l.: s.n.], 2005. Disponível
-  em: <\url{https://alistair.cockburn.us/hexagonal-architecture}>. Acesso em 20
-  de fevereiro de 2022.}
+  em: \nolinkurl{https://alistair.cockburn.us/hexagonal-architecture}. Acesso
+  em 20 de fevereiro de 2022.}
 
-\bibitem[Docker documentation 2022]{docker}
-\abntrefinfo{Docker\ldots}{DOCKER\ldots}{2022}
-{DOCKER documentation. 2022. Disponível em: <\url{https://www.docker.com}>.
+\bibitem[Eich 2022]{javascript}
+\abntrefinfo{Eich}{EICH}{2022}
+{EICH, B. \emph{Javascript documentation}. 2022. Disponível em:
+  \nolinkurl{https://developer.mozilla.org/docs/Web/JavaScript}.
 Acesso em 20 de fevereiro de 2022.}
 
 \bibitem[Evans 2003]{domain-driven-design}
@@ -44,35 +33,58 @@ Acesso em 20 de fevereiro de 2022.}
 {EVANS, E. \emph{Domain-Driven Design: Tackling Complexity in the Heart of
   Software}. [S.l.]: Addison-Wesley Professional, 2003.}
 
-\bibitem[Expo documentation 2022]{expo}
-\abntrefinfo{Expo\ldots}{EXPO\ldots}{2022}
-{EXPO documentation. 2022. Disponível em: <\url{https://expo.dev}>.
+\bibitem[Expo 2022]{expo}
+\abntrefinfo{Expo}{EXPO}{2022}
+{EXPO. \emph{Expo documentation}. 2022. Disponível em:
+  \nolinkurl{https://expo.dev}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[GraphQL documentation 2022]{graphql}
-\abntrefinfo{GraphQL\ldots}{GRAPHQL\ldots}{2022}
-{GRAPHQL documentation. 2022. Disponível em: <\url{https://graphql.org}>.
+\bibitem[Foundation 2022]{node}
+\abntrefinfo{Foundation}{FOUNDATION}{2022}
+{FOUNDATION, O. \emph{Node.js documentation}. 2022. Disponível em:
+  \nolinkurl{https://nodejs.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Heroku documentation 2022]{heroku}
-\abntrefinfo{Heroku\ldots}{HEROKU\ldots}{2022}
-{HEROKU documentation. 2022. Disponível em: <\url{http://heroku.com}>.
+\bibitem[GraphQL 2022]{graphql}
+\abntrefinfo{GraphQL}{GRAPHQL}{2022}
+{GRAPHQL. \emph{GraphQL documentation}. 2022. Disponível em:
+  \nolinkurl{https://graphql.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Javascript documentation 2022]{javascript}
-\abntrefinfo{Javascript\ldots}{JAVASCRIPT\ldots}{2022}
-{JAVASCRIPT documentation. 2022. Disponível em:
-  <\url{https://developer.mozilla.org/docs/Web/JavaScript}>.
+\bibitem[Group 2022]{postgresql}
+\abntrefinfo{Group}{GROUP}{2022}
+{GROUP, P. G.~D. \emph{PostgreSQL documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.postgresql.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Jest documentation 2022]{jest}
-\abntrefinfo{Jest\ldots}{JEST\ldots}{2022}
-{JEST documentation. 2022. Disponível em: <\url{https://jestjs.io}>.
+\bibitem[HashiCorp 2022]{terraform}
+\abntrefinfo{HashiCorp}{HASHICORP}{2022}
+{HASHICORP. \emph{Terraform documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.terraform.io}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Koa documentation 2022]{koa}
-\abntrefinfo{Koa\ldots}{KOA\ldots}{2022}
-{KOA documentation. 2022. Disponível em: <\url{https://koajs.com}>.
+\bibitem[Hykes 2022]{docker}
+\abntrefinfo{Hykes}{HYKES}{2022}
+{HYKES, S. \emph{Docker documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.docker.com}.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Jest 2022]{jest}
+\abntrefinfo{Jest}{JEST}{2022}
+{JEST. \emph{Jest documentation}. 2022. Disponível em:
+  \nolinkurl{https://jestjs.io}.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Koajs 2022]{koa}
+\abntrefinfo{Koajs}{KOAJS}{2022}
+{KOAJS. \emph{Koa documentation}. 2022. Disponível em:
+  \nolinkurl{https://koajs.com}.
+Acesso em 20 de fevereiro de 2022.}
+
+\bibitem[Labs 2022]{redis}
+\abntrefinfo{Labs}{LABS}{2022}
+{LABS, R. \emph{Redis documentation}. 2022. Disponível em:
+  \nolinkurl{https://redis.io}.
 Acesso em 20 de fevereiro de 2022.}
 
 \bibitem[Meyer 2000]{object-oriented-software-construction}
@@ -80,80 +92,83 @@ Acesso em 20 de fevereiro de 2022.}
 {MEYER, B. \emph{Object Oriented Software Construction}. 2. ed. [S.l.]: Pearson
   College Div, 2000.}
 
-\bibitem[Node.js documentation 2022]{node}
-\abntrefinfo{Node\ldots}{NODE\ldots}{2022}
-{NODE.JS documentation. 2022. Disponível em: <\url{https://nodejs.org}>.
+\bibitem[Microsoft 2022]{typescript}
+\abntrefinfo{Microsoft}{MICROSOFT}{2022}
+{MICROSOFT. \emph{Typescript documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.typescriptlang.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[PostgreSQL documentation 2022]{postgresql}
-\abntrefinfo{PostgreSQL\ldots}{POSTGRESQL\ldots}{2022}
-{POSTGRESQL documentation. 2022. Disponível em:
-  <\url{https://www.postgresql.org}>.
+\bibitem[Mobile 2022]{waze}
+\abntrefinfo{Mobile}{MOBILE}{2022}
+{MOBILE, W. \emph{Waze}. 2022. Disponível em:
+  \nolinkurl{https://www.waze.com}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Prisma documentation 2022]{prisma}
-\abntrefinfo{Prisma\ldots}{PRISMA\ldots}{2022}
-{PRISMA documentation. 2022. Disponível em: <\url{https://www.prisma.io}>.
+\bibitem[Native 2022]{react-native}
+\abntrefinfo{Native}{NATIVE}{2022}
+{NATIVE, R. \emph{React Native documentation}. 2022. Disponível em:
+  \nolinkurl{https://reactnative.dev}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[React documentation 2022]{react}
-\abntrefinfo{React\ldots}{REACT\ldots}{2022a}
-{REACT documentation. 2022. Disponível em: <\url{https://reactjs.org}>.
+\bibitem[Navigation 2022]{react-navigation}
+\abntrefinfo{Navigation}{NAVIGATION}{2022}
+{NAVIGATION, R. \emph{React Navigation documentation}. 2022. Disponível em:
+  \nolinkurl{https://reactnavigation.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[React Native documentation 2022]{react-native}
-\abntrefinfo{React\ldots}{REACT\ldots}{2022b}
-{REACT Native documentation. 2022. Disponível em:
-  <\url{https://reactnative.dev}>.
+\bibitem[Paulo 2022]{sp-mais-segura}
+\abntrefinfo{Paulo}{PAULO}{2022}
+{PAULO, S.~M. de~Segurança Urbana~de S. \emph{Aplicativo SP+ segura}. 2022.
+  Disponível em:
+  \nolinkurl{https://play.google.com/store/apps/details?id=com.policiapopular.spsegura&hl=pt_BR&gl=US}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[React Navigation documentation 2022]{react-navigation}
-\abntrefinfo{React\ldots}{REACT\ldots}{2022c}
-{REACT Navigation documentation. 2022. Disponível em:
-  <\url{https://reactnavigation.org}>.
+\bibitem[Prisma 2022]{prisma}
+\abntrefinfo{Prisma}{PRISMA}{2022}
+{PRISMA. \emph{Prisma documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.prisma.io}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Recoil documentation 2022]{recoil}
-\abntrefinfo{Recoil\ldots}{RECOIL\ldots}{2022}
-{RECOIL documentation. 2022. Disponível em: <\url{https://recoiljs.org}>.
+\bibitem[React 2022]{react}
+\abntrefinfo{React}{REACT}{2022}
+{REACT. \emph{React documentation}. 2022. Disponível em:
+  \nolinkurl{https://reactjs.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Redis documentation 2022]{redis}
-\abntrefinfo{Redis\ldots}{REDIS\ldots}{2022}
-{REDIS documentation. 2022. Disponível em: <\url{https://redis.io}>.
+\bibitem[Recoil 2022]{recoil}
+\abntrefinfo{Recoil}{RECOIL}{2022}
+{RECOIL. \emph{Recoil documentation}. 2022. Disponível em:
+  \nolinkurl{https://recoiljs.org}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Relay documentation 2022]{relay}
-\abntrefinfo{Relay\ldots}{RELAY\ldots}{2022}
-{RELAY documentation. 2022. Disponível em: <\url{https://relay.dev}>.
+\bibitem[Relay 2022]{relay}
+\abntrefinfo{Relay}{RELAY}{2022}
+{RELAY. \emph{Relay documentation}. 2022. Disponível em:
+  \nolinkurl{https://relay.dev}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Supertest documentation 2022]{supertest}
-\abntrefinfo{Supertest\ldots}{SUPERTEST\ldots}{2022}
-{SUPERTEST documentation. 2022. Disponível em:
-  <\url{https://www.npmjs.com/package/supertest}>.
+\bibitem[Salesforce 2022]{heroku}
+\abntrefinfo{Salesforce}{SALESFORCE}{2022}
+{SALESFORCE. \emph{Heroku documentation}. 2022. Disponível em:
+  \nolinkurl{http://heroku.com}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Terraform documentation 2022]{terraform}
-\abntrefinfo{Terraform\ldots}{TERRAFORM\ldots}{2022}
-{TERRAFORM documentation. 2022. Disponível em:
-  <\url{https://www.terraform.io}>.
+\bibitem[sp0n 2022]{citizen}
+\abntrefinfo{sp0n}{SP0N}{2022}
+{SP0N, I. \emph{Aplicativo Citizen}. 2022. Disponível em:
+  \nolinkurl{https://play.google.com/store/apps/details?id=sp0n.citizen&hl=pt_BR&gl=US}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Typescript documentation 2022]{typescript}
-\abntrefinfo{Typescript\ldots}{TYPESCRIPT\ldots}{2022}
-{TYPESCRIPT documentation. 2022. Disponível em:
-  <\url{https://www.typescriptlang.org}>.
+\bibitem[Visionmedia 2022]{supertest}
+\abntrefinfo{Visionmedia}{VISIONMEDIA}{2022}
+{VISIONMEDIA. \emph{Supertest documentation}. 2022. Disponível em:
+  \nolinkurl{https://www.npmjs.com/package/supertest}.
 Acesso em 20 de fevereiro de 2022.}
 
-\bibitem[Waze 2022]{waze}
-\abntrefinfo{Waze}{WAZE}{2022}
-{WAZE. 2022. Disponível em: <\url{https://www.waze.com}>.
-Acesso em 20 de fevereiro de 2022.}
-
-\bibitem[Wikipedia 2022]{wikipedia}
-\abntrefinfo{Wikipedia}{WIKIPEDIA}{2022}
-{WIKIPEDIA. 2022. Disponível em: <\url{https://pt.wikipedia.org}>.
+\bibitem[Wikimedia 2022]{wikipedia}
+\abntrefinfo{Wikimedia}{WIKIMEDIA}{2022}
+{WIKIMEDIA, F. \emph{Wikipedia}. 2022. Disponível em:
+  \nolinkurl{https://pt.wikipedia.org}.
 Acesso em 20 de fevereiro de 2022.}
 
 \end{thebibliography}

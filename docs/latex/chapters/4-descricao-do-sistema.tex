@@ -1,8 +1,9 @@
 \chapter{Descrição do sistema}
+\label{c.descricao-do-sistema}
 
-O sistema como um todo segue uma arquitetura cliente-servidor, onde o usuário interage com uma aplicação cliente que, por sua vez, se comunica com um servidor através da internet utilizando algum protocolo de rede. A aplicação cliente, nesse caso, é um aplicativo para dispositivos móveis, enquanto o servidor é uma aplicação monolítica, ou seja, um serviço único que roda em um único processo. Foi considerado o desenvolvimento de vários microserviços, porém a arquiteture monolítica foi escolhida em virtude da sua simplicidade de desenvolvimento, facilidade de testes e de \emph{deploy}. 
+O sistema como um todo segue uma arquitetura cliente-servidor, onde o usuário interage com uma aplicação cliente que, por sua vez, se comunica com um servidor através da internet utilizando algum protocolo de rede. A aplicação cliente, nesse caso, é um aplicativo para dispositivos móveis, enquanto o servidor é uma aplicação monolítica, ou seja, um serviço único que é executado em um único processo. Foi considerado o desenvolvimento de vários microserviços, porém a arquiteture monolítica foi escolhida em virtude da sua simplicidade de desenvolvimento, facilidade de testes e de \emph{deploy}. 
 
-A Figura~\ref{f.system} ilustra os componentes físicos do sistema. A AWS~\cite{aws} é um provedor de serviços em nuvem. Dentre os seus serviços oferecidos, foi utilizado o \emph{AWS S3} para armazenamento de objetos estáticos (imagens e vídeos) e o \emph{AWS RDS} para o provisionamento do banco de dados PostgreSQL~\cite{postgresql}. O Heroku~\cite{heroku} é outro provedor de serviços em nuvem que foi utilizado para a implantação do servidor em produção e o provisionamento do banco de dados Redis~\cite{redis}.
+A Figura~\ref{f.system} ilustra os componentes físicos do sistema. A AWS (\emph{Amazon Web Services}) ~\cite{aws} é um provedor de serviços em nuvem. Dentre os seus serviços oferecidos, foi utilizado o Amazon S3 (\emph{Simple Static Storage}) para armazenamento de objetos estáticos (imagens e vídeos) e o Amazon RDS (\emph{Relational Database Service}) para o provisionamento do banco de dados PostgreSQL~\cite{postgresql}. O Heroku~\cite{heroku} é outro provedor de serviços em nuvem que foi utilizado para a implantação do servidor em produção e o provisionamento do banco de dados Redis~\cite{redis}.
 
 \begin{figure}[htbp]
 	\caption{\small Componentes físicos do sistema.}
@@ -41,7 +42,7 @@ A partir dos requisitos listados na Seção~\ref{s.requisitos}, se fez necessár
 
 O servidor foi escrito utilizando Node.js~\cite{node}. O Node.js é um \emph{runtime} para Javascript~\cite{javascript} baseado no interpretador V8 do Google que é utilizado pelo navegador Google Chrome. O principal motivador de sua escolha foi pela sua característica de execução das requisições e eventos em \emph{single-thread}, ou seja, uma única \emph{thread} (chamada de \emph{event loop}) é responsável por executar o código Javascript e, portanto, recursos computacionais como memória RAM são melhor aproveitados. Outra característica que o difere de outras linguagens é que as suas operações de entrada e saída são assíncronas e não bloqueantes, o que torna aplicações orientadas à entrada e saída, como é o caso de servidores que processam inúmeras requisições recebidas pela rede em paralelo, bons casos de uso para o Node.js. 
 
-O servidor possui dependência com algumas bibliotecas e frameworks do ecossitema Node.js. As principais são: Koa~\cite{koa}, um framework para contrução de servidores web; Prisma~\cite{prisma}, um \emph{Object-relational mapper (ORM)} para interação com bancos de dados; Jest~\cite{jest}, uma biblioteca para escrita de testes unitários; e Supertest~\cite{supertest}, uma bilioteca para a escrita de testes de integração.
+O servidor possui dependência com algumas bibliotecas e frameworks do ecossitema Node.js. As principais são: Koa~\cite{koa}, um framework para contrução de servidores web; Prisma~\cite{prisma}, um ORM (\emph{Object-Relational Mapping}) para interação com bancos de dados; Jest~\cite{jest}, uma biblioteca para escrita de testes unitários; e Supertest~\cite{supertest}, uma bilioteca para a escrita de testes de integração.
 
 Em relação aos bancos de dados com os quais o servidor interage, foram escolhidos o Redis~\cite{redis} e o PostgreSQL~\cite{postgresql}. 
 
@@ -65,10 +66,10 @@ Cada um dos módulos respeita a divisão em camadas descrita pela Figura~\ref{f.
 
 De acordo com a ``arquitetura hexagonal'' de Alistair Cockburn ~\cite{hexagonal-architecture}, a região mais interna da arquitetura deve concentrar as camadas de aplicação e de domínio, e por fora dessas camadas devem estar os adaptadores (ou portas). 
 
-A aplicação é escrita em cima das tecnologias específicas que existem no ``mundo exterior'', como bancos de dados, APIs externas e serviços em nuvem. Com o uso dos adaptadores, ``o mundo exterior é conectado ao mundo interior'' e, portanto, tecnologias específicas podem ser envolvidos com segurança pela aplicação. Isso é chamado de inversão de dependência, e trás inúmeros benefícios, como: 
+A aplicação é escrita em cima das tecnologias específicas que existem no ``mundo exterior'', como bancos de dados, APIs (\emph{Application Programming Interface}) externas e serviços em nuvem. Com o uso dos adaptadores, ``o mundo exterior é conectado ao mundo interior'' e, portanto, tecnologias específicas podem ser envolvidos com segurança pela aplicação. Isso é chamado de inversão de dependência, e trás inúmeros benefícios, como: 
 
 \begin{alineas}
-	\item Atrasar a decisão sobre exatamente qual tipo de servidor web, banco de dados, serviços externos ou tecnologia de cache será escolhido até que seja absolutamente necessário decidir. Facilitando, por exemplo, que se faça uma implementação inicial em memória do bancos de dados para agilizar o desenvolvimento;
+	\item Atrasar a decisão sobre exatamente qual tipo de servidor web, banco de dados, serviços externos ou tecnologia de \emph{cache} será escolhido até que seja absolutamente necessário decidir. Facilitando, por exemplo, que se faça uma implementação inicial em memória do bancos de dados para agilizar o desenvolvimento;
 	\item Prioriza a escrita de código que pode ser facilmente testado usando injeção de dependência, minimizando o uso de dependências concretas que poderiam tornar o código não testável; e
 	\item Ajusta o foco às coisas específicas da aplicação e do domínio.
 \end{alineas}
@@ -79,7 +80,7 @@ A \texttt{domain layer} é a camada mais interna. É a camada que contém tudo a
 
 Para encapsular regras de validação, existem os \texttt{value objecs}. Uma \texttt{entity} é um objeto que encorpa um pequeno conjunto de regras de negócio.
 
-Um \texttt{aggregate root} é um tipo específico de \texttt{entity} que pode emitir \texttt{domain events} quando algo relavante para o negócio ocorre, e para isso, ele armazena como estado os eventos que ainda não foram emitidos pela camada de infraestrutura. Ele é implementado pela principal entidade de um \emph{cluster} de \texttt{entities} e \texttt{value objects} relacionados, os quais são tratados como uma única unidade de mudança.
+Um \texttt{aggregate root} é um tipo específico de \texttt{entity} que pode emitir \texttt{domain events} quando algo relevante para o negócio ocorre, e para isso, ele armazena como estado os eventos que ainda não foram emitidos pela camada de infraestrutura. Ele é implementado pela principal entidade de um \emph{cluster} de \texttt{entities} e \texttt{value objects} relacionados, os quais são tratados como uma única unidade de mudança.
 
 A Figura~\ref{f.system_server_shared-module_domain} demonstra como essas classes abstratas são definidas no módulo \texttt{shared}, além da implementação da classe \texttt{DomainEvents}.
 
@@ -103,11 +104,11 @@ O \emph{Command-Query Separation (CQS)} é um padrão introduzido por Bertrand M
 
 \subsubsection{Adaptadores}
 
-A \texttt{adapter layer} contém abstrações para que a \texttt{application layer} possa interagir com a \texttt{infrastructure layer} sem depender dela, habilitando o que é chamado de inversão de dependência. Interfaces de repositórios que acessam bancos de dados, interfaces ou classes abstratadas que chamam APIs externas e mapeadores de objetos entre diferentes camadas (modelo de domínio, DTO, modelo de persistência) são exemplos do que pode estar nessa camada..
+A \texttt{adapter layer} contém abstrações para que a \texttt{application layer} possa interagir com a \texttt{infrastructure layer} sem depender dela, habilitando o que é chamado de inversão de dependência. Interfaces de repositórios que acessam bancos de dados, interfaces ou classes abstratadas que chamam APIs externas e mapeadores de objetos entre diferentes camadas são exemplos do que pode estar nessa camada. Para que um objeto passe de uma camada à outra são utilizados DTOs (\emph{Data Transfer Object}). Toda entidade possui um modelo de domínio na \texttt{domain layer} e um modelo de persistência na \texttt{infrastructure layer}, por exemplo.
 
 \subsubsection{Infraestrutura}
 
-A \texttt{infrastructure layer} é a camada mais externa. Ela contém os detalhes da aplicação, os quais possuem maior chance de serem trocados por outras bibliotecas ou frameworks específicos ao decorrer do tempo. Isso inclui implementações concretas das abstrações definidas na \texttt{adapter layer} para que elas possam ser executadas em \emph{runtime}, como serviços externos, repositórios para acesso à bancos de dados. Além disso, também contém lógicas de apresentação, como \texttt{HTTP endpoints} e \texttt{GraphQL operations}.
+A \texttt{infrastructure layer} é a camada mais externa. Ela contém os detalhes da aplicação, os quais possuem maior chance de serem trocados por outras bibliotecas ou frameworks específicos ao decorrer do tempo. Isso inclui implementações concretas das abstrações definidas na \texttt{adapter layer} para que elas possam ser executadas em \emph{runtime}, como serviços externos, repositórios para acesso à bancos de dados. Além disso, também contém lógicas de apresentação, como \emph{HTTP (Hypertext Transfer Protocol) endpoints} e \emph{GraphQL operations}.
 
 \subsection{Módulos}
 
@@ -137,16 +138,12 @@ A Figura~\ref{f.system_server_all_modules_commands-observers-events} ilustra as 
 
 \FloatBarrier
 
-% % TODO: upload de imagens e vídeos
-
-% % Para que o sistema proposto atenda o requisito não funcional de ser seguro, o cadastro de usuários deve ser único por número de celular ou e-mail, e oferecer opções de cadastro via provedores de identidade terceiros e autenticação em dois fatores.
-
 \section{Comunicação entre servidor e aplicativo}
 
 \subsection{GraphQL}
 % vatangens do GraphQL: https://khalilstemmler.com/articles/graphql/graphql-architectural-advantages/#The-Data-Graph
 
-GraphQL~\cite{graphql} é uma especificação e uma linguagem de consulta para APIs que permite com que clientes requisitem e recebam do servidor exatamente os dados que eles precisam. Ele possui seu próprio sistema de tipos e campos, ao contrário de \emph{endpoints} de um tradicional servidor HTTP que segue os princípios REST.
+GraphQL~\cite{graphql} é uma especificação e uma linguagem de consulta para APIs que permite com que clientes requisitem e recebam do servidor exatamente os dados que eles precisam. Ele possui seu próprio sistema de tipos e campos, ao contrário de \emph{endpoints} de um tradicional servidor HTTP que segue os princípios REST (\emph{Representational State Transfer}).
 
 Para criar uma API GraphQL é necessário instalar uma biblioteca que o implementa na linguagem desejada, expor um \emph{endpoint} para receber as requisições GraphQL, definir um \texttt{GraphQL schema} e conectar os \texttt{resolvers} de cada campo aos seus respectivos \texttt{data sources}.
 
@@ -174,15 +171,15 @@ Para o funcionamento completo do aplicativo é exigido que o usuário forneça a
 
 Para a escrita do aplicativo foi utilizado o React Native~\cite{react-native}. O React Native é um framework Javascript para a construção de aplicações móveis multiplataforma, ou seja, que são renderizadas para o código nativo do iOS e do Android, e que é baseado no React~\cite{react}, uma biblioteca Javascript para a contrução de interfaces de usuário de forma declarativa.
 
-Para melhorar a experiência de desenvolvimento com o React Native, foi utilizado o Expo~\cite{expo}, um \emph{React Native runtime} e SDK. Entre as principais dependências, estão: Recoil~\cite{recoil}, uma biblioteca para gerenciamento de estado global no React; React Navigation~\cite{react-navigation}, uma biblioteca de navegação de telas no React Native; e Relay~\cite{relay}, descrito com mais detalhes na próxima seção.
+Para melhorar a experiência de desenvolvimento com o React Native, foi utilizado o Expo~\cite{expo}, um \emph{React Native runtime} e SDK (\emph{Software Development Kit}). Entre as principais dependências, estão: Recoil~\cite{recoil}, uma biblioteca para gerenciamento de estado global no React; React Navigation~\cite{react-navigation}, uma biblioteca de navegação de telas no React Native; e Relay~\cite{relay}, descrito com mais detalhes na próxima seção.
 
 \subsection{Busca e gerenciamento de dados com Relay}
 
 O Relay~\cite{relay} é um framework para busca e gerenciamento de dados com GraphQL para React e React Native. Sem ele, consultas são facilmente duplicadas entre diferentes componentes, podem existir carregamentos em cascata de uma árvore de componentes (ou seja, cada componente filho começa a buscar os dados que precisa no servidor somente após o térmido da busca do seu componente pai), o que torna as consultas muito lentas e consequentemente prejudica a experiência do usuário. Em resumo, ao adotar Relay é possivel declarar quais dados cada componente precisa carregar antes de renderezar. O próprio framework se responsabiliza por buscar esses dados da forma mais perfomática e otimizada possível, evitando os problemas citados anteriormente.
 
-A \texttt{Relay Store} é onde o Relay mantém todos os dados retornados pelas \texttt{GraphQL operations} que foram executadas. Cada dado possui um id único, e é através dele que é mantido um cache para evitar buscas duplicadas de dados no servidor. Esses valores em cache são atualizados pelo framework à cada nova resposta do servidor, mas também podem ser atualizados manualmente através dos \texttt{optimistic updates}. Um \texttt{optimistic update} permite evitar a espera da resposta do servidor para que algo seja refletido na tela do usuário. Por exemplo, se o usuário clicou em uma notificação, ela já pode ser renderizada como vista antes do servidor responder, pois provavelmente será uma requisição de sucesso.
+A \texttt{Relay Store} é onde o Relay mantém todos os dados retornados pelas \texttt{GraphQL operations} que foram executadas. Cada dado possui um id único, e é através dele que é mantido um \emph{cache} para evitar buscas duplicadas de dados no servidor. Esses valores em \emph{cache} são atualizados pelo framework à cada nova resposta do servidor, mas também podem ser atualizados manualmente através dos \emph{optimistic updates}. Um \emph{optimistic update} permite evitar a espera da resposta do servidor para que algo seja refletido na tela do usuário. Por exemplo, se o usuário clicou em uma notificação, ela já pode ser renderizada como vista antes do servidor responder, pois provavelmente será uma requisição de sucesso.
 
-Na Figura~\ref{f.system_app} todos os fluxos possíveis são ilustrados. As \texttt{actions} podem ser entendidas como qualquer ação realizada pelo usuário que solicite uma mudança de dados, como, por exemplo, clicar no botão para registrar um novo usuário ou adicionar um novo alerta. No caso, isso vale apenas para os componenets que declaram dependência de dados do servidor.
+Na Figura~\ref{f.system_app} todos os fluxos possíveis são ilustrados. As \texttt{actions} podem ser entendidas como qualquer ação realizada pelo usuário que solicite uma mudança de dados, como, por exemplo, clicar no botão para registrar um novo usuário ou adicionar um novo alerta. No caso, isso vale apenas para os componentes que declaram dependência de dados do servidor.
 
 \begin{figure}[htbp]
 	\caption{\small Busca de dados no aplicativo.}
@@ -196,9 +193,9 @@ Na Figura~\ref{f.system_app} todos os fluxos possíveis são ilustrados. As \tex
 
 \subsection{Inicialização do aplicativo}
 
-A cada vez que o usuário realiza um novo login mediante à inserção de usuário e senha corretos, um \emph{access token} é retornado pelo servidor, e ele, por sua vez, é criptografado e salvo no sistema de arquivos do dispositivo em formato de chave-valor. É lendo essa estrutura à cada inicialização do aplicativo, portanto, que é possível saber se o usuário já está logado ou não. O \emph{access token} gerado possui um prazo de expiração de 1 dia. No caso de ele estar expirado, ainda há um \emph{refresh token}, que é usado para gerar outro \emph{access token} válido de forma transparente ao usuário, e esse \emph{refresh token}, por sua vez, possui um prazo de expiração de 15 dias.
+A cada vez que o usuário realiza um novo \emph{login} mediante à inserção de usuário e senha corretos, um \emph{access token} é retornado pelo servidor, e ele, por sua vez, é criptografado e salvo no sistema de arquivos do dispositivo em formato de chave-valor. É lendo essa estrutura à cada inicialização do aplicativo, portanto, que é possível saber se o usuário já está logado ou não. O \emph{access token} gerado possui um prazo de expiração de 1 dia. No caso de ele estar expirado, ainda há um \emph{refresh token}, que é usado para gerar outro \emph{access token} válido de forma transparente ao usuário, e esse \emph{refresh token}, por sua vez, possui um prazo de expiração de 15 dias.
 
-O aplicativo pode estar em dois estados. Ou ele está em \emph{foreground}, quando está aberto e ativo em primeiro plano, ou ele está em \emph{background}, quando está fechado ou em segundo plano. Como descrito pela Figura~\ref{f.system_app_initialization-flow}, após cada login efetuado com sucesso algumas rotinas são executadas dependendo de qual for o estado do aplicativo. As rotinas 1 e 2 são executadas apenas no primeiro acesso ao aplicativo.
+O aplicativo pode estar em dois estados. Ou ele está em \emph{foreground}, quando está aberto e ativo em primeiro plano, ou ele está em \emph{background}, quando está fechado ou em segundo plano. Como descrito pela Figura~\ref{f.system_app_initialization-flow}, após cada \emph{login} efetuado com sucesso algumas rotinas são executadas dependendo de qual for o estado do aplicativo. As rotinas 1 e 2 são executadas apenas no primeiro acesso ao aplicativo.
 
 \begin{figure}[htbp]
 	\caption{\small Fluxo de inicialização do aplicativo.}
@@ -228,10 +225,10 @@ E em relação às rotinas executadas em \emph{background}:
 
 \subsection{Telas}
 
-As Figuras \ref{f.lazarus-sign}, \ref{f.lazarus-explorer}, \ref{f.lazarus-incident}, \ref{f.lazarus-profile} e \ref{f.lazarus-reporting} mostram as diferentes telas do aplicativo desenvolvido.
+A Figura~\ref{f.lazarus-sign} mostra, à direita, o formulário de registro de um novo usuário e, à esquerda, o formulário de \emph{login}.
 
 \begin{figure}[htbp]
-	\caption{\small Telas de login e de registro de usuário} 
+	\caption{\small Telas de \emph{login} e de registro de usuário} 
 	\begin{center}
 		\includegraphics[height=8cm]{images/lazarus-sign-in.png} \quad
 		\includegraphics[height=8cm]{images/lazarus-sign-up.png}
@@ -239,6 +236,10 @@ As Figuras \ref{f.lazarus-sign}, \ref{f.lazarus-explorer}, \ref{f.lazarus-incide
 	\label{f.lazarus-sign}
 	\legend{\small Fonte: Elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
+
+A Figura~\ref{f.lazarus-explorer} mostra, à esquerda, a primeira tela que um usuário encontra após ter realizado o \emph{login} com sucesso, onde é possível visualizar um mapa com todos os alertas mais próximos à localicação atual do usuário, e também navegar para as demais telas através da barra de navegação inferior. À direita, é mostrado como a tela varia quando um alerta é selecionado no mapa.
 
 \begin{figure}[htbp]
 	\caption{\small Tela inicial} 
@@ -250,6 +251,10 @@ As Figuras \ref{f.lazarus-sign}, \ref{f.lazarus-explorer}, \ref{f.lazarus-incide
 	\legend{\small Fonte: Elaborado pelo autor.}
 \end{figure}
 
+\FloatBarrier
+
+A Figura~\ref{f.lazarus-incident} mostra a tela de um único alerta expandido, onde é possível ver suas imagens e vídeos, qual usuário que o reportou e informações relativas ao usuário ``logado''.
+
 \begin{figure}[htbp]
 	\caption{\small Tela de um alerta} 
 	\centering
@@ -257,6 +262,10 @@ As Figuras \ref{f.lazarus-sign}, \ref{f.lazarus-explorer}, \ref{f.lazarus-incide
 	\label{f.lazarus-incident}
 	\legend{\small Fonte: Elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
+
+A Figura~\ref{f.lazarus-profile}, à esquerda, mostra a tela de perfil, que contém informações específicas do usuário ``logado'' e dá acesso à tela de notificações e de preferências. À direita, é mostrado a tela de notificações, onde o usuário pode checar se perdeu alguma notificação, navegar para o alerta mencionado ao clicar na notificação, e marcar uma notificação como lida.
 
 \begin{figure}[htbp]
 	\caption{\small Telas do perfil do usuário e de notificações} 
@@ -267,6 +276,10 @@ As Figuras \ref{f.lazarus-sign}, \ref{f.lazarus-explorer}, \ref{f.lazarus-incide
 	\label{f.lazarus-profile}
 	\legend{\small Fonte: Elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
+
+A Figura~\ref{f.lazarus-reporting} mostra todas as telas que fazem parte do fluxo de publicação de um novo alerta. Da esquerda para direita, temos a câmera, a tela de revisão das imagens e vídeos, e o formulário para inserção do título do alerta que está sendo publicado.
 
 \begin{figure}[htbp]
 	\caption{\small Telas de publicação de um alerta} 
@@ -287,6 +300,6 @@ Além das tecnologias já citadas, outras tecnologias que não estão relacionad
 
 \begin{itemize}
 	\item Typescript~\cite{typescript}: sistema de tipos para Javascript. Utilizado tanto  no aplicativo quanto no servidor;
-	\item Terraform~\cite{terraform}: ferramenta de \emph{Infrastructure as Code (IaC)} para gerenciamento serviços em nuvem via arquivos de configuração declarativos;
+	\item Terraform~\cite{terraform}: ferramenta de IaC (\emph{Infrastructure as Code}) para gerenciamento serviços em nuvem via arquivos de configuração declarativos;
 	\item Docker~\cite{docker}: ferramenta de virtualização à nível do sistema operacional baseado em containers isolados. Utilizado durante o desenvolvimento.
 \end{itemize}

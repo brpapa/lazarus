@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.18)  1 MAR 2022 19:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.2.18)  14 MAR 2022 12:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1094,56 +1094,59 @@ l.271
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 292.
+(Font)              <10> on input line 286.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 292.
+(Font)              <7> on input line 286.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 292.
+(Font)              <5> on input line 286.
  [2] [3
 
 ] [4
 
 ] [5
 
-] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.lof) [6
+] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.lof
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 14.
+) [6
 
-] [7
-
-
-] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.toc [8
-
-]) [9] (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/1-introducao.tex
+]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 5.
- [10
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 392.
+ [7
+
+
+] (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.toc) [8
+
+] [9] (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/1-introducao.tex [10
 
 
 ]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/2-solucoes-existentes-e-objetivos.tex [11]
-<./images/citizen.png, id=192, 1849.91125pt x 1088.065pt>
+<./images/citizen.png, id=191, 1849.91125pt x 1088.065pt>
 File: ./images/citizen.png Graphic file (type png)
 <use ./images/citizen.png>
-Package pdftex.def Info: ./images/citizen.png  used on input line 24.
+Package pdftex.def Info: ./images/citizen.png  used on input line 29.
 (pdftex.def)             Requested size: 386.99678pt x 227.62204pt.
  [12
 
- </Users/bruno.papa/dev/lazarus/docs/latex/./images/citizen.png>]
-<./images/sp-mais-segura.png, id=204, 2392.94pt x 1086.0575pt>
+]
+<./images/sp-mais-segura.png, id=202, 2392.94pt x 1086.0575pt>
 File: ./images/sp-mais-segura.png Graphic file (type png)
 <use ./images/sp-mais-segura.png>
-Package pdftex.def Info: ./images/sp-mais-segura.png  used on input line 40.
+Package pdftex.def Info: ./images/sp-mais-segura.png  used on input line 45.
 (pdftex.def)             Requested size: 455.0pt x 206.50221pt.
-) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/3-detalhamento-do-problema.tex [13 </Users/bruno.papa/dev/lazarus/docs/latex/./images/sp-mais-segura.png>] [14]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/4-descricao-do-sistema.tex [15
+ [13 </Users/bruno.papa/dev/lazarus/docs/latex/./images/citizen.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/3-detalhamento-do-problema.tex [14 </Users/bruno.papa/dev/lazarus/docs/latex/./images/sp-mais-segura.png>] [15
 
-]
-<../diagrams/out/system.png, id=236, 2044.63875pt x 869.2475pt>
+]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/4-descricao-do-sistema.tex [16]
+<../diagrams/out/system.png, id=239, 2044.63875pt x 869.2475pt>
 File: ../diagrams/out/system.png Graphic file (type png)
 <use ../diagrams/out/system.png>
-Package pdftex.def Info: ../diagrams/out/system.png  used on input line 10.
+Package pdftex.def Info: ../diagrams/out/system.png  used on input line 11.
 (pdftex.def)             Requested size: 455.0pt x 193.4368pt.
- [16
+ [17
 
  </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system.png>]
-LaTeX Font Info:    Trying to load font information for TS1+lmss on input line 24.
+LaTeX Font Info:    Trying to load font information for TS1+lmss on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/ts1lmss.fd
 File: ts1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1151,7 +1154,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 24.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1159,114 +1162,115 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<../diagrams/out/system_server.png, id=254, 2435.0975pt x 914.41624pt>
+<../diagrams/out/system_server.png, id=257, 2435.0975pt x 914.41624pt>
 File: ../diagrams/out/system_server.png Graphic file (type png)
 <use ../diagrams/out/system_server.png>
-Package pdftex.def Info: ../diagrams/out/system_server.png  used on input line 33.
+Package pdftex.def Info: ../diagrams/out/system_server.png  used on input line 34.
 (pdftex.def)             Requested size: 455.0pt x 170.85265pt.
- [17 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server.png>]
-<../diagrams/out/system_server_each-module_layers.png, id=281, 2443.1275pt x 1925.1925pt>
+ [18 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server.png>]
+<../diagrams/out/system_server_each-module_layers.png, id=285, 2443.1275pt x 1925.1925pt>
 File: ../diagrams/out/system_server_each-module_layers.png Graphic file (type png)
 <use ../diagrams/out/system_server_each-module_layers.png>
-Package pdftex.def Info: ../diagrams/out/system_server_each-module_layers.png  used on input line 59.
+Package pdftex.def Info: ../diagrams/out/system_server_each-module_layers.png  used on input line 60.
 (pdftex.def)             Requested size: 455.0pt x 358.5345pt.
- [18] [19 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_each-module_layers.png>]
-<../diagrams/out/system_server_shared-module_domain.png, id=303, 730.73pt x 410.53375pt>
+ [19] [20 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_each-module_layers.png>]
+<../diagrams/out/system_server_shared-module_domain.png, id=306, 761.84625pt x 461.725pt>
 File: ../diagrams/out/system_server_shared-module_domain.png Graphic file (type png)
 <use ../diagrams/out/system_server_shared-module_domain.png>
-Package pdftex.def Info: ../diagrams/out/system_server_shared-module_domain.png  used on input line 89.
-(pdftex.def)             Requested size: 455.0pt x 255.62453pt.
- [20 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_shared-module_domain.png (PNG copy)>]
-<../diagrams/out/system_server_all-modules_domain-entities.png, id=312, 1096.095pt x 997.7275pt>
+Package pdftex.def Info: ../diagrams/out/system_server_shared-module_domain.png  used on input line 90.
+(pdftex.def)             Requested size: 455.0pt x 275.75488pt.
+ [21 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_shared-module_domain.png (PNG copy)>] [22]
+<../diagrams/out/system_server_all-modules_domain-entities.png, id=320, 1096.095pt x 997.7275pt>
 File: ../diagrams/out/system_server_all-modules_domain-entities.png Graphic file (type png)
 <use ../diagrams/out/system_server_all-modules_domain-entities.png>
-Package pdftex.def Info: ../diagrams/out/system_server_all-modules_domain-entities.png  used on input line 121.
+Package pdftex.def Info: ../diagrams/out/system_server_all-modules_domain-entities.png  used on input line 122.
 (pdftex.def)             Requested size: 455.0pt x 414.17099pt.
- [21]
-<../diagrams/out/system_server_all_modules_commands-observers-events.png, id=319, 3621.53pt x 2316.655pt>
+<../diagrams/out/system_server_all_modules_commands-observers-events.png, id=322, 3621.53pt x 2316.655pt>
 File: ../diagrams/out/system_server_all_modules_commands-observers-events.png Graphic file (type png)
 <use ../diagrams/out/system_server_all_modules_commands-observers-events.png>
-Package pdftex.def Info: ../diagrams/out/system_server_all_modules_commands-observers-events.png  used on input line 133.
+Package pdftex.def Info: ../diagrams/out/system_server_all_modules_commands-observers-events.png  used on input line 134.
 (pdftex.def)             Requested size: 455.0pt x 291.03049pt.
- [22 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all-modules_domain-entities.png (PNG copy)>] [23 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all_modules_commands-observers-events.png>]
-<../diagrams/out/system_server_api.png, id=333, 2505.36pt x 1152.305pt>
+ [23 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all-modules_domain-entities.png (PNG copy)>] [24 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_all_modules_commands-observers-events.png>]
+<../diagrams/out/system_server_api.png, id=337, 2505.36pt x 1152.305pt>
 File: ../diagrams/out/system_server_api.png Graphic file (type png)
 <use ../diagrams/out/system_server_api.png>
-Package pdftex.def Info: ../diagrams/out/system_server_api.png  used on input line 162.
+Package pdftex.def Info: ../diagrams/out/system_server_api.png  used on input line 159.
 (pdftex.def)             Requested size: 455.0pt x 209.26971pt.
- [24 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_api.png>]
-<../diagrams/out/system_app.png, id=355, 1885.0425pt x 1254.6875pt>
+ [25 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_server_api.png>]
+<../diagrams/out/system_app.png, id=358, 1885.0425pt x 1254.6875pt>
 File: ../diagrams/out/system_app.png Graphic file (type png)
 <use ../diagrams/out/system_app.png>
-Package pdftex.def Info: ../diagrams/out/system_app.png  used on input line 190.
+Package pdftex.def Info: ../diagrams/out/system_app.png  used on input line 187.
 (pdftex.def)             Requested size: 455.0pt x 302.83505pt.
- [25]
-<../diagrams/out/system_app_initialization-flow.png, id=367, 2877.75125pt x 1267.73625pt>
+ [26]
+<../diagrams/out/system_app_initialization-flow.png, id=370, 2877.75125pt x 1267.73625pt>
 File: ../diagrams/out/system_app_initialization-flow.png Graphic file (type png)
 <use ../diagrams/out/system_app_initialization-flow.png>
-Package pdftex.def Info: ../diagrams/out/system_app_initialization-flow.png  used on input line 206.
+Package pdftex.def Info: ../diagrams/out/system_app_initialization-flow.png  used on input line 203.
 (pdftex.def)             Requested size: 455.0pt x 200.42393pt.
- [26 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_app.png>]
-<images/lazarus-sign-in.png, id=378, 752.8125pt x 1339.0025pt>
+ [27 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_app.png>]
+<images/lazarus-sign-in.png, id=377, 752.8125pt x 1339.0025pt>
 File: images/lazarus-sign-in.png Graphic file (type png)
 <use images/lazarus-sign-in.png>
-Package pdftex.def Info: images/lazarus-sign-in.png  used on input line 236.
+Package pdftex.def Info: images/lazarus-sign-in.png  used on input line 233.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-sign-up.png, id=379, 752.8125pt x 1339.0025pt>
+<images/lazarus-sign-up.png, id=378, 752.8125pt x 1339.0025pt>
 File: images/lazarus-sign-up.png Graphic file (type png)
 <use images/lazarus-sign-up.png>
-Package pdftex.def Info: images/lazarus-sign-up.png  used on input line 237.
+Package pdftex.def Info: images/lazarus-sign-up.png  used on input line 234.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
- [27 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_app_initialization-flow.png>]
+ [28 </Users/bruno.papa/dev/lazarus/docs/latex/../diagrams/out/system_app_initialization-flow.png>]
 <images/lazarus-explorer-1.png, id=385, 752.8125pt x 1339.0025pt>
 File: images/lazarus-explorer-1.png Graphic file (type png)
 <use images/lazarus-explorer-1.png>
-Package pdftex.def Info: images/lazarus-explorer-1.png  used on input line 246.
+Package pdftex.def Info: images/lazarus-explorer-1.png  used on input line 247.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
 <images/lazarus-explorer-2.png, id=386, 752.8125pt x 1339.0025pt>
 File: images/lazarus-explorer-2.png Graphic file (type png)
 <use images/lazarus-explorer-2.png>
-Package pdftex.def Info: images/lazarus-explorer-2.png  used on input line 247.
+Package pdftex.def Info: images/lazarus-explorer-2.png  used on input line 248.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-incident.png, id=387, 752.8125pt x 1339.0025pt>
+ [29 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-sign-in.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-sign-up.png>]
+<images/lazarus-incident.png, id=394, 752.8125pt x 1339.0025pt>
 File: images/lazarus-incident.png Graphic file (type png)
 <use images/lazarus-incident.png>
-Package pdftex.def Info: images/lazarus-incident.png  used on input line 256.
+Package pdftex.def Info: images/lazarus-incident.png  used on input line 261.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-profile.png, id=388, 752.8125pt x 1339.0025pt>
+<images/lazarus-profile.png, id=396, 752.8125pt x 1339.0025pt>
 File: images/lazarus-profile.png Graphic file (type png)
 <use images/lazarus-profile.png>
-Package pdftex.def Info: images/lazarus-profile.png  used on input line 264.
+Package pdftex.def Info: images/lazarus-profile.png  used on input line 273.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-notifications.png, id=389, 752.8125pt x 1339.0025pt>
+<images/lazarus-notifications.png, id=397, 752.8125pt x 1339.0025pt>
 File: images/lazarus-notifications.png Graphic file (type png)
 <use images/lazarus-notifications.png>
-Package pdftex.def Info: images/lazarus-notifications.png  used on input line 265.
+Package pdftex.def Info: images/lazarus-notifications.png  used on input line 274.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-camera.png, id=390, 752.8125pt x 1339.0025pt>
+ [30 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-explorer-1.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-explorer-2.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-incident.png>]
+<images/lazarus-camera.png, id=407, 752.8125pt x 1339.0025pt>
 File: images/lazarus-camera.png Graphic file (type png)
 <use images/lazarus-camera.png>
-Package pdftex.def Info: images/lazarus-camera.png  used on input line 274.
+Package pdftex.def Info: images/lazarus-camera.png  used on input line 287.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-reporting-1.png, id=391, 752.8125pt x 1339.0025pt>
+<images/lazarus-reporting-1.png, id=408, 752.8125pt x 1339.0025pt>
 File: images/lazarus-reporting-1.png Graphic file (type png)
 <use images/lazarus-reporting-1.png>
-Package pdftex.def Info: images/lazarus-reporting-1.png  used on input line 275.
+Package pdftex.def Info: images/lazarus-reporting-1.png  used on input line 288.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
-<images/lazarus-reporting-2.png, id=392, 752.8125pt x 1339.0025pt>
+<images/lazarus-reporting-2.png, id=409, 752.8125pt x 1339.0025pt>
 File: images/lazarus-reporting-2.png Graphic file (type png)
 <use images/lazarus-reporting-2.png>
-Package pdftex.def Info: images/lazarus-reporting-2.png  used on input line 276.
+Package pdftex.def Info: images/lazarus-reporting-2.png  used on input line 289.
 (pdftex.def)             Requested size: 127.96494pt x 227.62204pt.
- [28 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-sign-in.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-sign-up.png>] [29 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-explorer-1.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-explorer-2.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-incident.png>] [30 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-profile.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-notifications.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-camera.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-reporting-1.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-reporting-2.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/5-conclusao.tex [31]) (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.bbl [32
+ [31 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-profile.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-notifications.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/chapters/5-conclusao.tex [32 </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-camera.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-reporting-1.png> </Users/bruno.papa/dev/lazarus/docs/latex/images/lazarus-reporting-2.png>]) (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.bbl [33
 
 ]
 bibitemlist
-[33
+[34
 
 ]) 
 AED: lastpage setting LastPage
-[34]
+[35]
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
@@ -1280,18 +1284,18 @@ This document will not have a glossary.
 
 (/Users/bruno.papa/dev/lazarus/docs/latex/monografia.aux) ) 
 Here is how much of TeX's memory you used:
- 25895 strings out of 478994
- 419065 string characters out of 5858184
- 943718 words of memory out of 5000000
- 42527 multiletter control sequences out of 15000+600000
- 466637 words of font info for 145 fonts, out of 8000000 for 9000
+ 25931 strings out of 478994
+ 419613 string characters out of 5858184
+ 941431 words of memory out of 5000000
+ 42531 multiletter control sequences out of 15000+600000
+ 471728 words of font info for 162 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 117i,11n,116p,1099b,604s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on /Users/bruno.papa/dev/lazarus/docs/latex/monografia.pdf (35 pages, 14044457 bytes).
+ 117i,12n,116p,1099b,606s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsso10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
+Output written on /Users/bruno.papa/dev/lazarus/docs/latex/monografia.pdf (36 pages, 14079070 bytes).
 PDF statistics:
- 660 PDF objects out of 1000 (max. 8388607)
- 566 compressed objects within 6 object streams
- 142 named destinations out of 1000 (max. 500000)
- 35790 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 627 PDF objects out of 1000 (max. 8388607)
+ 531 compressed objects within 6 object streams
+ 140 named destinations out of 1000 (max. 500000)
+ 37814 words of extra memory for PDF output out of 42996 (max. 10000000)
 
