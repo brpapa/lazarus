@@ -1,0 +1,518 @@
+@localHost=http://localhost:5555
+@prodHost=https://metis-node-api.herokuapp.com
+@accessToken={{mutation_signIn.response.body.$.data.signIn.accessToken}}
+
+# @name uploads
+POST {{prodHost}}/uploads
+Content-Type: multipart/form-data; boundary=123
+
+--123
+Content-Disposition: form-data; name="location"
+
+SP
+
+--123
+Content-Disposition: form-data; name="555F470E-DC1F-4684-96C5-DC6AD4B81342"; filename="video-555F470E-DC1F-4684-96C5-DC6AD4B81342.mov"
+Content-Type: application/octet-stream
+
+< /Users/bruno.papa/dev/metis/packages/server/tests/__mocks__/video.mov
+
+--123
+Content-Disposition: form-data; name="7C75F6C7-49F9-4859-A3B4-B381593EAB06"; filename="image-7C75F6C7-49F9-4859-A3B4-B381593EAB06.jpg"
+Content-Type: image/jpg
+
+< /Users/bruno.papa/dev/metis/packages/server/tests/__mocks__/image.jpg
+
+--123--
+
+###
+
+# @name query_health
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query {
+  health
+}
+
+###
+
+# @name mutation_signUp
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation M($input: SignUpInput!) {
+  signUp(input: $input) {
+    __typename
+    ... on SignUpOkResult {
+      user {
+        id
+        userId
+        username
+        email
+        location {
+          latitude
+          longitude
+        }
+        preferences {
+          radiusDistance
+          language
+        }
+        avatarUrl
+      }
+    }
+    ... on SignUpErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "username": "username-{{$randomInt 0 9999}}",
+    "password": "password",
+    "email": "email-{{$randomInt 0 9999}}@gmail.com",
+    "name": "User {{$randomInt 0 1000}}"
+  }
+}
+
+###
+
+# @name mutation_signIn
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation M($input: SignInInput!) {
+  signIn(input: $input) {
+    __typename
+    ... on SignInOkResult {
+      accessToken
+      refreshToken
+      accessTokenExpiresIn
+    }
+    ... on SignInErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "username": "reginasilva",
+    "password": "12345678"
+  }
+}
+
+###
+
+# @name query_users
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query {
+  users {
+    totalCount
+    edges {
+      node {
+        id
+        userId
+        username
+        location {
+          latitude
+          longitude
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+
+###
+
+# @name query_me
+POST {{localHost}}/graphql
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  me {
+    user {
+      id
+      userId
+      username
+      email
+      name
+      location {
+        latitude
+        longitude
+      }
+      preferences {
+        radiusDistance
+        language
+      }
+      avatarUrl
+    }
+    stats {
+      nearbyIncidentsCount
+      nearbyUsersCount
+    }
+    incidents {
+      totalCount
+      edges {
+        node {
+          id
+          incidentId
+          ownerUser {
+            id
+            userId
+            name
+          }
+          title
+          location {
+            latitude
+            longitude
+          }
+          formattedAddress
+          medias {
+            url
+            type
+          }
+          createdAt
+        }
+      }
+    }
+    notifications {
+      totalCount
+      notSeenCount
+      edges {
+        node {
+          id
+          notificationId
+          targetUserId
+          code
+          title
+          subtitle
+          body
+          link {
+            entity
+            entityId
+          }
+          seenByTargetUser
+          createdAt
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}
+
+###
+
+# @name query_incidents
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query Q($filter: IncidentsFilterInputType) {
+  incidents(filter: $filter) {
+    totalCount
+    edges {
+      node {
+        id
+        incidentId
+        ownerUser {
+          id
+          userId
+          name
+        }
+        title
+        location {
+          latitude
+          longitude
+        }
+        formattedAddress
+        medias {
+          url
+          type
+        }
+        createdAt
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+
+{}
+
+# {
+#   "filter": {
+#     "withinBox": {
+#       "northEast": { "latitude": 50, "longitude": 50 },
+#       "southWest": { "latitude": -50, "longitude": -50 }
+#     }
+#   }
+# }
+
+###
+
+# @name query_incident
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query Q($incidentId: String!) {
+  incident(incidentId: $incidentId) {
+    id
+    incidentId
+    title
+    location {
+      latitude
+      longitude
+    }
+    formattedAddress
+    medias {
+      url
+    }
+    createdAt
+  }
+}
+
+{
+  "incidentId": "f0f8069c-650f-4803-a063-584cfb40bf19"
+}
+
+###
+
+# @name mutation_reportIncident
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+mutation M($input: ReportIncidentInput!) {
+  reportIncident(input: $input) {
+    __typename
+    ... on ReportIncidentOkResult {
+      incident {
+        id
+        incidentId
+        title
+        location {
+          latitude
+          longitude
+        }
+        formattedAddress
+        usersNotifiedCount
+        medias {
+          url
+        }
+        createdAt
+      }
+    }
+    ... on ReportIncidentErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "title": "Outra queda de avião",
+    "medias": [
+      {
+        "url": "https://s2.glbimg.com/6bPwIsd-7pKhBjeOmWxofRfJwhE=/0x0:1600x1200/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/f/h/EQhO4oSoaxjFk2ltAAwA/aeronave-queda.jpeg",
+        "type": "IMAGE"
+      }
+    ]
+  }
+}
+
+###
+
+# @name mutation_deleteIncident
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+mutation M($input: DeleteIncidentInput!) {
+  deleteIncident(input: $input) {
+    __typename
+    ... on DeleteIncidentOkResult {
+      _
+    }
+    ... on DeleteIncidentErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "incidentId": "c3671542-5b37-4ebb-aa99-9fb36a5a5cef"
+  }
+}
+
+###
+
+# @name mutation_updateUserLocation
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+mutation M($input: UpdateUserLocationInput!) {
+  updateUserLocation(input: $input) {
+    __typename
+    ... on UpdateUserLocationOkResult {
+      user {
+        id
+        userId
+        location {
+          latitude
+          longitude
+        }
+        username
+      }
+    }
+    ... on UpdateUserLocationErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "location": {
+      "latitude": -22.86891631588186,
+      "longitude": -48.434477625049754
+    }
+  }
+}
+
+###
+
+# @name query_notification
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+query Q($notificationId: String!) {
+  notification(notificationId: $notificationId) {
+    id
+    notificationId
+    targetUserId
+    code
+    title
+    subtitle
+    body
+    link {
+      entity
+      entityId
+    }
+    seenByTargetUser
+    createdAt
+  }
+}
+
+{
+  "notificationId": "2c02a7e7-3b92-4509-9dab-549e278f8406"
+}
+
+###
+
+# @name mutation_markNotificationAsSeen
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+mutation M($input: MarkNotificationAsSeenInput!) {
+  markNotificationAsSeen(input: $input) {
+    __typename
+    ... on MarkNotificationAsSeenOkResult {
+      notification {
+        id
+        notificationId
+        seenByTargetUser
+      }
+    }
+    ... on MarkNotificationAsSeenErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {
+    "notificationId": "36e905cd-3466-4403-8c23-c70325c07837"
+  }
+}
+
+###
+
+# @name mutation_markAllNotificationsAsSeen
+POST {{localHost}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{accessToken}}
+
+mutation M($input: MarkAllNotificationsAsSeenInput!) {
+  markAllNotificationsAsSeen(input: $input) {
+    __typename
+    ... on MarkAllNotificationsAsSeenOkResult {
+      notifications {
+        id
+        notificationId
+        seenByTargetUser
+      }
+    }
+    ... on MarkAllNotificationsAsSeenErrResult {
+      code
+      reason
+      reasonIsTranslated
+    }
+  }
+}
+
+{
+  "input": {}
+}
+
+###

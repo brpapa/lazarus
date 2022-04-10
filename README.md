@@ -1,14 +1,14 @@
-# Printscreens
+# Screens
 
 <p float="left">
-  <img width="150" src="./docs/latex/images/lazarus-explorer-1.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-explorer-2.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-camera.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-incident.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-profile.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-notifications.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-sign-in.png"/>
-  <img width="150" src="./docs/latex/images/lazarus-sign-up.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-explorer-1.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-explorer-2.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-camera.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-incident.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-profile.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-notifications.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-sign-in.png"/>
+  <img width="200" src="./docs/latex/images/lazarus-sign-up.png"/>
 </p>
 
 # Features
@@ -228,7 +228,6 @@ The app can be deployed to Expo hosting as a [preview release](https://docs.expo
 - o sistema deve suportar uma alta carga de leituras com latência mínima (busca e visualização de alertas, fotos/vídeos), sendo tolerável uma maior latência em escritas (upload de novas fotos/vídeos), pois haverá menos carga de escrita
   - para atender isso:
     - otimizar para leitura
-
 
 # Project structure visualization
 
