@@ -21,7 +21,7 @@ export type OkRes = {
 export type ErrRes = UserOrPasswordInvalidError
 export type Res = Result<OkRes, ErrRes>
 
-/** login user and register device to receive push notifications */
+/** login user */
 export class SignInCommand extends Command<Input, Res> {
   constructor(log: Debugger, private userRepo: IUserRepo, private authService: IAuthService) {
     super(log)
@@ -47,7 +47,6 @@ export class SignInCommand extends Command<Input, Res> {
     assert(jwtClaims !== null)
     const accessTokenExpiresIn = unixEpochToDate(jwtClaims.exp)
 
-    user.updateLastLoginToNow()
     await this.userRepo.commit(user)
 
     await DomainEvents.dispatchAllPendingEventsOfAggregate(user.id)

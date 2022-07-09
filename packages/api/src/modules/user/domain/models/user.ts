@@ -14,7 +14,7 @@ interface UserProps {
   password: UserPassword
   email: UserEmail
   name: string
-  lastLogin?: Date
+  lastSignIn?: Date
   location?: Location
   avatarUrl?: string
   preferences?: UserPreferences
@@ -29,7 +29,7 @@ export class User extends AggregateRoot<UserProps> {
   get password() { return this.props.password } // prettier-ignore
   get email() { return this.props.email } // prettier-ignore
   get name() { return this.props.name } // prettier-ignore
-  get lastLogin() { return this.props.lastLogin } // prettier-ignore
+  get lastSignIn() { return this.props.lastSignIn } // prettier-ignore
   get location() { return this.props.location } // prettier-ignore
   get avatarUrl() { return this.props.avatarUrl } // prettier-ignore
   get preferences() { assert(this.props.preferences !== undefined); return this.props.preferences } // prettier-ignore
@@ -65,14 +65,10 @@ export class User extends AggregateRoot<UserProps> {
     this.addDomainEvent(new UserSignedIn(this, pushToken))
     this.props.accessToken = accessToken
     this.props.refreshToken = refreshToken || this.props.refreshToken
-    this.props.lastLogin = new Date()
+    this.props.lastSignIn = new Date()
   }
 
   updateLocation(newLocation: Location) {
     this.props.location = newLocation
-  }
-
-  updateLastLoginToNow() {
-    this.props.lastLogin = new Date()
   }
 }

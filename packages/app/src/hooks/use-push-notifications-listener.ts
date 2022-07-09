@@ -34,7 +34,7 @@ export const usePushNotificationsListener = ({ when }: { when: boolean }) => {
           typeof data?.link?.entityId !== 'string' ||
           typeof data?.notificationId !== 'string'
         )
-          throw new Error(`Bad data object, received: ${JSON.stringify(data)}`)
+          throw new Error(`Bad data object. Received: ${JSON.stringify(data)}`)
 
         const { link, notificationId } = data
 
